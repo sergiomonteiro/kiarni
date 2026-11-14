@@ -70,3 +70,9 @@ A implementação e as evidências desta revisão foram publicadas no commit
 [5aea314](https://github.com/sergiomonteiro/kiarni/commit/5aea314). As pendências
 seguintes estão nas [issues do plano do MVP](./MVP_REMAINING.md#issues-de-acompanhamento).
 A CI remota deve ser observada separadamente dos resultados locais acima.
+
+A primeira CI do checkpoint passou no Chromium e falhou num teste histórico de
+recuperação de janela TCP do spike. O cenário foi tornado determinístico com
+pausa limitada no fixture; o teste separado de consumidor lento real permanece.
+[Diagnóstico e ajuste](./spikes/transport.md#ajuste-após-primeira-execução-da-ci--2026-11-14).
+Os resultados remotos finais devem ser consultados no workflow do commit atual.

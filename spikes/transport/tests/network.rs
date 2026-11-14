@@ -306,18 +306,18 @@ fn revocation_and_shutdown_close_live_streams_and_release_workers() {
 }
 
 #[test]
-fn queued_overflow_is_explicit_on_the_wire_when_the_socket_recovers_in_time() {
-    let fixture = Fixture::with_deadline(Duration::from_secs(2));
-    let mut client = fixture.request("/v1/collections/orders/changes", true, "", Some(4096));
+fn queued_overflow_is_explicit_on_the_wire_after_paused_consumer_resumes() {
+    let fixture = Fixture::new();
+    let mut client = fixture.request("/v1/collections/orders/changes", true, "", None);
     client.event("ready");
-    let json = format!(
-        r#"{{"_id":"large","status":"new","payload":"{}"}}"#,
-        "x".repeat(250000)
-    );
-    fixture.server.insert(json.as_bytes()).unwrap();
-    wait(|| fixture.server.counters().snapshot()["event_writes"] == 1);
-    // Sender is writing a frame larger than both socket buffers. Fill its
-    // one-slot subscriber queue, then overflow it before resuming reads.
+    let (paused, release) = fixture.server.pause_next_event_write().unwrap();
+    fixture
+        .server
+        .insert(br#"{"_id":"first","status":"new"}"#)
+        .unwrap();
+    paused.recv_timeout(Duration::from_secs(3)).unwrap();
+    // Pause after dequeue but before socket I/O. Fill the one-slot queue and
+    // overflow it deterministically, independent of kernel receive windows.
     fixture
         .server
         .insert(br#"{"_id":"queued","status":"new"}"#)
@@ -326,14 +326,12 @@ fn queued_overflow_is_explicit_on_the_wire_when_the_socket_recovers_in_time() {
         .server
         .insert(br#"{"_id":"overflow","status":"new"}"#)
         .unwrap();
-    // Explicitly restore receive capacity before reading, so this scenario
-    // tests recovery rather than the separate transport-deadline scenario.
-    rustix::net::sockopt::set_socket_recv_buffer_size(client.reader.get_ref(), 1024 * 1024)
-        .unwrap();
-    assert!(client.event("change").contains("\"id\":\"large\""));
+    release.send(()).unwrap();
+    assert!(client.event("change").contains("\"id\":\"first\""));
     assert!(client.event("stream_end").contains("overflow"));
     wait(|| fixture.server.counters().snapshot()["streams"] == 0);
     assert_eq!(fixture.server.counters().snapshot()["overflows"], 1);
+    assert_eq!(fixture.server.counters().snapshot()["write_timeouts"], 0);
 }
 
 #[test]

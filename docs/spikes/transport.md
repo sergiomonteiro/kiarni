@@ -52,8 +52,9 @@ com autorização, sem substituir falhas por skips. Nenhum serviço foi publicad
   tem limite de 3 MiB e deadline absoluto de tentativa de escrita, sem reiniciá-lo
   a cada write parcial. Não é garantia de tempo real do scheduler.
 - Para acelerar os cenários, heartbeat em 100 ms e revalidação de sessão em polls
-  de 25 ms. Testes usam deadline de 500 ms para timeout e 2 s para recuperação de
-  overflow. Esses valores não substituem defaults ainda propostos do servidor.
+  de 25 ms. Testes usam deadline de escrita de 500 ms. O teste de overflow
+  usa uma pausa controlada de consumidor, limitada a três segundos, antes do I/O.
+  Esses valores não substituem defaults do servidor do produto.
 - O binário de exemplo recebe comandos limitados em stdin para inserir fixtures,
   consultar contadores, revogar e encerrar. Esse driver local não é endpoint de
   administração. Token é entregue em arquivo temporário privado, nunca em stdout,
@@ -71,10 +72,12 @@ com autorização, sem substituir falhas por skips. Nenhum serviço foi publicad
 3. Consumidor com SO_RCVBUF solicitado de 4 KiB para de ler após ready. Frames de
    250 mil bytes de payload geram timeout de escrita e liberação da assinatura;
    seis commits e o consumidor rápido continuam, incluindo escrita posterior.
-4. Outro cenário preenche a fila enquanto um frame grande está sendo escrito.
-   Antes de retomar leitura, o cliente restaura recepção para 1 MiB; recebe o frame
-   em trânsito e depois stream_end/overflow. O primeiro teste desse cenário expirou
-   antes da recuperação; tornar a janela explícita separou recuperação de timeout.
+4. Outro cenário pausa o worker de stream após retirar um evento da fila e antes
+   de escrevê-lo. Preenche a fila de uma posição, provoca overflow e libera o
+   consumidor; recebe o evento em trânsito e depois stream_end/overflow. O hook
+   local é one-shot, espera no máximo três segundos e não pausa o coordenador.
+   Isso prova a entrega terminal quando o socket está disponível sem depender
+   da recuperação da janela TCP de um kernel específico.
 5. Revogação aplicada por reload fecha stream como interrupted, libera sua vaga e
    recusa nova conexão com 401, sem reverter dados confirmados.
 6. Shutdown com stream ativo envia terminal quando possível e faz join de todos
@@ -126,3 +129,13 @@ framework/runtime M1; a comparação de primitivas async permanece para implemen
 Os snapshots de auth são carregados explicitamente na inicialização da fixture;
 revogação do teste usa reload em memória. Bootstrap/ponteiro ativo/restart de auth
 continuam G3. As decisões, formatos e limites do gate continuam pendentes de revisão.
+
+## Ajuste após primeira execução da CI — 2026-11-14
+
+O job Linux do checkpoint 5aea314 truncou o frame no antigo teste de recuperação
+de overflow: aumentar SO_RCVBUF não garantiu escoamento dos 250 mil bytes antes
+do deadline de dois segundos. O cenário foi substituído pela pausa controlada
+acima, mantendo o teste separado de timeout com consumidor TCP lento real e
+recusa de frames incompletos. A mudança é exclusiva do fixture/spike, sem
+alterar prazos ou protocolo do produto. A matriz CI agora usa fail-fast false
+para concluir verificações Linux e macOS independentemente.

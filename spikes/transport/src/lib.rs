@@ -71,6 +71,8 @@ struct Shared {
     stop: AtomicBool,
     counters: Arc<Counters>,
     write_deadline: Duration,
+    // One-shot scheduling hook owned by the local test harness, not HTTP.
+    event_write_pause: Mutex<Option<(mpsc::SyncSender<()>, mpsc::Receiver<()>)>>,
 }
 
 pub struct Server {
@@ -109,6 +111,7 @@ impl Server {
             host: address.to_string(),
             stop: AtomicBool::new(false),
             counters: Arc::new(Counters::default()),
+            event_write_pause: Mutex::new(None),
             write_deadline,
         });
         let (sender, receiver) = mpsc::sync_channel::<TcpStream>(8);
@@ -168,6 +171,26 @@ impl Server {
     }
     pub fn counters(&self) -> Arc<Counters> {
         Arc::clone(&self.shared.counters)
+    }
+
+    /// Pause one stream worker before its next event write, for deterministic
+    /// overflow tests. The writer/coordinator is never paused. The worker waits
+    /// at most three seconds, and a dropped release sender also ends the wait.
+    pub fn pause_next_event_write(
+        &self,
+    ) -> Result<(mpsc::Receiver<()>, mpsc::SyncSender<()>), Error> {
+        let mut slot = self
+            .shared
+            .event_write_pause
+            .lock()
+            .map_err(|_| Error::Io)?;
+        if slot.is_some() {
+            return Err(Error::InvalidConfig);
+        }
+        let (arrived, waiting) = mpsc::sync_channel(1);
+        let (release, resume) = mpsc::sync_channel(1);
+        *slot = Some((arrived, resume));
+        Ok((waiting, release))
     }
 
     /// Local harness driver, not a network mutation endpoint.
@@ -538,6 +561,17 @@ fn pump(stream: &mut TcpStream, shared: &Shared, session: Session, subscription:
                     shared.write_deadline,
                 );
                 return;
+            }
+            let pause = shared
+                .event_write_pause
+                .lock()
+                .ok()
+                .and_then(|mut slot| slot.take());
+            if let Some((arrived, resume)) = pause {
+                let _ = arrived.try_send(());
+                if resume.recv_timeout(Duration::from_secs(3)).is_err() {
+                    return;
+                }
             }
             shared.counters.event_writes.fetch_add(1, Ordering::SeqCst);
             if let Err(error) = write_frame(stream, frame.as_bytes(), shared.write_deadline) {
