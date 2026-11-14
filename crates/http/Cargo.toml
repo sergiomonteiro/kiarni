@@ -1,0 +1,22 @@
+[package]
+name = "kiarni-http"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "HTTP routes and stable response contracts"
+
+[dependencies]
+kiarni-core = { path = "../core" }
+kiarni-engine = { path = "../engine" }
+kiarni-auth = { path = "../auth" }
+getrandom = "0.4"
+serde_json = { version = "1", features = ["raw_value", "arbitrary_precision"] }
+
+
+[dev-dependencies]
+tempfile = "3.27"
+zeroize = "1.9"
+
+[lints]
+workspace = true

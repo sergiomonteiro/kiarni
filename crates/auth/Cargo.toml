@@ -1,0 +1,25 @@
+[package]
+name = "kiarni-auth"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Local credentials and durable authentication activation"
+
+[dependencies]
+getrandom = "0.4"
+kiarni-core = { path = "../core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value", "arbitrary_precision"] }
+sha2 = "0.11"
+subtle = { version = "2.6", default-features = false }
+zeroize = "1.9"
+
+[target.'cfg(unix)'.dependencies]
+rustix = { version = "1.1", features = ["fs", "process"] }
+
+[dev-dependencies]
+tempfile = "3.27"
+
+[lints]
+workspace = true

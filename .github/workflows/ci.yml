@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    name: Rust (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install stable Rust
+        run: |
+          rustup toolchain install stable --profile minimal --component rustfmt --component clippy
+          rustup default stable
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: Tests
+        run: cargo test --workspace --locked
+      - name: Product dependency boundary
+        run: python3 scripts/check_product_dependencies.py
+      - name: Benchmark measurement tests
+        run: python3 -m unittest discover -s benches -p test_http_load.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Dashboard metrics parser tests
+        run: node scripts/dashboard-metrics.test.mjs
+      - name: Dashboard SSE parser tests
+        run: node scripts/dashboard-feed.test.mjs
+      - name: Streaming reference client tests
+        run: node spikes/streaming/client.test.mjs
+
+  browser:
+    name: Chromium loopback transport
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install stable Rust
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+      - name: Build private fixture
+        run: cargo build -p kiarni-transport-spike --example fixture_server --locked
+      - name: Install browser test library
+        run: npm ci --prefix spikes/transport --ignore-scripts --no-audit --no-fund
+      - name: Install matching Chromium
+        run: spikes/transport/node_modules/.bin/playwright install --with-deps chromium
+      - name: Real browser transport tests
+        run: node spikes/transport/browser.test.mjs
+      - name: Build product binary
+        run: cargo build -p kiarni --locked
+      - name: Embedded dashboard browser test
+        run: node scripts/dashboard-browser.test.mjs

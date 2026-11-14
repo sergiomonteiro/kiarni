@@ -1,0 +1,7 @@
+/target/
+/data/
+/data.credentials/
+/kiarni-data/
+/kiarni-data.credentials/
+/spikes/transport/node_modules/
+__pycache__/

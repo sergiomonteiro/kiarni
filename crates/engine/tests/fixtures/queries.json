@@ -1,0 +1,21 @@
+[
+  {"name":"default order", "query":{"from":"orders","limit":3}, "ids":["a","b","c"]},
+  {"name":"missing differs from null", "query":{"from":"orders","limit":20,"filter":{"op":"eq","field":"x","value":null}}, "ids":["a"]},
+  {"name":"exists includes null", "query":{"from":"orders","limit":20,"filter":{"op":"exists","field":"x"}}, "ids":["a","c","d","e","f","g","h","i","j","k","l"]},
+  {"name":"not exists", "query":{"from":"orders","limit":20,"filter":{"op":"not","arg":{"op":"exists","field":"x"}}}, "ids":["b"]},
+  {"name":"missing comparison is false", "query":{"from":"orders","limit":20,"filter":{"op":"eq","field":"missing","value":null}}, "ids":[]},
+  {"name":"decimal equality", "query":{"from":"orders","limit":20,"filter":{"op":"eq","field":"n","value":1.00},"sort":[{"field":"n","direction":"desc"}]}, "ids":["a","b","c"]},
+  {"name":"large integer precision", "query":{"from":"orders","limit":20,"filter":{"op":"eq","field":"n","value":9007199254740993}}, "ids":["f"]},
+  {"name":"decimal precision", "query":{"from":"orders","limit":20,"filter":{"op":"gt","field":"n","value":0.1}}, "ids":["a","b","c","e","f","g","j","k"]},
+  {"name":"no string coercion", "query":{"from":"orders","limit":20,"filter":{"op":"eq","field":"x","value":"0"}}, "ids":["f"]},
+  {"name":"bool is not number", "query":{"from":"orders","limit":20,"filter":{"op":"eq","field":"x","value":0}}, "ids":["e"]},
+  {"name":"boolean range unsupported", "query":{"from":"orders","limit":20,"filter":{"op":"gte","field":"x","value":false}}, "ids":[]},
+  {"name":"literal dotted key", "query":{"from":"orders","limit":20,"filter":{"op":"eq","field":"a.b","value":7}}, "ids":["a"]},
+  {"name":"all with range", "query":{"from":"orders","limit":20,"filter":{"op":"all","args":[{"op":"eq","field":"status","value":"paid"},{"op":"gte","field":"n","value":1}]}}, "ids":["a","c"]},
+  {"name":"any", "query":{"from":"orders","limit":20,"filter":{"op":"any","args":[{"op":"eq","field":"_id","value":"a"},{"op":"eq","field":"_id","value":"l"}]}}, "ids":["a","l"]},
+  {"name":"lookup plus filter", "query":{"from":"orders","id":"a","limit":5,"filter":{"op":"eq","field":"status","value":"paid"}}, "ids":["a"]},
+  {"name":"lookup miss", "query":{"from":"orders","id":"absent","limit":5}, "ids":[]},
+  {"name":"projection after sorting", "query":{"from":"orders","limit":1,"sort":[{"field":"n","direction":"desc"}],"project":[]}, "ids":["j"], "fields":["_id"]},
+  {"name":"missing projected fields omitted", "query":{"from":"orders","id":"b","limit":1,"project":["x","status"]}, "ids":["b"], "fields":["_id","status"]},
+  {"name":"compound sort rejected", "query":{"from":"orders","limit":1,"sort":[{"field":"x","direction":"asc"}]}, "error":"unsupported_sort_value"}
+]

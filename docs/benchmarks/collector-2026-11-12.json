@@ -1,0 +1,3062 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-13T02:03:59.381464+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "674ac71a2b6cc4dd768e206c5a999bd2ecb95b9b",
+    "workspace_dirty": true,
+    "source_sha256": "3df22017e1a2211da5898aca2143fa400fa7183a3d4b220aecbf4f6d01cc1ea2",
+    "binary_sha256": "657e6d86888bdef0c5c6463ac92bb1d138ee428002bf7d347c8caf52f13a63c0",
+    "spike_source_sha256": "1e432c54523ffc94595f98dec776e42417cea5e1b0011060059a78288413671c",
+    "data_filesystem": "ext4",
+    "command": [
+      "/home/sergio/Projetos/kiarni/target/release/collector_bench",
+      "--seconds",
+      "2",
+      "--repetitions",
+      "3"
+    ]
+  },
+  "measurement": {
+    "cache_bytes": 8388608,
+    "document_bytes": 1024,
+    "documents": 256,
+    "durability": "Immediate",
+    "experiment": "in-process closed-loop collector; no HTTP or feeds",
+    "max_group_bytes": 8388608,
+    "max_outstanding": 64,
+    "max_owned_bytes": 8388608,
+    "rejection_backoff_us": 100,
+    "repetitions": 3,
+    "seconds_per_trial": 2,
+    "trials": [
+      {
+        "clients": 1,
+        "confirmed": 1426,
+        "confirmed_per_second": 712.7881390506121,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1426,
+        "latency": {
+          "p50_ms": 1.057686,
+          "p95_ms": 2.539353,
+          "p99_ms": 3.922284,
+          "samples": 1426
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.012203,
+          "p95_ms": 0.046568,
+          "p99_ms": 0.06917,
+          "samples": 1426
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.000594457,
+        "service": {
+          "p50_ms": 0.975592,
+          "p95_ms": 2.467618,
+          "p99_ms": 3.889041,
+          "samples": 1426
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 1967,
+        "confirmed_per_second": 983.1512398786191,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1967,
+        "latency": {
+          "p50_ms": 0.854453,
+          "p95_ms": 2.140871,
+          "p99_ms": 3.059646,
+          "samples": 1967
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.011281,
+          "p95_ms": 0.040317,
+          "p99_ms": 0.068759,
+          "samples": 1967
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.000709474,
+        "service": {
+          "p50_ms": 0.77885,
+          "p95_ms": 2.054047,
+          "p99_ms": 2.937956,
+          "samples": 1967
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 2218,
+        "confirmed_per_second": 1108.518923848909,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 2218,
+        "latency": {
+          "p50_ms": 0.86333,
+          "p95_ms": 1.156493,
+          "p99_ms": 1.421133,
+          "samples": 2218
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.107193,
+          "p95_ms": 0.113073,
+          "p99_ms": 0.147048,
+          "samples": 2218
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.000867962,
+        "service": {
+          "p50_ms": 0.706273,
+          "p95_ms": 0.99598,
+          "p99_ms": 1.229029,
+          "samples": 2218
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 1,
+        "confirmed": 1903,
+        "confirmed_per_second": 951.1148541242986,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1903,
+        "latency": {
+          "p50_ms": 1.010488,
+          "p95_ms": 1.339839,
+          "p99_ms": 1.70069,
+          "samples": 1903
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.256635,
+          "p95_ms": 0.285709,
+          "p99_ms": 0.304184,
+          "samples": 1903
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.000809883,
+        "service": {
+          "p50_ms": 0.695873,
+          "p95_ms": 1.004255,
+          "p99_ms": 1.326664,
+          "samples": 1903
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 1,
+        "confirmed": 1041,
+        "confirmed_per_second": 520.1899368866942,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1041,
+        "latency": {
+          "p50_ms": 1.881391,
+          "p95_ms": 2.249546,
+          "p99_ms": 2.506762,
+          "samples": 1041
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 1.057948,
+          "p95_ms": 1.098213,
+          "p99_ms": 1.157635,
+          "samples": 1041
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.001192115,
+        "service": {
+          "p50_ms": 0.758912,
+          "p95_ms": 1.089136,
+          "p99_ms": 1.364285,
+          "samples": 1041
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 8,
+        "confirmed": 2672,
+        "confirmed_per_second": 1332.7552507433234,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 2672,
+        "latency": {
+          "p50_ms": 5.873657,
+          "p95_ms": 6.982491,
+          "p99_ms": 9.598458,
+          "samples": 2672
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 5.068217,
+          "p95_ms": 6.057384,
+          "p99_ms": 8.478494,
+          "samples": 2672
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.004869235,
+        "service": {
+          "p50_ms": 0.713296,
+          "p95_ms": 0.998615,
+          "p99_ms": 1.233058,
+          "samples": 2672
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 8,
+        "confirmed": 9958,
+        "confirmed_per_second": 4975.682361783792,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 2484,
+        "latency": {
+          "p50_ms": 1.548633,
+          "p95_ms": 2.048247,
+          "p99_ms": 2.594527,
+          "samples": 9958
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.008856682769726,
+        "operation_weighted_group_size": 4.185378590078329,
+        "queue_and_collection": {
+          "p50_ms": 0.714629,
+          "p95_ms": 1.002072,
+          "p99_ms": 1.338236,
+          "samples": 9958
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.001333541,
+        "service": {
+          "p50_ms": 0.759694,
+          "p95_ms": 1.042628,
+          "p99_ms": 1.411574,
+          "samples": 9958
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 8,
+        "confirmed": 7246,
+        "confirmed_per_second": 3620.3323472489324,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1808,
+        "latency": {
+          "p50_ms": 1.942566,
+          "p95_ms": 3.505016,
+          "p99_ms": 4.55575,
+          "samples": 7246
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.007743362831858,
+        "operation_weighted_group_size": 4.241236544300303,
+        "queue_and_collection": {
+          "p50_ms": 0.861657,
+          "p95_ms": 2.254426,
+          "p99_ms": 2.766101,
+          "samples": 7246
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.001473706,
+        "service": {
+          "p50_ms": 0.925928,
+          "p95_ms": 2.306905,
+          "p99_ms": 2.704786,
+          "samples": 7246
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 8,
+        "confirmed": 6528,
+        "confirmed_per_second": 3261.0801999956343,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1629,
+        "latency": {
+          "p50_ms": 2.155699,
+          "p95_ms": 3.601067,
+          "p99_ms": 4.214265,
+          "samples": 6528
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.0073664825046045,
+        "operation_weighted_group_size": 4.176776960784314,
+        "queue_and_collection": {
+          "p50_ms": 0.93283,
+          "p95_ms": 2.291425,
+          "p99_ms": 2.645093,
+          "samples": 6528
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.001790695,
+        "service": {
+          "p50_ms": 0.992343,
+          "p95_ms": 2.348914,
+          "p99_ms": 2.727478,
+          "samples": 6528
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 8,
+        "confirmed": 6503,
+        "confirmed_per_second": 3247.724418060686,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 813,
+        "latency": {
+          "p50_ms": 2.202688,
+          "p95_ms": 3.71893,
+          "p99_ms": 4.067428,
+          "samples": 6503
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 7.998769987699877,
+        "operation_weighted_group_size": 7.998923573735199,
+        "queue_and_collection": {
+          "p50_ms": 1.011279,
+          "p95_ms": 1.072133,
+          "p99_ms": 1.103623,
+          "samples": 6503
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.002325063,
+        "service": {
+          "p50_ms": 1.090518,
+          "p95_ms": 2.618543,
+          "p99_ms": 2.927416,
+          "samples": 6503
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 32,
+        "confirmed": 1833,
+        "confirmed_per_second": 901.1823321932384,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1833,
+        "latency": {
+          "p50_ms": 35.142575,
+          "p95_ms": 39.869107,
+          "p99_ms": 41.457937,
+          "samples": 1833
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 33.976945,
+          "p95_ms": 38.555928,
+          "p99_ms": 40.324256,
+          "samples": 1833
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.033994603,
+        "service": {
+          "p50_ms": 0.901422,
+          "p95_ms": 2.324608,
+          "p99_ms": 2.731636,
+          "samples": 1833
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 32,
+        "confirmed": 20853,
+        "confirmed_per_second": 10404.241732269158,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1085,
+        "latency": {
+          "p50_ms": 3.060588,
+          "p95_ms": 4.642333,
+          "p99_ms": 5.363805,
+          "samples": 20853
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 19.219354838709677,
+        "operation_weighted_group_size": 20.231861123099794,
+        "queue_and_collection": {
+          "p50_ms": 1.164919,
+          "p95_ms": 2.732698,
+          "p99_ms": 3.121592,
+          "samples": 20853
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.004278691,
+        "service": {
+          "p50_ms": 1.540628,
+          "p95_ms": 2.960729,
+          "p99_ms": 3.348681,
+          "samples": 20853
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 32,
+        "confirmed": 20521,
+        "confirmed_per_second": 10237.127139002532,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1089,
+        "latency": {
+          "p50_ms": 3.145708,
+          "p95_ms": 4.585816,
+          "p99_ms": 5.338327,
+          "samples": 20521
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 18.843893480257115,
+        "operation_weighted_group_size": 19.8435261439501,
+        "queue_and_collection": {
+          "p50_ms": 1.187842,
+          "p95_ms": 2.743769,
+          "p99_ms": 3.165976,
+          "samples": 20521
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.004566293,
+        "service": {
+          "p50_ms": 1.495173,
+          "p95_ms": 2.981458,
+          "p99_ms": 3.342158,
+          "samples": 20521
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 32,
+        "confirmed": 20704,
+        "confirmed_per_second": 10330.388970898326,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1059,
+        "latency": {
+          "p50_ms": 2.992599,
+          "p95_ms": 4.674544,
+          "p99_ms": 5.66315,
+          "samples": 20704
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 19.5505193578848,
+        "operation_weighted_group_size": 20.82834234930448,
+        "queue_and_collection": {
+          "p50_ms": 1.147395,
+          "p95_ms": 2.782713,
+          "p99_ms": 3.322742,
+          "samples": 20704
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.004183972,
+        "service": {
+          "p50_ms": 1.566337,
+          "p95_ms": 2.959246,
+          "p99_ms": 3.450994,
+          "samples": 20704
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 32,
+        "confirmed": 25457,
+        "confirmed_per_second": 12712.658578168524,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 923,
+        "latency": {
+          "p50_ms": 2.373831,
+          "p95_ms": 4.243219,
+          "p99_ms": 5.106549,
+          "samples": 25457
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 27.5807150595883,
+        "operation_weighted_group_size": 29.09482657029501,
+        "queue_and_collection": {
+          "p50_ms": 0.154171,
+          "p95_ms": 2.318547,
+          "p99_ms": 2.941622,
+          "samples": 25457
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.002492228,
+        "service": {
+          "p50_ms": 1.691834,
+          "p95_ms": 3.222352,
+          "p99_ms": 4.086273,
+          "samples": 25457
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 128,
+        "confirmed": 1968,
+        "confirmed_per_second": 951.9231102565712,
+        "execution_failures": 0,
+        "full": 817130,
+        "groups": 1968,
+        "latency": {
+          "p50_ms": 66.916111,
+          "p95_ms": 71.543626,
+          "p99_ms": 75.217932,
+          "samples": 1968
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 65.834931,
+          "p95_ms": 70.530815,
+          "p99_ms": 74.257038,
+          "samples": 1968
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000641,
+          "p99_ms": 0.009808,
+          "samples": 817130
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.067393867,
+        "service": {
+          "p50_ms": 0.818034,
+          "p95_ms": 2.349384,
+          "p99_ms": 3.324736,
+          "samples": 1968
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 128,
+        "confirmed": 23908,
+        "confirmed_per_second": 11908.206503653733,
+        "execution_failures": 0,
+        "full": 810996,
+        "groups": 748,
+        "latency": {
+          "p50_ms": 5.014285,
+          "p95_ms": 7.056049,
+          "p99_ms": 7.995763,
+          "samples": 23908
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.962566844919785,
+        "operation_weighted_group_size": 31.99531537560649,
+        "queue_and_collection": {
+          "p50_ms": 2.950739,
+          "p95_ms": 3.656783,
+          "p99_ms": 4.570648,
+          "samples": 23908
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000681,
+          "p99_ms": 0.048211,
+          "samples": 810996
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.007691082,
+        "service": {
+          "p50_ms": 2.840772,
+          "p95_ms": 3.53859,
+          "p99_ms": 4.438949,
+          "samples": 23908
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 128,
+        "confirmed": 24907,
+        "confirmed_per_second": 12411.956560793198,
+        "execution_failures": 0,
+        "full": 810665,
+        "groups": 779,
+        "latency": {
+          "p50_ms": 4.836891,
+          "p95_ms": 6.271028,
+          "p99_ms": 7.195121,
+          "samples": 24907
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.973042362002566,
+        "operation_weighted_group_size": 31.990725498855742,
+        "queue_and_collection": {
+          "p50_ms": 2.871761,
+          "p95_ms": 3.342329,
+          "p99_ms": 3.810893,
+          "samples": 24907
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000692,
+          "p99_ms": 0.048411,
+          "samples": 810665
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.0066941,
+        "service": {
+          "p50_ms": 2.767865,
+          "p95_ms": 3.211382,
+          "p99_ms": 3.652214,
+          "samples": 24907
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 128,
+        "confirmed": 24544,
+        "confirmed_per_second": 12245.11858505308,
+        "execution_failures": 0,
+        "full": 810975,
+        "groups": 767,
+        "latency": {
+          "p50_ms": 4.944664,
+          "p95_ms": 6.427242,
+          "p99_ms": 7.238052,
+          "samples": 24544
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 32.0,
+        "operation_weighted_group_size": 32.0,
+        "queue_and_collection": {
+          "p50_ms": 2.937003,
+          "p95_ms": 3.439913,
+          "p99_ms": 3.748035,
+          "samples": 24544
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000691,
+          "p99_ms": 0.049313,
+          "samples": 810975
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.004390552,
+        "service": {
+          "p50_ms": 2.81822,
+          "p95_ms": 3.317622,
+          "p99_ms": 3.614443,
+          "samples": 24544
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 128,
+        "confirmed": 24512,
+        "confirmed_per_second": 12210.936904977114,
+        "execution_failures": 0,
+        "full": 811223,
+        "groups": 766,
+        "latency": {
+          "p50_ms": 4.929305,
+          "p95_ms": 6.482105,
+          "p99_ms": 7.446296,
+          "samples": 24512
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 32.0,
+        "operation_weighted_group_size": 32.0,
+        "queue_and_collection": {
+          "p50_ms": 2.948034,
+          "p95_ms": 3.461093,
+          "p99_ms": 3.922975,
+          "samples": 24512
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000691,
+          "p99_ms": 0.050175,
+          "samples": 811223
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.007380776,
+        "service": {
+          "p50_ms": 2.833789,
+          "p95_ms": 3.336618,
+          "p99_ms": 3.803269,
+          "samples": 24512
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 1,
+        "confirmed": 292,
+        "confirmed_per_second": 145.84123766620027,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 292,
+        "latency": {
+          "p50_ms": 1.458133,
+          "p95_ms": 3.0617,
+          "p99_ms": 3.827776,
+          "samples": 292
+        },
+        "load": "think_5ms",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.06355,
+          "p95_ms": 0.092164,
+          "p99_ms": 0.117001,
+          "samples": 292
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.002177194,
+        "service": {
+          "p50_ms": 1.328117,
+          "p95_ms": 2.893893,
+          "p99_ms": 3.652705,
+          "samples": 292
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 289,
+        "confirmed_per_second": 144.05185259781635,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 289,
+        "latency": {
+          "p50_ms": 1.497086,
+          "p95_ms": 3.020231,
+          "p99_ms": 5.651357,
+          "samples": 289
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.067137,
+          "p95_ms": 0.101532,
+          "p99_ms": 0.150284,
+          "samples": 289
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.006222029,
+        "service": {
+          "p50_ms": 1.362782,
+          "p95_ms": 2.936012,
+          "p99_ms": 5.50976,
+          "samples": 289
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 292,
+        "confirmed_per_second": 145.7954795592291,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 292,
+        "latency": {
+          "p50_ms": 1.496315,
+          "p95_ms": 2.97194,
+          "p99_ms": 3.412471,
+          "samples": 292
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.075983,
+          "p95_ms": 0.12717,
+          "p99_ms": 0.149001,
+          "samples": 292
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.00280558,
+        "service": {
+          "p50_ms": 1.345771,
+          "p95_ms": 2.817188,
+          "p99_ms": 3.270804,
+          "samples": 292
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 1,
+        "confirmed": 284,
+        "confirmed_per_second": 141.59935764468526,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 284,
+        "latency": {
+          "p50_ms": 1.698787,
+          "p95_ms": 3.282927,
+          "p99_ms": 3.969933,
+          "samples": 284
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.298393,
+          "p95_ms": 0.309083,
+          "p99_ms": 0.345031,
+          "samples": 284
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.005658816,
+        "service": {
+          "p50_ms": 1.336453,
+          "p95_ms": 2.895255,
+          "p99_ms": 3.599815,
+          "samples": 284
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 1,
+        "confirmed": 254,
+        "confirmed_per_second": 126.95770778490385,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 254,
+        "latency": {
+          "p50_ms": 2.507283,
+          "p95_ms": 4.011822,
+          "p99_ms": 4.490356,
+          "samples": 254
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 1.099175,
+          "p95_ms": 1.12835,
+          "p99_ms": 1.369384,
+          "samples": 254
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 2.000666241,
+        "service": {
+          "p50_ms": 1.332355,
+          "p95_ms": 2.828208,
+          "p99_ms": 3.309897,
+          "samples": 254
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 1,
+        "confirmed": 1682,
+        "confirmed_per_second": 840.604461556357,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1682,
+        "latency": {
+          "p50_ms": 0.973097,
+          "p95_ms": 2.476455,
+          "p99_ms": 2.899844,
+          "samples": 1682
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.012664,
+          "p95_ms": 0.045265,
+          "p99_ms": 0.076124,
+          "samples": 1682
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.000941081,
+        "service": {
+          "p50_ms": 0.892434,
+          "p95_ms": 2.397205,
+          "p99_ms": 2.806258,
+          "samples": 1682
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 1616,
+        "confirmed_per_second": 807.7029619856605,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1616,
+        "latency": {
+          "p50_ms": 1.036416,
+          "p95_ms": 2.492555,
+          "p99_ms": 2.830883,
+          "samples": 1616
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.107363,
+          "p95_ms": 0.115047,
+          "p99_ms": 0.135035,
+          "samples": 1616
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.000735513,
+        "service": {
+          "p50_ms": 0.867798,
+          "p95_ms": 2.336821,
+          "p99_ms": 2.65907,
+          "samples": 1616
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 1,
+        "confirmed": 1406,
+        "confirmed_per_second": 702.4811361931096,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1406,
+        "latency": {
+          "p50_ms": 1.209203,
+          "p95_ms": 2.635735,
+          "p99_ms": 2.959927,
+          "samples": 1406
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.257616,
+          "p95_ms": 0.297862,
+          "p99_ms": 0.309695,
+          "samples": 1406
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.001477232,
+        "service": {
+          "p50_ms": 0.888136,
+          "p95_ms": 2.32562,
+          "p99_ms": 2.633872,
+          "samples": 1406
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 1,
+        "confirmed": 860,
+        "confirmed_per_second": 429.243958879419,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 860,
+        "latency": {
+          "p50_ms": 2.106917,
+          "p95_ms": 3.615084,
+          "p99_ms": 3.953132,
+          "samples": 860
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 1.05991,
+          "p95_ms": 1.102151,
+          "p99_ms": 1.292861,
+          "samples": 860
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.003522664,
+        "service": {
+          "p50_ms": 0.972165,
+          "p95_ms": 2.481675,
+          "p99_ms": 2.777733,
+          "samples": 860
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 1,
+        "confirmed": 1686,
+        "confirmed_per_second": 842.7761641288524,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1686,
+        "latency": {
+          "p50_ms": 0.979338,
+          "p95_ms": 2.409328,
+          "p99_ms": 2.759359,
+          "samples": 1686
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.011792,
+          "p95_ms": 0.04255,
+          "p99_ms": 0.075002,
+          "samples": 1686
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.000531187,
+        "service": {
+          "p50_ms": 0.888979,
+          "p95_ms": 2.329197,
+          "p99_ms": 2.67537,
+          "samples": 1686
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 8,
+        "confirmed": 6500,
+        "confirmed_per_second": 3247.1906102401904,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1622,
+        "latency": {
+          "p50_ms": 2.056532,
+          "p95_ms": 3.927583,
+          "p99_ms": 4.908415,
+          "samples": 6500
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.007398273736128,
+        "operation_weighted_group_size": 4.2553846153846155,
+        "queue_and_collection": {
+          "p50_ms": 0.851708,
+          "p95_ms": 2.46315,
+          "p99_ms": 3.28988,
+          "samples": 6500
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.001730351,
+        "service": {
+          "p50_ms": 0.921139,
+          "p95_ms": 2.547909,
+          "p99_ms": 3.318324,
+          "samples": 6500
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 8,
+        "confirmed": 6903,
+        "confirmed_per_second": 3445.2969289255034,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1685,
+        "latency": {
+          "p50_ms": 1.895608,
+          "p95_ms": 3.828016,
+          "p99_ms": 4.711213,
+          "samples": 6903
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.09673590504451,
+        "operation_weighted_group_size": 4.277125887295379,
+        "queue_and_collection": {
+          "p50_ms": 0.818586,
+          "p95_ms": 2.536117,
+          "p99_ms": 3.437979,
+          "samples": 6903
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.003600892,
+        "service": {
+          "p50_ms": 0.881795,
+          "p95_ms": 2.567246,
+          "p99_ms": 3.462997,
+          "samples": 6903
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 8,
+        "confirmed": 6987,
+        "confirmed_per_second": 3489.5719737764343,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1712,
+        "latency": {
+          "p50_ms": 1.915536,
+          "p95_ms": 3.690937,
+          "p99_ms": 4.590996,
+          "samples": 6987
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.081191588785047,
+        "operation_weighted_group_size": 4.227422355803635,
+        "queue_and_collection": {
+          "p50_ms": 0.813646,
+          "p95_ms": 2.367929,
+          "p99_ms": 3.237691,
+          "samples": 6987
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.002251294,
+        "service": {
+          "p50_ms": 0.876775,
+          "p95_ms": 2.422132,
+          "p99_ms": 3.327341,
+          "samples": 6987
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 8,
+        "confirmed": 6720,
+        "confirmed_per_second": 3358.1125291975013,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 840,
+        "latency": {
+          "p50_ms": 2.122646,
+          "p95_ms": 3.605777,
+          "p99_ms": 4.345423,
+          "samples": 6720
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 8.0,
+        "operation_weighted_group_size": 8.0,
+        "queue_and_collection": {
+          "p50_ms": 1.010186,
+          "p95_ms": 1.062495,
+          "p99_ms": 1.095909,
+          "samples": 6720
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.001124126,
+        "service": {
+          "p50_ms": 0.997814,
+          "p95_ms": 2.48982,
+          "p99_ms": 3.31641,
+          "samples": 6720
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 8,
+        "confirmed": 1827,
+        "confirmed_per_second": 910.2117358603027,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1827,
+        "latency": {
+          "p50_ms": 8.669975,
+          "p95_ms": 10.717691,
+          "p99_ms": 12.78887,
+          "samples": 1827
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 7.550141,
+          "p95_ms": 9.178265,
+          "p99_ms": 11.112896,
+          "samples": 1827
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.007225273,
+        "service": {
+          "p50_ms": 0.903405,
+          "p95_ms": 2.273752,
+          "p99_ms": 2.731506,
+          "samples": 1827
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 32,
+        "confirmed": 21252,
+        "confirmed_per_second": 10614.101289952076,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1094,
+        "latency": {
+          "p50_ms": 2.994533,
+          "p95_ms": 4.494243,
+          "p99_ms": 5.25565,
+          "samples": 21252
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 19.42595978062157,
+        "operation_weighted_group_size": 20.527667984189723,
+        "queue_and_collection": {
+          "p50_ms": 1.157636,
+          "p95_ms": 2.646265,
+          "p99_ms": 3.044647,
+          "samples": 21252
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.002242057,
+        "service": {
+          "p50_ms": 1.553002,
+          "p95_ms": 2.846864,
+          "p99_ms": 3.197395,
+          "samples": 21252
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 32,
+        "confirmed": 20787,
+        "confirmed_per_second": 10378.560643153576,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1103,
+        "latency": {
+          "p50_ms": 3.156804,
+          "p95_ms": 4.566868,
+          "p99_ms": 5.267381,
+          "samples": 20787
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 18.84587488667271,
+        "operation_weighted_group_size": 19.80540722566989,
+        "queue_and_collection": {
+          "p50_ms": 1.199155,
+          "p95_ms": 2.687958,
+          "p99_ms": 3.124052,
+          "samples": 20787
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.002878888,
+        "service": {
+          "p50_ms": 1.522166,
+          "p95_ms": 2.874481,
+          "p99_ms": 3.31883,
+          "samples": 20787
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 32,
+        "confirmed": 21417,
+        "confirmed_per_second": 10690.59930772936,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1112,
+        "latency": {
+          "p50_ms": 2.982945,
+          "p95_ms": 4.484763,
+          "p99_ms": 5.223799,
+          "samples": 21417
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 19.259892086330936,
+        "operation_weighted_group_size": 20.42466265116496,
+        "queue_and_collection": {
+          "p50_ms": 1.137289,
+          "p95_ms": 2.64639,
+          "p99_ms": 3.094025,
+          "samples": 21417
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.003348866,
+        "service": {
+          "p50_ms": 1.493001,
+          "p95_ms": 2.89003,
+          "p99_ms": 3.418548,
+          "samples": 21417
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 32,
+        "confirmed": 24905,
+        "confirmed_per_second": 12437.881881803136,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 958,
+        "latency": {
+          "p50_ms": 2.531362,
+          "p95_ms": 4.231955,
+          "p99_ms": 5.089566,
+          "samples": 24905
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 25.99686847599165,
+        "operation_weighted_group_size": 27.997630997791607,
+        "queue_and_collection": {
+          "p50_ms": 0.159391,
+          "p95_ms": 2.491417,
+          "p99_ms": 2.915458,
+          "samples": 24905
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.00235058,
+        "service": {
+          "p50_ms": 1.661739,
+          "p95_ms": 2.985921,
+          "p99_ms": 3.306557,
+          "samples": 24905
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 32,
+        "confirmed": 1812,
+        "confirmed_per_second": 891.0683616715258,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1812,
+        "latency": {
+          "p50_ms": 35.65606,
+          "p95_ms": 40.711371,
+          "p99_ms": 43.245408,
+          "samples": 1812
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 34.473016,
+          "p95_ms": 39.495053,
+          "p99_ms": 42.061893,
+          "samples": 1812
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.033514013,
+        "service": {
+          "p50_ms": 0.897215,
+          "p95_ms": 2.427706,
+          "p99_ms": 2.832201,
+          "samples": 1812
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 128,
+        "confirmed": 23396,
+        "confirmed_per_second": 11649.238181971474,
+        "execution_failures": 0,
+        "full": 807018,
+        "groups": 732,
+        "latency": {
+          "p50_ms": 5.120734,
+          "p95_ms": 7.122185,
+          "p99_ms": 7.880958,
+          "samples": 23396
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.961748633879782,
+        "operation_weighted_group_size": 31.995212856898615,
+        "queue_and_collection": {
+          "p50_ms": 3.004877,
+          "p95_ms": 3.944011,
+          "p99_ms": 4.58897,
+          "samples": 23396
+        },
+        "rejection_latency": {
+          "p50_ms": 0.00044,
+          "p95_ms": 0.000811,
+          "p99_ms": 0.054282,
+          "samples": 807018
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.008371675,
+        "service": {
+          "p50_ms": 2.90582,
+          "p95_ms": 3.773228,
+          "p99_ms": 4.400413,
+          "samples": 23396
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 128,
+        "confirmed": 23532,
+        "confirmed_per_second": 11724.406822639396,
+        "execution_failures": 0,
+        "full": 810277,
+        "groups": 736,
+        "latency": {
+          "p50_ms": 5.069728,
+          "p95_ms": 7.097278,
+          "p99_ms": 7.580431,
+          "samples": 23532
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.972826086956523,
+        "operation_weighted_group_size": 31.989801121876592,
+        "queue_and_collection": {
+          "p50_ms": 3.008865,
+          "p95_ms": 3.85895,
+          "p99_ms": 4.627342,
+          "samples": 23532
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000691,
+          "p99_ms": 0.048672,
+          "samples": 810277
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.007095144,
+        "service": {
+          "p50_ms": 2.910299,
+          "p95_ms": 3.676085,
+          "p99_ms": 4.406104,
+          "samples": 23532
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 128,
+        "confirmed": 24662,
+        "confirmed_per_second": 12282.825352583664,
+        "execution_failures": 0,
+        "full": 810080,
+        "groups": 771,
+        "latency": {
+          "p50_ms": 4.911449,
+          "p95_ms": 6.413436,
+          "p99_ms": 8.046171,
+          "samples": 24662
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.987029831387808,
+        "operation_weighted_group_size": 31.991079393398753,
+        "queue_and_collection": {
+          "p50_ms": 2.87973,
+          "p95_ms": 3.416064,
+          "p99_ms": 4.395594,
+          "samples": 24662
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000721,
+          "p99_ms": 0.05288,
+          "samples": 810080
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.007844229,
+        "service": {
+          "p50_ms": 2.773319,
+          "p95_ms": 3.287361,
+          "p99_ms": 4.230091,
+          "samples": 24662
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 128,
+        "confirmed": 24832,
+        "confirmed_per_second": 12380.19599654046,
+        "execution_failures": 0,
+        "full": 811017,
+        "groups": 776,
+        "latency": {
+          "p50_ms": 4.871353,
+          "p95_ms": 6.249777,
+          "p99_ms": 7.200162,
+          "samples": 24832
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 32.0,
+        "operation_weighted_group_size": 32.0,
+        "queue_and_collection": {
+          "p50_ms": 2.885401,
+          "p95_ms": 3.41963,
+          "p99_ms": 3.723905,
+          "samples": 24832
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000701,
+          "p99_ms": 0.051017,
+          "samples": 811017
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.005784077,
+        "service": {
+          "p50_ms": 2.780924,
+          "p95_ms": 3.295496,
+          "p99_ms": 3.642612,
+          "samples": 24832
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 128,
+        "confirmed": 2021,
+        "confirmed_per_second": 976.0778734381371,
+        "execution_failures": 0,
+        "full": 817377,
+        "groups": 2021,
+        "latency": {
+          "p50_ms": 65.074448,
+          "p95_ms": 70.097005,
+          "p99_ms": 72.519803,
+          "samples": 2021
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 64.020697,
+          "p95_ms": 68.879075,
+          "p99_ms": 71.567463,
+          "samples": 2021
+        },
+        "rejection_latency": {
+          "p50_ms": 0.00043,
+          "p95_ms": 0.000651,
+          "p99_ms": 0.009759,
+          "samples": 817377
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.070531517,
+        "service": {
+          "p50_ms": 0.825539,
+          "p95_ms": 2.272984,
+          "p99_ms": 2.648915,
+          "samples": 2021
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 293,
+        "confirmed_per_second": 146.40826958238827,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 293,
+        "latency": {
+          "p50_ms": 1.458155,
+          "p95_ms": 2.976022,
+          "p99_ms": 3.978547,
+          "samples": 293
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.067678,
+          "p95_ms": 0.097975,
+          "p99_ms": 0.186322,
+          "samples": 293
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.001253077,
+        "service": {
+          "p50_ms": 1.323911,
+          "p95_ms": 2.830327,
+          "p99_ms": 3.842349,
+          "samples": 293
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 290,
+        "confirmed_per_second": 144.89793237500675,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 290,
+        "latency": {
+          "p50_ms": 1.510824,
+          "p95_ms": 3.014114,
+          "p99_ms": 3.909425,
+          "samples": 290
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.082686,
+          "p95_ms": 0.117923,
+          "p99_ms": 0.161886,
+          "samples": 290
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.001408821,
+        "service": {
+          "p50_ms": 1.361341,
+          "p95_ms": 2.839204,
+          "p99_ms": 3.738773,
+          "samples": 290
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 1,
+        "confirmed": 283,
+        "confirmed_per_second": 141.26097844322877,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 283,
+        "latency": {
+          "p50_ms": 1.699591,
+          "p95_ms": 3.307168,
+          "p99_ms": 4.284995,
+          "samples": 283
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.299335,
+          "p95_ms": 0.32301,
+          "p99_ms": 0.510074,
+          "samples": 283
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.003384113,
+        "service": {
+          "p50_ms": 1.32879,
+          "p95_ms": 2.917853,
+          "p99_ms": 3.90637,
+          "samples": 283
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 1,
+        "confirmed": 253,
+        "confirmed_per_second": 126.32592243674145,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 253,
+        "latency": {
+          "p50_ms": 2.443767,
+          "p95_ms": 4.299713,
+          "p99_ms": 6.999063,
+          "samples": 253
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 1.098505,
+          "p95_ms": 1.133731,
+          "p99_ms": 1.401949,
+          "samples": 253
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.002756007,
+        "service": {
+          "p50_ms": 1.271752,
+          "p95_ms": 3.102511,
+          "p99_ms": 5.789929,
+          "samples": 253
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 1,
+        "confirmed": 293,
+        "confirmed_per_second": 146.16106848681608,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 293,
+        "latency": {
+          "p50_ms": 1.482711,
+          "p95_ms": 3.050613,
+          "p99_ms": 5.177721,
+          "samples": 293
+        },
+        "load": "think_5ms",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.063611,
+          "p95_ms": 0.088677,
+          "p99_ms": 0.1161,
+          "samples": 293
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 2.004637781,
+        "service": {
+          "p50_ms": 1.351093,
+          "p95_ms": 2.901461,
+          "p99_ms": 5.023941,
+          "samples": 293
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 1596,
+        "confirmed_per_second": 797.8049869424067,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1596,
+        "latency": {
+          "p50_ms": 1.041878,
+          "p95_ms": 2.513228,
+          "p99_ms": 2.923173,
+          "samples": 1596
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.107363,
+          "p95_ms": 0.115588,
+          "p99_ms": 0.148681,
+          "samples": 1596
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.000488874,
+        "service": {
+          "p50_ms": 0.877548,
+          "p95_ms": 2.35035,
+          "p99_ms": 2.776676,
+          "samples": 1596
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 1,
+        "confirmed": 1393,
+        "confirmed_per_second": 696.0262351265102,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1393,
+        "latency": {
+          "p50_ms": 1.211589,
+          "p95_ms": 2.6887,
+          "p99_ms": 3.1706,
+          "samples": 1393
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.257607,
+          "p95_ms": 0.298123,
+          "p99_ms": 0.33919,
+          "samples": 1393
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.001361342,
+        "service": {
+          "p50_ms": 0.891034,
+          "p95_ms": 2.381248,
+          "p99_ms": 2.850805,
+          "samples": 1393
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 1,
+        "confirmed": 867,
+        "confirmed_per_second": 433.12764276428135,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 867,
+        "latency": {
+          "p50_ms": 2.074329,
+          "p95_ms": 3.600482,
+          "p99_ms": 3.960622,
+          "samples": 867
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 1.059311,
+          "p95_ms": 1.10107,
+          "p99_ms": 1.15432,
+          "samples": 867
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.001719388,
+        "service": {
+          "p50_ms": 0.945656,
+          "p95_ms": 2.474054,
+          "p99_ms": 2.823254,
+          "samples": 867
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 1,
+        "confirmed": 1693,
+        "confirmed_per_second": 845.4331787300716,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1693,
+        "latency": {
+          "p50_ms": 0.965434,
+          "p95_ms": 2.428448,
+          "p99_ms": 2.914797,
+          "samples": 1693
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.011923,
+          "p95_ms": 0.047099,
+          "p99_ms": 0.067698,
+          "samples": 1693
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.002523727,
+        "service": {
+          "p50_ms": 0.887527,
+          "p95_ms": 2.353496,
+          "p99_ms": 2.839955,
+          "samples": 1693
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 1743,
+        "confirmed_per_second": 871.0358889958919,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1743,
+        "latency": {
+          "p50_ms": 0.948101,
+          "p95_ms": 2.379305,
+          "p99_ms": 2.753582,
+          "samples": 1743
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.011341,
+          "p95_ms": 0.039374,
+          "p99_ms": 0.066476,
+          "samples": 1743
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.001065653,
+        "service": {
+          "p50_ms": 0.882206,
+          "p95_ms": 2.311066,
+          "p99_ms": 2.729396,
+          "samples": 1743
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 8,
+        "confirmed": 6601,
+        "confirmed_per_second": 3294.7922255032463,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1647,
+        "latency": {
+          "p50_ms": 2.135625,
+          "p95_ms": 3.672658,
+          "p99_ms": 4.373903,
+          "samples": 6601
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.0078931390406805,
+        "operation_weighted_group_size": 4.1931525526435385,
+        "queue_and_collection": {
+          "p50_ms": 0.910109,
+          "p95_ms": 2.35522,
+          "p99_ms": 2.709929,
+          "samples": 6601
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.003464725,
+        "service": {
+          "p50_ms": 0.970033,
+          "p95_ms": 2.393692,
+          "p99_ms": 2.745507,
+          "samples": 6601
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 8,
+        "confirmed": 6563,
+        "confirmed_per_second": 3278.301924680021,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1634,
+        "latency": {
+          "p50_ms": 2.029695,
+          "p95_ms": 3.772607,
+          "p99_ms": 4.905527,
+          "samples": 6563
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.016523867809058,
+        "operation_weighted_group_size": 4.1644065214078925,
+        "queue_and_collection": {
+          "p50_ms": 0.861868,
+          "p95_ms": 2.408841,
+          "p99_ms": 3.337214,
+          "samples": 6563
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.001951056,
+        "service": {
+          "p50_ms": 0.921812,
+          "p95_ms": 2.456761,
+          "p99_ms": 3.416093,
+          "samples": 6563
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 8,
+        "confirmed": 6568,
+        "confirmed_per_second": 3280.908875298593,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 821,
+        "latency": {
+          "p50_ms": 2.121287,
+          "p95_ms": 3.889208,
+          "p99_ms": 4.61062,
+          "samples": 6568
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 8.0,
+        "operation_weighted_group_size": 8.0,
+        "queue_and_collection": {
+          "p50_ms": 1.013655,
+          "p95_ms": 1.068979,
+          "p99_ms": 1.101371,
+          "samples": 6568
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.00188431,
+        "service": {
+          "p50_ms": 1.004327,
+          "p95_ms": 2.766947,
+          "p99_ms": 3.43526,
+          "samples": 6568
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 8,
+        "confirmed": 1891,
+        "confirmed_per_second": 941.7721991143729,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1891,
+        "latency": {
+          "p50_ms": 8.161628,
+          "p95_ms": 10.80894,
+          "p99_ms": 12.383093,
+          "samples": 1891
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 7.127225,
+          "p95_ms": 9.405689,
+          "p99_ms": 11.086545,
+          "samples": 1891
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.007916566,
+        "service": {
+          "p50_ms": 0.799901,
+          "p95_ms": 2.414872,
+          "p99_ms": 3.236364,
+          "samples": 1891
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 8,
+        "confirmed": 6630,
+        "confirmed_per_second": 3311.601158021072,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1654,
+        "latency": {
+          "p50_ms": 2.017471,
+          "p95_ms": 3.801873,
+          "p99_ms": 4.712263,
+          "samples": 6630
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 4.008464328899637,
+        "operation_weighted_group_size": 4.194871794871795,
+        "queue_and_collection": {
+          "p50_ms": 0.855787,
+          "p95_ms": 2.362574,
+          "p99_ms": 3.323449,
+          "samples": 6630
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.002052688,
+        "service": {
+          "p50_ms": 0.911151,
+          "p95_ms": 2.451612,
+          "p99_ms": 3.373823,
+          "samples": 6630
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 32,
+        "confirmed": 20966,
+        "confirmed_per_second": 10467.701025775086,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1097,
+        "latency": {
+          "p50_ms": 3.098183,
+          "p95_ms": 4.568901,
+          "p99_ms": 5.811569,
+          "samples": 20966
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 19.112123974475843,
+        "operation_weighted_group_size": 20.148240007631404,
+        "queue_and_collection": {
+          "p50_ms": 1.187683,
+          "p95_ms": 2.640439,
+          "p99_ms": 3.224041,
+          "samples": 20966
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.002923082,
+        "service": {
+          "p50_ms": 1.522737,
+          "p95_ms": 2.855615,
+          "p99_ms": 3.418148,
+          "samples": 20966
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 32,
+        "confirmed": 20922,
+        "confirmed_per_second": 10447.176927543678,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1116,
+        "latency": {
+          "p50_ms": 3.13928,
+          "p95_ms": 4.463162,
+          "p99_ms": 5.278271,
+          "samples": 20922
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 18.747311827956988,
+        "operation_weighted_group_size": 19.71771341171972,
+        "queue_and_collection": {
+          "p50_ms": 1.193224,
+          "p95_ms": 2.635138,
+          "p99_ms": 3.129622,
+          "samples": 20922
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.002646279,
+        "service": {
+          "p50_ms": 1.469546,
+          "p95_ms": 2.800922,
+          "p99_ms": 3.372211,
+          "samples": 20922
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 32,
+        "confirmed": 28998,
+        "confirmed_per_second": 14478.407838319019,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 919,
+        "latency": {
+          "p50_ms": 2.024114,
+          "p95_ms": 3.288673,
+          "p99_ms": 3.870602,
+          "samples": 28998
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.55386289445049,
+        "operation_weighted_group_size": 31.761293882336712,
+        "queue_and_collection": {
+          "p50_ms": 0.13765,
+          "p95_ms": 0.478183,
+          "p99_ms": 1.08488,
+          "samples": 28998
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.002844534,
+        "service": {
+          "p50_ms": 1.68317,
+          "p95_ms": 2.940105,
+          "p99_ms": 3.27122,
+          "samples": 28998
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 32,
+        "confirmed": 1887,
+        "confirmed_per_second": 925.0753015830171,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1887,
+        "latency": {
+          "p50_ms": 34.453159,
+          "p95_ms": 38.26531,
+          "p99_ms": 39.9646,
+          "samples": 1887
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 33.25778,
+          "p95_ms": 37.181042,
+          "p99_ms": 38.8316,
+          "samples": 1887
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.039833943,
+        "service": {
+          "p50_ms": 0.875133,
+          "p95_ms": 2.308511,
+          "p99_ms": 2.652701,
+          "samples": 1887
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 32,
+        "confirmed": 20246,
+        "confirmed_per_second": 10105.968880573122,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 1057,
+        "latency": {
+          "p50_ms": 3.142817,
+          "p95_ms": 4.667258,
+          "p99_ms": 5.998563,
+          "samples": 20246
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 19.154210028382213,
+        "operation_weighted_group_size": 20.19114886891238,
+        "queue_and_collection": {
+          "p50_ms": 1.206189,
+          "p95_ms": 2.738955,
+          "p99_ms": 3.255681,
+          "samples": 20246
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.003370507,
+        "service": {
+          "p50_ms": 1.5774,
+          "p95_ms": 3.015987,
+          "p99_ms": 3.442013,
+          "samples": 20246
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 128,
+        "confirmed": 24086,
+        "confirmed_per_second": 12001.922747289726,
+        "execution_failures": 0,
+        "full": 810409,
+        "groups": 753,
+        "latency": {
+          "p50_ms": 4.977984,
+          "p95_ms": 6.612772,
+          "p99_ms": 7.55396,
+          "samples": 24086
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.9867197875166,
+        "operation_weighted_group_size": 31.99086606327327,
+        "queue_and_collection": {
+          "p50_ms": 2.983967,
+          "p95_ms": 3.569463,
+          "p99_ms": 4.165209,
+          "samples": 24086
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000701,
+          "p99_ms": 0.045637,
+          "samples": 810409
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.006845112,
+        "service": {
+          "p50_ms": 2.879419,
+          "p95_ms": 3.447683,
+          "p99_ms": 4.074167,
+          "samples": 24086
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 128,
+        "confirmed": 23609,
+        "confirmed_per_second": 11761.999531989099,
+        "execution_failures": 0,
+        "full": 810855,
+        "groups": 738,
+        "latency": {
+          "p50_ms": 5.038298,
+          "p95_ms": 7.116163,
+          "p99_ms": 7.509176,
+          "samples": 23609
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.990514905149052,
+        "operation_weighted_group_size": 31.992079291795502,
+        "queue_and_collection": {
+          "p50_ms": 3.003674,
+          "p95_ms": 3.861785,
+          "p99_ms": 4.550757,
+          "samples": 23609
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000702,
+          "p99_ms": 0.04768,
+          "samples": 810855
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.007226742,
+        "service": {
+          "p50_ms": 2.893386,
+          "p95_ms": 3.709408,
+          "p99_ms": 4.457171,
+          "samples": 23609
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 128,
+        "confirmed": 18656,
+        "confirmed_per_second": 9297.255167210695,
+        "execution_failures": 0,
+        "full": 811545,
+        "groups": 583,
+        "latency": {
+          "p50_ms": 6.66395,
+          "p95_ms": 10.253009,
+          "p99_ms": 11.529792,
+          "samples": 18656
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 32.0,
+        "operation_weighted_group_size": 32.0,
+        "queue_and_collection": {
+          "p50_ms": 3.175399,
+          "p95_ms": 5.566125,
+          "p99_ms": 6.343825,
+          "samples": 18656
+        },
+        "rejection_latency": {
+          "p50_ms": 0.000421,
+          "p95_ms": 0.000681,
+          "p99_ms": 0.044714,
+          "samples": 811545
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.006613744,
+        "service": {
+          "p50_ms": 3.060301,
+          "p95_ms": 5.447511,
+          "p99_ms": 6.246911,
+          "samples": 18656
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 128,
+        "confirmed": 1289,
+        "confirmed_per_second": 609.3596865951849,
+        "execution_failures": 0,
+        "full": 814841,
+        "groups": 1289,
+        "latency": {
+          "p50_ms": 104.130621,
+          "p95_ms": 115.762456,
+          "p99_ms": 118.477124,
+          "samples": 1289
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 102.587476,
+          "p95_ms": 113.926317,
+          "p99_ms": 116.744912,
+          "samples": 1289
+        },
+        "rejection_latency": {
+          "p50_ms": 0.00043,
+          "p95_ms": 0.000662,
+          "p99_ms": 0.008326,
+          "samples": 814841
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.115335209,
+        "service": {
+          "p50_ms": 1.310666,
+          "p95_ms": 3.570285,
+          "p99_ms": 4.833171,
+          "samples": 1289
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 128,
+        "confirmed": 19169,
+        "confirmed_per_second": 9555.478978351019,
+        "execution_failures": 0,
+        "full": 810370,
+        "groups": 600,
+        "latency": {
+          "p50_ms": 6.330519,
+          "p95_ms": 9.705135,
+          "p99_ms": 11.47612,
+          "samples": 19169
+        },
+        "load": "saturated_closed_loop",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 31.948333333333334,
+        "operation_weighted_group_size": 31.998382805571495,
+        "queue_and_collection": {
+          "p50_ms": 3.176872,
+          "p95_ms": 5.392287,
+          "p99_ms": 6.206295,
+          "samples": 19169
+        },
+        "rejection_latency": {
+          "p50_ms": 0.00043,
+          "p95_ms": 0.000712,
+          "p99_ms": 0.041328,
+          "samples": 810370
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.006074216,
+        "service": {
+          "p50_ms": 3.055553,
+          "p95_ms": 5.237654,
+          "p99_ms": 6.000977,
+          "samples": 19169
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 288,
+        "confirmed_per_second": 143.56301857716429,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 288,
+        "latency": {
+          "p50_ms": 1.479996,
+          "p95_ms": 3.143118,
+          "p99_ms": 4.863659,
+          "samples": 288
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.082937,
+          "p95_ms": 0.127411,
+          "p99_ms": 0.149963,
+          "samples": 288
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.00608766,
+        "service": {
+          "p50_ms": 1.35518,
+          "p95_ms": 2.970011,
+          "p99_ms": 4.69509,
+          "samples": 288
+        },
+        "window_us": 50
+      },
+      {
+        "clients": 1,
+        "confirmed": 283,
+        "confirmed_per_second": 141.01973353561937,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 283,
+        "latency": {
+          "p50_ms": 1.724859,
+          "p95_ms": 3.141595,
+          "p99_ms": 3.892964,
+          "samples": 283
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.300528,
+          "p95_ms": 0.311358,
+          "p99_ms": 0.348699,
+          "samples": 283
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.006811337,
+        "service": {
+          "p50_ms": 1.355,
+          "p95_ms": 2.769121,
+          "p99_ms": 3.501375,
+          "samples": 283
+        },
+        "window_us": 200
+      },
+      {
+        "clients": 1,
+        "confirmed": 253,
+        "confirmed_per_second": 126.38654778831906,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 253,
+        "latency": {
+          "p50_ms": 2.465668,
+          "p95_ms": 4.141103,
+          "p99_ms": 6.55837,
+          "samples": 253
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 1.099678,
+          "p95_ms": 1.117181,
+          "p99_ms": 1.272744,
+          "samples": 253
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.001795321,
+        "service": {
+          "p50_ms": 1.299845,
+          "p95_ms": 2.950875,
+          "p99_ms": 5.375846,
+          "samples": 253
+        },
+        "window_us": 1000
+      },
+      {
+        "clients": 1,
+        "confirmed": 293,
+        "confirmed_per_second": 146.2757115021096,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 293,
+        "latency": {
+          "p50_ms": 1.427917,
+          "p95_ms": 2.918623,
+          "p99_ms": 5.129921,
+          "samples": 293
+        },
+        "load": "think_5ms",
+        "max_group_operations": 1,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.06356,
+          "p95_ms": 0.096141,
+          "p99_ms": 0.138602,
+          "samples": 293
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.003066654,
+        "service": {
+          "p50_ms": 1.299876,
+          "p95_ms": 2.754534,
+          "p99_ms": 4.960221,
+          "samples": 293
+        },
+        "window_us": 0
+      },
+      {
+        "clients": 1,
+        "confirmed": 292,
+        "confirmed_per_second": 145.95967769030014,
+        "execution_failures": 0,
+        "full": 0,
+        "groups": 292,
+        "latency": {
+          "p50_ms": 1.447544,
+          "p95_ms": 3.057366,
+          "p99_ms": 5.393359,
+          "samples": 292
+        },
+        "load": "think_5ms",
+        "max_group_operations": 32,
+        "mean_operations_per_group": 1.0,
+        "operation_weighted_group_size": 1.0,
+        "queue_and_collection": {
+          "p50_ms": 0.065574,
+          "p95_ms": 0.103907,
+          "p99_ms": 0.14835,
+          "samples": 292
+        },
+        "rejection_latency": {
+          "p50_ms": null,
+          "p95_ms": null,
+          "p99_ms": null,
+          "samples": 0
+        },
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 2.000552513,
+        "service": {
+          "p50_ms": 1.305576,
+          "p95_ms": 2.935946,
+          "p99_ms": 5.267791,
+          "samples": 292
+        },
+        "window_us": 0
+      }
+    ],
+    "warmup": 0
+  }
+}

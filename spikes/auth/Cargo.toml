@@ -1,0 +1,18 @@
+[package]
+name = "kiarni-auth-spike"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Compatibility entry for the auth experiment"
+
+[dependencies]
+serde_json = "1"
+kiarni-auth = { path = "../../crates/auth" }
+
+[dev-dependencies]
+tempfile = "3.27"
+zeroize = "1.9"
+
+[lints]
+workspace = true

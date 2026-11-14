@@ -1,0 +1,27 @@
+[package]
+name = "kiarni-storage"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Versioned redb storage and collection catalog"
+
+[features]
+profiling = ["dep:rustix"]
+
+[dependencies]
+kiarni-core = { path = "../core" }
+kiarni-engine = { path = "../engine" }
+redb = "=4.5.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value", "arbitrary_precision"] }
+
+
+[dev-dependencies]
+tempfile = "3.27"
+
+[target.'cfg(unix)'.dependencies]
+rustix = { version = "1.1", features = ["time"], optional = true }
+
+[lints]
+workspace = true

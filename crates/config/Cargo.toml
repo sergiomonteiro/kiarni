@@ -1,0 +1,15 @@
+[package]
+name = "kiarni-config"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Configuration resolution and admission"
+
+[dependencies]
+kiarni-core = { path = "../core" }
+serde_json = { version = "1", features = ["raw_value", "arbitrary_precision"] }
+
+
+[lints]
+workspace = true

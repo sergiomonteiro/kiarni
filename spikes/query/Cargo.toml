@@ -1,0 +1,13 @@
+[package]
+name = "kiarni-query-spike"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Compatibility entry for the query experiment"
+
+[dependencies]
+kiarni-engine = { path = "../../crates/engine" }
+
+[lints]
+workspace = true

@@ -1,0 +1,148 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-12T03:57:14.651057+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "674ac71a2b6cc4dd768e206c5a999bd2ecb95b9b",
+    "workspace_dirty": true,
+    "source_sha256": "3df22017e1a2211da5898aca2143fa400fa7183a3d4b220aecbf4f6d01cc1ea2",
+    "binary_sha256": "f0ab73352e16948dcd214a938a65526daa0d7a83485e182c2436198c7b54dfbe",
+    "spike_source_sha256": "50aec9d341b6245f09c1822b6387b1987d3f3f96988bbd14d38fb9eedc6a65a1",
+    "data_filesystem": "ext4",
+    "command": "cargo run --release -p kiarni-group-commit-spike --locked --offline"
+  },
+  "measurement": {
+    "cache_bytes": 8388608,
+    "document_bytes": 1024,
+    "documents": 256,
+    "durability": "Immediate",
+    "experiment": "preformed groups; no HTTP, collection window or feeds",
+    "trials": [
+      {
+        "commit_ns": 5145031859,
+        "commits": 4096,
+        "confirmed_operations_per_second": 776.926103223003,
+        "group_p95_ms": 3.692523,
+        "group_size": 1,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 5.272058672
+      },
+      {
+        "commit_ns": 376387698,
+        "commits": 512,
+        "confirmed_operations_per_second": 9563.77321160272,
+        "group_p95_ms": 1.110557,
+        "group_size": 8,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 0.428282845
+      },
+      {
+        "commit_ns": 117900590,
+        "commits": 128,
+        "confirmed_operations_per_second": 25423.006616871255,
+        "group_p95_ms": 1.945304,
+        "group_size": 32,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 1,
+        "seconds": 0.16111391
+      },
+      {
+        "commit_ns": 3033763374,
+        "commits": 4096,
+        "confirmed_operations_per_second": 1305.4294112411976,
+        "group_p95_ms": 1.203602,
+        "group_size": 1,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 3.137664867
+      },
+      {
+        "commit_ns": 608880484,
+        "commits": 512,
+        "confirmed_operations_per_second": 5920.8421565349245,
+        "group_p95_ms": 2.453743,
+        "group_size": 8,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 0.69179348
+      },
+      {
+        "commit_ns": 214027017,
+        "commits": 128,
+        "confirmed_operations_per_second": 14522.168228072751,
+        "group_p95_ms": 3.480762,
+        "group_size": 32,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 2,
+        "seconds": 0.282051546
+      },
+      {
+        "commit_ns": 4279811267,
+        "commits": 4096,
+        "confirmed_operations_per_second": 925.0747226340567,
+        "group_p95_ms": 2.30355,
+        "group_size": 1,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 4.427750429
+      },
+      {
+        "commit_ns": 610892553,
+        "commits": 512,
+        "confirmed_operations_per_second": 5914.078483177018,
+        "group_p95_ms": 2.588377,
+        "group_size": 8,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 0.692584654
+      },
+      {
+        "commit_ns": 214057621,
+        "commits": 128,
+        "confirmed_operations_per_second": 14283.03457282793,
+        "group_p95_ms": 3.389891,
+        "group_size": 32,
+        "operations": 4096,
+        "reopen_verified": true,
+        "repetition": 3,
+        "seconds": 0.286773793
+      }
+    ]
+  }
+}

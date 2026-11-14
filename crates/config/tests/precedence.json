@@ -1,0 +1,8 @@
+[
+  {"cli":[],"env":[],"file":null,"requests":32,"streams":8,"dir":"./kiarni-data"},
+  {"cli":[],"env":[],"file":{"max_requests":16,"data_dir":"./file"},"requests":16,"streams":8,"dir":"./file"},
+  {"cli":[],"env":[["KIARNI_MAX_REQUESTS","24"],["KIARNI_DATA_DIR","./env"]],"file":{"max_requests":16,"data_dir":"./file"},"requests":24,"streams":8,"dir":"./env"},
+  {"cli":[["--max-requests","12"],["--data-dir","./cli"]],"env":[["KIARNI_MAX_REQUESTS","24"],["KIARNI_DATA_DIR","./env"]],"file":{"max_requests":16,"data_dir":"./file"},"requests":12,"streams":8,"dir":"./cli"},
+  {"cli":[["--max-streams","2"]],"env":[["KIARNI_MAX_REQUESTS","12"]],"file":{"data_dir":"./file"},"requests":12,"streams":2,"dir":"./file"},
+  {"cli":[],"env":[["UNRELATED","ignored"]],"file":{},"requests":32,"streams":8,"dir":"./kiarni-data"}
+]

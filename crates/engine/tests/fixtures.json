@@ -1,0 +1,19 @@
+[
+  {"name":"recursive remove and array replacement","op":"patch","current":{"_id":"doc","profile":{"name":"Ana","age":20},"tags":[1,2],"keep":true},"body":{"profile":{"age":null,"city":"Recife"},"tags":[3]},"expected":{"_id":"doc","profile":{"name":"Ana","city":"Recife"},"tags":[3],"keep":true},"changed":true},
+  {"name":"null on missing member is no-op","op":"patch","current":{"_id":"doc","a":null},"body":{"missing":null},"expected":{"_id":"doc","a":null},"changed":false},
+  {"name":"null removes present null","op":"patch","current":{"_id":"doc","a":null},"body":{"a":null},"expected":{"_id":"doc"},"changed":true},
+  {"name":"object replaces array and removes null in newly created object","op":"patch","current":{"_id":"doc","a":[1,2]},"body":{"a":{"b":null,"c":1}},"expected":{"_id":"doc","a":{"c":1}},"changed":true},
+  {"name":"object replaces scalar","op":"patch","current":{"_id":"doc","a":false},"body":{"a":{}},"expected":{"_id":"doc","a":{}},"changed":true},
+  {"name":"scalar replaces object","op":"patch","current":{"_id":"doc","a":{"b":1}},"body":{"a":false},"expected":{"_id":"doc","a":false},"changed":true},
+  {"name":"array contents retained literally","op":"patch","current":{"_id":"doc"},"body":{"a":[null,{"b":null,"_id":null}]},"expected":{"_id":"doc","a":[null,{"b":null,"_id":null}]},"changed":true},
+  {"name":"nested id ordinary","op":"patch","current":{"_id":"doc","a":{"_id":"nested","keep":1}},"body":{"a":{"_id":null}},"expected":{"_id":"doc","a":{"keep":1}},"changed":true},
+  {"name":"empty patch","op":"patch","current":{"_id":"doc","a":1},"body":{},"expected":{"_id":"doc","a":1},"changed":false},
+  {"name":"replace removes absent fields and inserts route id","op":"put","current":{"_id":"doc","old":1},"body":{"new":null},"expected":{"_id":"doc","new":null},"changed":true},
+  {"name":"replace can be no-op without body id","op":"put","current":{"_id":"doc","a":[1,2]},"body":{"a":[1,2]},"expected":{"_id":"doc","a":[1,2]},"changed":false},
+  {"name":"arrays are ordered","op":"put","current":{"_id":"doc","a":[1,2]},"body":{"_id":"doc","a":[2,1]},"expected":{"_id":"doc","a":[2,1]},"changed":true},
+  {"name":"escaped member and string equality","op":"put","current":{"_id":"doc","a":"á"},"body":{"\u0061":"\u00e1"},"expected":{"_id":"doc","a":"á"},"changed":false},
+  {"name":"large number preserved","op":"patch","current":{"_id":"doc"},"body":{"n":1234567890123456789012345678901234567890,"e":1e10001},"expected":{"_id":"doc","n":1234567890123456789012345678901234567890,"e":1e10001},"changed":true},
+  {"name":"number representation is a change","op":"patch","current":{"_id":"doc","n":1},"body":{"n":1.0},"expected":{"_id":"doc","n":1.0},"changed":true},
+  {"name":"negative zero representation is a change","op":"patch","current":{"_id":"doc","n":0},"body":{"n":-0},"expected":{"_id":"doc","n":-0},"changed":true},
+  {"name":"reserved serde number object is ordinary data","op":"patch","current":{"_id":"doc"},"body":{"n":{"$serde_json::private::Number":"not a number"}},"expected":{"_id":"doc","n":{"$serde_json::private::Number":"not a number"}},"changed":true}
+]

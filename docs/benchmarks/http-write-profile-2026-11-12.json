@@ -1,0 +1,202 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-12T03:47:31.389806+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "674ac71a2b6cc4dd768e206c5a999bd2ecb95b9b",
+    "workspace_dirty": true,
+    "source_sha256": "1d6103eda4af28d34a65593f6905abd15c4b2f1b672519a5543373986cfa84b1",
+    "binary_sha256": "7e3350fb2125f27cf5a55cc143218acd74afedb5dd25488a0e85254882f525f8",
+    "data_filesystem": "ext4",
+    "data_block_bytes": 4096
+  },
+  "parameters": {
+    "clients": [
+      1,
+      8,
+      32
+    ],
+    "repetitions": 1,
+    "seconds_per_round": 2.0,
+    "warmup_attempts_per_client": 5,
+    "documents": 256,
+    "document_bytes": 1024,
+    "scenarios": [
+      "write"
+    ],
+    "mixed_write_fraction": 0.2,
+    "server_config": {
+      "max_requests": 32,
+      "max_streams": 8,
+      "feed_queue": 4,
+      "max_document_bytes": 1048576,
+      "max_query_bytes": 16384,
+      "max_result_bytes": 4194304,
+      "read_timeout_ms": 5000,
+      "write_timeout_ms": 5000,
+      "heartbeat_ms": 15000
+    },
+    "profile": "release",
+    "connection_per_request": true,
+    "load_model": "closed_loop",
+    "retries": 0,
+    "initial_dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4"
+  },
+  "results": [
+    {
+      "scenario": "write",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 2.001042,
+      "attempts": 1032,
+      "confirmed": 1032,
+      "attempted_ops_per_second": 515.731,
+      "confirmed_ops_per_second": 515.731,
+      "success_latency": {
+        "p50_ms": 1.692,
+        "p95_ms": 3.4724,
+        "p99_ms": 4.4278,
+        "max_ms": 5.8951
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1032
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 1032
+        }
+      },
+      "client_cpu_seconds": 0.449015,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 2.009268,
+      "attempts": 1653,
+      "confirmed": 1653,
+      "attempted_ops_per_second": 822.688,
+      "confirmed_ops_per_second": 822.688,
+      "success_latency": {
+        "p50_ms": 9.3573,
+        "p95_ms": 12.1971,
+        "p99_ms": 13.252,
+        "max_ms": 17.3036
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1653
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 1653
+        }
+      },
+      "client_cpu_seconds": 0.75561,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 2.039288,
+      "attempts": 1713,
+      "confirmed": 1713,
+      "attempted_ops_per_second": 839.999,
+      "confirmed_ops_per_second": 839.999,
+      "success_latency": {
+        "p50_ms": 37.7841,
+        "p95_ms": 41.9733,
+        "p99_ms": 44.4198,
+        "max_ms": 46.6589
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1713
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 1713
+        }
+      },
+      "client_cpu_seconds": 0.909268,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    }
+  ],
+  "server_profile": {
+    "commit": {
+      "calls": 4603,
+      "thread_cpu_ns": 1019677110,
+      "wall_ns": 5019806767
+    },
+    "lookup": {
+      "calls": 4603,
+      "thread_cpu_ns": 44113696,
+      "wall_ns": 51051172
+    },
+    "put_admission": {
+      "calls": 4603,
+      "thread_cpu_ns": 72827661,
+      "wall_ns": 37802488415
+    },
+    "put_validation": {
+      "calls": 4603,
+      "thread_cpu_ns": 72156253,
+      "wall_ns": 82261407
+    },
+    "scope": "put_including_warmup",
+    "stage": {
+      "calls": 4603,
+      "thread_cpu_ns": 49316484,
+      "wall_ns": 56221349
+    },
+    "storage_begin": {
+      "calls": 4603,
+      "thread_cpu_ns": 26695722,
+      "wall_ns": 34048165
+    },
+    "transform": {
+      "calls": 4603,
+      "thread_cpu_ns": 199822722,
+      "wall_ns": 208561868
+    }
+  },
+  "valid": true
+}

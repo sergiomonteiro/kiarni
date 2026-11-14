@@ -1,0 +1,31 @@
+[package]
+name = "kiarni-server"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Local HTTP server and lifecycle"
+
+[features]
+profiling = ["kiarni-storage/profiling"]
+
+[target.'cfg(unix)'.dependencies]
+httparse = "1.10"
+kiarni-auth = { path = "../auth" }
+kiarni-config = { path = "../config" }
+kiarni-core = { path = "../core" }
+kiarni-engine = { path = "../engine" }
+kiarni-storage = { path = "../storage" }
+kiarni-feeds = { path = "../feeds" }
+kiarni-http = { path = "../http" }
+rustix = { version = "1.1", features = ["fs", "process", "event"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value"] }
+signal-hook = { version = "0.3.18", default-features = false }
+zeroize = "1.9"
+
+[dev-dependencies]
+tempfile = "3.27"
+
+[lints]
+workspace = true

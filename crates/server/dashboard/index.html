@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kiarni · Console</title>
+<link rel="stylesheet" href="/dashboard/style.css">
+<script type="module" src="/dashboard/app.js"></script>
+</head>
+<body>
+<header><a href="/">kiarni<span class="dot">●</span></a><span>CONSOLE LOCAL</span></header>
+<main>
+<section class="intro"><p class="eyebrow">SEU BANCO, EM UM BINÁRIO</p><h1>Um lugar para acompanhar<br>o que acontece.</h1><p>Status, coleções e consultas de documentos, com acesso autenticado.</p></section>
+<section id="login" class="panel"><h2>Conectar ao servidor</h2><p>Use a credencial gerada pelo Kiarni. Ela permanece apenas na memória desta página.</p><form id="connect"><label for="token">Credencial de acesso</label><div class="actions"><input id="token" type="password" autocomplete="off" spellcheck="false" required maxlength="256" placeholder="Cole sua credencial"><button>Conectar</button></div></form></section>
+<section id="session" hidden><div class="toolbar"><h2>Visão geral</h2><div class="actions"><button id="refresh" class="secondary">Atualizar</button><button id="disconnect" class="secondary">Desconectar</button></div></div><div class="cards"><article class="panel"><p class="eyebrow">PROCESSO</p><h3 id="live">—</h3><p>Liveness</p></article><article class="panel"><p class="eyebrow">PERSISTÊNCIA</p><h3 id="ready">—</h3><p>Readiness</p></article></div><section class="panel"><div class="toolbar"><h2>Coleções</h2><span id="count"></span></div><p id="empty" hidden>Nenhuma coleção nesta página.</p><ul id="collections"></ul><button id="next" class="secondary" hidden>Próxima página</button><p class="note">Somente leitura · até 100 coleções por página, em ordem de nome.</p></section>
+<section class="panel" aria-labelledby="status-title">
+<div class="toolbar"><h2 id="status-title">Serviço HTTP</h2><button id="refresh-status" type="button" class="secondary">Atualizar status</button></div>
+<dl class="status-grid"><div><dt>Versão</dt><dd id="version">—</dd></div><div><dt>Tempo de serviço</dt><dd id="uptime">—</dd></div><div><dt>Vagas HTTP ocupadas / limite</dt><dd id="connections">—</dd></div><div><dt>Vagas de stream / limite</dt><dd id="stream-connections">—</dd></div></dl>
+<p id="server-status" role="status" aria-live="polite">Use Atualizar status para consultar o serviço.</p>
+<p class="note">Tempo desde o início do serviço HTTP, sem bootstrap. A ocupação inclui esta consulta e vagas retidas por operações em andamento; não representa clientes únicos nem o backlog do sistema. Streams são um subconjunto das vagas HTTP, distinto das assinaturas ativas. Coleta manual, sem atualização automática.</p>
+</section>
+<section class="panel" aria-labelledby="metrics-title">
+<div class="toolbar"><h2 id="metrics-title">Métricas operacionais</h2><button id="refresh-metrics" type="button" class="secondary">Atualizar métricas</button></div>
+<p class="note">HTTP, consultas, storage e feeds agregados para todo o servidor, não apenas esta coleção ou aba. Contadores reiniciam com o processo. Sem atualização automática.</p>
+<p id="metrics-status" role="status" aria-live="polite">Nenhuma coleta nesta página. Use Atualizar métricas.</p>
+<h3>Requisições HTTP</h3>
+<p class="note">Conclusões de todo o servidor, incluindo erros de autenticação, assets e scrapes. Cada scrape aparece apenas na coleta seguinte. Status é pretendido; escrita local não comprova leitura pelo cliente. Stream ativo ainda não é uma conclusão.</p>
+<div class="metrics-scroll"><table id="http-table" hidden><caption>Conclusões HTTP e transporte · contadores desde o início do processo</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="http-values"></tbody></table></div>
+<h3>Duração de respostas comuns</h3>
+<p class="note">Recepção, execução e tentativa de escrita no handler. Inclui recusas de assinatura SSE. Não é tempo isolado de consulta ou storage.</p>
+<div class="metrics-scroll"><table id="response-table" hidden><caption>Histograma de respostas · segundos, buckets cumulativos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="response-values"></tbody></table></div>
+<h3>Duração de streams encerrados</h3>
+<p class="note">Vida inteira do handler de um stream aceito, medida somente ao encerrar. Não é latência de entrega de eventos. Streams ativos não têm amostra aqui.</p>
+<div class="metrics-scroll"><table id="stream-table" hidden><caption>Histograma de streams encerrados · segundos, buckets cumulativos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="stream-values"></tbody></table></div>
+<p class="note">Buckets não são percentis. Totais, transporte e somas podem divergir transitoriamente por concorrência; não calculamos taxas, médias ou percentis.</p>
+<h3>Consultas: resultados e caminhos</h3>
+<p class="note">POST de query reconhecido após autenticação. Contagem de documentos não entra aqui. Caminho escolhido não mede documentos examinados; sucesso e bytes significam resposta montada, não entrega ao cliente.</p>
+<div class="metrics-scroll"><table id="query-table" hidden><caption>Processamento de consultas · resultados, ID/scan e tamanho de respostas</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="query-values"></tbody></table></div>
+<details class="query-timing"><summary>Tempo total de processamento da consulta</summary><p class="note">Da operação autenticada reconhecida até montar a resposta. Inclui leitura restante do corpo e validação; exclui headers, autenticação e escrita no socket.</p><div class="metrics-scroll"><table id="query-total-table" hidden><caption>Tempo total de processamento da consulta · segundos, buckets cumulativos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="query-total-values"></tbody></table></div></details>
+<details class="query-timing"><summary>Espera por execução da consulta</summary><p class="note">Entrada no gate, inclusive recusas. Pode incluir contenção com contagens de documentos. Uma entrada rejeitada antes do gate não tem amostra de espera.</p><div class="metrics-scroll"><table id="query-wait-table" hidden><caption>Espera por execução da consulta · segundos, buckets cumulativos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="query-wait-values"></tbody></table></div></details>
+<details class="query-timing"><summary>Execução admitida da consulta</summary><p class="note">Reparse, leitura/snapshot, avaliação, serialização e checagem do envelope. Não é tempo isolado de storage. Recusa de admissão não tem amostra de execução.</p><div class="metrics-scroll"><table id="query-execution-table" hidden><caption>Execução admitida da consulta · segundos, buckets cumulativos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="query-execution-values"></tbody></table></div></details>
+<p class="note">Consultas em andamento só têm observação ao finalizar. Rejeição antes de executar pode ter amostra total sem espera/execução; não compare as contagens como se fossem sempre iguais. Sem AST, nomes de coleção ou valores de documentos nos indicadores.</p>
+<h3>Storage: arquivo, commits e grupos</h3>
+<p class="note">Tamanho lógico do arquivo, não blocos físicos ou bytes de documentos. Tamanho indisponível aparece como Indisponível, nunca como zero inventado. Contadores reiniciam ao reabrir o Store.</p>
+<div class="metrics-scroll"><table id="storage-table" hidden><caption>Storage · arquivo e resultados de commits/grupos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="storage-values"></tbody></table></div>
+<p class="note">Commit confirmado é confirmação retornada pelo engine; tentativa sem confirmação não presume rollback. Resultado de grupo não é confirmação HTTP: uma falha após commit pode impedir seu retorno. Grupo misto pode conter itens recusados. Grupos sem alterações não tentam commit.</p>
+<details class="query-timing"><summary>Duração das tentativas de commit</summary><p class="note">Tempo da chamada de commit, não fsync isolado. Já está incluído na duração da primitiva de escrita; não some ambos como etapas disjuntas.</p><div class="metrics-scroll"><table id="storage-commit-table" hidden><caption>Commit · segundos, buckets cumulativos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="storage-commit-values"></tbody></table></div></details>
+<label for="storage-operation">Primitiva de storage</label><select id="storage-operation" disabled></select>
+<p class="note">Chamadas lógicas, não I/O físico, páginas ou HTTPs. Sucesso pode ser leitura ausente ou resultado de grupo com itens recusados; erro inclui conflito/validação. Tempos incluem processamento e eventual commit da primitiva. A seleção reutiliza a última coleta; use Atualizar métricas para obter valores novos.</p>
+<div class="metrics-scroll"><table id="storage-operation-table" hidden><caption id="storage-operation-caption">Primitiva selecionada · chamadas e duração em segundos</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="storage-operation-values"></tbody></table></div>
+<h3>Changefeeds</h3>
+<div class="metrics-scroll"><table id="metrics-table" hidden><caption>Última coleta de feeds · valores originais do servidor</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Valor</th></tr></thead><tbody id="metrics-values"></tbody></table></div>
+<p class="note">O histograma mede da confirmação do storage até concluir a distribuição interna observada. Não mede commit, entrega pelo socket ou leitura pelo cliente. Buckets são cumulativos, não percentis; sem observadores, não há amostra. A fila exclui eventos em processamento. Esta coleta não é um snapshot transacional global.</p>
+</section>
+<section class="panel" aria-labelledby="errors-title">
+<div class="toolbar"><h2 id="errors-title">Erros recentes</h2><button id="refresh-errors" type="button" class="secondary">Atualizar erros</button></div>
+<p class="note">Até oito conclusões com erro de todo o servidor, incluindo recusas de autenticação e interrupções de streams. Sem payloads. Histórico temporário, apagado ao reiniciar; não é auditoria.</p>
+<p id="errors-status" role="status" aria-live="polite">Use Atualizar erros para consultar.</p>
+<div class="metrics-scroll" tabindex="0" role="region" aria-label="Tabela de erros recentes"><table id="errors-table" hidden><caption>Últimas inserções aceitas, da mais recente para a mais antiga</caption><thead><tr><th scope="col">Instante (UTC)</th><th scope="col">Request ID</th><th scope="col">Operação</th><th scope="col">Status / código</th><th scope="col">Duração (µs)</th><th scope="col">Transporte / encerramento</th></tr></thead><tbody id="errors-values"></tbody></table></div>
+<p class="note">Status pretendido não comprova entrega. Em streams, duração cobre a conexão inteira. Entradas antigas são substituídas; contenção pode descartar novas observações. Coleta manual, sem replay.</p>
+</section>
+<section id="documents" class="panel" hidden aria-labelledby="documents-title">
+<div class="toolbar"><h2 id="documents-title">Documentos</h2><button id="close-documents" class="secondary">Fechar consulta</button></div>
+<p id="selected-collection"></p>
+<div class="toolbar"><h3 id="document-count">—</h3><button id="refresh-count" type="button" class="secondary">Contar documentos</button></div>
+<p id="count-status" role="status" aria-live="polite">Contagem ainda não consultada.</p>
+<p class="note">Coleção inteira, independente do filtro ou limite da consulta. Leitura limitada a 10.000 documentos e 8 MiB; se incompleta, mostra pelo menos N. O resultado da consulta abaixo continua mostrando apenas a quantidade retornada.</p>
+<form id="query-form"><label for="query">Consulta JSON</label><textarea id="query" rows="9" spellcheck="false" autocomplete="off" aria-describedby="query-help" maxlength="16384"></textarea>
+<p id="query-help" class="note">Limit obrigatório de 1 a 1000. Use id, filter, sort e project para refinar a leitura. Até 16 KiB por consulta; resultados até 4 MiB. O limite de resultados não elimina o limite de scan.</p>
+<button id="run-query">Executar consulta</button></form>
+<p id="query-status" role="status" aria-live="polite"></p>
+<pre id="query-result" tabindex="0" aria-label="Resultado JSON" hidden></pre>
+<p class="note">JSON original, sem arredondamento numérico. Leitura pontual, sem atualização automática ou paginação de documentos. O count é a quantidade retornada, não o total da coleção.</p>
+<section aria-labelledby="feed-title" class="feed-panel">
+<div class="toolbar"><h2 id="feed-title">Mudanças da coleção</h2><div class="actions"><button id="start-feed" type="button" class="secondary">Acompanhar mudanças</button><button id="stop-feed" type="button" class="secondary" disabled>Parar</button></div></div>
+<p class="note">Coleção inteira, independente do filtro da consulta. Sem snapshot, replay ou reconexão automática. A consulta acima não é atualizada por estes eventos.</p>
+<p id="feed-status" role="status" aria-live="polite">Acompanhamento parado.</p>
+<p id="feed-count" class="note">0 eventos nesta conexão</p>
+<pre id="feed-result" tabindex="0" aria-label="Última mudança JSON" hidden></pre>
+<p class="note">Somente o último evento é exibido, sem histórico. Ao interromper, consulte novamente. Novas assinaturas recebem apenas mudanças futuras.</p>
+</section>
+</section></section>
+<p id="notice" role="status" aria-live="polite"></p>
+<footer>Kiarni alpha · single-node · dashboard local</footer>
+</main>
+</body></html>

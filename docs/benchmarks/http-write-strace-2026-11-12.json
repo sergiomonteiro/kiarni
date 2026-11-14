@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-12T03:48:57.168774+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "674ac71a2b6cc4dd768e206c5a999bd2ecb95b9b",
+    "workspace_dirty": true,
+    "source_sha256": "1d6103eda4af28d34a65593f6905abd15c4b2f1b672519a5543373986cfa84b1",
+    "binary_sha256": "560ac389eee7a72a962a067547d15c53bbe1d39925f71a276a8ed9d122832c93",
+    "data_filesystem": "ext4",
+    "data_block_bytes": 4096
+  },
+  "parameters": {
+    "clients": [
+      1
+    ],
+    "repetitions": 1,
+    "seconds_per_round": 2.0,
+    "warmup_attempts_per_client": 5,
+    "documents": 256,
+    "document_bytes": 1024,
+    "scenarios": [
+      "write"
+    ],
+    "mixed_write_fraction": 0.2,
+    "server_config": {
+      "max_requests": 32,
+      "max_streams": 8,
+      "feed_queue": 4,
+      "max_document_bytes": 1048576,
+      "max_query_bytes": 16384,
+      "max_result_bytes": 4194304,
+      "read_timeout_ms": 5000,
+      "write_timeout_ms": 5000,
+      "heartbeat_ms": 15000
+    },
+    "profile": "release",
+    "connection_per_request": true,
+    "load_model": "closed_loop",
+    "retries": 0,
+    "initial_dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4"
+  },
+  "results": [
+    {
+      "scenario": "write",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 2.001665,
+      "attempts": 706,
+      "confirmed": 706,
+      "attempted_ops_per_second": 352.706,
+      "confirmed_ops_per_second": 352.706,
+      "success_latency": {
+        "p50_ms": 2.6137,
+        "p95_ms": 4.1223,
+        "p99_ms": 4.6866,
+        "max_ms": 5.2465
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 706
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 706
+        }
+      },
+      "client_cpu_seconds": 0.300329,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    }
+  ],
+  "server_profile": {
+    "commit": {
+      "calls": 711,
+      "thread_cpu_ns": 187459326,
+      "wall_ns": 919289552
+    },
+    "lookup": {
+      "calls": 711,
+      "thread_cpu_ns": 14091600,
+      "wall_ns": 41331053
+    },
+    "put_admission": {
+      "calls": 711,
+      "thread_cpu_ns": 8822950,
+      "wall_ns": 36225202
+    },
+    "put_validation": {
+      "calls": 711,
+      "thread_cpu_ns": 26078146,
+      "wall_ns": 64094840
+    },
+    "scope": "put_including_warmup",
+    "stage": {
+      "calls": 711,
+      "thread_cpu_ns": 13748671,
+      "wall_ns": 39858720
+    },
+    "storage_begin": {
+      "calls": 711,
+      "thread_cpu_ns": 11165326,
+      "wall_ns": 38761651
+    },
+    "transform": {
+      "calls": 711,
+      "thread_cpu_ns": 32902336,
+      "wall_ns": 59653170
+    }
+  },
+  "valid": true
+}

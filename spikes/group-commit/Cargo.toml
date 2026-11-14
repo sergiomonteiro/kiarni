@@ -1,0 +1,18 @@
+[package]
+name = "kiarni-group-commit-spike"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Isolated Immediate group commit experiment"
+
+[dependencies]
+kiarni-core = { path = "../../crates/core" }
+kiarni-engine = { path = "../../crates/engine" }
+redb = "=4.5.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tempfile = "3.27"
+
+[lints]
+workspace = true

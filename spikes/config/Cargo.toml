@@ -1,0 +1,13 @@
+[package]
+name = "kiarni-config-spike"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Compatibility entry for the config experiment"
+
+[dependencies]
+kiarni-config = { path = "../../crates/config" }
+
+[lints]
+workspace = true

@@ -1,0 +1,1184 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-13T04:03:01.072453+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "674ac71a2b6cc4dd768e206c5a999bd2ecb95b9b",
+    "workspace_dirty": true,
+    "source_sha256": "1564fdffd11ec6da55a4aee7a3e07dadcd1f29ef5be0f6cde7decfc696751dcf",
+    "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+    "data_filesystem": "ext4",
+    "data_block_bytes": 4096
+  },
+  "parameters": {
+    "clients": [
+      1,
+      8,
+      32
+    ],
+    "repetitions": 3,
+    "seconds_per_round": 2,
+    "warmup_attempts_per_client": 5,
+    "documents": 256,
+    "document_bytes": 1024,
+    "scenarios": [
+      "read",
+      "write",
+      "query",
+      "mixed"
+    ],
+    "mixed_write_fraction": 0.2,
+    "server_config": {
+      "max_requests": 32,
+      "max_streams": 8,
+      "feed_queue": 4,
+      "max_document_bytes": 1048576,
+      "max_query_bytes": 16384,
+      "max_result_bytes": 4194304,
+      "read_timeout_ms": 5000,
+      "write_timeout_ms": 5000,
+      "heartbeat_ms": 15000
+    },
+    "profile": "release",
+    "connection_per_request": true,
+    "load_model": "closed_loop",
+    "retries": 0,
+    "initial_dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4"
+  },
+  "results": [
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 2.000134,
+      "attempts": 5408,
+      "confirmed": 5408,
+      "attempted_ops_per_second": 2703.819,
+      "confirmed_ops_per_second": 2703.819,
+      "success_latency": {
+        "p50_ms": 0.3358,
+        "p95_ms": 0.59,
+        "p99_ms": 0.6947,
+        "max_ms": 1.2526
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 5408
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 5408
+        }
+      },
+      "client_cpu_seconds": 1.110889,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 2.001214,
+      "attempts": 1523,
+      "confirmed": 1523,
+      "attempted_ops_per_second": 761.038,
+      "confirmed_ops_per_second": 761.038,
+      "success_latency": {
+        "p50_ms": 1.252,
+        "p95_ms": 1.6281,
+        "p99_ms": 1.8915,
+        "max_ms": 6.0478
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1523
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 1523
+        }
+      },
+      "client_cpu_seconds": 0.427448,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 2.001039,
+      "attempts": 1202,
+      "confirmed": 1202,
+      "attempted_ops_per_second": 600.688,
+      "confirmed_ops_per_second": 600.688,
+      "success_latency": {
+        "p50_ms": 1.66,
+        "p95_ms": 2.2173,
+        "p99_ms": 2.4058,
+        "max_ms": 2.5808
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1202
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1202
+        }
+      },
+      "client_cpu_seconds": 0.343849,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 2.000198,
+      "attempts": 2974,
+      "confirmed": 2974,
+      "attempted_ops_per_second": 1486.853,
+      "confirmed_ops_per_second": 1486.853,
+      "success_latency": {
+        "p50_ms": 0.4001,
+        "p95_ms": 1.8709,
+        "p99_ms": 3.488,
+        "max_ms": 6.8388
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 2974
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 595
+        },
+        "read": {
+          "200": 2379
+        }
+      },
+      "client_cpu_seconds": 0.75031,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 2.000356,
+      "attempts": 48707,
+      "confirmed": 48707,
+      "attempted_ops_per_second": 24349.171,
+      "confirmed_ops_per_second": 24349.171,
+      "success_latency": {
+        "p50_ms": 0.3095,
+        "p95_ms": 0.4356,
+        "p99_ms": 0.5592,
+        "max_ms": 1.8825
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 48707
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 48707
+        }
+      },
+      "client_cpu_seconds": 11.551716,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 2.001561,
+      "attempts": 6663,
+      "confirmed": 6663,
+      "attempted_ops_per_second": 3328.901,
+      "confirmed_ops_per_second": 3328.901,
+      "success_latency": {
+        "p50_ms": 1.8517,
+        "p95_ms": 3.7689,
+        "p99_ms": 5.0047,
+        "max_ms": 11.6785
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 6663
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 6663
+        }
+      },
+      "client_cpu_seconds": 2.38344,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 2.00996,
+      "attempts": 1832,
+      "confirmed": 1832,
+      "attempted_ops_per_second": 911.461,
+      "confirmed_ops_per_second": 911.461,
+      "success_latency": {
+        "p50_ms": 8.7926,
+        "p95_ms": 10.1978,
+        "p99_ms": 10.6136,
+        "max_ms": 11.5393
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1832
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1832
+        }
+      },
+      "client_cpu_seconds": 0.797764,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 2.00054,
+      "attempts": 21511,
+      "confirmed": 21511,
+      "attempted_ops_per_second": 10752.597,
+      "confirmed_ops_per_second": 10752.597,
+      "success_latency": {
+        "p50_ms": 0.3315,
+        "p95_ms": 3.1317,
+        "p99_ms": 3.9833,
+        "max_ms": 9.2511
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 21511
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 4305
+        },
+        "read": {
+          "200": 17206
+        }
+      },
+      "client_cpu_seconds": 5.506965,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 2.002775,
+      "attempts": 41667,
+      "confirmed": 41667,
+      "attempted_ops_per_second": 20804.631,
+      "confirmed_ops_per_second": 20804.631,
+      "success_latency": {
+        "p50_ms": 1.4899,
+        "p95_ms": 2.0035,
+        "p99_ms": 2.2771,
+        "max_ms": 3.9349
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 41667
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 41667
+        }
+      },
+      "client_cpu_seconds": 13.810843,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 2.004985,
+      "attempts": 13781,
+      "confirmed": 13781,
+      "attempted_ops_per_second": 6873.369,
+      "confirmed_ops_per_second": 6873.369,
+      "success_latency": {
+        "p50_ms": 4.487,
+        "p95_ms": 6.498,
+        "p99_ms": 7.4635,
+        "max_ms": 17.9112
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 13781
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 13781
+        }
+      },
+      "client_cpu_seconds": 7.092331,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 2.03705,
+      "attempts": 1870,
+      "confirmed": 1870,
+      "attempted_ops_per_second": 917.994,
+      "confirmed_ops_per_second": 917.994,
+      "success_latency": {
+        "p50_ms": 34.7393,
+        "p95_ms": 38.5111,
+        "p99_ms": 39.5273,
+        "max_ms": 40.1454
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1870
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1870
+        }
+      },
+      "client_cpu_seconds": 0.944531,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 2.002475,
+      "attempts": 30845,
+      "confirmed": 30845,
+      "attempted_ops_per_second": 15403.434,
+      "confirmed_ops_per_second": 15403.434,
+      "success_latency": {
+        "p50_ms": 1.6399,
+        "p95_ms": 5.1291,
+        "p99_ms": 6.0922,
+        "max_ms": 8.971
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 30845
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 6177
+        },
+        "read": {
+          "200": 24668
+        }
+      },
+      "client_cpu_seconds": 11.394797,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 2.000124,
+      "attempts": 6336,
+      "confirmed": 6336,
+      "attempted_ops_per_second": 3167.804,
+      "confirmed_ops_per_second": 3167.804,
+      "success_latency": {
+        "p50_ms": 0.3059,
+        "p95_ms": 0.4187,
+        "p99_ms": 0.5207,
+        "max_ms": 0.9714
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 6336
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 6336
+        }
+      },
+      "client_cpu_seconds": 1.197026,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 2.000901,
+      "attempts": 1238,
+      "confirmed": 1238,
+      "attempted_ops_per_second": 618.721,
+      "confirmed_ops_per_second": 618.721,
+      "success_latency": {
+        "p50_ms": 1.3875,
+        "p95_ms": 2.8617,
+        "p99_ms": 3.1637,
+        "max_ms": 3.5531
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1238
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 1238
+        }
+      },
+      "client_cpu_seconds": 0.411035,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 2.000008,
+      "attempts": 1260,
+      "confirmed": 1260,
+      "attempted_ops_per_second": 629.998,
+      "confirmed_ops_per_second": 629.998,
+      "success_latency": {
+        "p50_ms": 1.602,
+        "p95_ms": 2.1292,
+        "p99_ms": 2.3384,
+        "max_ms": 2.4802
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1260
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1260
+        }
+      },
+      "client_cpu_seconds": 0.356765,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 2.000142,
+      "attempts": 3065,
+      "confirmed": 3065,
+      "attempted_ops_per_second": 1532.391,
+      "confirmed_ops_per_second": 1532.391,
+      "success_latency": {
+        "p50_ms": 0.409,
+        "p95_ms": 1.586,
+        "p99_ms": 2.8587,
+        "max_ms": 6.8918
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 3065
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 613
+        },
+        "read": {
+          "200": 2452
+        }
+      },
+      "client_cpu_seconds": 0.788491,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 2.000534,
+      "attempts": 48340,
+      "confirmed": 48340,
+      "attempted_ops_per_second": 24163.547,
+      "confirmed_ops_per_second": 24163.547,
+      "success_latency": {
+        "p50_ms": 0.3123,
+        "p95_ms": 0.4331,
+        "p99_ms": 0.5625,
+        "max_ms": 2.1546
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 48340
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 48340
+        }
+      },
+      "client_cpu_seconds": 11.594306,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 2.001315,
+      "attempts": 6621,
+      "confirmed": 6621,
+      "attempted_ops_per_second": 3308.325,
+      "confirmed_ops_per_second": 3308.325,
+      "success_latency": {
+        "p50_ms": 2.0385,
+        "p95_ms": 3.5896,
+        "p99_ms": 4.0081,
+        "max_ms": 7.1395
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 6621
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 6621
+        }
+      },
+      "client_cpu_seconds": 2.270016,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 2.007737,
+      "attempts": 1794,
+      "confirmed": 1794,
+      "attempted_ops_per_second": 893.543,
+      "confirmed_ops_per_second": 893.543,
+      "success_latency": {
+        "p50_ms": 9.0241,
+        "p95_ms": 10.3574,
+        "p99_ms": 10.9576,
+        "max_ms": 11.7293
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1794
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1794
+        }
+      },
+      "client_cpu_seconds": 0.794535,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 2.001496,
+      "attempts": 21565,
+      "confirmed": 21565,
+      "attempted_ops_per_second": 10774.44,
+      "confirmed_ops_per_second": 10774.44,
+      "success_latency": {
+        "p50_ms": 0.3373,
+        "p95_ms": 2.9318,
+        "p99_ms": 3.669,
+        "max_ms": 12.6792
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 21565
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 4318
+        },
+        "read": {
+          "200": 17247
+        }
+      },
+      "client_cpu_seconds": 5.595489,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 2.003005,
+      "attempts": 40602,
+      "confirmed": 40602,
+      "attempted_ops_per_second": 20270.546,
+      "confirmed_ops_per_second": 20270.546,
+      "success_latency": {
+        "p50_ms": 1.5227,
+        "p95_ms": 2.0949,
+        "p99_ms": 2.4611,
+        "max_ms": 3.859
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 40602
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 40602
+        }
+      },
+      "client_cpu_seconds": 13.700328,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 2.006177,
+      "attempts": 14295,
+      "confirmed": 14295,
+      "attempted_ops_per_second": 7125.494,
+      "confirmed_ops_per_second": 7125.494,
+      "success_latency": {
+        "p50_ms": 4.3306,
+        "p95_ms": 6.3981,
+        "p99_ms": 7.4992,
+        "max_ms": 10.4127
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 14295
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 14295
+        }
+      },
+      "client_cpu_seconds": 7.109662,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 2.035468,
+      "attempts": 1866,
+      "confirmed": 1866,
+      "attempted_ops_per_second": 916.742,
+      "confirmed_ops_per_second": 916.742,
+      "success_latency": {
+        "p50_ms": 34.9069,
+        "p95_ms": 37.9058,
+        "p99_ms": 38.5957,
+        "max_ms": 39.3945
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1866
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1866
+        }
+      },
+      "client_cpu_seconds": 0.936553,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 2.002889,
+      "attempts": 30372,
+      "confirmed": 30372,
+      "attempted_ops_per_second": 15164.096,
+      "confirmed_ops_per_second": 15164.096,
+      "success_latency": {
+        "p50_ms": 1.647,
+        "p95_ms": 5.1766,
+        "p99_ms": 5.9344,
+        "max_ms": 7.4326
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 30372
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 6081
+        },
+        "read": {
+          "200": 24291
+        }
+      },
+      "client_cpu_seconds": 11.318451,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 2.00015,
+      "attempts": 6386,
+      "confirmed": 6386,
+      "attempted_ops_per_second": 3192.761,
+      "confirmed_ops_per_second": 3192.761,
+      "success_latency": {
+        "p50_ms": 0.3064,
+        "p95_ms": 0.4051,
+        "p99_ms": 0.5277,
+        "max_ms": 0.7409
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 6386
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 6386
+        }
+      },
+      "client_cpu_seconds": 1.200286,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 2.001702,
+      "attempts": 1213,
+      "confirmed": 1213,
+      "attempted_ops_per_second": 605.984,
+      "confirmed_ops_per_second": 605.984,
+      "success_latency": {
+        "p50_ms": 1.3929,
+        "p95_ms": 2.9524,
+        "p99_ms": 3.4049,
+        "max_ms": 12.6914
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1213
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 1213
+        }
+      },
+      "client_cpu_seconds": 0.402276,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 2.00125,
+      "attempts": 1248,
+      "confirmed": 1248,
+      "attempted_ops_per_second": 623.61,
+      "confirmed_ops_per_second": 623.61,
+      "success_latency": {
+        "p50_ms": 1.6041,
+        "p95_ms": 2.1029,
+        "p99_ms": 2.2665,
+        "max_ms": 2.5671
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1248
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1248
+        }
+      },
+      "client_cpu_seconds": 0.363438,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 2.001288,
+      "attempts": 3051,
+      "confirmed": 3051,
+      "attempted_ops_per_second": 1524.518,
+      "confirmed_ops_per_second": 1524.518,
+      "success_latency": {
+        "p50_ms": 0.4122,
+        "p95_ms": 1.5594,
+        "p99_ms": 2.9913,
+        "max_ms": 4.9358
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 3051
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 611
+        },
+        "read": {
+          "200": 2440
+        }
+      },
+      "client_cpu_seconds": 0.772487,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 2.000475,
+      "attempts": 47889,
+      "confirmed": 47889,
+      "attempted_ops_per_second": 23938.818,
+      "confirmed_ops_per_second": 23938.818,
+      "success_latency": {
+        "p50_ms": 0.3155,
+        "p95_ms": 0.4389,
+        "p99_ms": 0.5588,
+        "max_ms": 1.3757
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 47889
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 47889
+        }
+      },
+      "client_cpu_seconds": 11.581852,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 2.001507,
+      "attempts": 6362,
+      "confirmed": 6362,
+      "attempted_ops_per_second": 3178.604,
+      "confirmed_ops_per_second": 3178.604,
+      "success_latency": {
+        "p50_ms": 2.0685,
+        "p95_ms": 3.7997,
+        "p99_ms": 4.2533,
+        "max_ms": 10.1449
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 6362
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 6362
+        }
+      },
+      "client_cpu_seconds": 2.274487,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 2.007825,
+      "attempts": 1786,
+      "confirmed": 1786,
+      "attempted_ops_per_second": 889.52,
+      "confirmed_ops_per_second": 889.52,
+      "success_latency": {
+        "p50_ms": 9.0594,
+        "p95_ms": 10.4223,
+        "p99_ms": 10.9415,
+        "max_ms": 11.7028
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1786
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1786
+        }
+      },
+      "client_cpu_seconds": 0.745984,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 2.00149,
+      "attempts": 21090,
+      "confirmed": 21090,
+      "attempted_ops_per_second": 10537.151,
+      "confirmed_ops_per_second": 10537.151,
+      "success_latency": {
+        "p50_ms": 0.3349,
+        "p95_ms": 3.1455,
+        "p99_ms": 3.8321,
+        "max_ms": 8.1039
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 21090
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 4222
+        },
+        "read": {
+          "200": 16868
+        }
+      },
+      "client_cpu_seconds": 5.488706,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 2.003056,
+      "attempts": 41296,
+      "confirmed": 41296,
+      "attempted_ops_per_second": 20616.5,
+      "confirmed_ops_per_second": 20616.5,
+      "success_latency": {
+        "p50_ms": 1.5003,
+        "p95_ms": 2.0251,
+        "p99_ms": 2.3483,
+        "max_ms": 3.4961
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 41296
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 41296
+        }
+      },
+      "client_cpu_seconds": 13.795982,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "write",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 2.004729,
+      "attempts": 13532,
+      "confirmed": 13532,
+      "attempted_ops_per_second": 6750.039,
+      "confirmed_ops_per_second": 6750.039,
+      "success_latency": {
+        "p50_ms": 4.5767,
+        "p95_ms": 6.6735,
+        "p99_ms": 7.5016,
+        "max_ms": 9.1922
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 13532
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 13532
+        }
+      },
+      "client_cpu_seconds": 6.958831,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "query",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 2.033258,
+      "attempts": 1861,
+      "confirmed": 1861,
+      "attempted_ops_per_second": 915.28,
+      "confirmed_ops_per_second": 915.28,
+      "success_latency": {
+        "p50_ms": 34.8641,
+        "p95_ms": 37.8286,
+        "p99_ms": 39.2814,
+        "max_ms": 40.1559
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1861
+      },
+      "error_codes": {},
+      "operations": {
+        "query": {
+          "200": 1861
+        }
+      },
+      "client_cpu_seconds": 0.936262,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    },
+    {
+      "scenario": "mixed",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 2.00414,
+      "attempts": 30192,
+      "confirmed": 30192,
+      "attempted_ops_per_second": 15064.816,
+      "confirmed_ops_per_second": 15064.816,
+      "success_latency": {
+        "p50_ms": 1.6358,
+        "p95_ms": 5.3714,
+        "p99_ms": 6.3957,
+        "max_ms": 10.3192
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 30192
+      },
+      "error_codes": {},
+      "operations": {
+        "write": {
+          "200": 6054
+        },
+        "read": {
+          "200": 24138
+        }
+      },
+      "client_cpu_seconds": 11.19787,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false
+    }
+  ],
+  "valid": true
+}

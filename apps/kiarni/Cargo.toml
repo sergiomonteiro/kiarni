@@ -1,0 +1,21 @@
+[package]
+name = "kiarni"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "One binary. Live queries. Built-in observability."
+
+[target.'cfg(unix)'.dependencies]
+kiarni-config = { path = "../../crates/config" }
+kiarni-server = { path = "../../crates/server" }
+rustix = { version = "1.1", features = ["fs", "process"] }
+
+[dev-dependencies]
+kiarni-auth = { path = "../../crates/auth" }
+tempfile = "3.27"
+serde_json = "1"
+kiarni-storage = { path = "../../crates/storage" }
+
+[lints]
+workspace = true

@@ -1,0 +1,16 @@
+{
+ "invalid_path":400,"route_not_found":404,"method_not_allowed":405,
+ "invalid_json":400,"unexpected_body":400,"invalid_document":422,
+ "invalid_id":422,"document_must_be_object":422,"document_too_deep":422,
+ "invalid_collection":422,"invalid_query":422,"invalid_limit":422,
+ "query_too_complex":422,"unsupported_number":422,"unsupported_sort_value":422,
+ "id_mismatch":422,"immutable_id":422,"collection_mismatch":422,
+ "duplicate_id":409,"collection_exists":409,"collection_not_found":404,
+ "document_not_found":404,"collection_not_empty":409,"document_too_large":413,
+ "query_too_large":413,"request_too_large":413,"result_too_large":422,
+ "unsupported_media_type":415,"not_acceptable":406,"unauthorized":401,
+ "forbidden":403,"resume_not_supported":400,"subscription_limit":429,
+ "write_busy":503,"storage_unavailable":503,"service_unavailable":503,
+ "shutting_down":503,"id_generation_failed":503,"id_generation_exhausted":503,
+ "sequence_exhausted":503,"internal_error":500,"request_timeout":408,"headers_too_large":431
+}

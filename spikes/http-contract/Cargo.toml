@@ -1,0 +1,23 @@
+[package]
+name = "kiarni-http-contract-spike"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Compatibility entry for the http-contract experiment"
+
+[dependencies]
+kiarni-http = { path = "../../crates/http" }
+
+[dev-dependencies]
+tempfile = "3.27"
+zeroize = "1.9"
+serde_json = "1"
+kiarni-core = { path = "../../crates/core" }
+kiarni-query-spike = { path = "../query" }
+kiarni-storage-spike = { path = "../storage" }
+kiarni-feed-spike = { path = "../feeds" }
+kiarni-auth-spike = { path = "../auth" }
+
+[lints]
+workspace = true

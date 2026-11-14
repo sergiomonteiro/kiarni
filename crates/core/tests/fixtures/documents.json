@@ -1,0 +1,23 @@
+[
+  {"name":"empty object", "input":"{}", "ok":true},
+  {"name":"explicit id", "input":"{\"_id\":\"ord_123-A\"}", "ok":true, "id":"ord_123-A"},
+  {"name":"unicode fields and null", "input":"{\"nome\":\"ação\",\"optional\":null,\"active\":true,\"items\":[1,2.5,false]}", "ok":true},
+  {"name":"nested id is ordinary data", "input":"{\"data\":{\"_id\":null}}", "ok":true},
+  {"name":"missing id differs from null", "input":"{\"_id\":null}", "error":"invalid_id"},
+  {"name":"numeric id", "input":"{\"_id\":123}", "error":"invalid_id"},
+  {"name":"empty id", "input":"{\"_id\":\"\"}", "error":"invalid_id"},
+  {"name":"path id", "input":"{\"_id\":\"../orders\"}", "error":"invalid_id"},
+  {"name":"unicode id", "input":"{\"_id\":\"ação\"}", "error":"invalid_id"},
+  {"name":"array root", "input":"[]", "error":"document_must_be_object"},
+  {"name":"null root", "input":"null", "error":"document_must_be_object"},
+  {"name":"scalar root", "input":"42", "error":"document_must_be_object"},
+  {"name":"invalid syntax", "input":"{\"value\":}", "error":"invalid_json"},
+  {"name":"trailing document", "input":"{} {}", "error":"invalid_json"},
+  {"name":"duplicate key", "input":"{\"a\":1,\"a\":2}", "error":"invalid_json"},
+  {"name":"escaped duplicate", "input":"{\"a\":1,\"\\u0061\":2}", "error":"invalid_json"},
+  {"name":"nested duplicate", "input":"{\"data\":[{\"x\":1,\"x\":2}]}", "error":"invalid_json"},
+  {"name":"non finite", "input":"{\"x\":NaN}", "error":"invalid_json"},
+  {"name":"exact size accepted", "input":"{}", "max_bytes":2, "ok":true},
+  {"name":"over size rejected first", "input":"{}", "max_bytes":1, "error":"document_too_large"},
+  {"name":"whitespace counts", "input":"{} ", "max_bytes":2, "error":"document_too_large"}
+]

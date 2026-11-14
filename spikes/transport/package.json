@@ -1,0 +1,7 @@
+{
+  "name": "kiarni-transport-spike",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node browser.test.mjs" },
+  "devDependencies": { "playwright": "1.57.0" }
+}

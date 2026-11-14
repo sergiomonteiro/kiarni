@@ -1,0 +1,2 @@
+# An empty final line terminates the last SSE frame in protocol fixtures.
+*.sse whitespace=-blank-at-eof

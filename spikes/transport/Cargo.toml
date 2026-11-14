@@ -1,0 +1,25 @@
+[package]
+name = "kiarni-transport-spike"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Disposable M0 loopback-only SSE transport experiment"
+
+[dependencies]
+httparse = "1.10"
+kiarni-auth-spike = { path = "../auth" }
+kiarni-core = { path = "../../crates/core" }
+kiarni-feed-spike = { path = "../feeds" }
+kiarni-http-contract-spike = { path = "../http-contract" }
+serde_json = "1.0"
+zeroize = "1.9"
+
+[target.'cfg(unix)'.dependencies]
+rustix = { version = "1.1", features = ["net"] }
+
+[dev-dependencies]
+tempfile = "3.27"
+
+[lints]
+workspace = true

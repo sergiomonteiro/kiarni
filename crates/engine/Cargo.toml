@@ -1,0 +1,16 @@
+[package]
+name = "kiarni-engine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish = false
+description = "Query and document mutation semantics"
+
+[dependencies]
+kiarni-core = { path = "../core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value", "arbitrary_precision"] }
+
+
+[lints]
+workspace = true

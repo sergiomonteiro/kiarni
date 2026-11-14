@@ -1,0 +1,3 @@
+event: ready
+data: {"snapshot":false,"replay":false}
+
