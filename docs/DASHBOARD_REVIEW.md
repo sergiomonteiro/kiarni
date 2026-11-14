@@ -76,3 +76,9 @@ recuperação de janela TCP do spike. O cenário foi tornado determinístico com
 pausa limitada no fixture; o teste separado de consumidor lento real permanece.
 [Diagnóstico e ajuste](./spikes/transport.md#ajuste-após-primeira-execução-da-ci--2026-11-14).
 Os resultados remotos finais devem ser consultados no workflow do commit atual.
+
+Na execução do ajuste de transporte, Linux e Chromium passaram; macOS identificou
+uma comparação textual de caminhos temporários no spike de autenticação
+(`/var` versus `/private/var`). O teste passou a comparar o diretório irmão
+canônico, preservando as recusas de symlinks e permissões do vault. Não houve
+mudança de código ou contrato de autenticação do produto.

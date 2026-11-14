@@ -50,7 +50,12 @@ fn minimal_serve_bootstraps_sibling_delivery_without_reissuing_on_restart_or_exp
     assert_eq!(metadata["created"], true);
     assert_eq!(metadata["epoch"], 1);
     let path = PathBuf::from(metadata["token_file"].as_str().unwrap());
-    assert_eq!(path.parent().unwrap(), root.path().join("data.credentials"));
+    // macOS temp paths may use /var while the vault reports /private/var.
+    // Compare the canonical sibling directory rather than its spelling.
+    assert_eq!(
+        path.parent().unwrap(),
+        root.path().join("data.credentials").canonicalize().unwrap()
+    );
     let header = header(&path);
     let store = Store::open(&data, None).unwrap();
     let startup = store.bootstrap_or_load(1000).unwrap();
