@@ -319,7 +319,10 @@ fn header_values<'a>(headers: &'a [httparse::Header<'a>], name: &str) -> Vec<&'a
 }
 
 fn handle(stream: &mut TcpStream, shared: &Arc<Shared>) {
-    if stream.set_nodelay(true).is_err()
+    // Accepted sockets can inherit the listener's nonblocking mode on macOS.
+    // This fixture uses blocking I/O with absolute read/write deadlines.
+    if stream.set_nonblocking(false).is_err()
+        || stream.set_nodelay(true).is_err()
         || rustix::net::sockopt::set_socket_send_buffer_size(&*stream, 16384).is_err()
     {
         return;

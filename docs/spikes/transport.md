@@ -139,3 +139,9 @@ acima, mantendo o teste separado de timeout com consumidor TCP lento real e
 recusa de frames incompletos. A mudança é exclusiva do fixture/spike, sem
 alterar prazos ou protocolo do produto. A matriz CI agora usa fail-fast false
 para concluir verificações Linux e macOS independentemente.
+
+A rodada seguinte em macOS expôs truncamento no consumidor rápido quando o
+socket aceito manteve modo não bloqueante do listener. O fixture agora define
+explicitamente modo bloqueante antes de ler headers/escrever frames, como o
+servidor do produto já fazia. Mantém os deadlines absolutos e o teste de socket
+lento real; não ignora WouldBlock nem aumenta prazos para ocultar falhas.

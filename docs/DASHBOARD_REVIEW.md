@@ -82,3 +82,8 @@ uma comparação textual de caminhos temporários no spike de autenticação
 (`/var` versus `/private/var`). O teste passou a comparar o diretório irmão
 canônico, preservando as recusas de symlinks e permissões do vault. Não houve
 mudança de código ou contrato de autenticação do produto.
+
+O cenário TCP de consumidor lento também revelou que o fixture precisava
+normalizar explicitamente sockets aceitos para I/O bloqueante em macOS, como o
+produto já faz. Esse ajuste no spike preserva os deadlines e evita truncar
+frames do consumidor rápido por WouldBlock imediato.
