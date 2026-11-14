@@ -10,12 +10,9 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
    [erros recentes](./RECENT_ERRORS.md) e métricas de HTTP, queries, storage e
    feeds. Manter correções por defeito/requisito concreto. Validação operacional
    prolongada e coletor externo continuam no gate de release.
-2. Consolidar um checkpoint no repositório antes de iniciar novos recursos:
-   revisar arquivos e exclusões (artefatos, dados locais e credenciais), organizar
-   commits revisáveis e registrar a validação realmente executada. Depois,
-   publicar no remoto e abrir issues pequenas para as pendências deste plano,
-   com requisito/marco, escopo, critérios de aceite e verificações esperadas.
-   Esse checkpoint registra o estado do desenvolvimento; não aprova uma release.
+2. Checkpoint publicado: [5aea314](https://github.com/sergiomonteiro/kiarni/commit/5aea314),
+   com implementação, testes, ADRs, spikes e evidências locais. Pendências
+   registradas nas issues abaixo. Esse checkpoint não aprova uma release.
 3. Implementar backup/restauração operacional conforme
    [ADR 0013](./adr/0013-backup-e-restauracao.md), com integridade, interrupção,
    publicação segura e novas credenciais após restauração.
@@ -62,3 +59,20 @@ podem expor credenciais, os links devem resolver e as limitações devem coincid
 com os testes/ADRs aceitos. Registrar ambiente, comandos e resultados do
 quickstart em instalação limpa. Material escrito sem essa execução não comprova
 aceite do RF-10 ou conclusão do M3.
+
+## Issues de acompanhamento
+
+A ordem de implementação continua sendo a dos incrementos acima. A investigação
+de performance aguarda o momento combinado; registrar uma issue não a antecipa.
+
+| Issue | Entrega |
+| --- | --- |
+| [#1](https://github.com/sergiomonteiro/kiarni/issues/1) | M3: implementar backup offline consistente |
+| [#2](https://github.com/sergiomonteiro/kiarni/issues/2) | M3: restaurar backup validado em nova raiz |
+| [#3](https://github.com/sergiomonteiro/kiarni/issues/3) | M3: definir e validar operação remota segura |
+| [#4](https://github.com/sergiomonteiro/kiarni/issues/4) | M3: automatizar artefatos Linux e macOS |
+| [#5](https://github.com/sergiomonteiro/kiarni/issues/5) | M3: distribuir imagem Docker e exemplos de implantação |
+| [#6](https://github.com/sergiomonteiro/kiarni/issues/6) | M3: consolidar referência da API e configuração |
+| [#7](https://github.com/sergiomonteiro/kiarni/issues/7) | M3: validar instalação limpa e gate do MVP |
+| [#8](https://github.com/sergiomonteiro/kiarni/issues/8) | RF-04: concluir avaliação de índice secundário simples |
+| [#9](https://github.com/sergiomonteiro/kiarni/issues/9) | Performance: investigar regressão de leitura e custo da telemetria |

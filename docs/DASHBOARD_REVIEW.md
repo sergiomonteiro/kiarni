@@ -63,3 +63,10 @@ Depois, backup/restauração operacional conforme ADR 0013, operação remota se
 e distribuição. O [plano do MVP](./MVP_REMAINING.md) mantém essa ordem. Dashboard
 volta a receber mudanças por defeito ou requisito concreto, sem novo ciclo de
 expansão visual. Isso não congela API pública nem declara estabilidade de release.
+
+## Checkpoint versionado
+
+A implementação e as evidências desta revisão foram publicadas no commit
+[5aea314](https://github.com/sergiomonteiro/kiarni/commit/5aea314). As pendências
+seguintes estão nas [issues do plano do MVP](./MVP_REMAINING.md#issues-de-acompanhamento).
+A CI remota deve ser observada separadamente dos resultados locais acima.
