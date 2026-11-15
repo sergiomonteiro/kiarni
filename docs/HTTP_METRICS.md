@@ -90,3 +90,11 @@ executados pelos testes pais. Foram adicionados dois testes unitários e uma
 integração HTTP, além de ampliar o caso de sink bloqueado. O teste antigo de
 HEAD foi ajustado para não comparar tamanhos de snapshots diferentes. CI remoto
 e outras plataformas não foram executados nesta entrega.
+
+## Validação operacional posterior
+
+A [revisão M3](./RELEASE_REVIEW.md) e o [ensaio com coletor externo](./OPERATIONAL_VALIDATION.md)
+registram o estado atual e os resultados por commit/duração. Os limites e
+resultados datados acima descrevem aquele incremento; dashboard/storage/erros
+recentes já estão na [revisão do dashboard](./DASHBOARD_REVIEW.md).
+Não inferir validação prolongada de produção a partir de uma janela controlada.

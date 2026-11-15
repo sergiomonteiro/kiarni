@@ -52,3 +52,11 @@ O [gate M2 foi aprovado localmente](./M2_REVIEW.md), com as evidências de
 reatividade e métricas e seus limites registrados. O [dashboard](./DASHBOARD_METRICS.md) já apresenta esses indicadores por coleta
 manual autenticada, sem taxas ou percentis derivados.
 [Contrato e decisões](./adr/0019-metricas-de-changefeeds.md).
+
+## Validação operacional posterior
+
+A [revisão M3](./RELEASE_REVIEW.md) e o [ensaio com coletor externo](./OPERATIONAL_VALIDATION.md)
+registram o estado atual e os resultados por commit/duração. Os limites e
+resultados datados acima descrevem aquele incremento; dashboard/storage/erros
+recentes já estão na [revisão do dashboard](./DASHBOARD_REVIEW.md).
+Não inferir validação prolongada de produção a partir de uma janela controlada.

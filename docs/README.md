@@ -6,6 +6,7 @@ release publicada ou o MVP completo.
 
 ## Começar e usar
 
+- [Quickstart pelo pacote](./QUICKSTART.md): primeiro documento, consulta e evento sem compilar.
 - [Experimentar a alpha local](./ALPHA_LOCAL.md): compilar, iniciar, obter a
   credencial e executar documentos, consultas e changefeeds.
 - [Binários de desenvolvimento](./DISTRIBUTION.md): plataformas, checksums, licenças e instalação.
@@ -21,6 +22,8 @@ release publicada ou o MVP completo.
 
 ## Operar e diagnosticar
 
+- [Validação operacional](./OPERATIONAL_VALIDATION.md): instalação isolada e Prometheus externo.
+- [Revisão do candidato/M3](./RELEASE_REVIEW.md): checklist, RFs, evidências e pendências do gate.
 - [Diagnóstico operacional](./TROUBLESHOOTING.md): sintomas, códigos e próximos passos.
 - [Status HTTP](./SERVER_STATUS.md): versão, uptime e ocupação da admissão.
 - [Métricas de storage](./STORAGE_METRICS.md): primitivas, commits e tamanho

@@ -53,6 +53,7 @@ node scripts/dashboard-browser.test.mjs
 Linux pode precisar das bibliotecas do Chromium; o CI usa install --with-deps.
 O teste HTTPS usa Nginx/OpenSSL opcionais, sem serviço instalado; siga o job
 [HTTPS do CI](./.github/workflows/ci.yml) e [perfil remoto](./docs/REMOTE_HTTPS.md).
+Instalação pelo pacote e coleta externa: [validação operacional](./docs/OPERATIONAL_VALIDATION.md).
 Para pacotes/imagens, siga [distribuição](./docs/DISTRIBUTION.md) e
 [contêiner](./docs/CONTAINERS.md); não publique registry/tag/release automaticamente.
 

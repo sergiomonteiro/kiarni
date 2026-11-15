@@ -149,6 +149,14 @@ jobs:
           path: downloaded
       - name: Verify and exercise downloaded binary with empty environment
         run: python3 scripts/release_smoke.py --artifact-dir downloaded --expected-target '${{ matrix.target }}'
+      - name: Clean installation and packaged quickstart
+        run: python3 scripts/quickstart_smoke.py --artifact-dir downloaded --expected-target '${{ matrix.target }}' --report "$RUNNER_TEMP/quickstart-${{ matrix.target }}.json"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: quickstart-${{ matrix.target }}
+          path: ${{ runner.temp }}/quickstart-${{ matrix.target }}.json
+          if-no-files-found: error
+          retention-days: 14
 
   container:
     name: Container and Kubernetes
@@ -190,4 +198,24 @@ jobs:
             ${{ runner.temp }}/kiarni.yaml
           if-no-files-found: error
           compression-level: 0
+          retention-days: 14
+
+  operational-observation:
+    name: External metrics and bounded operation
+    needs: [native-build, native-smoke]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: binary-x86_64-unknown-linux-gnu
+          path: downloaded
+      - name: Real external Prometheus, query diagnosis and slow consumer
+        run: python3 scripts/operational_soak.py --artifact-dir downloaded --duration-seconds 120 --report "$RUNNER_TEMP/operational-observation.json"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: operational-observation-linux-amd64
+          path: ${{ runner.temp }}/operational-observation.json
+          if-no-files-found: error
           retention-days: 14

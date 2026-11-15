@@ -209,6 +209,12 @@ def build(target, output, allow_dirty=False):
             "build_command": f"cargo build --package kiarni --release --locked --target {target}",
         })
         url = f"https://github.com/{repository}/blob/{revision}/docs"
+        quickstart = (ROOT / "docs/QUICKSTART.md").read_text(encoding="utf-8")
+        quickstart = quickstart.replace("https://github.com/sergiomonteiro/kiarni/blob/main/docs", url)
+        (package / "QUICKSTART.md").write_text(quickstart, encoding="utf-8")
+        (package / "examples").mkdir()
+        for filename in ["client.sh", "collection.json", "document.json", "query.json", "patch.json"]:
+            shutil.copyfile(ROOT / "docs/examples" / filename, package / "examples" / filename)
         (package / "INSTALL.md").write_text(f"""# Kiarni {version} — experimental development binary
 
 Target: {target}. Validated baseline: {TARGETS[target]['baseline']}.
@@ -246,6 +252,7 @@ new; restore issues new credentials only at the first serve. See the complete
 contracts before using backups: {url}/BACKUP.md and {url}/RESTORE.md.
 Remote operation uses the optional HTTPS proxy profile: {url}/REMOTE_HTTPS.md.
 Installation and platform limits: {url}/DISTRIBUTION.md.
+The self-contained local walkthrough is QUICKSTART.md, with bundled examples/.
 
 Unsigned/unnotarized development artifacts may be refused by macOS Gatekeeper.
 This pipeline does not disable OS security or prove every download path. Other

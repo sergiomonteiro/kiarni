@@ -95,6 +95,7 @@ python3 scripts/check_product_dependencies.py
 
 ## Referências e próximos incrementos
 
+- [Quickstart pelo pacote](./docs/QUICKSTART.md) e [revisão do gate M3](./docs/RELEASE_REVIEW.md).
 - [Documentação de uso e operação](./docs/README.md).
 - [Plano de fechamento do MVP e entrega documental](./docs/MVP_REMAINING.md).
 - [Referência da API](./docs/API.md) e [CLI/configuração](./docs/CLI.md).

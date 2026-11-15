@@ -76,13 +76,13 @@ class Server:
     def __init__(self, binary, work, data):
         self.binary, self.work, self.data = binary, work, data
         self.process = None
-    def start(self):
+    def start(self, options=()):
         with socket.socket() as listener:
             listener.bind(('127.0.0.1', 0))
             self.port = listener.getsockname()[1]
         self.log = tempfile.TemporaryFile()
         self.process = subprocess.Popen([str(self.binary), 'serve', '--data-dir', str(self.data),
-            '--bind', f'127.0.0.1:{self.port}', '--heartbeat-ms', '1000'], cwd=self.work,
+            '--bind', f'127.0.0.1:{self.port}', '--heartbeat-ms', '1000', *options], cwd=self.work,
             env={}, stdin=subprocess.DEVNULL, stdout=self.log, stderr=self.log)
         deadline = time.monotonic() + 20
         while time.monotonic() < deadline:

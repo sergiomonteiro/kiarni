@@ -79,6 +79,9 @@ em arquivo privado no diretório irmão `data.credentials`. Preserve esse arquiv
 não coloque o token em URL, argumentos ou logs. Siga a [alpha local](./ALPHA_LOCAL.md)
 a partir da preparação do cliente para criar documento, consultar e assinar feed.
 
+O pacote inclui um [quickstart](./QUICKSTART.md) com examples/ para executar
+sem checkout. O [teste de instalação isolada](./OPERATIONAL_VALIDATION.md)
+registra tempo até documento/consulta/evento, com escopo explícito.
 O `INSTALL.md` do pacote contém os comandos publicados e links fixados no commit
 de origem. Os contratos completos estão em [backup](./BACKUP.md),
 [restauração](./RESTORE.md) e [HTTPS opcional](./REMOTE_HTTPS.md).
@@ -88,6 +91,7 @@ Destino de backup e raiz restaurada precisam ser novos; prepare pais privados.
 ## Conteúdo e licenças
 
 - `kiarni`: executável nativo; `INSTALL.md`: instruções do pacote.
+- `QUICKSTART.md` e `examples/`: roteiro/fixtures autossuficientes de cliente.
 - `BUILD_INFO.json`: versão, commit completo, target, baseline, compilador,
   bibliotecas do sistema, comando de build e indicação de árvore modificada.
 - `LICENSE`: MIT do Kiarni.

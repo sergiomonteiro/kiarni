@@ -1,6 +1,6 @@
 # Plano de fechamento do MVP
 
-Atualizado em 2026-11-15, com a consolidação documental da API e configuração. M1 e M2 foram validados
+Atualizado em 2026-11-15, com a revisão técnica do candidato e gate M3 não aprovado. M1 e M2 foram validados
 localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 [PRD](../KIARNI_PRD_v0.1.md), sem ampliar o escopo ou aprovar o gate de release.
 
@@ -31,8 +31,11 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 6. [Referência da API](./API.md), [CLI/configuração](./CLI.md),
    [diagnóstico](./TROUBLESHOOTING.md) e [contribuição](../CONTRIBUTING.md)
    consolidados, com exemplos executados e verificação de links/inventários no CI.
-7. Executar instalação limpa, quickstart, CI/plataformas e checklist de release;
-   revisar explicitamente o atendimento dos RFs e aprovar o gate M3 com evidências.
+7. [Revisão M3](./RELEASE_REVIEW.md) registra cada RF, checklist e decisão
+   negativa do gate. [Quickstart distribuído](./QUICKSTART.md) e
+   [validação operacional](./OPERATIONAL_VALIDATION.md) têm automação/evidências
+   por commit e duração. RF-04, aceite final e publicação continuam pendentes;
+   CI verde não os aprova. A issue #7 permanece aberta.
 
 Documentação acompanha cada incremento acima. Sua consolidação e validação são
 uma entrega própria do RF-10, não uma atividade opcional depois da release.
@@ -42,7 +45,7 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 | Material | Estado atual e trabalho restante |
 | --- | --- |
 | Entrada e navegação | [Índice](./README.md) disponível; manter caminhos claros para usuários, operadores e contribuidores. |
-| Instalação e quickstart | [Roteiro local](./ALPHA_LOCAL.md) disponível; binários e contêiner documentados; validar primeiro documento, consulta e feed em até dez minutos em ambiente limpo. |
+| Instalação e quickstart | [Roteiro local](./ALPHA_LOCAL.md) disponível; binários/contêiner e quickstart empacotado documentados; automação mede arquivo local disponível até documento/consulta/evento. Download, leitura humana e quarentena ainda não medidos. |
 | Referência da API | [Referência](./API.md) consolidada, com métodos/headers/corpos, erros/request IDs, limites e exemplos testados. Manter sincronizada com contrato implementado. |
 | CLI e configuração | [Referência CLI](./CLI.md) consolidada; exemplos de precedência e probe testados com servidor real. |
 | Consultas e changefeeds | [API](./API.md) consolida JSON/números, AST, custo de scan, ordem e overflow; guias do dashboard preservam detalhes de UI. Sem replay/exactly-once. |

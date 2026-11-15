@@ -100,3 +100,11 @@ real, links locais e `git diff --check`. Foram adicionados três testes de unida
 e duas integrações HTTP. O histograma comum mantém o formato HTTP anterior,
 validado também pelo dashboard. CI remoto, outras plataformas e coletor externo
 não foram executados nesta entrega.
+
+## Validação operacional posterior
+
+A [revisão M3](./RELEASE_REVIEW.md) e o [ensaio com coletor externo](./OPERATIONAL_VALIDATION.md)
+registram o estado atual e os resultados por commit/duração. Os limites e
+resultados datados acima descrevem aquele incremento; dashboard/storage/erros
+recentes já estão na [revisão do dashboard](./DASHBOARD_REVIEW.md).
+Não inferir validação prolongada de produção a partir de uma janela controlada.
