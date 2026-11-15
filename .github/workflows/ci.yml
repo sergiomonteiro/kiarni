@@ -143,3 +143,45 @@ jobs:
           path: downloaded
       - name: Verify and exercise downloaded binary with empty environment
         run: python3 scripts/release_smoke.py --artifact-dir downloaded --expected-target '${{ matrix.target }}'
+
+  container:
+    name: Container and Kubernetes
+    needs: [native-build, native-smoke]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: binary-x86_64-unknown-linux-gnu
+          path: downloaded
+      - name: Verify archive and prepare minimal Docker context
+        run: python3 scripts/prepare_container.py --artifact-dir downloaded --output "$RUNNER_TEMP/kiarni-image"
+      - name: Build development image without registry publication
+        run: docker build --platform linux/amd64 --label "org.opencontainers.image.revision=$GITHUB_SHA" -t kiarni:development "$RUNNER_TEMP/kiarni-image"
+      - name: Docker Compose lifecycle and backup tests
+        run: python3 scripts/container_smoke.py --image kiarni:development
+      - name: Install pinned Kubernetes test tools
+        run: python3 scripts/install_container_test_tools.py --output "$RUNNER_TEMP/kiarni-tools"
+      - name: Real Kubernetes manifest and persistence tests
+        run: python3 scripts/kubernetes_smoke.py --image kiarni:development --tools "$RUNNER_TEMP/kiarni-tools"
+      - name: Export tested development image
+        working-directory: ${{ runner.temp }}
+        run: |
+          docker image save kiarni:development | gzip -n > kiarni-development-linux-amd64.tar.gz
+          sha256sum kiarni-development-linux-amd64.tar.gz > kiarni-development-linux-amd64.tar.gz.sha256
+          cp "$GITHUB_WORKSPACE/deploy/docker/compose.yaml" compose.yaml
+          cp "$GITHUB_WORKSPACE/deploy/kubernetes/kiarni.yaml" kiarni.yaml
+          sha256sum kiarni-development-linux-amd64.tar.gz compose.yaml kiarni.yaml > CHECKSUMS.sha256
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: container-linux-amd64
+          path: |
+            ${{ runner.temp }}/kiarni-development-linux-amd64.tar.gz
+            ${{ runner.temp }}/kiarni-development-linux-amd64.tar.gz.sha256
+            ${{ runner.temp }}/CHECKSUMS.sha256
+            ${{ runner.temp }}/compose.yaml
+            ${{ runner.temp }}/kiarni.yaml
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14

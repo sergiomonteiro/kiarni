@@ -21,6 +21,8 @@ mod backup;
 mod counts;
 #[path = "serve/dashboard.rs"]
 mod dashboard;
+#[path = "serve/healthcheck.rs"]
+mod healthcheck;
 #[path = "serve/http_metrics.rs"]
 mod http_metrics;
 #[path = "serve/logs.rs"]

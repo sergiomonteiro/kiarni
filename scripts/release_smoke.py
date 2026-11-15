@@ -163,6 +163,7 @@ def exercise(root, work, expected_target, allow_dirty=False):
         if len(keys) != 1:
             raise RuntimeError('unexpected initial credential count')
         token = next(iter(keys))
+        run('healthcheck', '--data-dir', data, '--bind', f'127.0.0.1:{server.port}')
         assert server.request('/v1/status')[0] == 401
         assert server.request('/v1/status', token)[0] == 200
         assert server.request('/v1/collections', token, 'POST', b'{"name":"orders"}')[0] == 201

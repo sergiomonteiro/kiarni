@@ -1,0 +1,26 @@
+# Docker Engine Linux amd64. Host networking preserves the loopback-only contract.
+services:
+  kiarni:
+    image: ${KIARNI_IMAGE:-kiarni:development}
+    platform: linux/amd64
+    network_mode: host
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 768m
+    cpus: 2
+    stop_grace_period: 30s
+    environment:
+      KIARNI_DATA_DIR: /var/lib/kiarni/data
+      KIARNI_BIND: ${KIARNI_BIND:-127.0.0.1:8711}
+    volumes:
+      - state:/var/lib/kiarni
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  state:

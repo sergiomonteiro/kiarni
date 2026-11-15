@@ -1,0 +1,98 @@
+# Example only: select a Linux amd64 node and prepare an appropriate StorageClass.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kiarni-state
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kiarni
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kiarni
+  template:
+    metadata:
+      labels:
+        app: kiarni
+    spec:
+      automountServiceAccountToken: false
+      nodeSelector:
+        kubernetes.io/os: linux
+        kubernetes.io/arch: amd64
+      terminationGracePeriodSeconds: 30
+      # Only prepare a fixed parent, never recursively chown an existing database.
+      initContainers:
+        - name: prepare-volume
+          image: kiarni:development
+          imagePullPolicy: IfNotPresent
+          command: [/bin/sh, -ec]
+          args:
+            - |
+              if [ ! -e /state/kiarni ]; then
+                mkdir -m 0700 /state/kiarni
+                chown 10001:10001 /state/kiarni
+              fi
+              test ! -L /state/kiarni
+              test "$(stat -c '%u:%g:%a' /state/kiarni)" = '10001:10001:700'
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+              add: [CHOWN, DAC_OVERRIDE]
+          resources:
+            requests: {cpu: 10m, memory: 16Mi}
+            limits: {cpu: 100m, memory: 32Mi}
+          volumeMounts:
+            - name: state
+              mountPath: /state
+      containers:
+        - name: kiarni
+          image: kiarni:development
+          imagePullPolicy: IfNotPresent
+          args: [serve]
+          env:
+            - {name: KIARNI_DATA_DIR, value: /var/lib/kiarni/data}
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          startupProbe:
+            exec:
+              command: [/usr/local/bin/kiarni, healthcheck]
+            timeoutSeconds: 5
+            periodSeconds: 5
+            failureThreshold: 24
+          readinessProbe:
+            exec:
+              command: [/usr/local/bin/kiarni, healthcheck]
+            timeoutSeconds: 5
+            periodSeconds: 15
+            failureThreshold: 3
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: "2", memory: 768Mi}
+          volumeMounts:
+            - name: state
+              mountPath: /var/lib/kiarni
+              subPath: kiarni
+      volumes:
+        - name: state
+          persistentVolumeClaim:
+            claimName: kiarni-state

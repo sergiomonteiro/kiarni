@@ -15,7 +15,9 @@ changefeeds de coleção por SSE autenticado, com publicação pós-commit, fila
 limitadas e testes de clientes reais. O **gate M2 foi aprovado localmente em
 Linux**, incluindo métricas autenticadas dos feeds. Há uma
 [alpha reativa local para experimentar](./docs/ALPHA_LOCAL.md); observabilidade
-operacional ampliada e Docker continuam no roadmap. Há uma
+operacional ampliada continua no roadmap. A
+[imagem experimental Docker](./docs/CONTAINERS.md) acompanha exemplos Compose
+e Kubernetes single-node. Há uma
 [pipeline de binários experimentais Linux/macOS](./docs/DISTRIBUTION.md), com
 checksums e licenças; a validação depende do CI do commit. O primeiro recorte do
 [dashboard embutido](./docs/DASHBOARD.md) já permite autenticar, verificar health,

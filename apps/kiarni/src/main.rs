@@ -12,10 +12,21 @@ fn main() -> ExitCode {
         }
         (None, None) => {
             println!("Uso: kiarni --version | kiarni serve [--data-dir CAMINHO]");
+            println!("Probe: kiarni healthcheck [--data-dir CAMINHO] [--token-file ARQUIVO]");
             println!("Backup: kiarni backup --data-dir ORIGEM --output DESTINO");
             println!("Restore: kiarni restore --from BACKUP --data-dir NOVA_RAIZ");
             println!("Auth: kiarni auth rotate|revoke-all [--data-dir CAMINHO]");
             ExitCode::SUCCESS
+        }
+        #[cfg(unix)]
+        (Some(arg), next) if arg == "healthcheck" => {
+            match cli::healthcheck(next.into_iter().chain(args)) {
+                Ok(()) => ExitCode::SUCCESS,
+                Err(_) => {
+                    eprintln!("kiarni: healthcheck_failed");
+                    ExitCode::FAILURE
+                }
+            }
         }
         #[cfg(unix)]
         (Some(arg), next) if arg == "restore" => match cli::restore(next.into_iter().chain(args)) {

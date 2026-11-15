@@ -228,6 +228,8 @@ BUILD_INFO.json are provided by the operating system.
 
 ./kiarni --version
 ./kiarni serve --data-dir ./data
+# In a second terminal, while serve runs:
+./kiarni healthcheck --data-dir ./data
 
 The data parent must exist. The server defaults to 127.0.0.1:8711 and delivers
 a new credential through a private sibling directory. Ctrl+C or SIGTERM stops

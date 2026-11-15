@@ -73,3 +73,9 @@ incluem textos integrais de LICENSE/NOTICE/COPYRIGHT e os avisos da biblioteca
 padrão Rust do toolchain fixado. Licença não revisada ou aviso ausente interrompe
 o empacotamento. `DEPENDENCIES.json` e `THIRD_PARTY_NOTICES.txt` do artifact são
 a evidência da versão distribuída; a tabela acima descreve o workspace inteiro.
+
+A imagem Docker usa o mesmo pacote nativo e preserva seus avisos em
+`/usr/local/share/kiarni`, além dos materiais da base Ubuntu fixada por digest.
+O healthcheck usa std/rustix/zeroize já presentes; nenhuma crate nova.
+Kind/kubectl são ferramentas de teste obtidas de fontes oficiais, com versões
+e checksums fixados; não são incluídas na imagem nem exigidas pelo servidor.

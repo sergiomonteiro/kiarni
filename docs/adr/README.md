@@ -71,3 +71,5 @@ Primeiro incremento do M3/RF-08:
 - [0030 — HTTPS por proxy local e origem pública explícita](./0030-https-por-proxy-local.md).
 
 - [0031 — Artefatos nativos verificáveis de desenvolvimento](./0031-artefatos-nativos-verificados.md).
+
+- [0032 — Contêiner single-node e probe autenticado](./0032-container-single-node.md).

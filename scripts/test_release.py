@@ -5,6 +5,8 @@ from pathlib import Path
 import tarfile
 import tempfile
 import unittest
+from unittest.mock import patch
+import prepare_container
 import package_release as package
 import release_smoke as smoke
 
@@ -59,6 +61,28 @@ class ReleaseTests(unittest.TestCase):
             result=smoke.verify_extract(archive,extracted)
             self.assertEqual((result/'kiarni').stat().st_mode & 0o777,0o755)
             self.assertEqual((result/'LICENSE').stat().st_mode & 0o777,0o644)
+
+    def test_container_context_rejects_wrong_target_and_wrong_ci_commit(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary)
+            source, archive=self.fixture(root)
+            info={'target':'aarch64-apple-darwin','dirty':False,'commit':'a'*40}
+            def rebuild():
+                (source/'BUILD_INFO.json').write_text(json.dumps(info))
+                package.checksums(source)
+                archive.unlink()
+                package.archive(source,archive)
+                self.outer_checksum(archive)
+            rebuild()
+            with patch.dict('os.environ', {}, clear=True), self.assertRaises(ValueError):
+                prepare_container.prepare(root,root/'wrong-target')
+            info['target']='x86_64-unknown-linux-gnu'
+            rebuild()
+            with patch.dict('os.environ', {'GITHUB_ACTIONS':'true','GITHUB_SHA':'b'*40}, clear=True), self.assertRaises(ValueError):
+                prepare_container.prepare(root,root/'wrong-commit')
+            with patch.dict('os.environ', {'GITHUB_ACTIONS':'true','GITHUB_SHA':'a'*40}, clear=True):
+                prepare_container.prepare(root,root/'context')
+            self.assertEqual({p.name for p in (root/'context').iterdir()}, {'Dockerfile','package'})
 
     def test_outer_and_inner_tampering_rejected(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -1,6 +1,6 @@
 # Plano de fechamento do MVP
 
-Atualizado em 2026-11-15, com a distribuição nativa experimental. M1 e M2 foram validados
+Atualizado em 2026-11-15, com a distribuição em contêiner experimental. M1 e M2 foram validados
 localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 [PRD](../KIARNI_PRD_v0.1.md), sem ampliar o escopo ou aprovar o gate de release.
 
@@ -24,9 +24,10 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
    continuam responsabilidades de operação e fechamento da release.
 5. [Pipeline de binários nativos](./DISTRIBUTION.md): Linux x86_64/glibc 2.39 e
    macOS 15/Apple Silicon, checksums, licenças e smoke do pacote em runner novo.
-   A validação depende de CI verde do commit. Próximo incremento: Docker,
-   volume/healthcheck, execução não-root, Compose e manifesto Kubernetes básico,
-   sem alegar alta disponibilidade.
+   [Imagem Docker, Compose e Kubernetes](./CONTAINERS.md) com volume, UID 10001,
+   healthcheck autenticado e testes reais de recriação/persistência. A validação
+   depende de CI verde do commit; artifacts são experimentais, sem publicação
+   automática em registry e sem alegar alta disponibilidade.
 6. Executar instalação limpa, quickstart, CI/plataformas e checklist de release;
    revisar explicitamente o atendimento dos RFs e aprovar o gate M3 com evidências.
 
@@ -38,7 +39,7 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 | Material | Estado atual e trabalho restante |
 | --- | --- |
 | Entrada e navegação | [Índice](./README.md) disponível; manter caminhos claros para usuários, operadores e contribuidores. |
-| Instalação e quickstart | [Roteiro local](./ALPHA_LOCAL.md) disponível; consolidar instalação por artefato/Docker e validar primeiro documento, consulta e feed em até dez minutos em ambiente limpo. |
+| Instalação e quickstart | [Roteiro local](./ALPHA_LOCAL.md) disponível; binários e contêiner documentados; validar primeiro documento, consulta e feed em até dez minutos em ambiente limpo. |
 | Referência da API | Contratos espalhados em guias/ADRs; consolidar endpoints implementados, autenticação, métodos, erros/request IDs, exemplos e limites em uma referência atual. Não apresentar rotas ilustrativas do PRD como prontas. |
 | CLI e configuração | Consolidar comandos, opções, precedência, defaults, intervalos, variáveis de ambiente, arquivos e falhas comuns; conferir com código/testes. |
 | Consultas e changefeeds | Guias atuais disponíveis; consolidar semântica de JSON/números, AST, custo de scan, ordem e política de overflow, sem prometer replay/exactly-once. |

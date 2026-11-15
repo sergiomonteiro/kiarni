@@ -9,7 +9,9 @@ mod collections;
 mod dashboard;
 mod documents;
 mod gate;
+mod healthcheck;
 mod http;
+pub use healthcheck::healthcheck;
 mod logging;
 mod metrics;
 #[cfg(feature = "profiling")]

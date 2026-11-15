@@ -163,3 +163,30 @@ pub fn restore(args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std::
     );
     Ok(())
 }
+
+/// Resolve ordinary configuration while keeping credential values out of arguments.
+pub fn healthcheck(
+    mut args: impl Iterator<Item = OsString>,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let mut token_file = None;
+    let mut config = Vec::new();
+    while let Some(key) = args.next() {
+        if config.len() >= 64 {
+            return Err("healthcheck_failed".into());
+        }
+        let value = args.next().ok_or("healthcheck_failed")?;
+        if key == "--token-file" {
+            if token_file.replace(value).is_some() {
+                return Err("healthcheck_failed".into());
+            }
+        } else {
+            config.push(key);
+            config.push(value);
+        }
+    }
+    kiarni_server::healthcheck(
+        configuration(config.into_iter())?,
+        token_file.as_deref().map(std::path::Path::new),
+    )?;
+    Ok(())
+}

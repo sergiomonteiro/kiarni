@@ -255,6 +255,9 @@ interrupção. [Guia](./docs/RESTORE.md), [ADR 0029](./docs/adr/0029-restauracao
 ### Distribuição
 
 Build release para plataformas suportadas, imagem Docker com volume, exemplo Compose e manifesto Kubernetes com PVC e **uma réplica**. Um único binário não significa alta disponibilidade.
+[Distribuição experimental](./docs/CONTAINERS.md): UID 10001, volume pai de dados
+e credenciais, probe autenticado do próprio binário; Compose host em Linux e
+Kubernetes sem Service, preservando loopback ([ADR 0032](./docs/adr/0032-container-single-node.md)).
 
 ## 11. Testes e quality gates
 
