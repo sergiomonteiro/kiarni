@@ -1,4 +1,8 @@
 [
+  {"method":"GET","path":"/v1/metrics","operation":"Metrics"},
+  {"method":"HEAD","path":"/v1/metrics","operation":"Metrics","head":true},
+  {"method":"GET","path":"/v1/health/ready","operation":"Readiness"},
+  {"method":"HEAD","path":"/v1/health/live","operation":"Liveness","head":true},
   {"method":"GET","path":"/v1/errors/recent","operation":"RecentErrors"},
   {"method":"HEAD","path":"/v1/errors/recent","operation":"RecentErrors","head":true},
   {"method":"POST","path":"/v1/errors/recent","error":"method_not_allowed","status":405,"allow":"GET, HEAD"},

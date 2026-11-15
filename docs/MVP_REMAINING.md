@@ -1,6 +1,6 @@
 # Plano de fechamento do MVP
 
-Atualizado em 2026-11-15, com a distribuição em contêiner experimental. M1 e M2 foram validados
+Atualizado em 2026-11-15, com a consolidação documental da API e configuração. M1 e M2 foram validados
 localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 [PRD](../KIARNI_PRD_v0.1.md), sem ampliar o escopo ou aprovar o gate de release.
 
@@ -28,7 +28,10 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
    healthcheck autenticado e testes reais de recriação/persistência. A validação
    depende de CI verde do commit; artifacts são experimentais, sem publicação
    automática em registry e sem alegar alta disponibilidade.
-6. Executar instalação limpa, quickstart, CI/plataformas e checklist de release;
+6. [Referência da API](./API.md), [CLI/configuração](./CLI.md),
+   [diagnóstico](./TROUBLESHOOTING.md) e [contribuição](../CONTRIBUTING.md)
+   consolidados, com exemplos executados e verificação de links/inventários no CI.
+7. Executar instalação limpa, quickstart, CI/plataformas e checklist de release;
    revisar explicitamente o atendimento dos RFs e aprovar o gate M3 com evidências.
 
 Documentação acompanha cada incremento acima. Sua consolidação e validação são
@@ -40,12 +43,12 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 | --- | --- |
 | Entrada e navegação | [Índice](./README.md) disponível; manter caminhos claros para usuários, operadores e contribuidores. |
 | Instalação e quickstart | [Roteiro local](./ALPHA_LOCAL.md) disponível; binários e contêiner documentados; validar primeiro documento, consulta e feed em até dez minutos em ambiente limpo. |
-| Referência da API | Contratos espalhados em guias/ADRs; consolidar endpoints implementados, autenticação, métodos, erros/request IDs, exemplos e limites em uma referência atual. Não apresentar rotas ilustrativas do PRD como prontas. |
-| CLI e configuração | Consolidar comandos, opções, precedência, defaults, intervalos, variáveis de ambiente, arquivos e falhas comuns; conferir com código/testes. |
-| Consultas e changefeeds | Guias atuais disponíveis; consolidar semântica de JSON/números, AST, custo de scan, ordem e política de overflow, sem prometer replay/exactly-once. |
+| Referência da API | [Referência](./API.md) consolidada, com métodos/headers/corpos, erros/request IDs, limites e exemplos testados. Manter sincronizada com contrato implementado. |
+| CLI e configuração | [Referência CLI](./CLI.md) consolidada; exemplos de precedência e probe testados com servidor real. |
+| Consultas e changefeeds | [API](./API.md) consolida JSON/números, AST, custo de scan, ordem e overflow; guias do dashboard preservam detalhes de UI. Sem replay/exactly-once. |
 | Operação | Criar procedimentos reproduzíveis de backup, restauração, credenciais, reinício, upgrade/compatibilidade e operação remota conforme forem implementados. Não documentar simples cópia de banco aberto como backup. |
-| Diagnóstico | Guias de status/métricas/logs disponíveis; ampliar troubleshooting com sintomas, códigos, limites, consumidor lento e consulta lenta, sem exemplos com segredos reais. |
-| Contribuição | Criar guia para pessoas com setup, workspace, testes, fixtures, benchmarks e fluxo de ADR; AGENTS.md não substitui esse guia. |
+| Diagnóstico | [Diagnóstico](./TROUBLESHOOTING.md) relaciona sintomas/códigos a métricas, consumidor lento e consulta lenta, com links operacionais. |
+| Contribuição | [CONTRIBUTING.md](../CONTRIBUTING.md) disponível com setup, workspace, testes/fixtures, benchmarks e fluxo de PR/ADR. |
 | Release e licenças | Consolidar changelog, limitações conhecidas, checklist, plataformas realmente validadas, MIT e avisos de terceiros. Publicar junto dos artefatos. |
 
 ## Validação e decisões ainda abertas

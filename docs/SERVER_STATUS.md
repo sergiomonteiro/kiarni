@@ -68,8 +68,8 @@ Não adiciona dependências de runtime nem métricas de CPU/memória. A [contage
 [Logs de requisições](./REQUEST_LOGS.md) já estão disponíveis.
 Métricas de [HTTP](./HTTP_METRICS.md) e [consultas](./QUERY_METRICS.md) já estão
 na API. [Storage](./STORAGE_METRICS.md) também expõe primitivas/commits e
-tamanho lógico. Apresentação de storage e erros recentes no dashboard
-continuam pendentes; este incremento não conclui RF-08/RF-09 ou M3.
+tamanho lógico. A [revisão do dashboard](./DASHBOARD_REVIEW.md) inclui
+apresentação de storage e erros recentes. M3 permanece aberto.
 [Decisão do contrato](./adr/0021-status-do-servidor.md).
 
 Validação local em 2026-11-13: 237 testes Rust passaram (dois workers de fixture

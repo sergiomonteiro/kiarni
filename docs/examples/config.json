@@ -1,0 +1,14 @@
+{
+  "bind": "127.0.0.1:8711",
+  "data_dir": "./kiarni-data",
+  "max_document_bytes": 1048576,
+  "max_query_bytes": 16384,
+  "max_result_bytes": 4194304,
+  "max_requests": 16,
+  "max_streams": 4,
+  "feed_queue": 4,
+  "read_timeout_ms": 5000,
+  "write_timeout_ms": 5000,
+  "heartbeat_ms": 15000,
+  "log_level": "info"
+}

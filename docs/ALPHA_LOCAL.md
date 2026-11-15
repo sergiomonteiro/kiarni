@@ -96,8 +96,9 @@ usa GET na mesma URL de documento; consultas AST usam POST em `/query`.
   expiração é revalidada durante o stream. Não existe reload automático de auth.
 
 Os testes locais usam processos reais, dois streams, escritas concorrentes,
-desconexão, expiração, consumidor que não lê e shutdown. Não houve teste de
-proxy/TLS, exposição remota. O dashboard tem teste Chromium real para autenticação,
+desconexão, expiração, consumidor que não lê e shutdown. O
+[perfil HTTPS por proxy local](./REMOTE_HTTPS.md) também tem integração real;
+isso não homologa exposição pública/operação prolongada. O dashboard tem teste Chromium real para autenticação,
 consultas e SSE de coleção do produto. Não há promessa de replay,
 exactly-once, queda de energia ou falha física.
 

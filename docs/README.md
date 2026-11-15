@@ -10,6 +10,8 @@ release publicada ou o MVP completo.
   credencial e executar documentos, consultas e changefeeds.
 - [Binários de desenvolvimento](./DISTRIBUTION.md): plataformas, checksums, licenças e instalação.
 - [Docker, Compose e Kubernetes](./CONTAINERS.md): volume, healthcheck e implantação single-node.
+- [Referência da API](./API.md): rotas, headers, erros, consultas e feeds.
+- [CLI e configuração](./CLI.md): comandos, precedência, defaults e limites.
 - [Dashboard](./DASHBOARD.md): autenticação e navegação no mesmo binário.
 - [Consultar documentos](./DASHBOARD_QUERIES.md): AST, limites e precisão JSON.
 - [Acompanhar mudanças](./DASHBOARD_FEEDS.md): coleção inteira, cancelamento e
@@ -19,6 +21,7 @@ release publicada ou o MVP completo.
 
 ## Operar e diagnosticar
 
+- [Diagnóstico operacional](./TROUBLESHOOTING.md): sintomas, códigos e próximos passos.
 - [Status HTTP](./SERVER_STATUS.md): versão, uptime e ocupação da admissão.
 - [Métricas de storage](./STORAGE_METRICS.md): primitivas, commits e tamanho
   lógico do arquivo, com limites de interpretação.
@@ -44,6 +47,7 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 
 ## Entender e contribuir
 
+- [Contribuir](../CONTRIBUTING.md): ambiente, workspace, testes, fixtures e PRs.
 - [PRD](../KIARNI_PRD_v0.1.md): requisitos e critérios de aceite.
 - [Arquitetura](../ARCHITECTURE.md): componentes e invariantes.
 - [ADRs](./adr/README.md): decisões técnicas e limites das evidências.
@@ -51,5 +55,5 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 - [Instruções do repositório](../AGENTS.md): fluxo e verificações de desenvolvimento.
 
 ADRs e relatórios de spikes preservam contexto histórico; não substituem o guia
-de uso do produto atual. Uma referência consolidada de API/CLI/configuração e
-um guia de contribuição para pessoas continuam como entregas documentais.
+de uso do produto atual. Use as referências API/CLI acima para o contrato atual
+e o guia de contribuição para executar as verificações. O gate M3 e a instalação limpa continuam pendentes.

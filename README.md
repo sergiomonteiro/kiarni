@@ -79,10 +79,10 @@ cargo run -p kiarni --locked -- --version
 ```
 
 O binário e os testes HTTP ficam em `apps/kiarni`. As bibliotecas do produto
-ficam em `crates/`, com core, engine, storage, auth, config, http e server.
+ficam em `crates/`, com core, engine, storage, auth, config, http, feeds e server.
 Os experimentos e seus harnesses ficam em `spikes/` e usam as bibliotecas
 promovidas. `Cargo.lock` fixa a resolução das dependências.
-[Organização do workspace](./ARCHITECTURE.md#3-organização-do-código-no-m1)
+[Organização do workspace](./ARCHITECTURE.md#3-organização-do-código-do-produto)
 
 Verificações locais, também configuradas no CI para Linux e macOS:
 
@@ -97,7 +97,8 @@ python3 scripts/check_product_dependencies.py
 
 - [Documentação de uso e operação](./docs/README.md).
 - [Plano de fechamento do MVP e entrega documental](./docs/MVP_REMAINING.md).
-
+- [Referência da API](./docs/API.md) e [CLI/configuração](./docs/CLI.md).
+- [Diagnóstico](./docs/TROUBLESHOOTING.md) e [contribuição](./CONTRIBUTING.md).
 - [PRD](./KIARNI_PRD_v0.1.md): escopo, requisitos e gates de M0 a M3.
 - [Arquitetura](./ARCHITECTURE.md): fronteiras, invariantes e hipóteses técnicas.
 - [Instruções de contribuição para agentes](./AGENTS.md).

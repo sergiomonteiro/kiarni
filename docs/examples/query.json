@@ -1,0 +1,1 @@
+{"from":"orders","filter":{"op":"gte","field":"total","value":9007199254740993},"sort":[{"field":"total","direction":"desc"}],"limit":10,"project":["status","total"]}

@@ -61,9 +61,8 @@ um stream real e verifica vazio, limite inferior, formato inválido, 404/request
 ID, 401 e resposta antiga após trocar de coleção. Limite inferior no navegador
 é injetado; os limites efetivos são testados no storage.
 
-[ADR 0022](./adr/0022-contagem-limitada-de-documentos.md). Esta entrega não
-conclui M3/RF-09: apresentação de storage, erros recentes e diagnóstico interno necessário
-continuam pendentes. [Storage](./STORAGE_METRICS.md) já tem métricas na API. [HTTP](./HTTP_METRICS.md) e [consultas](./QUERY_METRICS.md) já têm
+[ADR 0022](./adr/0022-contagem-limitada-de-documentos.md). A [revisão do dashboard](./DASHBOARD_REVIEW.md) inclui storage e erros recentes;
+este endpoint não conclui M3/RF-09. [Storage](./STORAGE_METRICS.md) já tem métricas na API. [HTTP](./HTTP_METRICS.md) e [consultas](./QUERY_METRICS.md) já têm
 métricas próprias na API. Não há contador exato de custo constante
 para coleções arbitrariamente grandes nem benchmark novo deste endpoint.
 
