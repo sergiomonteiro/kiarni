@@ -66,3 +66,10 @@ com std. Nginx/OpenSSL são ferramentas externas opcionais do perfil/teste, não
 incorporadas ao binário ou fornecidas como serviços obrigatórios no perfil local.
 A CI extrai o pacote Nginx da distribuição em área temporária; Playwright já
 permanece fixado como dependência de desenvolvimento.
+
+A [distribuição nativa](./DISTRIBUTION.md) gera o inventário por target a partir
+do grafo normal/build do executável, sem dev dependencies ou spikes. Os pacotes
+incluem textos integrais de LICENSE/NOTICE/COPYRIGHT e os avisos da biblioteca
+padrão Rust do toolchain fixado. Licença não revisada ou aviso ausente interrompe
+o empacotamento. `DEPENDENCIES.json` e `THIRD_PARTY_NOTICES.txt` do artifact são
+a evidência da versão distribuída; a tabela acima descreve o workspace inteiro.

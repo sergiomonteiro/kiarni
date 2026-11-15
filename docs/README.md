@@ -8,6 +8,7 @@ release publicada ou o MVP completo.
 
 - [Experimentar a alpha local](./ALPHA_LOCAL.md): compilar, iniciar, obter a
   credencial e executar documentos, consultas e changefeeds.
+- [Binários de desenvolvimento](./DISTRIBUTION.md): plataformas, checksums, licenças e instalação.
 - [Dashboard](./DASHBOARD.md): autenticação e navegação no mesmo binário.
 - [Consultar documentos](./DASHBOARD_QUERIES.md): AST, limites e precisão JSON.
 - [Acompanhar mudanças](./DASHBOARD_FEEDS.md): coleção inteira, cancelamento e
@@ -34,7 +35,7 @@ release publicada ou o MVP completo.
 
 [Backup offline](./BACKUP.md) e [restauração em nova raiz](./RESTORE.md) já
 dispõem de comandos e verificações. O [perfil HTTPS por proxy local](./REMOTE_HTTPS.md)
-foi implementado com origem explícita e validação de integração. Distribuição e
+foi implementado com origem explícita e validação de integração. O [empacotamento nativo](./DISTRIBUTION.md) integra o CI; Docker e
 validação operacional ampliada permanecem pendentes. O [plano de fechamento do MVP](./MVP_REMAINING.md)
 registra essas entregas e a documentação que deverá acompanhá-las.
 

@@ -1,6 +1,6 @@
 # Plano de fechamento do MVP
 
-Atualizado em 2026-11-15, após o perfil remoto HTTPS. M1 e M2 foram validados
+Atualizado em 2026-11-15, com a distribuição nativa experimental. M1 e M2 foram validados
 localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 [PRD](../KIARNI_PRD_v0.1.md), sem ampliar o escopo ou aprovar o gate de release.
 
@@ -22,8 +22,11 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
    pública explícita e integração de auth/dashboard/métricas/SSE. Backend
    permanece loopback; certificado público/renovação e operação prolongada
    continuam responsabilidades de operação e fechamento da release.
-5. Preparar distribuição: binários, Docker, volume/healthcheck, execução não-root,
-   Compose e manifesto Kubernetes básico, sem alegar alta disponibilidade.
+5. [Pipeline de binários nativos](./DISTRIBUTION.md): Linux x86_64/glibc 2.39 e
+   macOS 15/Apple Silicon, checksums, licenças e smoke do pacote em runner novo.
+   A validação depende de CI verde do commit. Próximo incremento: Docker,
+   volume/healthcheck, execução não-root, Compose e manifesto Kubernetes básico,
+   sem alegar alta disponibilidade.
 6. Executar instalação limpa, quickstart, CI/plataformas e checklist de release;
    revisar explicitamente o atendimento dos RFs e aprovar o gate M3 com evidências.
 
