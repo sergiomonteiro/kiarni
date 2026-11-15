@@ -121,3 +121,36 @@ fn restore_requires_unique_source_and_does_not_echo_private_arguments() {
         );
     }
 }
+
+#[cfg(unix)]
+#[test]
+fn public_origin_never_allows_public_bind_or_echoes_invalid_origin() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().join("unused");
+    for extra in [
+        vec![
+            "--bind",
+            "0.0.0.0:8711",
+            "--public-origin",
+            "https://good.example",
+        ],
+        vec!["--public-origin", "http://private_origin_marker"],
+        vec![
+            "--public-origin",
+            "https://user:private_origin_marker@good.example",
+        ],
+    ] {
+        let output = Command::new(env!("CARGO_BIN_EXE_kiarni"))
+            .env_clear()
+            .arg("serve")
+            .arg("--data-dir")
+            .arg(&root)
+            .args(extra)
+            .output()
+            .unwrap();
+        assert!(!output.status.success());
+        assert!(output.stdout.is_empty());
+        assert_eq!(output.stderr, b"kiarni: invalid_configuration\n");
+        assert!(!root.exists());
+    }
+}

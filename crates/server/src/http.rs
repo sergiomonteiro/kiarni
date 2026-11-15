@@ -96,8 +96,14 @@ pub fn serve(
         max_document: config.max_document_bytes() as usize,
         max_query: config.max_query_bytes() as usize,
         authority,
-        host: address.to_string(),
-        origin: format!("http://{address}"),
+        host: config
+            .public_authority()
+            .map(str::to_owned)
+            .unwrap_or_else(|| address.to_string()),
+        origin: config
+            .public_origin()
+            .map(str::to_owned)
+            .unwrap_or_else(|| format!("http://{address}")),
         read_timeout: Duration::from_millis(config.read_timeout_ms()),
         write_timeout: Duration::from_millis(config.write_timeout_ms()),
         heartbeat: Duration::from_millis(config.heartbeat_ms()),

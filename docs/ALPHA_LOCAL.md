@@ -5,7 +5,8 @@ coleção. É uma alpha local: não é uma release publicada nem o MVP completo.
 Métricas HTTP, de consultas, storage e feeds estão em `/v1/metrics`; o
 [dashboard local](./DASHBOARD.md) inclui erros recentes. Validação de
 operação/distribuição continua no roadmap. A avaliação de CPU/memória e a regressão de leitura registrada
-também permanecem pendentes. Não exponha este perfil loopback como serviço público.
+também permanecem pendentes. Acesso remoto usa o
+[perfil HTTPS por proxy local](./REMOTE_HTTPS.md); não exponha HTTP do backend.
 
 ## 1. Iniciar
 

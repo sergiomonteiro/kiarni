@@ -25,6 +25,8 @@ mod dashboard;
 mod http_metrics;
 #[path = "serve/logs.rs"]
 mod logs;
+#[path = "serve/public_origin.rs"]
+mod public_origin;
 #[path = "serve/query_metrics.rs"]
 mod query_metrics;
 #[path = "serve/recent_errors.rs"]

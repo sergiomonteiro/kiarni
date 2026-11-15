@@ -186,7 +186,10 @@ O spike deve decidir se há um serializador lógico de commits ou outro mecanism
 ## 8. Segurança
 
 - Bind padrão: `127.0.0.1`.
-- Acesso remoto exige autenticação; mecanismo inicial de API key/token ainda depende de ADR.
+- Acesso remoto usa Bearer existente e proxy HTTPS opcional no mesmo host; backend
+  continua loopback. Origem pública HTTPS explícita rege Host/Origin; headers de
+  encaminhamento não concedem confiança. [ADR 0030](./docs/adr/0030-https-por-proxy-local.md),
+  [perfil e evidências](./docs/REMOTE_HTTPS.md).
 - Não expor dashboard administrativo sem o mesmo controle de acesso da API.
 - TLS nativo ou reverse proxy seguro: documentar opção adotada; nunca sugerir exposição de credenciais em HTTP público.
 - Não registrar segredos, tokens ou conteúdo de documentos por padrão.

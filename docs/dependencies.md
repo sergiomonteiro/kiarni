@@ -60,3 +60,9 @@ Os testes de restauração usam `redb =4.5.0` como dependência de desenvolvimen
 do servidor para construir corrupção estrutural com hashes recalculados. É a
 mesma versão/licença já usada no storage; não adiciona dependência de runtime ou
 pacotes transitivos novos.
+
+O perfil remoto não adiciona crates: a origem HTTPS usa uma gramática limitada
+com std. Nginx/OpenSSL são ferramentas externas opcionais do perfil/teste, não
+incorporadas ao binário ou fornecidas como serviços obrigatórios no perfil local.
+A CI extrai o pacote Nginx da distribuição em área temporária; Playwright já
+permanece fixado como dependência de desenvolvimento.

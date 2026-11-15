@@ -1,6 +1,7 @@
 //! Configuration resolution and bounded admission.
 
 mod admission;
+mod origin;
 pub use admission::{Admission, AdmissionError, AdmissionSnapshot, Permit};
 
 use std::{collections::BTreeMap, fmt, net::SocketAddr};
@@ -58,6 +59,7 @@ impl LogLevel {
 /// Fields are private: callers cannot bypass source and cross-field validation.
 pub struct Config {
     bind: SocketAddr,
+    public_origin: Option<String>,
     data_dir: String,
     document: u64,
     query: u64,
@@ -78,6 +80,13 @@ impl fmt::Debug for Config {
 }
 
 impl Config {
+    pub fn public_origin(&self) -> Option<&str> {
+        self.public_origin.as_deref()
+    }
+    pub fn public_authority(&self) -> Option<&str> {
+        self.public_origin()
+            .and_then(|value| value.strip_prefix("https://"))
+    }
     pub fn log_level(&self) -> LogLevel {
         self.log_level
     }
@@ -133,6 +142,7 @@ impl Config {
 
     fn apply(&mut self, key: &str, value: &str) -> Result<(), Error> {
         match key {
+            "public_origin" => self.public_origin = Some(origin::parse(value)?),
             "log_level" => self.log_level = LogLevel::parse(value)?,
             "bind" => {
                 let bind: SocketAddr = value.parse().map_err(|_| Error::InvalidValue)?;
@@ -166,6 +176,7 @@ fn known(key: &str) -> bool {
     matches!(
         key,
         "bind"
+            | "public_origin"
             | "data_dir"
             | "max_document_bytes"
             | "max_query_bytes"
@@ -242,6 +253,7 @@ pub fn resolve(
 ) -> Result<Config, Error> {
     let mut config = Config {
         bind: SocketAddr::from(([127, 0, 0, 1], 8711)),
+        public_origin: None,
         data_dir: "./kiarni-data".into(),
         document: MIB,
         query: 16384,
@@ -261,7 +273,10 @@ pub fn resolve(
             if !known(key) {
                 return Err(Error::UnknownSetting);
             }
-            let value = if matches!(key.as_str(), "bind" | "data_dir" | "log_level") {
+            let value = if matches!(
+                key.as_str(),
+                "bind" | "data_dir" | "log_level" | "public_origin"
+            ) {
                 serde_json::from_str::<String>(raw.get()).map_err(|_| Error::InvalidValue)?
             } else {
                 serde_json::from_str::<u64>(raw.get())

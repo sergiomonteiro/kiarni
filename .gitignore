@@ -15,3 +15,6 @@ __pycache__/
 /restores/
 .kiarni-restore-*/
 *.credentials/
+
+# Optional TLS proxy runtime files; certificates/keys stay outside the checkout.
+/proxy-run/

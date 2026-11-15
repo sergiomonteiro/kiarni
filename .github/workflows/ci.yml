@@ -65,3 +65,32 @@ jobs:
         run: cargo build -p kiarni --locked
       - name: Embedded dashboard browser test
         run: node scripts/dashboard-browser.test.mjs
+
+  https-proxy:
+    name: HTTPS proxy and dashboard
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install stable Rust
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+      - name: Build product binary
+        run: cargo build -p kiarni --locked
+      - name: Obtain Nginx without installing a service
+        run: |
+          sudo apt-get update
+          mkdir -p "$RUNNER_TEMP/kiarni-nginx"
+          cd "$RUNNER_TEMP/kiarni-nginx"
+          apt-get download nginx
+          dpkg-deb -x nginx_*.deb root
+          echo "KIARNI_TEST_NGINX=$RUNNER_TEMP/kiarni-nginx/root/usr/sbin/nginx" >> "$GITHUB_ENV"
+      - name: Install browser test library
+        run: npm ci --prefix spikes/transport --ignore-scripts --no-audit --no-fund
+      - name: Install matching Chromium
+        run: spikes/transport/node_modules/.bin/playwright install --with-deps chromium
+      - name: Real HTTPS proxy integration
+        run: node scripts/https-proxy.test.mjs

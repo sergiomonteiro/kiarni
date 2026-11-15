@@ -1,6 +1,6 @@
 # Plano de fechamento do MVP
 
-Atualizado em 2026-11-14, após backup e restauração operacionais. M1 e M2 foram validados
+Atualizado em 2026-11-15, após o perfil remoto HTTPS. M1 e M2 foram validados
 localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 [PRD](../KIARNI_PRD_v0.1.md), sem ampliar o escopo ou aprovar o gate de release.
 
@@ -18,8 +18,10 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
    publicação sem sobrescrita. [Restauração operacional implementada](./RESTORE.md):
    artefato validado, raiz nova e novas credenciais no primeiro serve. As issues
    #1/#2 não aprovam o gate de release.
-4. Definir e validar operação remota segura, configuração de exposição e
-   HTTPS/proxy. Loopback permanece o perfil atual; não recomendar HTTP público.
+4. [Perfil HTTPS por proxy local implementado](./REMOTE_HTTPS.md), com origem
+   pública explícita e integração de auth/dashboard/métricas/SSE. Backend
+   permanece loopback; certificado público/renovação e operação prolongada
+   continuam responsabilidades de operação e fechamento da release.
 5. Preparar distribuição: binários, Docker, volume/healthcheck, execução não-root,
    Compose e manifesto Kubernetes básico, sem alegar alta disponibilidade.
 6. Executar instalação limpa, quickstart, CI/plataformas e checklist de release;

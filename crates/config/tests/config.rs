@@ -405,3 +405,78 @@ fn log_levels_are_strict_and_follow_source_precedence() {
         Error::InvalidValue
     );
 }
+
+#[test]
+fn public_https_origin_is_optional_canonical_and_obeys_precedence() {
+    let local = resolve(&[], &[], None).unwrap();
+    assert!(local.public_origin().is_none());
+    assert!(local.public_authority().is_none());
+    let config = resolve(
+        &[("--public-origin", "https://CLI.Example:443")],
+        &[("KIARNI_PUBLIC_ORIGIN", "https://env.example:9443")],
+        Some(br#"{"public_origin":"https://file.example"}"#),
+    )
+    .unwrap();
+    assert_eq!(config.public_origin(), Some("https://cli.example"));
+    assert_eq!(config.public_authority(), Some("cli.example"));
+    assert_eq!(config.bind().to_string(), "127.0.0.1:8711");
+    let config = resolve(
+        &[],
+        &[("KIARNI_PUBLIC_ORIGIN", "https://env.example:9443")],
+        Some(br#"{"public_origin":"https://file.example"}"#),
+    )
+    .unwrap();
+    assert_eq!(config.public_authority(), Some("env.example:9443"));
+    let config = resolve(&[], &[], Some(br#"{"public_origin":"https://[::1]:9443"}"#)).unwrap();
+    assert_eq!(config.public_authority(), Some("[::1]:9443"));
+    assert!(!format!("{config:?}").contains("https://"));
+}
+#[test]
+fn public_origin_never_enables_public_bind_or_hides_bad_configuration() {
+    assert_eq!(
+        error(
+            &[("--public-origin", "https://good.example")],
+            &[("KIARNI_PUBLIC_ORIGIN", "http://bad.example")],
+            None
+        ),
+        Error::InvalidValue
+    );
+    for bind in ["0.0.0.0:8711", "[::]:8711", "192.0.2.1:8711"] {
+        assert_eq!(
+            error(
+                &[
+                    ("--bind", bind),
+                    ("--public-origin", "https://good.example")
+                ],
+                &[],
+                None
+            ),
+            Error::InvalidValue
+        );
+    }
+    for file in [
+        br#"{"public_origin":null}"#.as_slice(),
+        br#"{"public_origin":true}"#,
+        br#"{"public_origin":"https://one.example","public_\u006frigin":"https://two.example"}"#,
+    ] {
+        assert!(resolve(&[], &[], Some(file)).is_err());
+    }
+    let host = [
+        "a".repeat(63),
+        "b".repeat(63),
+        "c".repeat(63),
+        "d".repeat(61),
+    ]
+    .join(".");
+    let value = format!("https://{host}:65535");
+    let config = resolve(&[("--public-origin", &value)], &[], None).unwrap();
+    assert_eq!(config.public_origin().unwrap().len(), 267);
+    assert!(
+        resolve(
+            &[("--public-origin", &format!("https://{host}d"))],
+            &[],
+            None
+        )
+        .is_err()
+    );
+}

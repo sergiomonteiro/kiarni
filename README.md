@@ -40,6 +40,9 @@ novo, sem credenciais, com hashes e publicação atômica sem sobrescrita.
 [Restauração operacional](./docs/RESTORE.md) valida o artefato em staging,
 publica uma raiz nova e prepara novas credenciais para o primeiro startup.
 
+O [perfil remoto HTTPS](./docs/REMOTE_HTTPS.md) usa proxy local opcional e origem
+pública explícita; o backend continua restrito a loopback e exige Bearer.
+
 O baseline HTTP com múltiplos clientes registra throughput confirmado,
 latências e rejeições por contenção. [Medição de desempenho](./docs/benchmarks/http-baseline-2026-11-12.md)
 

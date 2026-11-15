@@ -33,8 +33,9 @@ release publicada ou o MVP completo.
 - [Desempenho](./PERFORMANCE.md): medições reproduzíveis e limites conhecidos.
 
 [Backup offline](./BACKUP.md) e [restauração em nova raiz](./RESTORE.md) já
-dispõem de comandos e verificações. Acesso remoto seguro e distribuição
-permanecem pendentes. O [plano de fechamento do MVP](./MVP_REMAINING.md)
+dispõem de comandos e verificações. O [perfil HTTPS por proxy local](./REMOTE_HTTPS.md)
+foi implementado com origem explícita e validação de integração. Distribuição e
+validação operacional ampliada permanecem pendentes. O [plano de fechamento do MVP](./MVP_REMAINING.md)
 registra essas entregas e a documentação que deverá acompanhá-las.
 
 ## Entender e contribuir

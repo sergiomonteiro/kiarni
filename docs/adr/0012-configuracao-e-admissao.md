@@ -22,6 +22,7 @@ interpolação de ambiente; caminho relativo é relativo ao cwd do futuro proces
 | Campo | Default | Intervalo aceito |
 |---|---|---|
 | bind | 127.0.0.1:8711 | SocketAddr numérico loopback, porta 1–65535 |
+| public_origin | ausente | origem HTTPS canônica opcional; até 272 bytes; ADR 0030 |
 | data_dir | ./kiarni-data | string não vazia, sem controles, até 4096 bytes |
 | max_document_bytes | 1048576 | 1–1048576 |
 | max_query_bytes | 16384 | 1–16384 |
@@ -114,3 +115,7 @@ que eventos confirmados preservam o estado anterior e respeitam o teto do frame.
 
 A configuração de logs e suas reservas foram adicionadas no
 [ADR 0023](./0023-logs-de-requisicoes.md), preservando o orçamento de admissão.
+
+O [ADR 0030](./0030-https-por-proxy-local.md) acrescenta origem pública HTTPS
+opcional para proxy no mesmo host, preservando bind somente loopback. Não
+confia em Forwarded/X-Forwarded-* nem cria TLS no backend.

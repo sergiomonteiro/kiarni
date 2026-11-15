@@ -67,3 +67,5 @@ Primeiro incremento do M3/RF-08:
 - [0028 — Artefato e publicação do backup offline](./0028-artefato-de-backup-offline.md).
 
 - [0029 — Restauração validada em nova raiz](./0029-restauracao-em-nova-raiz.md).
+
+- [0030 — HTTPS por proxy local e origem pública explícita](./0030-https-por-proxy-local.md).
