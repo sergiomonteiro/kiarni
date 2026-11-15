@@ -31,3 +31,48 @@ fn unsupported_arguments_fail_without_echoing_input() {
         );
     }
 }
+
+#[cfg(unix)]
+#[test]
+fn backup_arguments_are_bounded_required_and_do_not_echo_private_input() {
+    for (args, code) in [
+        (vec!["backup"], "missing_backup_output"),
+        (
+            vec!["backup", "--data-dir", "private_path_marker"],
+            "missing_backup_output",
+        ),
+        (
+            vec![
+                "backup",
+                "--output",
+                "private_path_marker",
+                "--output",
+                "another_marker",
+            ],
+            "duplicate_backup_output",
+        ),
+        (vec!["backup", "--output"], "missing_config_value"),
+        (
+            vec![
+                "backup",
+                "--output",
+                "private_path_marker",
+                "--unknown",
+                "another_marker",
+            ],
+            "invalid_configuration",
+        ),
+    ] {
+        let output = Command::new(env!("CARGO_BIN_EXE_kiarni"))
+            .env_clear()
+            .args(args)
+            .output()
+            .unwrap();
+        assert!(!output.status.success());
+        assert!(output.stdout.is_empty());
+        assert_eq!(
+            String::from_utf8(output.stderr).unwrap(),
+            format!("kiarni: {code}\n")
+        );
+    }
+}

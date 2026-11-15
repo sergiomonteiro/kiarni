@@ -1,4 +1,4 @@
-# Dependências do protótipo M0
+# Dependências do workspace
 
 Licenças Rust verificadas nos manifests locais resolvidos por `Cargo.lock`.
 Dependências de browser constam nos manifests npm e no package-lock indicado abaixo.
@@ -15,15 +15,15 @@ As bibliotecas são incorporadas ao programa, sem serviços externos obrigatóri
 | proc-macro2, quote, syn | MIT OR Apache-2.0 |
 | unicode-ident | (MIT OR Apache-2.0) AND Unicode-3.0 |
 | r-efi (target UEFI, fora dos builds Linux/macOS) | MIT OR Apache-2.0 OR LGPL-2.1-or-later |
-| redb (somente spike) | MIT OR Apache-2.0 |
+| redb (storage e spikes) | MIT OR Apache-2.0 |
 | tempfile, bitflags, errno, once_cell (testes/exemplo) | MIT OR Apache-2.0 |
 | fastrand (testes/exemplo) | Apache-2.0 OR MIT |
-| rustix, linux-raw-sys (spikes/testes) | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
+| rustix, linux-raw-sys (Unix, spikes/testes) | Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT |
 | windows-link, windows-sys (targets Windows) | MIT OR Apache-2.0 |
-| sha2, digest, crypto-common, block-buffer, cpufeatures, hybrid-array, typenum (auth spike) | MIT OR Apache-2.0 |
-| const-oid, zeroize (auth spike) | Apache-2.0 OR MIT |
-| subtle (auth spike) | BSD-3-Clause |
-| httparse 1.10.1 (transport spike) | MIT OR Apache-2.0 |
+| sha2, digest, crypto-common, block-buffer, cpufeatures, hybrid-array, typenum (auth/backup) | MIT OR Apache-2.0 |
+| const-oid, zeroize (auth) | Apache-2.0 OR MIT |
+| subtle (auth) | BSD-3-Clause |
+| httparse 1.10.1 (HTTP e transporte) | MIT OR Apache-2.0 |
 | signal-hook 0.3.18, signal-hook-registry 1.4.8 (shutdown Unix) | MIT OR Apache-2.0 |
 | playwright, playwright-core 1.57.0 (testes browser) | Apache-2.0 |
 | fsevents 2.3.2 (npm opcional macOS, metadata do lockfile) | MIT |
@@ -50,3 +50,8 @@ artefatos das ferramentas, se isso vier a ocorrer.
 
 O servidor habilita também `rustix/event` para esperar prontidão do listener
 com poll. A versão 1.1.6 e as licenças já constam no inventário acima.
+
+O comando de backup no servidor usa diretamente `sha2 0.11` (hashes SHA-256) e
+`getrandom 0.4` (nome de staging). Ambos já estavam no grafo de auth e tiveram
+suas licenças MIT OR Apache-2.0 verificadas nos manifests locais resolvidos.
+Não entram novos pacotes transitivos nem serviços obrigatórios.

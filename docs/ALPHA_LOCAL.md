@@ -122,3 +122,11 @@ A interface continua sem edição de documentos.
 Use `--log-level off|error|warn|info` (default info). Os registros JSON em
 stderr permitem correlacionar request ID, operação e duração sem payloads ou
 credenciais. [Semântica e limites de saída](./REQUEST_LOGS.md).
+
+## Backup offline
+
+Com o servidor parado, `kiarni backup --data-dir ./data --output ./backups/primeiro`
+exporta um artefato consistente para destino novo. Prepare antes um pai privado
+para backups. [Comando, segurança, integridade e interrupções](./BACKUP.md).
+Restauração operacional continua na issue #2; não a simule iniciando o servidor
+diretamente no artefato.

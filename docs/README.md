@@ -32,8 +32,8 @@ release publicada ou o MVP completo.
   perdas sob backpressure.
 - [Desempenho](./PERFORMANCE.md): medições reproduzíveis e limites conhecidos.
 
-Backup/restauração operacional, acesso remoto seguro e distribuição ainda não
-têm guias de funcionalidades concluídas. O [plano de fechamento do MVP](./MVP_REMAINING.md)
+[Backup offline](./BACKUP.md) já dispõe de comando e verificações. Restauração
+operacional, acesso remoto seguro e distribuição permanecem pendentes. O [plano de fechamento do MVP](./MVP_REMAINING.md)
 registra essas entregas e a documentação que deverá acompanhá-las.
 
 ## Entender e contribuir

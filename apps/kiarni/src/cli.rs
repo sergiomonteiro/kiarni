@@ -103,3 +103,33 @@ pub fn auth(mut args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std:
     }
     Ok(())
 }
+
+pub fn backup(args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std::error::Error>> {
+    let mut args = args;
+    let mut output = None;
+    let mut config = Vec::new();
+    while let Some(key) = args.next() {
+        if config.len() >= 64 {
+            return Err("config_source_too_large".into());
+        }
+        let value = args.next().ok_or("missing_config_value")?;
+        if key == "--output" {
+            if output.replace(value).is_some() {
+                return Err("duplicate_backup_output".into());
+            }
+        } else {
+            config.push(key);
+            config.push(value);
+        }
+    }
+    let output = output.ok_or("missing_backup_output")?;
+    let summary = kiarni_server::create_backup(
+        configuration(config.into_iter())?,
+        std::path::Path::new(&output),
+    )?;
+    println!(
+        "Backup concluído ({} coleções, {} documentos).",
+        summary.collections, summary.documents
+    );
+    Ok(())
+}

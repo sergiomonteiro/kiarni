@@ -254,6 +254,7 @@ dependencies = [
 name = "kiarni-server"
 version = "0.1.0"
 dependencies = [
+ "getrandom",
  "httparse",
  "kiarni-auth",
  "kiarni-config",
@@ -265,6 +266,7 @@ dependencies = [
  "rustix",
  "serde",
  "serde_json",
+ "sha2",
  "signal-hook",
  "tempfile",
  "zeroize",

@@ -1,5 +1,7 @@
 //! Local HTTP server lifecycle and request handlers.
 #![cfg(unix)]
+mod backup;
+pub use backup::create_backup;
 mod bootstrap;
 mod buffers;
 pub use buffers::buffer_plan_bytes;

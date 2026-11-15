@@ -241,7 +241,10 @@ Parar novos requests, encerrar feeds com sinalização quando possível, aguarda
 
 ### Backup e restauração
 
-Definir mecanismo de snapshot consistente de acordo com o storage escolhido; documentar restauração e testar. Não recomendar cópia arbitrária de arquivo aberto sem garantia de consistência. Documentar também limitações do modo single-node.
+Backup offline implementado em `kiarni backup`: lock exclusivo, um snapshot,
+exportação em lotes para novo store, hashes e publicação atômica sem sobrescrita.
+[Contrato e evidências](./docs/BACKUP.md), [ADR 0028](./docs/adr/0028-artefato-de-backup-offline.md).
+Restauração operacional para nova raiz e novas credenciais permanece na issue #2. Não recomendar cópia arbitrária de arquivo aberto sem garantia de consistência. Documentar também limitações do modo single-node.
 
 ### Distribuição
 

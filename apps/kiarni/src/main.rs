@@ -12,9 +12,18 @@ fn main() -> ExitCode {
         }
         (None, None) => {
             println!("Uso: kiarni --version | kiarni serve [--data-dir CAMINHO]");
+            println!("Backup: kiarni backup --data-dir ORIGEM --output DESTINO");
             println!("Auth: kiarni auth rotate|revoke-all [--data-dir CAMINHO]");
             ExitCode::SUCCESS
         }
+        #[cfg(unix)]
+        (Some(arg), next) if arg == "backup" => match cli::backup(next.into_iter().chain(args)) {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("kiarni: {error}");
+                ExitCode::FAILURE
+            }
+        },
         #[cfg(unix)]
         (Some(arg), next) if arg == "auth" => match cli::auth(next.into_iter().chain(args)) {
             Ok(()) => ExitCode::SUCCESS,

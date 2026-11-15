@@ -35,6 +35,10 @@ payloads. O [dashboard local foi revisado](./docs/DASHBOARD_REVIEW.md); M3 e
 release continuam abertos. [Revisão do gate M1](./docs/M1_REVIEW.md) e
 [revisão do gate M2](./docs/M2_REVIEW.md).
 
+O [backup offline](./docs/BACKUP.md) exporta um snapshot consistente para destino
+novo, sem credenciais, com hashes e publicação atômica sem sobrescrita.
+Restauração operacional permanece pendente na issue #2.
+
 O baseline HTTP com múltiplos clientes registra throughput confirmado,
 latências e rejeições por contenção. [Medição de desempenho](./docs/benchmarks/http-baseline-2026-11-12.md)
 

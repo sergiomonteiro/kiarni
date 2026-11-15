@@ -11,6 +11,8 @@ profiling = ["kiarni-storage/profiling"]
 
 [target.'cfg(unix)'.dependencies]
 httparse = "1.10"
+sha2 = "0.11"
+getrandom = "0.4"
 kiarni-auth = { path = "../auth" }
 kiarni-config = { path = "../config" }
 kiarni-core = { path = "../core" }

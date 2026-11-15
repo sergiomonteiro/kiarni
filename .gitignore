@@ -5,3 +5,8 @@
 /kiarni-data.credentials/
 /spikes/transport/node_modules/
 __pycache__/
+
+# Offline backup artifacts and interrupted private staging.
+/backups/
+.kiarni-backup-*/
+*.redb

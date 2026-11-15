@@ -13,9 +13,10 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 2. Checkpoint publicado: [5aea314](https://github.com/sergiomonteiro/kiarni/commit/5aea314),
    com implementação, testes, ADRs, spikes e evidências locais. Pendências
    registradas nas issues abaixo. Esse checkpoint não aprova uma release.
-3. Implementar backup/restauração operacional conforme
-   [ADR 0013](./adr/0013-backup-e-restauracao.md), com integridade, interrupção,
-   publicação segura e novas credenciais após restauração.
+3. [Backup offline implementado](./BACKUP.md), conforme
+   [ADR 0013](./adr/0013-backup-e-restauracao.md), com hashes, interrupção e
+   publicação sem sobrescrita. Próximo incremento: restauração operacional
+   para raiz nova, validação do artefato e novas credenciais (issue #2).
 4. Definir e validar operação remota segura, configuração de exposição e
    HTTPS/proxy. Loopback permanece o perfil atual; não recomendar HTTP público.
 5. Preparar distribuição: binários, Docker, volume/healthcheck, execução não-root,

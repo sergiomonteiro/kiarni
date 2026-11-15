@@ -63,3 +63,5 @@ Primeiro incremento do M3/RF-08:
 - [0026 — Métricas de primitivas e commits de storage](./0026-metricas-de-storage.md).
 
 - [0027 — Erros recentes em memória](./0027-erros-recentes.md).
+
+- [0028 — Artefato e publicação do backup offline](./0028-artefato-de-backup-offline.md).

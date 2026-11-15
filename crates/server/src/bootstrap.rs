@@ -187,17 +187,7 @@ impl Root {
             {
                 Store::create(&path)?
             }
-            Ok(_) => {
-                let directory = private_directory(&path)?;
-                for name in ["format.json", "data.redb"] {
-                    let file = File::from(
-                        unix::openat(&directory, name, OFlags::RDONLY | SAFE_OPEN, Mode::empty())
-                            .map_err(|_| "incomplete_store")?,
-                    );
-                    private_file(&file)?;
-                }
-                Store::open(&path)?
-            }
+            Ok(_) => self.open_existing_store()?,
             Err(_) => return Err("missing_store".into()),
         };
         if phase == Phase::InitializingStore {
@@ -218,6 +208,26 @@ impl Root {
             self.publish(Phase::Initialized)?;
         }
         Ok((store, startup))
+    }
+
+    fn open_existing_store(&self) -> Result<Store> {
+        let path = self.path.join("store");
+        let directory = private_directory(&path)?;
+        for name in ["format.json", "data.redb"] {
+            let file = File::from(
+                unix::openat(&directory, name, OFlags::RDONLY | SAFE_OPEN, Mode::empty())
+                    .map_err(|_| "incomplete_store")?,
+            );
+            private_file(&file)?;
+        }
+        Ok(Store::open(&path)?)
+    }
+
+    pub fn backup_store(&self) -> Result<Store> {
+        if self.phase()? != Some(Phase::Initialized) {
+            return Err("installation_not_initialized".into());
+        }
+        self.open_existing_store()
     }
 
     pub fn update_auth(&self, now: u64, rotate: bool) -> Result<Startup> {

@@ -69,3 +69,10 @@ transições intermediárias de um ID repetido; no-op/rejeição não captura. O
 after é compartilhado com PreparedWrite, evitando uma segunda imagem retida.
 `delete_document_captured` devolve o estado removido somente após commit. Nenhum
 destes métodos publica eventos: a responsabilidade pós-commit é do writer.
+
+## Exportação offline
+
+`Store::export_snapshot` captura uma transação de leitura e exporta as três
+tabelas para diretório novo, com lotes limitados, validação de referências e
+JSON bruto. O chamador é responsável por staging/publicação e lock operacional.
+O servidor compõe isso no [comando de backup](../../docs/BACKUP.md).

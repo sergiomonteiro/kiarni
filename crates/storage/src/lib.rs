@@ -12,6 +12,8 @@ use serde::{Deserialize, Serialize};
 #[cfg(all(unix, feature = "profiling"))]
 pub mod profiling;
 
+mod backup;
+pub use backup::ExportSummary;
 mod counts;
 mod telemetry;
 pub use telemetry::STATE_BYTES as TELEMETRY_STATE_BYTES;

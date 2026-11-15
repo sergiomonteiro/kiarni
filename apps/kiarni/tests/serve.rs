@@ -15,6 +15,8 @@ use std::{
 // Serialize server scenarios to prevent another scenario from reusing that port.
 // Concurrency within a scenario still uses independent clients/threads.
 static SERVER_SCENARIOS: std::sync::Mutex<()> = std::sync::Mutex::new(());
+#[path = "serve/backup.rs"]
+mod backup;
 #[path = "serve/counts.rs"]
 mod counts;
 #[path = "serve/dashboard.rs"]
