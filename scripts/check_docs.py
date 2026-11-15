@@ -27,7 +27,8 @@ def anchors(text):
     return result
 
 def check():
-    paths = subprocess.check_output(['rg', '--files', '--hidden', '-g', '*.md', '-g', '!.git', '-g', '!target', '-g', '!node_modules'], cwd=ROOT, text=True).splitlines()
+    files = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z'], cwd=ROOT).decode('utf-8').split('\0')
+    paths = [name for name in files if name.endswith('.md')]
     errors, links = [], 0
     for name in sorted(paths):
         source = ROOT / name
