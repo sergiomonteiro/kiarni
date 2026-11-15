@@ -65,3 +65,5 @@ Primeiro incremento do M3/RF-08:
 - [0027 — Erros recentes em memória](./0027-erros-recentes.md).
 
 - [0028 — Artefato e publicação do backup offline](./0028-artefato-de-backup-offline.md).
+
+- [0029 — Restauração validada em nova raiz](./0029-restauracao-em-nova-raiz.md).

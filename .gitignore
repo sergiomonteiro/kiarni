@@ -10,3 +10,8 @@ __pycache__/
 /backups/
 .kiarni-backup-*/
 *.redb
+
+# Restored installations and interrupted restore staging.
+/restores/
+.kiarni-restore-*/
+*.credentials/

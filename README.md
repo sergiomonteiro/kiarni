@@ -37,7 +37,8 @@ release continuam abertos. [Revisão do gate M1](./docs/M1_REVIEW.md) e
 
 O [backup offline](./docs/BACKUP.md) exporta um snapshot consistente para destino
 novo, sem credenciais, com hashes e publicação atômica sem sobrescrita.
-Restauração operacional permanece pendente na issue #2.
+[Restauração operacional](./docs/RESTORE.md) valida o artefato em staging,
+publica uma raiz nova e prepara novas credenciais para o primeiro startup.
 
 O baseline HTTP com múltiplos clientes registra throughput confirmado,
 latências e rejeições por contenção. [Medição de desempenho](./docs/benchmarks/http-baseline-2026-11-12.md)

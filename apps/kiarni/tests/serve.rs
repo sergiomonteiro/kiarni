@@ -29,6 +29,8 @@ mod logs;
 mod query_metrics;
 #[path = "serve/recent_errors.rs"]
 mod recent_errors;
+#[path = "serve/restore.rs"]
+mod restore;
 #[path = "serve/status.rs"]
 mod status;
 #[path = "serve/storage_metrics.rs"]

@@ -55,3 +55,8 @@ O comando de backup no servidor usa diretamente `sha2 0.11` (hashes SHA-256) e
 `getrandom 0.4` (nome de staging). Ambos já estavam no grafo de auth e tiveram
 suas licenças MIT OR Apache-2.0 verificadas nos manifests locais resolvidos.
 Não entram novos pacotes transitivos nem serviços obrigatórios.
+
+Os testes de restauração usam `redb =4.5.0` como dependência de desenvolvimento
+do servidor para construir corrupção estrutural com hashes recalculados. É a
+mesma versão/licença já usada no storage; não adiciona dependência de runtime ou
+pacotes transitivos novos.

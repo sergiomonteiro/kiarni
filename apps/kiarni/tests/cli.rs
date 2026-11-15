@@ -76,3 +76,48 @@ fn backup_arguments_are_bounded_required_and_do_not_echo_private_input() {
         );
     }
 }
+
+#[cfg(unix)]
+#[test]
+fn restore_requires_unique_source_and_does_not_echo_private_arguments() {
+    for (args, code) in [
+        (vec!["restore"], "missing_restore_source"),
+        (
+            vec!["restore", "--data-dir", "private_marker"],
+            "missing_restore_source",
+        ),
+        (vec!["restore", "--from"], "missing_config_value"),
+        (
+            vec![
+                "restore",
+                "--from",
+                "private_marker",
+                "--from",
+                "another_marker",
+            ],
+            "duplicate_restore_source",
+        ),
+        (
+            vec![
+                "restore",
+                "--from",
+                "private_marker",
+                "--unknown",
+                "another_marker",
+            ],
+            "invalid_configuration",
+        ),
+    ] {
+        let output = Command::new(env!("CARGO_BIN_EXE_kiarni"))
+            .env_clear()
+            .args(args)
+            .output()
+            .unwrap();
+        assert!(!output.status.success());
+        assert!(output.stdout.is_empty());
+        assert_eq!(
+            String::from_utf8(output.stderr).unwrap(),
+            format!("kiarni: {code}\n")
+        );
+    }
+}

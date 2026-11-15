@@ -27,6 +27,7 @@ signal-hook = { version = "0.3.18", default-features = false }
 zeroize = "1.9"
 
 [dev-dependencies]
+redb = "=4.5.0"
 tempfile = "3.27"
 
 [lints]

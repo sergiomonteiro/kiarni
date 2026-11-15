@@ -6,7 +6,8 @@ Implementado conforme [ADR 0013](./adr/0013-backup-e-restauracao.md) e
 
 ## Executar
 
-Encerre o servidor e aguarde sua saída. Prepare um diretório de backups sob seu
+Encerre o servidor e aguarde sua saída: Ctrl+C no terminal ou SIGTERM
+(`kill -TERM PID`, substituindo PID pelo número do processo) em segundo plano. Prepare um diretório de backups sob seu
 usuário, sem escrita por grupo/outros. O pai deve existir; o destino deve ser novo.
 Na raiz do checkout, usando o binário de release:
 
@@ -66,11 +67,9 @@ Abertura da origem pode executar recovery do engine, autorizado pelo manifesto;
 backup não promete que nenhum byte físico da origem seja tocado.
 
 Não abra `store/data.redb` do artefato com ferramentas de escrita: isso pode mudar
-seu hash. Não inicie `serve --data-dir` no artefato. Restauração operacional para
-nova raiz, validação do artefato e emissão de novas credenciais são a
-[issue #2](https://github.com/sergiomonteiro/kiarni/issues/2), ainda não implementada.
-A reabertura do store exportado é testada; isso não equivale a uma restauração
-operacional concluída.
+seu hash. Não inicie `serve --data-dir` no artefato. A [restauração operacional](./RESTORE.md) usa
+`kiarni restore --from BACKUP --data-dir NOVA_RAIZ`, valida o artefato e prepara
+uma instalação independente. Novas credenciais são emitidas no primeiro `serve`.
 
 ## Falhas e interrupção
 

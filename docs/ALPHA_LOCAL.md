@@ -128,5 +128,6 @@ credenciais. [Semântica e limites de saída](./REQUEST_LOGS.md).
 Com o servidor parado, `kiarni backup --data-dir ./data --output ./backups/primeiro`
 exporta um artefato consistente para destino novo. Prepare antes um pai privado
 para backups. [Comando, segurança, integridade e interrupções](./BACKUP.md).
-Restauração operacional continua na issue #2; não a simule iniciando o servidor
-diretamente no artefato.
+Use `kiarni restore --from BACKUP --data-dir NOVA_RAIZ` para preparar uma
+instalação independente. [Restauração, novas credenciais e interrupções](./RESTORE.md).
+Não inicie o servidor diretamente no artefato.

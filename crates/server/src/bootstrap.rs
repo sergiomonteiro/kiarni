@@ -210,7 +210,7 @@ impl Root {
         Ok((store, startup))
     }
 
-    fn open_existing_store(&self) -> Result<Store> {
+    fn existing_store_path(&self) -> Result<PathBuf> {
         let path = self.path.join("store");
         let directory = private_directory(&path)?;
         for name in ["format.json", "data.redb"] {
@@ -220,7 +220,11 @@ impl Root {
             );
             private_file(&file)?;
         }
-        Ok(Store::open(&path)?)
+        Ok(path)
+    }
+
+    fn open_existing_store(&self) -> Result<Store> {
+        Ok(Store::open(&self.existing_store_path()?)?)
     }
 
     pub fn backup_store(&self) -> Result<Store> {
@@ -228,6 +232,22 @@ impl Root {
             return Err("installation_not_initialized".into());
         }
         self.open_existing_store()
+    }
+
+    pub fn prepare_restored(&self) -> Result<()> {
+        if self.phase()?.is_some() {
+            return Err("restore_root_not_fresh".into());
+        }
+        for entry in fs::read_dir(&self.path).map_err(|_| "data_directory_unavailable")? {
+            let name = entry.map_err(|_| "data_directory_unavailable")?.file_name();
+            if name != "store" && name != LOCK {
+                return Err("restore_root_not_fresh".into());
+            }
+        }
+        // Restore has fully validated, closed and synced this new store. Only
+        // check its private files here; do not reopen the engine after that sync.
+        self.existing_store_path()?;
+        self.publish(Phase::StoreReady)
     }
 
     pub fn update_auth(&self, now: u64, rotate: bool) -> Result<Startup> {

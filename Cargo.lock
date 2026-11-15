@@ -263,6 +263,7 @@ dependencies = [
  "kiarni-feeds",
  "kiarni-http",
  "kiarni-storage",
+ "redb",
  "rustix",
  "serde",
  "serde_json",

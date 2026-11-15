@@ -1,6 +1,6 @@
 # Plano de fechamento do MVP
 
-Atualizado em 2026-11-14, após o fechamento funcional do dashboard local. M1 e M2 foram validados
+Atualizado em 2026-11-14, após backup e restauração operacionais. M1 e M2 foram validados
 localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 [PRD](../KIARNI_PRD_v0.1.md), sem ampliar o escopo ou aprovar o gate de release.
 
@@ -15,8 +15,9 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
    registradas nas issues abaixo. Esse checkpoint não aprova uma release.
 3. [Backup offline implementado](./BACKUP.md), conforme
    [ADR 0013](./adr/0013-backup-e-restauracao.md), com hashes, interrupção e
-   publicação sem sobrescrita. Próximo incremento: restauração operacional
-   para raiz nova, validação do artefato e novas credenciais (issue #2).
+   publicação sem sobrescrita. [Restauração operacional implementada](./RESTORE.md):
+   artefato validado, raiz nova e novas credenciais no primeiro serve. As issues
+   #1/#2 não aprovam o gate de release.
 4. Definir e validar operação remota segura, configuração de exposição e
    HTTPS/proxy. Loopback permanece o perfil atual; não recomendar HTTP público.
 5. Preparar distribuição: binários, Docker, volume/healthcheck, execução não-root,

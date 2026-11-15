@@ -12,7 +12,7 @@ use std::{
     path::Path,
 };
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
-const READ: OFlags = OFlags::RDONLY
+pub(super) const READ: OFlags = OFlags::RDONLY
     .union(OFlags::NOFOLLOW)
     .union(OFlags::CLOEXEC)
     .union(OFlags::NONBLOCK);
@@ -22,10 +22,10 @@ enum Checkpoint {
     AfterPublish,
 }
 #[derive(Serialize)]
-struct FileRecord {
-    path: &'static str,
-    bytes: String,
-    sha256: String,
+pub(super) struct FileRecord {
+    pub(super) path: &'static str,
+    pub(super) bytes: String,
+    pub(super) sha256: String,
 }
 #[derive(Serialize)]
 struct Manifest {
@@ -38,7 +38,7 @@ struct Manifest {
     document_bytes: String,
     files: [FileRecord; 2],
 }
-fn hex(bytes: &[u8]) -> String {
+pub(super) fn hex(bytes: &[u8]) -> String {
     const DIGITS: &[u8; 16] = b"0123456789abcdef";
     let mut text = String::with_capacity(bytes.len() * 2);
     for byte in bytes {
@@ -47,7 +47,7 @@ fn hex(bytes: &[u8]) -> String {
     }
     text
 }
-fn digest(root: &Path, name: &'static str) -> Result<FileRecord> {
+pub(super) fn digest(root: &Path, name: &'static str) -> Result<FileRecord> {
     let mut file = File::from(
         unix::open(root.join(name), READ, Mode::empty()).map_err(|_| "backup_file_unavailable")?,
     );
@@ -84,25 +84,30 @@ fn digest(root: &Path, name: &'static str) -> Result<FileRecord> {
     target_os = "macos",
     target_os = "ios"
 ))]
+pub(super) fn publish_new(
+    parent: &File,
+    staging: &str,
+    name: &std::ffi::OsStr,
+) -> std::result::Result<(), rustix::io::Errno> {
+    unix::renameat_with(parent, staging, parent, name, unix::RenameFlags::NOREPLACE)
+}
 fn publish(parent: &File, staging: &str, name: &std::ffi::OsStr) -> Result<()> {
-    unix::renameat_with(parent, staging, parent, name, unix::RenameFlags::NOREPLACE).map_err(
-        |error| {
-            let code = if matches!(
-                error,
-                rustix::io::Errno::EXIST | rustix::io::Errno::NOTEMPTY
-            ) {
-                "backup_destination_exists"
-            } else if matches!(
-                error,
-                rustix::io::Errno::NOSYS | rustix::io::Errno::NOTSUP | rustix::io::Errno::INVAL
-            ) {
-                "backup_publication_unsupported"
-            } else {
-                "backup_publish_failed"
-            };
-            code.into()
-        },
-    )
+    publish_new(parent, staging, name).map_err(|error| {
+        let code = if matches!(
+            error,
+            rustix::io::Errno::EXIST | rustix::io::Errno::NOTEMPTY
+        ) {
+            "backup_destination_exists"
+        } else if matches!(
+            error,
+            rustix::io::Errno::NOSYS | rustix::io::Errno::NOTSUP | rustix::io::Errno::INVAL
+        ) {
+            "backup_publication_unsupported"
+        } else {
+            "backup_publish_failed"
+        };
+        code.into()
+    })
 }
 #[cfg(not(any(
     target_os = "linux",
@@ -110,8 +115,12 @@ fn publish(parent: &File, staging: &str, name: &std::ffi::OsStr) -> Result<()> {
     target_os = "macos",
     target_os = "ios"
 )))]
-fn publish(_: &File, _: &str, _: &std::ffi::OsStr) -> Result<()> {
-    Err("backup_publication_unsupported".into())
+pub(super) fn publish_new(
+    _: &File,
+    _: &str,
+    _: &std::ffi::OsStr,
+) -> std::result::Result<(), rustix::io::Errno> {
+    Err(rustix::io::Errno::NOSYS)
 }
 
 pub fn create_backup(config: Config, destination: &Path) -> Result<ExportSummary> {

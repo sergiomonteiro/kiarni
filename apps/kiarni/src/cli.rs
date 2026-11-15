@@ -133,3 +133,33 @@ pub fn backup(args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std::e
     );
     Ok(())
 }
+
+pub fn restore(args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std::error::Error>> {
+    let mut args = args;
+    let mut source = None;
+    let mut config = Vec::new();
+    while let Some(key) = args.next() {
+        if config.len() >= 64 {
+            return Err("config_source_too_large".into());
+        }
+        let value = args.next().ok_or("missing_config_value")?;
+        if key == "--from" {
+            if source.replace(value).is_some() {
+                return Err("duplicate_restore_source".into());
+            }
+        } else {
+            config.push(key);
+            config.push(value);
+        }
+    }
+    let source = source.ok_or("missing_restore_source")?;
+    let summary = kiarni_server::restore_backup(
+        configuration(config.into_iter())?,
+        std::path::Path::new(&source),
+    )?;
+    println!(
+        "Restauração concluída (coleções: {}; documentos: {}). Inicie serve na nova raiz para obter a nova credencial.",
+        summary.collections, summary.documents
+    );
+    Ok(())
+}

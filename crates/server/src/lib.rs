@@ -16,6 +16,8 @@ mod metrics;
 mod profiling;
 mod query_metrics;
 mod recent_errors;
+mod restore;
+pub use restore::restore_backup;
 pub mod writer;
 
 use kiarni_auth::Authority;

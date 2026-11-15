@@ -244,7 +244,10 @@ Parar novos requests, encerrar feeds com sinalização quando possível, aguarda
 Backup offline implementado em `kiarni backup`: lock exclusivo, um snapshot,
 exportação em lotes para novo store, hashes e publicação atômica sem sobrescrita.
 [Contrato e evidências](./docs/BACKUP.md), [ADR 0028](./docs/adr/0028-artefato-de-backup-offline.md).
-Restauração operacional para nova raiz e novas credenciais permanece na issue #2. Não recomendar cópia arbitrária de arquivo aberto sem garantia de consistência. Documentar também limitações do modo single-node.
+Restauração em `kiarni restore` confere hashes dos bytes copiados e estrutura,
+publica entrega vazia e raiz nova em store_ready sem sobrescrita; primeiro serve
+emite novas credenciais. As duas publicações têm janelas explícitas de
+interrupção. [Guia](./docs/RESTORE.md), [ADR 0029](./docs/adr/0029-restauracao-em-nova-raiz.md). Não recomendar cópia arbitrária de arquivo aberto sem garantia de consistência. Documentar também limitações do modo single-node.
 
 ### Distribuição
 
