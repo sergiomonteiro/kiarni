@@ -87,3 +87,8 @@ O cenário TCP de consumidor lento também revelou que o fixture precisava
 normalizar explicitamente sockets aceitos para I/O bloqueante em macOS, como o
 produto já faz. Esse ajuste no spike preserva os deadlines e evita truncar
 frames do consumidor rápido por WouldBlock imediato.
+
+A prova de timeout TCP do spike foi isolada de overflow: janela de recepção
+configurada antes de conectar e no máximo um evento pendente por trás da
+escrita bloqueada. Mantém seis commits, cliente rápido e exige zero overflows,
+evita que outra política de encerramento satisfaça ou impeça a observação.

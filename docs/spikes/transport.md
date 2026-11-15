@@ -145,3 +145,9 @@ socket aceito manteve modo não bloqueante do listener. O fixture agora define
 explicitamente modo bloqueante antes de ler headers/escrever frames, como o
 servidor do produto já fazia. Mantém os deadlines absolutos e o teste de socket
 lento real; não ignora WouldBlock nem aumenta prazos para ocultar falhas.
+
+O teste de timeout passou a configurar SO_RCVBUF antes de conectar e limitar
+a publicação a um evento pendente por trás da escrita bloqueada. Sem essa
+coordenação, o overflow da fila podia encerrar o assinante antes de o prazo
+do socket vencer. O cenário agora exige timeout e zero overflows, enquanto
+seis commits e o cliente rápido continuam. O teste separado verifica overflow.

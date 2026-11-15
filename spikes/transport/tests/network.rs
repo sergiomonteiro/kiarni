@@ -54,13 +54,24 @@ impl Fixture {
         extra: &str,
         receive_buffer: Option<usize>,
     ) -> Client {
-        let mut stream = TcpStream::connect(self.server.address()).unwrap();
+        let mut stream = if let Some(bytes) = receive_buffer {
+            // Advertise the deliberately small receive window during connect,
+            // rather than shrinking a window already negotiated by TCP.
+            let socket = rustix::net::socket(
+                rustix::net::AddressFamily::INET,
+                rustix::net::SocketType::STREAM,
+                Some(rustix::net::ipproto::TCP),
+            )
+            .unwrap();
+            rustix::net::sockopt::set_socket_recv_buffer_size(&socket, bytes).unwrap();
+            rustix::net::connect(&socket, &self.server.address()).unwrap();
+            TcpStream::from(socket)
+        } else {
+            TcpStream::connect(self.server.address()).unwrap()
+        };
         stream
             .set_read_timeout(Some(Duration::from_secs(3)))
             .unwrap();
-        if let Some(bytes) = receive_buffer {
-            rustix::net::sockopt::set_socket_recv_buffer_size(&stream, bytes).unwrap();
-        }
         let mut request = Zeroizing::new(format!("GET {path} HTTP/1.1\r\nHost: {}\r\nAccept: text/event-stream\r\nConnection: close\r\n", self.server.address()).into_bytes());
         if authenticated {
             request.extend_from_slice(&self.header);
@@ -265,6 +276,14 @@ fn tcp_slow_consumer_hits_a_write_deadline_without_stalling_the_writer_or_fast_c
             fast.event("change")
                 .contains(&format!("\"sequence\":\"{}\"", i + 1))
         );
+        // Keep at most one event queued behind a blocked write. Otherwise the
+        // overflow policy can close the slow stream before its socket deadline,
+        // depending on kernel buffering and scheduler speed.
+        wait(|| {
+            let counters = fixture.server.counters().snapshot();
+            counters["write_timeouts"].as_u64().unwrap() >= 1
+                || counters["event_writes"].as_u64().unwrap() >= 2 * (i + 1)
+        });
     }
     assert!(start.elapsed() < Duration::from_secs(3));
     wait(|| {
@@ -274,6 +293,7 @@ fn tcp_slow_consumer_hits_a_write_deadline_without_stalling_the_writer_or_fast_c
             >= 1
     });
     wait(|| fixture.server.counters().snapshot()["streams"] == 1);
+    assert_eq!(fixture.server.counters().snapshot()["overflows"], 0);
     assert_eq!(
         fixture
             .server
