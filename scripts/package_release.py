@@ -219,7 +219,7 @@ def build(target, output, allow_dirty=False):
 
 Target: {target}. Validated baseline: {TARGETS[target]['baseline']}.
 Source commit: {revision}. Dirty local build: {str(dirty).lower()}.
-This is not an approved stable release or a completed MVP.
+Experimental development artifact; no stable release or production certification.
 
 Verify the archive SHA-256 using its adjacent .sha256 file before extraction:
 Linux: sha256sum -c ARCHIVE.tar.gz.sha256

@@ -1,7 +1,8 @@
 # Experimentar a alpha reativa local
 
 O workspace já permite experimentar banco JSON persistente e changefeeds de
-coleção. É uma alpha local: não é uma release publicada nem o MVP completo.
+coleção. É uma alpha experimental, com [revisão técnica do MVP](./RELEASE_REVIEW.md);
+não é release estável publicada.
 Métricas HTTP, de consultas, storage e feeds estão em `/v1/metrics`; o
 [dashboard local](./DASHBOARD.md) inclui erros recentes. Validação de
 operação/distribuição continua no roadmap. A avaliação de CPU/memória e a regressão de leitura registrada

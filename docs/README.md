@@ -1,6 +1,7 @@
 # Documentação do Kiarni
 
-Kiarni está em alpha local: M1 e M2 validados em Linux, M3 em desenvolvimento.
+Kiarni é uma alpha experimental. A [revisão M3](./RELEASE_REVIEW.md) registra
+o aceite técnico condicionado à CI final e seus limites.
 Os guias abaixo descrevem o comportamento implementado; não representam uma
 release publicada ou o MVP completo.
 
@@ -50,6 +51,8 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 
 ## Entender e contribuir
 
+- [Avaliação de índice secundário](./spikes/secondary-index.md): correção, custos e decisão RF-04.
+- [Canal e compatibilidade pré-1.0](./RELEASE_POLICY.md).
 - [Contribuir](../CONTRIBUTING.md): ambiente, workspace, testes, fixtures e PRs.
 - [PRD](../KIARNI_PRD_v0.1.md): requisitos e critérios de aceite.
 - [Arquitetura](../ARCHITECTURE.md): componentes e invariantes.
@@ -59,4 +62,4 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 
 ADRs e relatórios de spikes preservam contexto histórico; não substituem o guia
 de uso do produto atual. Use as referências API/CLI acima para o contrato atual
-e o guia de contribuição para executar as verificações. O gate M3 e a instalação limpa continuam pendentes.
+e o guia de contribuição para executar as verificações. A política do [canal pré-1.0](./RELEASE_POLICY.md) separa esse aceite de release estável.

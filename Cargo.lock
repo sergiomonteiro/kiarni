@@ -291,6 +291,7 @@ name = "kiarni-storage-spike"
 version = "0.1.0"
 dependencies = [
  "kiarni-core",
+ "kiarni-engine",
  "kiarni-http",
  "redb",
  "serde_json",

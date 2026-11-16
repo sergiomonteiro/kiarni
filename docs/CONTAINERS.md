@@ -3,7 +3,8 @@
 Entrega experimental do RF-10/M3, [issue #5](https://github.com/sergiomonteiro/kiarni/issues/5)
 e [ADR 0032](./adr/0032-container-single-node.md). O mesmo binário fornece banco,
 dashboard e healthcheck. Não há cluster, replicação ou alta disponibilidade.
-O gate de release do MVP permanece aberto.
+O [aceite técnico M3](./RELEASE_REVIEW.md) tem escopo experimental; publicação
+estável/registry continua ação explícita separada.
 
 ## Plataforma e imagem
 

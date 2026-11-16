@@ -1,7 +1,7 @@
 # Referência da API HTTP
 
-Contratos implementados da alpha, RF-06/07/10, M3. Não representa release estável
-ou aprovação do MVP. Endereço padrão: `http://127.0.0.1:8711`.
+Contratos implementados da alpha, RF-06/07/10, M3. O [aceite técnico](./RELEASE_REVIEW.md)
+e a [política pré-1.0](./RELEASE_POLICY.md) não representam release estável. Endereço padrão: `http://127.0.0.1:8711`.
 [Primeiro uso](./ALPHA_LOCAL.md), [CLI/configuração](./CLI.md),
 [diagnóstico](./TROUBLESHOOTING.md) e [documentação geral](./README.md).
 

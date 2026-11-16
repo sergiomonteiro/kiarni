@@ -1,8 +1,9 @@
 # Binários de desenvolvimento
 
 O CI prepara arquivos nativos experimentais para o RF-10/M3. Eles identificam
-versão e commit; `0.1.0` no executável ainda não significa release estável ou
-MVP aprovado. A publicação de uma release permanece sujeita ao gate M3.
+versão e commit; `0.1.0` no executável não significa release estável. O
+[aceite técnico M3](./RELEASE_REVIEW.md) e a [política pré-1.0](./RELEASE_POLICY.md)
+registram o canal experimental e separam publicação futura do gate técnico.
 Decisão e limites: [ADR 0031](./adr/0031-artefatos-nativos-verificados.md).
 
 ## Plataformas da matriz

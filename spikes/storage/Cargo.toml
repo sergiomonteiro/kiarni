@@ -7,6 +7,7 @@ publish = false
 description = "Disposable M0 persistence experiment; not a supported storage API"
 
 [dependencies]
+kiarni-engine = { path = "../../crates/engine" }
 kiarni-http = { path = "../../crates/http" }
 kiarni-core = { path = "../../crates/core" }
 redb = "=4.5.0"

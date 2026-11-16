@@ -1,7 +1,9 @@
 # Spike M0 — persistência
 
-Experimento descartável em `spikes/storage`; o servidor ainda não usa storage.
-Decisão e limites: [ADR 0003](../adr/0003-spike-de-persistencia.md), em proposta.
+Relato histórico do experimento M0 em `spikes/storage`; o produto posteriormente
+adotou storage no M1. Decisão: [ADR 0003](../adr/0003-spike-de-persistencia.md),
+aceito na deliberação M0-F4. A [avaliação RF-04 posterior](./secondary-index.md)
+compara campo string parcial com um controle sem índice e o engine do produto.
 
 ## Reprodução
 

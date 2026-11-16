@@ -1,0 +1,1472 @@
+{
+  "base_commit": "409e29f0742dce80f5dd9193d5859d23e2d16206",
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "command": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "kiarni-storage-spike",
+    "--example",
+    "secondary_index",
+    "--",
+    "--repetitions",
+    "3",
+    "--queries",
+    "30"
+  ],
+  "elapsed_including_build_seconds": 120.502,
+  "hardware": {
+    "cpu_affinity": "not pinned; shared host; caches not dropped",
+    "cpu_governor": "powersave",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "device_power_loss_guarantees": "not verified",
+    "kernel": "7.2.6-76070206-generic",
+    "libc": [
+      "glibc",
+      "2.39"
+    ],
+    "logical_cpus": 16,
+    "machine": "x86_64",
+    "system": "Linux",
+    "temporary_filesystem": {
+      "fstype": "ext4",
+      "source": "/dev/nvme0n1p3[/tmp]"
+    },
+    "total_memory_bytes": 15898722304
+  },
+  "limits": "single shared Linux host, warm cache, one writer, Immediate per-document commits; no HTTP/group commit, cold-cache, CPU/RSS or production throughput claim",
+  "measurement": {
+    "cache_bytes_per_store": 8388608,
+    "durability": "Immediate",
+    "index": "partial decoded status string <=128 UTF-8 bytes; eq only",
+    "notes": "prebuilt input and validated AST outside timers; document validation, transaction, index maintenance and engine evaluation inside operation timers; result assertions/drop outside query timer; warm caches, no HTTP/group commit/cold-cache or power-loss claim",
+    "payload_ascii_bytes": 512,
+    "query_samples_per_run": 30,
+    "redb": "4.5.0",
+    "repetitions": 3,
+    "runs": [
+      {
+        "documents": 256,
+        "input_json_bytes": 151186,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 639487,
+            "p95_ns": 883809,
+            "p99_ns": 991051,
+            "total_ns": 84547728
+          },
+          "file_logical_bytes": {
+            "after_delete": 311296,
+            "empty": 1056768,
+            "inserted": 311296
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 620531,
+            "p95_ns": 865755,
+            "p99_ns": 948160,
+            "total_ns": 82910056
+          },
+          "insert": {
+            "operations": 256,
+            "p50_ns": 612887,
+            "p95_ns": 1309863,
+            "p99_ns": 1434348,
+            "total_ns": 184679786
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 629809,
+            "p95_ns": 896552,
+            "p99_ns": 958440,
+            "total_ns": 88469092
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 522166,
+            "p95_ns": 576768,
+            "p99_ns": 627685,
+            "total_ns": 15876466
+          },
+          "query_document_bytes": 151186,
+          "query_examined_documents": 256,
+          "query_plan": "scan",
+          "reopen_ns": 543025,
+          "returned_documents": 16
+        },
+        "repetition": 0,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 256,
+        "input_json_bytes": 151186,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 691245,
+            "p95_ns": 924114,
+            "p99_ns": 1309823,
+            "total_ns": 90888603
+          },
+          "file_logical_bytes": {
+            "after_delete": 327680,
+            "empty": 1056768,
+            "inserted": 327680
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 716894,
+            "p95_ns": 1009195,
+            "p99_ns": 1480936,
+            "total_ns": 97115424
+          },
+          "insert": {
+            "operations": 256,
+            "p50_ns": 702977,
+            "p95_ns": 1451681,
+            "p99_ns": 1724526,
+            "total_ns": 210292554
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 652912,
+            "p95_ns": 905018,
+            "p99_ns": 1054160,
+            "total_ns": 87438114
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 64562,
+            "p95_ns": 69712,
+            "p99_ns": 70863,
+            "total_ns": 1953034
+          },
+          "query_document_bytes": 9448,
+          "query_examined_documents": 16,
+          "query_plan": "status_eq",
+          "reopen_ns": 498251,
+          "returned_documents": 16
+        },
+        "repetition": 0,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 256,
+        "input_json_bytes": 151186,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 694511,
+            "p95_ns": 1009777,
+            "p99_ns": 1508698,
+            "total_ns": 96796700
+          },
+          "file_logical_bytes": {
+            "after_delete": 327680,
+            "empty": 1056768,
+            "inserted": 327680
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 722313,
+            "p95_ns": 1033591,
+            "p99_ns": 1411475,
+            "total_ns": 98404685
+          },
+          "insert": {
+            "operations": 256,
+            "p50_ns": 700222,
+            "p95_ns": 1431562,
+            "p99_ns": 1593579,
+            "total_ns": 210120547
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 634538,
+            "p95_ns": 871916,
+            "p99_ns": 943221,
+            "total_ns": 84733703
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 65043,
+            "p95_ns": 154723,
+            "p99_ns": 171023,
+            "total_ns": 2491941
+          },
+          "query_document_bytes": 9448,
+          "query_examined_documents": 16,
+          "query_plan": "status_eq",
+          "reopen_ns": 483443,
+          "returned_documents": 16
+        },
+        "repetition": 1,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 256,
+        "input_json_bytes": 151186,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 618688,
+            "p95_ns": 833674,
+            "p99_ns": 889389,
+            "total_ns": 81115807
+          },
+          "file_logical_bytes": {
+            "after_delete": 311296,
+            "empty": 1056768,
+            "inserted": 311296
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 625551,
+            "p95_ns": 877807,
+            "p99_ns": 974260,
+            "total_ns": 83800380
+          },
+          "insert": {
+            "operations": 256,
+            "p50_ns": 651920,
+            "p95_ns": 1390144,
+            "p99_ns": 1591745,
+            "total_ns": 203244416
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 627415,
+            "p95_ns": 881454,
+            "p99_ns": 1016139,
+            "total_ns": 84547406
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 521905,
+            "p95_ns": 629989,
+            "p99_ns": 635720,
+            "total_ns": 16240859
+          },
+          "query_document_bytes": 151186,
+          "query_examined_documents": 256,
+          "query_plan": "scan",
+          "reopen_ns": 594342,
+          "returned_documents": 16
+        },
+        "repetition": 1,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 256,
+        "input_json_bytes": 151186,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 619189,
+            "p95_ns": 875803,
+            "p99_ns": 963358,
+            "total_ns": 83213451
+          },
+          "file_logical_bytes": {
+            "after_delete": 311296,
+            "empty": 1056768,
+            "inserted": 311296
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 651360,
+            "p95_ns": 1021168,
+            "p99_ns": 1102962,
+            "total_ns": 89584140
+          },
+          "insert": {
+            "operations": 256,
+            "p50_ns": 643696,
+            "p95_ns": 1423648,
+            "p99_ns": 1551028,
+            "total_ns": 195470686
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 638685,
+            "p95_ns": 875152,
+            "p99_ns": 1040214,
+            "total_ns": 83516486
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 536653,
+            "p95_ns": 972587,
+            "p99_ns": 1181531,
+            "total_ns": 17869563
+          },
+          "query_document_bytes": 151186,
+          "query_examined_documents": 256,
+          "query_plan": "scan",
+          "reopen_ns": 431154,
+          "returned_documents": 16
+        },
+        "repetition": 2,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 256,
+        "input_json_bytes": 151186,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 738404,
+            "p95_ns": 1095889,
+            "p99_ns": 1522114,
+            "total_ns": 104101702
+          },
+          "file_logical_bytes": {
+            "after_delete": 327680,
+            "empty": 1056768,
+            "inserted": 327680
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 806523,
+            "p95_ns": 1326184,
+            "p99_ns": 1655746,
+            "total_ns": 110374541
+          },
+          "insert": {
+            "operations": 256,
+            "p50_ns": 724749,
+            "p95_ns": 1514149,
+            "p99_ns": 1692786,
+            "total_ns": 219873350
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 714048,
+            "p95_ns": 1036126,
+            "p99_ns": 1262384,
+            "total_ns": 101634162
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 101161,
+            "p95_ns": 166605,
+            "p99_ns": 172015,
+            "total_ns": 3345102
+          },
+          "query_document_bytes": 9448,
+          "query_examined_documents": 16,
+          "query_plan": "status_eq",
+          "reopen_ns": 503951,
+          "returned_documents": 16
+        },
+        "repetition": 2,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 823865,
+            "p95_ns": 2184425,
+            "p99_ns": 2717240,
+            "total_ns": 138084612
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 835337,
+            "p95_ns": 2170038,
+            "p99_ns": 2334097,
+            "total_ns": 132862101
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 887276,
+            "p95_ns": 2508025,
+            "p99_ns": 3387065,
+            "total_ns": 4801993856
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 873139,
+            "p95_ns": 2194814,
+            "p99_ns": 2446248,
+            "total_ns": 137944885
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 9365792,
+            "p95_ns": 14186465,
+            "p99_ns": 14332310,
+            "total_ns": 306311383
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 1173235,
+          "returned_documents": 25
+        },
+        "repetition": 0,
+        "status_cardinality": 1
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 935887,
+            "p95_ns": 2433504,
+            "p99_ns": 2805577,
+            "total_ns": 159196824
+          },
+          "file_logical_bytes": {
+            "after_delete": 5181440,
+            "empty": 1056768,
+            "inserted": 5181440
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 947659,
+            "p95_ns": 2472618,
+            "p99_ns": 2807942,
+            "total_ns": 156927593
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1028231,
+            "p95_ns": 2809193,
+            "p99_ns": 3426890,
+            "total_ns": 5679646240
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 888998,
+            "p95_ns": 2348774,
+            "p99_ns": 2545836,
+            "total_ns": 141858975
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 17346651,
+            "p95_ns": 19570920,
+            "p99_ns": 19688603,
+            "total_ns": 520012239
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "status_eq",
+          "reopen_ns": 900840,
+          "returned_documents": 25
+        },
+        "repetition": 0,
+        "status_cardinality": 1
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 962949,
+            "p95_ns": 2403017,
+            "p99_ns": 3304650,
+            "total_ns": 160678044
+          },
+          "file_logical_bytes": {
+            "after_delete": 5181440,
+            "empty": 1056768,
+            "inserted": 5181440
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 954482,
+            "p95_ns": 2429237,
+            "p99_ns": 3500028,
+            "total_ns": 161508663
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1026168,
+            "p95_ns": 3035261,
+            "p99_ns": 3732156,
+            "total_ns": 5855514891
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 858450,
+            "p95_ns": 2484560,
+            "p99_ns": 2940993,
+            "total_ns": 144120142
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 17360137,
+            "p95_ns": 25369839,
+            "p99_ns": 26057948,
+            "total_ns": 541125680
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "status_eq",
+          "reopen_ns": 791104,
+          "returned_documents": 25
+        },
+        "repetition": 1,
+        "status_cardinality": 1
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 851788,
+            "p95_ns": 2248605,
+            "p99_ns": 2985246,
+            "total_ns": 148026366
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 845005,
+            "p95_ns": 2217046,
+            "p99_ns": 2386295,
+            "total_ns": 134045542
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 931158,
+            "p95_ns": 2860911,
+            "p99_ns": 3630144,
+            "total_ns": 5308746315
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 829145,
+            "p95_ns": 2304912,
+            "p99_ns": 2502545,
+            "total_ns": 137526875
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 9417090,
+            "p95_ns": 14660309,
+            "p99_ns": 15021080,
+            "total_ns": 316556489
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 764483,
+          "returned_documents": 25
+        },
+        "repetition": 1,
+        "status_cardinality": 1
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 808276,
+            "p95_ns": 2283581,
+            "p99_ns": 2598796,
+            "total_ns": 135568193
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 843623,
+            "p95_ns": 2300063,
+            "p99_ns": 2665693,
+            "total_ns": 137350968
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 937219,
+            "p95_ns": 2708224,
+            "p99_ns": 3486723,
+            "total_ns": 5240778784
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 880022,
+            "p95_ns": 2312266,
+            "p99_ns": 2585572,
+            "total_ns": 141589687
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 9789362,
+            "p95_ns": 13964345,
+            "p99_ns": 14397834,
+            "total_ns": 322665974
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 985862,
+          "returned_documents": 25
+        },
+        "repetition": 2,
+        "status_cardinality": 1
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 933142,
+            "p95_ns": 2318978,
+            "p99_ns": 2691782,
+            "total_ns": 153013319
+          },
+          "file_logical_bytes": {
+            "after_delete": 5181440,
+            "empty": 1056768,
+            "inserted": 5181440
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 976003,
+            "p95_ns": 2364324,
+            "p99_ns": 2719976,
+            "total_ns": 161819721
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1041195,
+            "p95_ns": 2899273,
+            "p99_ns": 3539954,
+            "total_ns": 5808552057
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 885261,
+            "p95_ns": 2296617,
+            "p99_ns": 2604347,
+            "total_ns": 142651211
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 17664531,
+            "p95_ns": 25952730,
+            "p99_ns": 27392809,
+            "total_ns": 556535192
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "status_eq",
+          "reopen_ns": 1150172,
+          "returned_documents": 25
+        },
+        "repetition": 2,
+        "status_cardinality": 1
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 749024,
+            "p95_ns": 2280256,
+            "p99_ns": 3035421,
+            "total_ns": 132013103
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 808016,
+            "p95_ns": 2296967,
+            "p99_ns": 2705368,
+            "total_ns": 136321287
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 930116,
+            "p95_ns": 2712642,
+            "p99_ns": 3378839,
+            "total_ns": 5189129620
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 796443,
+            "p95_ns": 2563070,
+            "p99_ns": 4188748,
+            "total_ns": 142213088
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 14477284,
+            "p95_ns": 16728674,
+            "p99_ns": 18917908,
+            "total_ns": 436837249
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 545740,
+          "returned_documents": 25
+        },
+        "repetition": 0,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 923143,
+            "p95_ns": 2201807,
+            "p99_ns": 2538793,
+            "total_ns": 148705407
+          },
+          "file_logical_bytes": {
+            "after_delete": 3313664,
+            "empty": 1056768,
+            "inserted": 3313664
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 1024834,
+            "p95_ns": 2297648,
+            "p99_ns": 2542149,
+            "total_ns": 163039608
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 967096,
+            "p95_ns": 2932266,
+            "p99_ns": 3699395,
+            "total_ns": 5646102764
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 859051,
+            "p95_ns": 2173463,
+            "p99_ns": 2512935,
+            "total_ns": 137130732
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 1637502,
+            "p95_ns": 2301856,
+            "p99_ns": 2325992,
+            "total_ns": 51094009
+          },
+          "query_document_bytes": 151481,
+          "query_examined_documents": 256,
+          "query_plan": "status_eq",
+          "reopen_ns": 832081,
+          "returned_documents": 25
+        },
+        "repetition": 0,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 904137,
+            "p95_ns": 2294703,
+            "p99_ns": 2646847,
+            "total_ns": 148469422
+          },
+          "file_logical_bytes": {
+            "after_delete": 3313664,
+            "empty": 1056768,
+            "inserted": 3313664
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 1034213,
+            "p95_ns": 2386526,
+            "p99_ns": 2926175,
+            "total_ns": 168496287
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1064510,
+            "p95_ns": 2808162,
+            "p99_ns": 3467126,
+            "total_ns": 5819855407
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 877767,
+            "p95_ns": 2266248,
+            "p99_ns": 2790068,
+            "total_ns": 139211002
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 1663491,
+            "p95_ns": 1911438,
+            "p99_ns": 1965030,
+            "total_ns": 50687791
+          },
+          "query_document_bytes": 151481,
+          "query_examined_documents": 256,
+          "query_plan": "status_eq",
+          "reopen_ns": 1001020,
+          "returned_documents": 25
+        },
+        "repetition": 1,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 861416,
+            "p95_ns": 2354195,
+            "p99_ns": 2873625,
+            "total_ns": 145478056
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 842811,
+            "p95_ns": 2386806,
+            "p99_ns": 2746816,
+            "total_ns": 140664081
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 946798,
+            "p95_ns": 2799025,
+            "p99_ns": 3587613,
+            "total_ns": 5350051820
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 863681,
+            "p95_ns": 2285104,
+            "p99_ns": 2824643,
+            "total_ns": 138627012
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 8891287,
+            "p95_ns": 13770910,
+            "p99_ns": 14006725,
+            "total_ns": 308957740
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 573974,
+          "returned_documents": 25
+        },
+        "repetition": 1,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 901983,
+            "p95_ns": 2329068,
+            "p99_ns": 3425418,
+            "total_ns": 150388413
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 901752,
+            "p95_ns": 2355667,
+            "p99_ns": 3265746,
+            "total_ns": 144866019
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 932120,
+            "p95_ns": 2983443,
+            "p99_ns": 3779826,
+            "total_ns": 5388860165
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 826190,
+            "p95_ns": 2328777,
+            "p99_ns": 2721849,
+            "total_ns": 139946782
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 9656411,
+            "p95_ns": 13814802,
+            "p99_ns": 13827276,
+            "total_ns": 315568019
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 899628,
+          "returned_documents": 25
+        },
+        "repetition": 2,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 940265,
+            "p95_ns": 2353894,
+            "p99_ns": 2792712,
+            "total_ns": 158585201
+          },
+          "file_logical_bytes": {
+            "after_delete": 3313664,
+            "empty": 1056768,
+            "inserted": 3313664
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 1018333,
+            "p95_ns": 2440899,
+            "p99_ns": 2762095,
+            "total_ns": 169691645
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1066344,
+            "p95_ns": 2918260,
+            "p99_ns": 3720104,
+            "total_ns": 5911872418
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 839746,
+            "p95_ns": 2270938,
+            "p99_ns": 3151751,
+            "total_ns": 141090680
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 1644355,
+            "p95_ns": 1849732,
+            "p99_ns": 1991910,
+            "total_ns": 50505040
+          },
+          "query_document_bytes": 151481,
+          "query_examined_documents": 256,
+          "query_plan": "status_eq",
+          "reopen_ns": 768010,
+          "returned_documents": 25
+        },
+        "repetition": 2,
+        "status_cardinality": 16
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 864292,
+            "p95_ns": 2355988,
+            "p99_ns": 2897891,
+            "total_ns": 147013190
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 886975,
+            "p95_ns": 2256119,
+            "p99_ns": 2632891,
+            "total_ns": 140552174
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 948912,
+            "p95_ns": 2772825,
+            "p99_ns": 3475572,
+            "total_ns": 5355711733
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 869431,
+            "p95_ns": 2255739,
+            "p99_ns": 2424287,
+            "total_ns": 138568691
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 9355974,
+            "p95_ns": 12970298,
+            "p99_ns": 13297786,
+            "total_ns": 300357010
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 903095,
+          "returned_documents": 25
+        },
+        "repetition": 0,
+        "status_cardinality": 128
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 944343,
+            "p95_ns": 2301987,
+            "p99_ns": 2703875,
+            "total_ns": 154387383
+          },
+          "file_logical_bytes": {
+            "after_delete": 3903488,
+            "empty": 1056768,
+            "inserted": 3903488
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 1065521,
+            "p95_ns": 2502435,
+            "p99_ns": 2895718,
+            "total_ns": 173708177
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1046426,
+            "p95_ns": 2889324,
+            "p99_ns": 3505509,
+            "total_ns": 5851170770
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 847911,
+            "p95_ns": 2212196,
+            "p99_ns": 2474211,
+            "total_ns": 139976553
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 211138,
+            "p95_ns": 298924,
+            "p99_ns": 361894,
+            "total_ns": 6943713
+          },
+          "query_document_bytes": 18934,
+          "query_examined_documents": 32,
+          "query_plan": "status_eq",
+          "reopen_ns": 997574,
+          "returned_documents": 25
+        },
+        "repetition": 0,
+        "status_cardinality": 128
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 880853,
+            "p95_ns": 2344707,
+            "p99_ns": 3172911,
+            "total_ns": 149670451
+          },
+          "file_logical_bytes": {
+            "after_delete": 3903488,
+            "empty": 1056768,
+            "inserted": 3903488
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 978718,
+            "p95_ns": 2450788,
+            "p99_ns": 3376785,
+            "total_ns": 166779657
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1008504,
+            "p95_ns": 2973975,
+            "p99_ns": 3800556,
+            "total_ns": 5817657446
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 839665,
+            "p95_ns": 2324229,
+            "p99_ns": 3177700,
+            "total_ns": 144340490
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 203995,
+            "p95_ns": 217039,
+            "p99_ns": 228621,
+            "total_ns": 6182964
+          },
+          "query_document_bytes": 18934,
+          "query_examined_documents": 32,
+          "query_plan": "status_eq",
+          "reopen_ns": 802736,
+          "returned_documents": 25
+        },
+        "repetition": 1,
+        "status_cardinality": 128
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 875694,
+            "p95_ns": 2224200,
+            "p99_ns": 2715086,
+            "total_ns": 144976959
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 889580,
+            "p95_ns": 2131615,
+            "p99_ns": 2699386,
+            "total_ns": 141753140
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 917642,
+            "p95_ns": 2663027,
+            "p99_ns": 3383137,
+            "total_ns": 5108835010
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 871385,
+            "p95_ns": 2147835,
+            "p99_ns": 2631529,
+            "total_ns": 137325043
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 8795245,
+            "p95_ns": 13278040,
+            "p99_ns": 13338814,
+            "total_ns": 294852970
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 728145,
+          "returned_documents": 25
+        },
+        "repetition": 1,
+        "status_cardinality": 128
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 894609,
+            "p95_ns": 2225021,
+            "p99_ns": 2359165,
+            "total_ns": 143294207
+          },
+          "file_logical_bytes": {
+            "after_delete": 3706880,
+            "empty": 1056768,
+            "inserted": 3706880
+          },
+          "indexed": false,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 855756,
+            "p95_ns": 2218860,
+            "p99_ns": 2476777,
+            "total_ns": 136428270
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 939032,
+            "p95_ns": 2717019,
+            "p99_ns": 3481293,
+            "total_ns": 5235572749
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 855295,
+            "p95_ns": 2233086,
+            "p99_ns": 2657778,
+            "total_ns": 137100021
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 8647376,
+            "p95_ns": 13013890,
+            "p99_ns": 15177405,
+            "total_ns": 279933168
+          },
+          "query_document_bytes": 2423722,
+          "query_examined_documents": 4096,
+          "query_plan": "scan",
+          "reopen_ns": 591958,
+          "returned_documents": 25
+        },
+        "repetition": 2,
+        "status_cardinality": 128
+      },
+      {
+        "documents": 4096,
+        "input_json_bytes": 2423722,
+        "measurements": {
+          "delete": {
+            "operations": 128,
+            "p50_ns": 1004076,
+            "p95_ns": 2552349,
+            "p99_ns": 3699244,
+            "total_ns": 171998949
+          },
+          "file_logical_bytes": {
+            "after_delete": 3903488,
+            "empty": 1056768,
+            "inserted": 3903488
+          },
+          "indexed": true,
+          "indexed_field_update": {
+            "operations": 128,
+            "p50_ns": 1064900,
+            "p95_ns": 2571264,
+            "p99_ns": 3659910,
+            "total_ns": 180778355
+          },
+          "insert": {
+            "operations": 4096,
+            "p50_ns": 1041146,
+            "p95_ns": 3032084,
+            "p99_ns": 3760039,
+            "total_ns": 5923197787
+          },
+          "other_field_update": {
+            "operations": 128,
+            "p50_ns": 993376,
+            "p95_ns": 2421903,
+            "p99_ns": 3625895,
+            "total_ns": 160408160
+          },
+          "query": {
+            "operations": 30,
+            "p50_ns": 205258,
+            "p95_ns": 221117,
+            "p99_ns": 248329,
+            "total_ns": 6232850
+          },
+          "query_document_bytes": 18934,
+          "query_examined_documents": 32,
+          "query_plan": "status_eq",
+          "reopen_ns": 704781,
+          "returned_documents": 25
+        },
+        "repetition": 2,
+        "status_cardinality": 128
+      }
+    ],
+    "schema": 1,
+    "transactions": "one document per commit",
+    "warmup_queries": 3,
+    "writers": 1
+  },
+  "recorded_at_utc": "2026-11-16T00:31:57.664331+00:00",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: x86_64-unknown-linux-gnu\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "schema": 1,
+  "source_dirty": true,
+  "source_fingerprint": {
+    "files": [
+      "Cargo.lock",
+      "Cargo.toml",
+      "benches/secondary_index.py",
+      "crates/core/Cargo.toml",
+      "crates/core/src/insertion.rs",
+      "crates/core/src/lib.rs",
+      "crates/core/src/unique_keys.rs",
+      "crates/core/tests/documents.rs",
+      "crates/engine/Cargo.toml",
+      "crates/engine/src/lib.rs",
+      "crates/engine/src/query/mod.rs",
+      "crates/engine/src/query/number.rs",
+      "crates/engine/src/writes.rs",
+      "crates/engine/tests/query.rs",
+      "crates/engine/tests/writes.rs",
+      "spikes/storage/Cargo.toml",
+      "spikes/storage/examples/baseline.rs",
+      "spikes/storage/examples/secondary_index.rs",
+      "spikes/storage/src/bin/fault-worker.rs",
+      "spikes/storage/src/bin/secondary-fault-worker.rs",
+      "spikes/storage/src/lib.rs",
+      "spikes/storage/src/secondary.rs",
+      "spikes/storage/tests/crash.rs",
+      "spikes/storage/tests/persistence.rs",
+      "spikes/storage/tests/secondary.rs",
+      "spikes/storage/tests/secondary_crash.rs"
+    ],
+    "recipe": "sorted relative UTF-8 path + NUL + bytes + NUL",
+    "sha256": "01e72ac0f62fbd83efd96dac9f637125413b6093b8b5d5eba6bf22247aa6e3b8"
+  },
+  "status": "passed",
+  "summary": [
+    {
+      "documents": 256,
+      "index_examined_documents": 16,
+      "inserted_logical_file_ratio_median": 1.0526315789473684,
+      "query_speedup_each_pair": [
+        8.087822558161147,
+        8.023999508017774,
+        5.304939650655885
+      ],
+      "query_speedup_scan_over_index_median": 8.023999508017774,
+      "repetitions": 3,
+      "scan_examined_documents": 256,
+      "status_cardinality": 16,
+      "write_p50_ratio_index_over_scan_median": {
+        "delete": 1.1225545024309507,
+        "indexed_field_update": 1.1552911941546837,
+        "insert": 1.1259181352688226,
+        "other_field_update": 1.0366825497889043
+      }
+    },
+    {
+      "documents": 4096,
+      "index_examined_documents": 4096,
+      "inserted_logical_file_ratio_median": 1.3977900552486189,
+      "query_speedup_each_pair": [
+        0.5399193192968487,
+        0.5424548204890318,
+        0.554181823451752
+      ],
+      "query_speedup_scan_over_index_median": 0.5424548204890318,
+      "repetitions": 3,
+      "scan_examined_documents": 4096,
+      "status_cardinality": 1,
+      "write_p50_ratio_index_over_scan_median": {
+        "delete": 1.1359713059785281,
+        "indexed_field_update": 1.1344630969297422,
+        "insert": 1.1109409860448838,
+        "other_field_update": 1.0181632019644067
+      }
+    },
+    {
+      "documents": 4096,
+      "index_examined_documents": 256,
+      "inserted_logical_file_ratio_median": 0.8939226519337017,
+      "query_speedup_each_pair": [
+        8.841078667384833,
+        5.344956480077139,
+        5.872461238601153
+      ],
+      "query_speedup_scan_over_index_median": 5.872461238601153,
+      "repetitions": 3,
+      "scan_examined_documents": 4096,
+      "status_cardinality": 16,
+      "write_p50_ratio_index_over_scan_median": {
+        "delete": 1.0495939244221142,
+        "indexed_field_update": 1.2270995513822198,
+        "insert": 1.1243264138707518,
+        "other_field_update": 1.0164078480736876
+      }
+    },
+    {
+      "documents": 4096,
+      "index_examined_documents": 32,
+      "inserted_logical_file_ratio_median": 1.0530386740331492,
+      "query_speedup_each_pair": [
+        44.31212761321979,
+        43.11500281869654,
+        42.12930068499157
+      ],
+      "query_speedup_scan_over_index_median": 43.11500281869654,
+      "repetitions": 3,
+      "scan_examined_documents": 4096,
+      "status_cardinality": 128,
+      "write_p50_ratio_index_over_scan_median": {
+        "delete": 1.0926203181332235,
+        "indexed_field_update": 1.2012976690436596,
+        "insert": 1.10276400762136,
+        "other_field_update": 0.9752481795565145
+      }
+    }
+  ]
+}

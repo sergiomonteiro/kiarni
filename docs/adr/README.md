@@ -73,3 +73,5 @@ Primeiro incremento do M3/RF-08:
 - [0031 — Artefatos nativos verificáveis de desenvolvimento](./0031-artefatos-nativos-verificados.md).
 
 - [0032 — Contêiner single-node e probe autenticado](./0032-container-single-node.md).
+
+- [0033 — Avaliação do índice secundário de campo simples](./0033-avaliacao-indice-secundario.md).

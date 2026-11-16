@@ -1,32 +1,30 @@
 # Revisão do candidato e gate M3
 
-Data inicial: 2026-11-15. RF-08/09/10 e revisão final do
-[PRD](../KIARNI_PRD_v0.1.md). **Decisão: gate M3 não aprovado nesta revisão.**
-Não criar tag, Release estável ou publicar imagem em registry a partir deste
-relatório. O resultado de uma avaliação pode ser negativo mesmo com CI verde.
+Data inicial: 2026-11-15. Revisão após a avaliação RF-04 da issue #8.
+**Decisão: gate técnico M3 aprovado para a alpha experimental, condicionado à
+CI completa do commit de encerramento.** O aceite remoto fica registrado nas
+issues #7/#8 depois de todos os jobs passarem. Sem CI verde, não há aceite.
 
-## Motivos e fronteira da entrega
+## Base da decisão
 
-O RF-04 exige avaliar índice secundário simples e registrar correção/custos de
-leitura e escrita; a [issue #8](https://github.com/sergiomonteiro/kiarni/issues/8)
-continua aberta. O índice primário do produto está implementado, mas isso não
-retira a avaliação condicionada do PRD. Não há decisão de adoção/adiamento nesta
-entrega, nem mudança de formato persistido ou implementação de novo índice.
+A revisão anterior (409e29f) manteve o gate aberto pela avaliação RF-04 e pelo
+encaminhamento do canal/compatibilidade. A avaliação agora tem
+[testes e medição pareada](./spikes/secondary-index.md), com decisão no
+[ADR 0033](./adr/0033-avaliacao-indice-secundario.md). O RF exige avaliar o campo
+simples e comparar correção/custo; isso foi cumprido sem alterar o PRD. A decisão
+adiou integração no formato real e mantém o índice primário obrigatório.
 
-A distribuição ainda é **experimental**, por artifacts temporários de Actions.
-O pacote/imagem tem validações técnicas, mas a escolha de versão/canal de release,
-publicação oficial, notas finais e revisão de compatibilidade pré-1.0 exigem
-encaminhamento explícito. O número 0.1.0 no Cargo.toml não declara estabilidade.
-O [changelog](../CHANGELOG.md) registra estado em desenvolvimento.
+O [canal e política pré-1.0](./RELEASE_POLICY.md) formalizam a distribuição
+experimental já operada: pacotes e imagem exportada pelos artifacts do CI oficial,
+identificados por commit, com retenção de 14 dias. Não se declara publicação de
+tag, Release estável ou registry. O [changelog](../CHANGELOG.md) permanece em
+desenvolvimento. Fechar a avaliação técnica não executa uma publicação externa.
 
-O quickstart automatizado mede o arquivo local disponível até o primeiro
-resultado/evento. Download, quarentena macOS e leitura humana não foram medidos;
-não há evidência de sessão humana em máquina limpa concluindo tudo em dez minutos.
-A pergunta do PRD sobre SDK inicial também continua sem decisão: documentar HTTP
-para clientes genéricos não é prova de SDK implementado. A medição automatizada atende ao roteiro reproduzível no escopo declarado;
-ausência de leitura humana/quarentena medida é limite de evidência, não uma nova
-exigência de estudo de usabilidade. A questão do SDK deve ser encaminhada no
-planejamento, sem alegar implementação ou ampliar/retirar escopo em silêncio.
+O quickstart mede o arquivo local disponível até documento, consulta e evento;
+leitura humana, download e quarentena não foram medidos. São limites explícitos,
+não requisitos novos para prolongar o gate. A pergunta sobre SDK inicial continua
+no planejamento do PRD, sem alegar SDK implementado. A API HTTP genérica e o
+fluxo de aceite do RF-10 foram documentados e executados.
 
 ## Matriz de RFs
 
@@ -39,13 +37,13 @@ a CI atual e os relatórios por commit complementam essas evidências.
 | RF-01 Inicialização/configuração | Atendido funcionalmente | [CLI](./CLI.md), precedência estrita, diretórios privados/lock, shutdown/restart; testes reais e exemplos de configuração no CI. |
 | RF-02 Documentos/coleções | Atendido funcionalmente | [API](./API.md), CRUD/IDs, duplicatas/tetos, PUT/PATCH/no-op, reinício e recuperação por testes de processo. Não certifica falha física. |
 | RF-03 Consultas | Atendido funcionalmente | AST validada com fixtures, JSON exato, filtro/sort/limit/project/ID, snapshots e scans limitados; sem código arbitrário. Métricas explicam caminho/etapas, não plano completo. |
-| RF-04 Índices | Parcial; pendência do gate | Índice primário consistente/lookup; avaliação de campo secundário e decisão fundamentada ainda na #8. Não declarar equivalência com/sem índice secundário como entregue. |
+| RF-04 Índices | Avaliação condicionada atendida | Primário implementado; [spike pareado](./spikes/secondary-index.md) prova equivalência/atomicidade no recorte e mede leitura/escrita. ADR 0033 adia integração; não anuncia índice secundário na API. |
 | RF-05 Changefeeds | Atendido no escopo de coleção | [Gate M2](./M2_REVIEW.md), publicação pós-commit, duas conexões, ordem, overflow/cancelamento e no-op. Coleção inteira, best-effort futuro; sem snapshot/replay/exactly-once. |
 | RF-06 Rede | Atendido funcionalmente | `/v1`, erros/request IDs, health, concorrência limitada, HTTP/JSON e SSE com testes independentes. Saturação pode aguardar backlog/fechar conexão; não promete sempre envelope. |
 | RF-07 Segurança | Atendido no perfil documentado | Loopback, auth para toda API, arquivos privados, logs sem segredos e [HTTPS opcional por proxy local](./REMOTE_HTTPS.md) testado. Não homologa toda operação pública/certificado. |
 | RF-08 Dashboard | Atendido no perfil Chromium testado | [Revisão local](./DASHBOARD_REVIEW.md), binário único, estado/consultas/count/feed/métricas/erros, CSP/auth. Não é auditoria de acessibilidade ou homologação de todos os browsers. |
 | RF-09 Observabilidade | Instrumentação e validação controlada | Logs tipados, métricas HTTP/query/storage/feeds e anel de erros; [ensaio externo](./OPERATIONAL_VALIDATION.md) com diagnóstico de query/consumidor. Janela/duração só valem quando concluídas; sem CPU/RSS/auditoria durável. |
-| RF-10 Distribuição/docs | Parcial para release final | Pacotes Linux/macOS, imagem/Compose/Kubernetes e [referências](./README.md); [quickstart empacotado](./QUICKSTART.md) com relatório. Artifact experimental não é canal estável; publicação final permanece pendente; medições automatizadas têm escopo explícito. |
+| RF-10 Distribuição/docs | Atendido no canal experimental | Pacotes Linux/macOS, imagem exportada/Compose/Kubernetes e referências, MIT/avisos e quickstart testado. [Política do canal](./RELEASE_POLICY.md) explicita retenção, versões e compatibilidade; não é release estável. |
 
 Baseline reproduzível de performance já está em [PERFORMANCE.md](./PERFORMANCE.md),
 com dados/hardware/comandos. A regressão de leitura/custo de logs na
@@ -69,8 +67,8 @@ Conforme combinado, esta entrega não antecipa otimizações amplas de CPU/memó
 | Licença | MIT preservada, grafo normal/build por target, textos integrais e avisos Rust std. [Distribuição](./DISTRIBUTION.md) e [dependências](./dependencies.md); catálogo std contém componentes condicionais, não muda licença Kiarni. |
 | Changelog/limitações | [CHANGELOG](../CHANGELOG.md) em desenvolvimento e esta revisão; não confundir número Cargo com release aprovada. |
 | Upgrade/rollback | Formato persistido 1, sem migração/upgrade automático ou compatibilidade entre versões prometida. Não houve teste de salto entre releases distintas. Backup testado é requisito antes de ensaiar troca em raiz independente. |
-| RF-04 | Em aberto na #8; revisar decisão antes de fechar gate. |
-| Aceite final/publicação | Em aberto: revisar resultados/limites do commit, canal e versionamento, sem presumir implantação pública já executada. A questão de SDK do PRD continua registrada, sem novo requisito de implementação nesta tarefa. Não foi executada publicação estável. |
+| RF-04 | Avaliação concluída; ADR 0033 e resultados pareados versionados. Integração segue incremento separado, sem retirar requisito de avaliação. |
+| Aceite técnico/publicação | Gate técnico aceito após CI completa do commit de encerramento; canal experimental/compatibilidade em RELEASE_POLICY. Tags, Release e registry não executados. SDK permanece pergunta do roadmap, sem novo requisito nesta avaliação. |
 
 ## Evidências reproduzíveis
 
@@ -100,8 +98,8 @@ sem transformar ensaio iniciado ou QA dirty em aceite de release.
 A janela longa local de referência é 900 s; conferir na issue #7 o relatório
 efetivamente concluído, com fonte/duração. Uma execução iniciada não é evidência. A automação é limitada e não certifica dias de operação, hardware/rede
 arbitrários, queda de energia, armazenamento cheio ou todos os provisionadores.
-A decisão negativa do gate independe de essas verificações técnicas passarem:
-continuam existindo as pendências explícitas acima.
+A decisão atual combina essas evidências com a avaliação RF-04 e a política
+do canal. Não depende de remover limitações ou de prometer desempenho/produção.
 
 ## Resultados concluídos desta avaliação
 
@@ -122,11 +120,15 @@ hash do binário nos relatórios em vez de presumir equivalência entre builds.
 Para esses pacotes Linux 54f2165 e b1b2604, os SHA-256 dos executáveis são iguais;
 isso não promete reprodutibilidade bit a bit de qualquer rebuild futuro.
 A CI do commit final deve passar separadamente e permanece vinculada na issue #7.
-Esses resultados não mudam a decisão negativa do gate.
+Esses resultados compõem o aceite técnico junto da avaliação RF-04 e da CI final.
 
-## Próximo incremento
+## Encerramento e próximos incrementos
 
-Concluir a avaliação condicionada do RF-04 na #8, preservando a política de
-spikes/ADR e sem alterar formato persistido por conveniência. Depois reavaliar
-esta matriz com as evidências de instalação/operação e decisões de release.
-A issue #7 permanece aberta como acompanhamento do gate até esse aceite final.
+A issue #8 fecha a avaliação prevista no RF-04. A issue #7 pode ser encerrada com
+esta decisão técnica após a CI do commit final, sem esperar uma publicação estável
+não solicitada. Os links e resultados remotos de encerramento ficam nas issues.
+
+Próximos incrementos: lifecycle durável/seleção de plano para integrar o índice
+secundário conforme ADR 0033 e a investigação #9 no momento combinado. O gate
+não transforma esses trabalhos em funcionalidades existentes ou autoriza mudança
+de formato sem ADR. CPU/RSS e falhas físicas continuam fora das alegações desta alpha.

@@ -8,7 +8,7 @@ Licença [MIT](./LICENSE).
 
 ## Estado atual
 
-**M1 — banco funcional validado localmente em Linux.** `kiarni serve` abre o store
+**MVP experimental com gate técnico M3 revisado.** `kiarni serve` abre o store
 versionado, ativa autenticação e atende health, operações de coleção e
 CRUD de documentos e consultas composicionais em loopback. O M2 já oferece
 changefeeds de coleção por SSE autenticado, com publicação pós-commit, filas
@@ -35,8 +35,9 @@ execução e limites atingidos na API e no dashboard.
 [Métricas de storage](./docs/STORAGE_METRICS.md) expõem primitivas, tentativas de
 commit e tamanho lógico do arquivo na API autenticada e no dashboard.
 [Erros recentes](./docs/RECENT_ERRORS.md) têm retenção limitada em memória, sem
-payloads. O [dashboard local foi revisado](./docs/DASHBOARD_REVIEW.md); M3 e
-release continuam abertos. [Revisão do gate M1](./docs/M1_REVIEW.md) e
+payloads. O [dashboard local foi revisado](./docs/DASHBOARD_REVIEW.md). A
+[revisão M3](./docs/RELEASE_REVIEW.md) aceita tecnicamente a alpha após a CI final,
+com [política explícita do canal](./docs/RELEASE_POLICY.md); release estável não foi publicada. [Revisão do gate M1](./docs/M1_REVIEW.md) e
 [revisão do gate M2](./docs/M2_REVIEW.md).
 
 O [backup offline](./docs/BACKUP.md) exporta um snapshot consistente para destino

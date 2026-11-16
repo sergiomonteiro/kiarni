@@ -79,3 +79,7 @@ A imagem Docker usa o mesmo pacote nativo e preserva seus avisos em
 O healthcheck usa std/rustix/zeroize já presentes; nenhuma crate nova.
 Kind/kubectl são ferramentas de teste obtidas de fontes oficiais, com versões
 e checksums fixados; não são incluídas na imagem nem exigidas pelo servidor.
+
+A avaliação RF-04 reutiliza diretamente `kiarni-engine` no spike de storage
+(antes já transitivo por kiarni-http); não há nova crate externa ou dependência
+do produto no experimento. O grafo distribuído de nove pacotes permanece separado.

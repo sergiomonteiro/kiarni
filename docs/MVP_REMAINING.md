@@ -1,8 +1,10 @@
 # Plano de fechamento do MVP
 
-Atualizado em 2026-11-15, com a revisão técnica do candidato e gate M3 não aprovado. M1 e M2 foram validados
-localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
-[PRD](../KIARNI_PRD_v0.1.md), sem ampliar o escopo ou aprovar o gate de release.
+Atualizado após a avaliação RF-04: o [gate técnico M3](./RELEASE_REVIEW.md)
+é aceito para a alpha experimental quando a CI do commit final passar.
+[Canal e compatibilidade](./RELEASE_POLICY.md) permanecem explícitos; não há
+publicação estável automática. Este documento preserva a sequência e os trabalhos
+posteriores ao aceite, sem ampliar o PRD.
 
 ## Ordem dos incrementos
 
@@ -31,11 +33,10 @@ localmente em Linux. M3 permanece aberto. Este plano organiza pendências do
 6. [Referência da API](./API.md), [CLI/configuração](./CLI.md),
    [diagnóstico](./TROUBLESHOOTING.md) e [contribuição](../CONTRIBUTING.md)
    consolidados, com exemplos executados e verificação de links/inventários no CI.
-7. [Revisão M3](./RELEASE_REVIEW.md) registra cada RF, checklist e decisão
-   negativa do gate. [Quickstart distribuído](./QUICKSTART.md) e
-   [validação operacional](./OPERATIONAL_VALIDATION.md) têm automação/evidências
-   por commit e duração. RF-04, aceite final e publicação continuam pendentes;
-   CI verde não os aprova. A issue #7 permanece aberta.
+7. [Revisão M3](./RELEASE_REVIEW.md), quickstart e observação externa concluídos;
+   [avaliação RF-04](./spikes/secondary-index.md) e ADR 0033 fecham a pendência de
+   índice. CI completa do commit final permite encerrar #8 e #7 com gate técnico
+   da alpha. Publicação estável/registry continua ação explícita separada.
 
 Documentação acompanha cada incremento acima. Sua consolidação e validação são
 uma entrega própria do RF-10, não uma atividade opcional depois da release.
@@ -49,18 +50,18 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 | Referência da API | [Referência](./API.md) consolidada, com métodos/headers/corpos, erros/request IDs, limites e exemplos testados. Manter sincronizada com contrato implementado. |
 | CLI e configuração | [Referência CLI](./CLI.md) consolidada; exemplos de precedência e probe testados com servidor real. |
 | Consultas e changefeeds | [API](./API.md) consolida JSON/números, AST, custo de scan, ordem e overflow; guias do dashboard preservam detalhes de UI. Sem replay/exactly-once. |
-| Operação | Criar procedimentos reproduzíveis de backup, restauração, credenciais, reinício, upgrade/compatibilidade e operação remota conforme forem implementados. Não documentar simples cópia de banco aberto como backup. |
+| Operação | Guias de backup, restore, credenciais, reinício e HTTPS disponíveis; compatibilidade/limites em RELEASE_POLICY. Upgrade entre releases distintas não é certificado nesta alpha. |
 | Diagnóstico | [Diagnóstico](./TROUBLESHOOTING.md) relaciona sintomas/códigos a métricas, consumidor lento e consulta lenta, com links operacionais. |
 | Contribuição | [CONTRIBUTING.md](../CONTRIBUTING.md) disponível com setup, workspace, testes/fixtures, benchmarks e fluxo de PR/ADR. |
-| Release e licenças | Consolidar changelog, limitações conhecidas, checklist, plataformas realmente validadas, MIT e avisos de terceiros. Publicar junto dos artefatos. |
+| Release e licenças | Changelog, checklist, canal pré-1.0, baselines, MIT e avisos disponíveis/versionados. Publicação estável ou registry permanece ação explícita separada. |
 
 ## Validação e decisões ainda abertas
 
 - Observar resultados de CI Linux/macOS e validar operação prolongada e coleta
   externa; não transformar passagem local em evidência de outra plataforma.
-- Fechar documentalmente a avaliação do índice secundário simples do RF-04,
-  condicionada à prova de conceito. Não declarar implementação obrigatória já
-  escolhida ou retirar o requisito sem decisão.
+- Integrar índice secundário em incremento próprio conforme ADR 0033: a
+  avaliação está concluída, e lifecycle/planner/formato precisam de desenho e
+  testes antes de mudar o produto. Não tratar o ganho do spike como ganho HTTP.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.

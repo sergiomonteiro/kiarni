@@ -1,5 +1,7 @@
 //! Disposable M0 experiment. No public storage contract or stable file format.
 
+pub mod secondary;
+
 use std::{fmt, fs::OpenOptions, path::Path};
 
 use kiarni_core::{DEFAULT_MAX_DOCUMENT_BYTES, DocumentInput, PreparedInsert};

@@ -2,7 +2,8 @@
 
 ## 0.1.0 — em desenvolvimento, sem release estável
 
-Este número corresponde ao Cargo.toml; não identifica um MVP aprovado.
+Este número corresponde ao Cargo.toml e não declara estabilidade. O aceite
+técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
@@ -24,6 +25,9 @@ A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendênci
   healthcheck autenticado do próprio binário e testes de persistência/recriação.
 - Referências de API/CLI/configuração, diagnóstico e contribuição; exemplos
   executados no CI. Quickstart distribuído com seus arquivos de exemplo.
+- Avaliação RF-04 de índice secundário string parcial: equivalência com scan,
+  testes de atualização/remoção/crash e medições pareadas. Integração adiada
+  conforme ADR 0033; API continua com índice primário e scan limitado.
 - Evidências de instalação isolada e observação com Prometheus externo,
   diagnóstico de scan versus ID e consumidor lento, com escopo/duração explícitos.
 
