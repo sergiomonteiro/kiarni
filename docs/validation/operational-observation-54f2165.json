@@ -1,0 +1,140 @@
+{
+  "binary_sha256": "100ebaf4fac7af97a795e959f4f14432d5eb582332b3aa617a505c5630991a62",
+  "confirmed_progress_updates": 449,
+  "correlated_logs": [
+    {
+      "duration_us": "160",
+      "operation": "Query",
+      "request_id": "req_054c0f39df06c163a1f6448de7c03588",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "159",
+      "operation": "Query",
+      "request_id": "req_864741d3811f67c7917b6d68c91d77d5",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "155",
+      "operation": "Query",
+      "request_id": "req_9083b823ced9c39dc8a1da43d9a0e0f2",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "74",
+      "operation": "Query",
+      "request_id": "req_8a3df2b1ea3daafb0c0b8f4ee5d22ba5",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "149",
+      "operation": "Query",
+      "request_id": "req_19c862b5992509d1c90c00066036ed20",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "12093",
+      "operation": "Query",
+      "request_id": "req_db7bd3e9bf19e490b081eeb7c028dd72",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "13744",
+      "operation": "Query",
+      "request_id": "req_36b8148f7a09e7ad0cd58711e0d8f17e",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "12069",
+      "operation": "Query",
+      "request_id": "req_001c4a68e54a4a7fe12072d46624c02a",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "15664",
+      "operation": "Query",
+      "request_id": "req_dd6589a098d63360372ad20533b0a191",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "12492",
+      "operation": "Query",
+      "request_id": "req_be58eb96053861cfa59255fe053dac82",
+      "status": 200,
+      "stream_end_reason": null,
+      "transport": "written"
+    },
+    {
+      "duration_us": "72675",
+      "operation": "Changes",
+      "request_id": "req_040b9082369e74262f6133a0653e805a",
+      "status": 200,
+      "stream_end_reason": "overflow",
+      "transport": "stream_closed"
+    }
+  ],
+  "dataset": {
+    "large_documents": 8,
+    "padding_bytes_each": 700000,
+    "progress_documents": 1
+  },
+  "duration_observed_seconds": 900.0,
+  "duration_requested_seconds": 900,
+  "elapsed_total_seconds": 908.741,
+  "external_collector": {
+    "minimum_up": 1.0,
+    "overflow": 1.0,
+    "query_success": 459.0,
+    "scrapes_observed": 902.0,
+    "up": 1.0
+  },
+  "fast_observer_events": 12,
+  "host": {
+    "libc": [
+      "glibc",
+      "2.39"
+    ],
+    "machine": "x86_64",
+    "release": "7.2.6-76070206-generic",
+    "system": "Linux"
+  },
+  "prometheus_image": "prom/prometheus:v3.16.0@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06",
+  "query_diagnosis": {
+    "id": {
+      "client_median_seconds": 0.0005642460018862039,
+      "execution_sum_delta_seconds": 0.000178,
+      "requests": 5,
+      "wait_sum_delta_seconds": 0.0
+    },
+    "scan": {
+      "client_median_seconds": 0.013671527005499229,
+      "execution_sum_delta_seconds": 0.065406,
+      "requests": 5,
+      "wait_sum_delta_seconds": 0.0
+    }
+  },
+  "restart_preserved_document_and_credential": true,
+  "schema": 1,
+  "scope": "bounded functional observation; not production certification or performance/RSS benchmark",
+  "source_commit": "54f21659b91bb8963a377ff2db86b997be73b3ad",
+  "status": "passed",
+  "target": "x86_64-unknown-linux-gnu"
+}

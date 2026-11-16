@@ -1,7 +1,6 @@
 """Bounded single-node observation using a distributed binary and a real external Prometheus."""
 import argparse
 from datetime import datetime, timezone
-import hashlib
 import http.client
 import json
 import os
@@ -16,7 +15,7 @@ import tempfile
 import time
 from urllib.parse import urlencode
 import uuid
-from release_smoke import Server, credentials, frame, verify_extract
+from release_smoke import Server, credentials, digest, frame, verify_extract
 
 PROMETHEUS = 'prom/prometheus:v3.16.0@sha256:e04987641b57704f408e31f6373ba4138ecf27cb4a165d24aabb6c38fddd0f06'
 
@@ -169,13 +168,16 @@ scrape_configs:
             delivered=0
             for number in range(12):
                 request('/v1/collections/observation/documents/large0','PATCH',json.dumps({'n':100+number}).encode())
-                while True:
+                deadline=time.monotonic()+8
+                while time.monotonic()<deadline:
                     event=frame(fast_stream)
                     if b'event: change' in event:
                         if b'"type":"update"' not in event:
                             raise RuntimeError('unexpected fast observer event')
                         delivered+=1
                         break
+                else:
+                    raise RuntimeError("fast observer deadline")
             wait_for(lambda: metric(request('/v1/metrics')[0].decode(),'kiarni_changefeed_subscriptions_ended_total',reason='overflow')>=1,'slow observer overflow')
             fast_stream.close();fast.close();fast=None
             slow_stream.close();slow.close();slow=None
@@ -228,7 +230,7 @@ scrape_configs:
             if json.loads(persisted)!=json.loads(current) or b'9007199254740993' not in persisted or next(iter(credentials(server.data)))!=token:
                 raise RuntimeError('post-observation persistence/auth mismatch')
             result={'schema':1,'recorded_at_utc':datetime.now(timezone.utc).isoformat(),'status':'passed','source_commit':info['commit'],'target':info['target'],
-                'binary_sha256':hashlib.sha256(binary.read_bytes()).hexdigest(),
+                'binary_sha256':digest(binary),
                 'host':{'system':platform.system(),'release':platform.release(),'machine':platform.machine(),'libc':platform.libc_ver()},
                 'prometheus_image':PROMETHEUS,'duration_requested_seconds':duration,'duration_observed_seconds':round(observed,3),
                 'elapsed_total_seconds':round(time.monotonic()-started,3),

@@ -23,8 +23,10 @@ O quickstart automatizado mede o arquivo local disponível até o primeiro
 resultado/evento. Download, quarentena macOS e leitura humana não foram medidos;
 não há evidência de sessão humana em máquina limpa concluindo tudo em dez minutos.
 A pergunta do PRD sobre SDK inicial também continua sem decisão: documentar HTTP
-para clientes genéricos não é prova de SDK implementado. Esses pontos devem ser
-resolvidos explicitamente na revisão final, sem ampliar/retirar escopo em silêncio.
+para clientes genéricos não é prova de SDK implementado. A medição automatizada atende ao roteiro reproduzível no escopo declarado;
+ausência de leitura humana/quarentena medida é limite de evidência, não uma nova
+exigência de estudo de usabilidade. A questão do SDK deve ser encaminhada no
+planejamento, sem alegar implementação ou ampliar/retirar escopo em silêncio.
 
 ## Matriz de RFs
 
@@ -43,7 +45,7 @@ a CI atual e os relatórios por commit complementam essas evidências.
 | RF-07 Segurança | Atendido no perfil documentado | Loopback, auth para toda API, arquivos privados, logs sem segredos e [HTTPS opcional por proxy local](./REMOTE_HTTPS.md) testado. Não homologa toda operação pública/certificado. |
 | RF-08 Dashboard | Atendido no perfil Chromium testado | [Revisão local](./DASHBOARD_REVIEW.md), binário único, estado/consultas/count/feed/métricas/erros, CSP/auth. Não é auditoria de acessibilidade ou homologação de todos os browsers. |
 | RF-09 Observabilidade | Instrumentação e validação controlada | Logs tipados, métricas HTTP/query/storage/feeds e anel de erros; [ensaio externo](./OPERATIONAL_VALIDATION.md) com diagnóstico de query/consumidor. Janela/duração só valem quando concluídas; sem CPU/RSS/auditoria durável. |
-| RF-10 Distribuição/docs | Parcial para release final | Pacotes Linux/macOS, imagem/Compose/Kubernetes e [referências](./README.md); [quickstart empacotado](./QUICKSTART.md) com relatório. Artifact experimental não é canal estável; aceite humano/publicação permanecem em revisão. |
+| RF-10 Distribuição/docs | Parcial para release final | Pacotes Linux/macOS, imagem/Compose/Kubernetes e [referências](./README.md); [quickstart empacotado](./QUICKSTART.md) com relatório. Artifact experimental não é canal estável; publicação final permanece pendente; medições automatizadas têm escopo explícito. |
 
 Baseline reproduzível de performance já está em [PERFORMANCE.md](./PERFORMANCE.md),
 com dados/hardware/comandos. A regressão de leitura/custo de logs na
@@ -68,7 +70,7 @@ Conforme combinado, esta entrega não antecipa otimizações amplas de CPU/memó
 | Changelog/limitações | [CHANGELOG](../CHANGELOG.md) em desenvolvimento e esta revisão; não confundir número Cargo com release aprovada. |
 | Upgrade/rollback | Formato persistido 1, sem migração/upgrade automático ou compatibilidade entre versões prometida. Não houve teste de salto entre releases distintas. Backup testado é requisito antes de ensaiar troca em raiz independente. |
 | RF-04 | Em aberto na #8; revisar decisão antes de fechar gate. |
-| Aceite final/publicação | Em aberto: revisar resultados do commit, experiência humana/limites macOS, canal/versionamento e encaminhar a questão do SDK. Não foi executada publicação estável. |
+| Aceite final/publicação | Em aberto: revisar resultados/limites do commit, canal e versionamento, sem presumir implantação pública já executada. A questão de SDK do PRD continua registrada, sem novo requisito de implementação nesta tarefa. Não foi executada publicação estável. |
 
 ## Evidências reproduzíveis
 
@@ -100,6 +102,27 @@ efetivamente concluído, com fonte/duração. Uma execução iniciada não é ev
 arbitrários, queda de energia, armazenamento cheio ou todos os provisionadores.
 A decisão negativa do gate independe de essas verificações técnicas passarem:
 continuam existindo as pendências explícitas acima.
+
+## Resultados concluídos desta avaliação
+
+Relatórios sanitizados versionados, sem token/payload/paths privados:
+
+| Execução | Fonte e resultado |
+| --- | --- |
+| Quickstart Linux | [JSON](./validation/quickstart-b1b2604-x86_64-unknown-linux-gnu.json), pacote b1b2604: documento/evento em 0,131 s, query em 0,143 s; total 0,222 s. |
+| Quickstart macOS | [JSON](./validation/quickstart-b1b2604-aarch64-apple-darwin.json), pacote b1b2604: documento/evento em 0,213 s, query em 0,231 s; total 0,330 s. |
+| Observação externa Linux | [JSON](./validation/operational-observation-54f2165.json), pacote 54f2165: 900 s observados, 449 escritas de progresso confirmadas, 902 scrapes com mínimo up=1 e 12 eventos no leitor rápido; restart preservou documento/credencial. |
+
+Os quickstarts foram executados nos runners novos da
+[CI 43777659564](https://github.com/sergiomonteiro/kiarni/actions/runs/43777659564).
+Os tempos são de uma execução automatizada do arquivo já disponível, não incluem
+download, leitura humana ou Gatekeeper e não são benchmark de latência do banco.
+A observação longa usa o pacote anterior explicitamente identificado; conferir
+hash do binário nos relatórios em vez de presumir equivalência entre builds.
+Para esses pacotes Linux 54f2165 e b1b2604, os SHA-256 dos executáveis são iguais;
+isso não promete reprodutibilidade bit a bit de qualquer rebuild futuro.
+A CI do commit final deve passar separadamente e permanece vinculada na issue #7.
+Esses resultados não mudam a decisão negativa do gate.
 
 ## Próximo incremento
 

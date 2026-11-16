@@ -1,0 +1,32 @@
+{
+  "archive_sha256": "eb9bea1dc85da4650e8f3b05e73554acbac946dc95d1fcc5297235e0ac519cb4",
+  "binary_sha256": "7865325b34800552c8d47530860a30a7dafab671dce944ca8b9a7c1e3473e88c",
+  "budget_seconds": 600,
+  "dirty": false,
+  "environment": {
+    "libc": [
+      "",
+      ""
+    ],
+    "machine": "arm64",
+    "release": "24.6.0",
+    "system": "Darwin"
+  },
+  "executed_packaged_commands": 4,
+  "recorded_at_utc": "2026-11-16T00:01:07.191732+00:00",
+  "restart_preserved_document_and_credential": true,
+  "runtime_environment": "empty; client PATH contains only kiarni/curl/cat",
+  "rust_version": "1.99.1",
+  "schema": 1,
+  "scope": "automated local-archive installation; excludes download, tool installation, quarantine and human reading time",
+  "source_commit": "b1b2604b2d6aa2e243f0ecdc75fc4126e232e555",
+  "status": "passed",
+  "target": "aarch64-apple-darwin",
+  "timings": {
+    "first_change_seconds": 0.213,
+    "first_document_seconds": 0.213,
+    "first_query_seconds": 0.231
+  },
+  "total_seconds": 0.33,
+  "version": "0.1.0"
+}

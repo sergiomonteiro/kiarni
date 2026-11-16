@@ -1,0 +1,32 @@
+{
+  "archive_sha256": "ed6ae1dbddfd9d69ae25f4fef4d25d6478b5683e16216b9ef88b749ced0a6f9c",
+  "binary_sha256": "100ebaf4fac7af97a795e959f4f14432d5eb582332b3aa617a505c5630991a62",
+  "budget_seconds": 600,
+  "dirty": false,
+  "environment": {
+    "libc": [
+      "glibc",
+      "2.39"
+    ],
+    "machine": "x86_64",
+    "release": "7.0.0-1017-azure",
+    "system": "Linux"
+  },
+  "executed_packaged_commands": 4,
+  "recorded_at_utc": "2026-11-16T00:01:03.844141+00:00",
+  "restart_preserved_document_and_credential": true,
+  "runtime_environment": "empty; client PATH contains only kiarni/curl/cat",
+  "rust_version": "1.99.1",
+  "schema": 1,
+  "scope": "automated local-archive installation; excludes download, tool installation, quarantine and human reading time",
+  "source_commit": "b1b2604b2d6aa2e243f0ecdc75fc4126e232e555",
+  "status": "passed",
+  "target": "x86_64-unknown-linux-gnu",
+  "timings": {
+    "first_change_seconds": 0.131,
+    "first_document_seconds": 0.131,
+    "first_query_seconds": 0.143
+  },
+  "total_seconds": 0.222,
+  "version": "0.1.0"
+}

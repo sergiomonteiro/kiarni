@@ -1,7 +1,6 @@
 """Execute the quickstart shipped inside a verified native archive, outside the checkout."""
 import argparse
 from datetime import datetime, timezone
-import hashlib
 import http.client
 import json
 import os
@@ -12,7 +11,7 @@ import shutil
 import subprocess
 import tempfile
 import time
-from release_smoke import Server, credentials, frame, verify_extract
+from release_smoke import Server, credentials, digest, frame, verify_extract
 
 def exercise(artifacts, target, report, allow_dirty=False):
     start=time.monotonic()
@@ -108,8 +107,8 @@ def exercise(artifacts, target, report, allow_dirty=False):
                 raise RuntimeError('quickstart restart persistence mismatch')
             value={'schema':1,'recorded_at_utc':datetime.now(timezone.utc).isoformat(),'status':'passed','source_commit':info['commit'],'dirty':info['dirty'],'target':target,
                 'version':info['version'],'rust_version':info['rust_version'],
-                'archive_sha256':hashlib.sha256(archives[0].read_bytes()).hexdigest(),
-                'binary_sha256':hashlib.sha256(binary.read_bytes()).hexdigest(),
+                'archive_sha256':digest(archives[0]),
+                'binary_sha256':digest(binary),
                 'environment':{'system':platform.system(),'release':platform.release(),'machine':platform.machine(),'libc':platform.libc_ver()},
                 'timings':milestones,'total_seconds':round(time.monotonic()-start,3),'budget_seconds':600,
                 'executed_packaged_commands':4,'runtime_environment':'empty; client PATH contains only kiarni/curl/cat',
