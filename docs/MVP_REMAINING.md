@@ -62,6 +62,8 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 - Integrar índice secundário em incremento próprio conforme ADR 0033: a
   avaliação está concluída, e lifecycle/planner/formato precisam de desenho e
   testes antes de mudar o produto. Não tratar o ganho do spike como ganho HTTP.
+  O [ADR 0034 proposto](./adr/0034-lifecycle-indice-secundario.md) detalha contrato,
+  criação offline limitada, integridade e compatibilidade; ainda não implementado.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.
@@ -91,3 +93,4 @@ de performance aguarda o momento combinado; registrar uma issue não a antecipa.
 | [#7](https://github.com/sergiomonteiro/kiarni/issues/7) | M3: validar instalação limpa e gate do MVP |
 | [#8](https://github.com/sergiomonteiro/kiarni/issues/8) | RF-04: concluir avaliação de índice secundário simples |
 | [#9](https://github.com/sergiomonteiro/kiarni/issues/9) | Performance: investigar regressão de leitura e custo da telemetria |
+| [#10](https://github.com/sergiomonteiro/kiarni/issues/10) | Integrar índice secundário: ADR de lifecycle proposto; formato e implementação pendentes |

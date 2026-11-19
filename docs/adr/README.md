@@ -75,3 +75,8 @@ Primeiro incremento do M3/RF-08:
 - [0032 — Contêiner single-node e probe autenticado](./0032-container-single-node.md).
 
 - [0033 — Avaliação do índice secundário de campo simples](./0033-avaliacao-indice-secundario.md).
+
+## Proposta de integração após a avaliação RF-04
+
+- [0034 — Contrato e ciclo de vida do índice secundário](./0034-lifecycle-indice-secundario.md).
+  Proposta da issue #10; não altera o formato 1 nem habilita índices no produto.
