@@ -198,8 +198,10 @@ ou serviço adicional é necessário.
    custo de estatísticas/escrita e leitura HTTP antes de escolher o limiar final.
 
 O item 1 tem a evidência candidata descrita abaixo, sem habilitação no servidor.
-O próximo incremento é manter documento, estatísticas e entradas na mesma
-transação nessa implementação isolada, antes de integrar o writer do produto.
+Documento, estatísticas e entradas já têm manutenção transacional candidata,
+descrita abaixo. O próximo incremento é construir/reconstruir o índice a partir
+de documentos existentes com auditoria e testes de interrupção, ainda isolado
+do writer do produto.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -214,5 +216,38 @@ destino existente/parcial, tabela ausente sem recriação, tabela extra/tipo err
 metadados divergentes, catálogo órfão/definição inválida, IDs duplicados/referências
 inversas inconsistentes e preflight de manifesto inválido antes do engine.
 Esse código está sob `cfg(test)`: nenhum caminho do binário cria ou abre formato 2.
-Não demonstra ainda manutenção de índices, kill/restart durante criação, energia,
+Não demonstra ainda kill/restart durante criação, energia,
 backup/restore do novo formato ou ganho de performance no produto.
+
+### Evidência da manutenção transacional candidata
+
+`crates/storage/src/format_v2/mutations.rs`, também somente em `cfg(test)`,
+implementa inserção preparada pelo core, PUT/PATCH preparados pelo engine e
+exclusão, atualizando documento, entrada secundária, contagem por valor e
+contagem/bytes da coleção no mesmo commit Immediate. Coleções sem índice também
+mantêm estatísticas. No-op preserva os bytes existentes e aborta sem commit;
+campo indexado inalterado verifica a referência existente e evita reinserção.
+Subtração inválida e overflow de contadores abortam a operação. A enumeração
+inicial de tabelas retém no máximo oito nomes para recusar layouts diferentes
+das sete tabelas esperadas sem recriá-las no caminho de escrita.
+
+Erros de validação/preparo/checkpoints anteriores ao commit retornam Aborted.
+Erro no commit ou perda da confirmação posterior retorna CommitUncertain;
+não deve ser interpretado como rollback nem autorização para retry automático.
+Não existe integração com feeds, HTTP, admissão ou grupos de escrita nesta etapa.
+
+Cinco testes adicionais cobrem ciclo de vida com/sem índice, erro de entrada,
+no-op/mesma chave, tipos não indexados, limites UTF-8, strings vazias/NUL,
+Unicode distinto, número JSON exato, conflitos, geração antiga, corrupção de
+referência/contagem, overflow e tabela faltante sem reparo. Para insert/update/delete,
+dezoito combinações injetam falha em documento, remoção/adição de entrada,
+estatísticas e antes/depois do commit, comparando rollback ou persistência após
+reabertura. Quatro writers com vinte updates cada e leitores verificam equivalência
+em snapshots, inclusive nos checkpoints dentro da transação.
+
+O comparador de referência dos testes reconstrói entradas/contagens a partir de
+JSON em pequenos fixtures, com decoder independente da extração usada na escrita.
+Ele materializa mapas em RAM **somente no teste**; não é a auditoria limitada
+para bases arbitrárias exigida por este ADR. Erros injetados não substituem kill
+do processo, falha física ou queda de energia. Build/rebuild/drop, auditoria
+operacional, crash abrupto, backup/restore e planner continuam pendentes.

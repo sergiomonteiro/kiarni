@@ -1,5 +1,6 @@
 //! ADR 0034 candidate. Not compiled into the server or exposed through Store.
 use super::*;
+mod mutations;
 
 const CATALOG: TableDefinition<u64, &[u8]> = TableDefinition::new("index_catalog");
 const ENTRIES: TableDefinition<(u64, &str, &str), ()> = TableDefinition::new("secondary_entries");
@@ -118,6 +119,7 @@ fn create(root: &Path) -> Result<Database, Error> {
 fn validate(db: &Database) -> Result<(), Error> {
     let read = storage(db.begin_read())?;
     let mut names = storage(read.list_tables())?
+        .take(8)
         .map(|t| t.name().to_owned())
         .collect::<Vec<_>>();
     names.sort();

@@ -64,7 +64,8 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   testes antes de mudar o produto. Não tratar o ganho do spike como ganho HTTP.
   O [ADR 0034 proposto](./adr/0034-lifecycle-indice-secundario.md) detalha contrato,
   criação offline limitada, integridade e compatibilidade. Codificação/criação e
-  validação estrutural do formato candidato têm testes no crate storage; o
+  validação estrutural e manutenção transacional do formato candidato têm testes
+  no crate storage, incluindo rollback e snapshots concorrentes; o
   servidor ainda usa somente formato 1, sem índice secundário.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
