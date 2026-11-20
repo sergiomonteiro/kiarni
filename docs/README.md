@@ -52,7 +52,7 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 ## Entender e contribuir
 
 - [Avaliação de índice secundário](./spikes/secondary-index.md): correção, custos e decisão RF-04.
-- [Proposta de integração do índice](./adr/0034-lifecycle-indice-secundario.md): contrato e lifecycle da issue #10, ainda sem implementação.
+- [Proposta de integração do índice](./adr/0034-lifecycle-indice-secundario.md): contrato e formato candidato testado; sem habilitação no servidor.
 - [Canal e compatibilidade pré-1.0](./RELEASE_POLICY.md).
 - [Contribuir](../CONTRIBUTING.md): ambiente, workspace, testes, fixtures e PRs.
 - [PRD](../KIARNI_PRD_v0.1.md): requisitos e critérios de aceite.

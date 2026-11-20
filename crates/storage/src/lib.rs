@@ -15,6 +15,9 @@ pub mod profiling;
 mod backup;
 pub use backup::ExportSummary;
 mod counts;
+// Candidate format is exercised only by tests until its complete lifecycle exists.
+#[cfg(test)]
+mod format_v2;
 mod telemetry;
 pub use telemetry::STATE_BYTES as TELEMETRY_STATE_BYTES;
 pub mod updates;

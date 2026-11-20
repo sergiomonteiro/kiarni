@@ -14,7 +14,9 @@ reutilizada, primário e scan limitado; seu backup valida exatamente esse layout
 Não basta copiar a tabela experimental para habilitar índices com segurança.
 
 Esta proposta especifica o primeiro lifecycle implementável. Não cria comandos,
-endpoints, tabelas ou migrações. API e dados existentes continuam inalterados.
+endpoints ou migrações. Uma implementação candidata de criação e validação de
+tabelas existe apenas na suíte de testes do storage, em destino novo. API e dados
+existentes continuam inalterados.
 A escolha abaixo precisa ser aceita e demonstrada antes de habilitar o recurso.
 
 Formato 1 continua abrindo pelo caminho atual; versão 2 só pode ser criada em
@@ -42,7 +44,8 @@ de filter/sort/limit/project; o índice fornece apenas candidatos.
 
 ## Formato candidato e compatibilidade
 
-Reservar uma versão lógica **2**, ainda não implementada. Manter manifesto e
+Reservar uma versão lógica **2**, implementada somente como candidata em testes.
+Manter manifesto e
 metadado interno concordantes, com redb 4.5.0; não adicionar tabelas silenciosamente
 ao formato 1. Além das tabelas atuais, propor:
 
@@ -50,13 +53,35 @@ ao formato 1. Além das tabelas atuais, propor:
 | --- | --- | --- |
 | index_catalog | collection_id | revisão de definição, campo, tipo string parcial, limite 128 e estado ready |
 | secondary_entries | (collection_id, valor string, _id) | unidade |
-| collection_stats | collection_id | contagem exata de documentos e bytes JSON armazenados |
+| collection_stats | collection_id | nome da coleção, contagem exata de documentos e bytes JSON armazenados |
 | secondary_counts | (collection_id, valor string) | contagem exata de entradas, omitida quando zero |
 
-Não reutilizar nomes de coleção como identidade. Não aceitar revisões de
-definição desconhecidas. Codificação física dos valores e validação estrita devem
-ser fixadas com fixtures antes de aceitar este ADR; a tabela descreve o contrato
-lógico, não autoriza escolher um serializador implicitamente.
+Não reutilizar nomes de coleção como identidade. O nome em collection_stats é
+referência inversa para validar propriedade/duplicação de IDs sem guardar todos
+os IDs em RAM ou fazer scans quadráticos; não substitui a identidade numérica.
+Não aceitar revisões de definição desconhecidas.
+
+Codificação candidata, fixada em `crates/storage/src/format_v2.rs` e na fixture
+`crates/storage/tests/fixtures/index-status-v1.bin`:
+
+- O manifesto mantém o JSON estrito do formato 1, com version 2. As tabelas
+  originais preservam seus tipos redb; metadados exigem exatamente format_version
+  e next_collection_id, ambos u64.
+- index_catalog tem chave u64 e valor bytes: revisão 1, tipo string 1, estado ready
+  1, limite 128, comprimento do campo em um byte, seguido pelos bytes ASCII do
+  campo. Header de cinco bytes, tamanho total 6–133; sem padding ou trailing bytes.
+  A fixture status é hexadecimal `01 01 01 80 06 73 74 61 74 75 73`.
+- secondary_entries usa chave redb `(u64, &str, &str)` e valor unidade `()`;
+  collection_stats usa chave u64 e valor `(&str, u64, u64)` (nome, documentos,
+  bytes); secondary_counts usa chave `(u64, &str)` e valor u64.
+- Inteiros e tuplas usam a implementação tipada de redb 4.5.0, sem codificador
+  externo. A fixture fixa o payload da definição, não uma imagem binária redb
+  inteira nem compatibilidade com outra versão do engine.
+
+A abertura candidata verifica tabelas exatas e seus tipos, ausência de multimaps,
+metadados, nomes/identidades, referência inversa e definição/revisão/estado. Ela
+não percorre documentos, entradas ou contagens secundárias para provar
+equivalência; auditoria completa e manutenção continuam pendentes.
 
 O binário atual deve continuar recusando versão desconhecida antes de abrir redb.
 Um futuro binário poderá ler formato 1 pelo caminho atual, sem índices, e formato
@@ -172,9 +197,22 @@ ou serviço adicional é necessário.
    snapshots concorrentes e grupos de escrita. Medir cenário seletivo e denso,
    custo de estatísticas/escrita e leitura HTTP antes de escolher o limiar final.
 
-O próximo incremento verificável é o item 1 em destino novo; não é migração de
-instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
+O item 1 tem a evidência candidata descrita abaixo, sem habilitação no servidor.
+O próximo incremento é manter documento, estatísticas e entradas na mesma
+transação nessa implementação isolada, antes de integrar o writer do produto.
+Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
-Este ADR permanece proposto até resolver a codificação e revisar essas condições;
+Este ADR permanece proposto até revisar a codificação candidata e essas condições;
 issue #10 continua aberta. O [ADR 0011](./0011-formato-inicial-e-catalogo.md) segue
 vigente para o produto atual.
+
+### Evidência do primeiro incremento
+
+Seis testes em format_v2 exercitam fixture e validação estrita, criação/reabertura,
+recusa mútua entre formato 1 e candidato 2 sem alterar o arquivo recusado,
+destino existente/parcial, tabela ausente sem recriação, tabela extra/tipo errado,
+metadados divergentes, catálogo órfão/definição inválida, IDs duplicados/referências
+inversas inconsistentes e preflight de manifesto inválido antes do engine.
+Esse código está sob `cfg(test)`: nenhum caminho do binário cria ou abre formato 2.
+Não demonstra ainda manutenção de índices, kill/restart durante criação, energia,
+backup/restore do novo formato ou ganho de performance no produto.
