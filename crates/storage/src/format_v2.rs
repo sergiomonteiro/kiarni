@@ -1,5 +1,6 @@
 //! ADR 0034 candidate. Not compiled into the server or exposed through Store.
 use super::*;
+mod collections;
 mod lifecycle;
 mod mutations;
 

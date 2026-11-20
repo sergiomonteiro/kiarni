@@ -53,13 +53,7 @@ pub(super) fn apply(
     Ok(true)
 }
 
-pub(super) fn begin_write(
-    db: &Database,
-    collection: &Collection,
-) -> Result<redb::WriteTransaction, Error> {
-    if collection.id == 0 || !valid_name(&collection.name) {
-        return Err(Error::InvalidLayout);
-    }
+pub(super) fn begin_schema(db: &Database) -> Result<redb::WriteTransaction, Error> {
     let mut write = storage(db.begin_write())?;
     storage(write.set_durability(Durability::Immediate))?;
     // Write-side open_table can create tables: check all names before any open.
@@ -86,13 +80,28 @@ pub(super) fn begin_write(
         let metadata = storage(write.open_table(METADATA))?;
         if storage(metadata.len())? != 2
             || storage(metadata.get("format_version"))?.map(|v| v.value()) != Some(2)
-            || storage(metadata.get("next_collection_id"))?
-                .is_none_or(|v| v.value() <= collection.id)
+            || storage(metadata.get("next_collection_id"))?.is_none_or(|v| v.value() == 0)
         {
             return Err(Error::InvalidLayout);
         }
-        let collections = storage(write.open_table(COLLECTIONS))?;
-        check_collection(&collections, collection)?;
+    }
+    Ok(write)
+}
+
+pub(super) fn begin_write(
+    db: &Database,
+    collection: &Collection,
+) -> Result<redb::WriteTransaction, Error> {
+    if collection.id == 0 || !valid_name(&collection.name) {
+        return Err(Error::InvalidLayout);
+    }
+    let write = begin_schema(db)?;
+    {
+        let metadata = storage(write.open_table(METADATA))?;
+        if storage(metadata.get("next_collection_id"))?.is_none_or(|v| v.value() <= collection.id) {
+            return Err(Error::InvalidLayout);
+        }
+        check_collection(&storage(write.open_table(COLLECTIONS))?, collection)?;
     }
     Ok(write)
 }

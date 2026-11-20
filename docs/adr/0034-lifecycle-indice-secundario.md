@@ -200,9 +200,9 @@ ou serviço adicional é necessário.
 O item 1 tem a evidência candidata descrita abaixo, sem habilitação no servidor.
 Documento, estatísticas e entradas já têm manutenção transacional candidata,
 descrita abaixo. Construção/reconstrução, remoção do índice e auditoria também
-têm evidência isolada. O próximo incremento é completar exclusão/recriação de
-coleção e testar interrupção abrupta das mutações de documentos, antes de
-export/restore e integração com o writer do produto.
+têm evidência isolada. Exclusão/recriação de coleção e interrupção abrupta das
+mutações têm os testes adicionais abaixo. O próximo incremento é incluir o
+formato candidato em export/restore validado, antes de integrar o writer do produto.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -298,5 +298,43 @@ transforma esse índice em confiável. Erro após commit permanece CommitUncerta
 
 Essas evidências demonstram recuperação nos checkpoints testados do candidato,
 não queda de energia, interrupção em cada instrução do commit ou liberação do
-recurso no produto. Exclusão/recriação de coleção, crash de mutações, coordenação
-de grupos, backup/restore e planner continuam pendentes. ADR permanece proposto.
+recurso no produto. Os testes de coleção e mutações abaixo complementam essa
+evidência; coordenação de grupos, backup/restore e planner continuam pendentes.
+ADR permanece proposto.
+
+### Evidência do ciclo de coleções e crash de mutações
+
+`crates/storage/src/format_v2/collections.rs`, somente em `cfg(test)`, cria
+coleção com contador monotônico e estatística vazia na mesma transação Immediate.
+Destino de identidade com dados/metadados órfãos é recusado. Conflito, nome
+inválido e overflow não consomem identidade. A exclusão exige ausência de
+documentos e estatísticas vazias coerentes, recusando entradas/contagens órfãs;
+remove nome, estatística e definição secundária no mesmo commit, sem resetar o
+contador. Recriar o nome recebe outra identidade e começa sem índice secundário.
+
+Cinco testes adicionais e um worker subordinado exercitam:
+
+- uma coleção antes populada, esvaziada por delete e então excluída/recriada,
+  com mesmo ID de documento reutilizado somente na nova identidade; handles
+  antigos são recusados na mutação, auditoria, rebuild e exclusão;
+- preservação de snapshot antigo, reabertura e ausência de entradas/contagens
+  antigas; criação concorrente duplicada confirma apenas um contador;
+- coleção não vazia, estatística/catálogo inválido, tabela ausente, órfãos e
+  contador inválido/esgotado, com recusa sem exclusão ou adoção silenciosa;
+- dez combinações de erro retornado e dez de kill/restart nos cinco checkpoints
+  de criação/exclusão, validando catálogo, estatística e contador conjuntamente;
+- 24 combinações de kill/restart em insert, PUT, PATCH e delete nos seis
+  checkpoints de documento, entradas, estatísticas, pré e pós-commit.
+
+Os subprocessos usam confirmação do checkpoint, deadline de 15 segundos, kill e
+coleta, com término por EOF se o pai desaparecer. Depois de recovery, auditoria,
+catálogo/contador e conteúdo do documento confirmam rollback ou novo estado
+completo, preservando o número JSON exato do fixture. Falha de confirmação após
+commit permanece incerta, nunca autorização para repetir a mutação.
+
+As rotinas compartilham a validação de schema antes de abrir tabelas para escrita,
+evitando reparo implícito de tabelas faltantes. Continuam sem comandos, servidor,
+eventos ou alteração do formato 1. Não demonstram energia, falha dentro de cada
+instrução do commit, concorrência de grupos ou compatibilidade de backup. Antes
+de habilitar formato 2, ainda concluir export/restore, grupos, planner e revisão
+da proposta. Nenhuma migração ou decisão de estabilidade foi adicionada.

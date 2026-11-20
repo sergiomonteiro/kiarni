@@ -7,13 +7,13 @@ const MAX_DOCUMENTS: u64 = 10000;
 const MAX_BYTES: u64 = 8 * 1024 * 1024;
 
 #[derive(Clone, Copy)]
-enum Action<'a> {
+pub(super) enum Action<'a> {
     Build(&'a str),
     Rebuild,
     Drop,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Point {
+pub(super) enum Point {
     Cleared,
     Progress,
     Built,
@@ -23,7 +23,7 @@ enum Point {
     Committed,
 }
 
-fn audit(db: &Database, collection: &Collection) -> Result<(), Error> {
+pub(super) fn audit(db: &Database, collection: &Collection) -> Result<(), Error> {
     validate(db)?;
     let read = storage(db.begin_read())?;
     check_collection(&storage(read.open_table(COLLECTIONS))?, collection)?;
@@ -120,7 +120,7 @@ fn audit_tables(
     Ok(())
 }
 
-fn maintain(
+pub(super) fn maintain(
     db: &Database,
     collection: &Collection,
     action: Action<'_>,

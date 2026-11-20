@@ -66,7 +66,8 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   criação offline limitada, integridade e compatibilidade. Codificação/criação e
   validação estrutural e manutenção transacional do formato candidato têm testes
   no crate storage, incluindo rollback e snapshots concorrentes. Build/rebuild,
-  remoção do índice e auditoria têm testes de orçamento e kill/restart; o
+  remoção do índice e auditoria têm testes de orçamento e kill/restart. O ciclo de
+  coleção preserva gerações e há crash/restart de insert/PUT/PATCH/delete; o
   servidor ainda usa somente formato 1, sem índice secundário.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
