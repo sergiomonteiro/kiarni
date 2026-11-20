@@ -1,5 +1,6 @@
 //! ADR 0034 candidate. Not compiled into the server or exposed through Store.
 use super::*;
+mod lifecycle;
 mod mutations;
 
 const CATALOG: TableDefinition<u64, &[u8]> = TableDefinition::new("index_catalog");

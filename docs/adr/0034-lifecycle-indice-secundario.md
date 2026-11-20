@@ -199,9 +199,10 @@ ou serviço adicional é necessário.
 
 O item 1 tem a evidência candidata descrita abaixo, sem habilitação no servidor.
 Documento, estatísticas e entradas já têm manutenção transacional candidata,
-descrita abaixo. O próximo incremento é construir/reconstruir o índice a partir
-de documentos existentes com auditoria e testes de interrupção, ainda isolado
-do writer do produto.
+descrita abaixo. Construção/reconstrução, remoção do índice e auditoria também
+têm evidência isolada. O próximo incremento é completar exclusão/recriação de
+coleção e testar interrupção abrupta das mutações de documentos, antes de
+export/restore e integração com o writer do produto.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -249,5 +250,53 @@ O comparador de referência dos testes reconstrói entradas/contagens a partir d
 JSON em pequenos fixtures, com decoder independente da extração usada na escrita.
 Ele materializa mapas em RAM **somente no teste**; não é a auditoria limitada
 para bases arbitrárias exigida por este ADR. Erros injetados não substituem kill
-do processo, falha física ou queda de energia. Build/rebuild/drop, auditoria
-operacional, crash abrupto, backup/restore e planner continuam pendentes.
+do processo, falha física ou queda de energia. A evidência adicional de lifecycle
+abaixo cobre build/rebuild/remoção do índice e auditoria no candidato, mas não
+substitui os testes de crash das mutações, backup/restore ou integração do planner.
+
+### Evidência de construção, reconstrução e auditoria
+
+`crates/storage/src/format_v2/lifecycle.rs`, somente em `cfg(test)`, implementa
+build sobre documentos existentes, rebuild e remoção do índice em uma transação
+Immediate. Publica ready apenas no mesmo commit das entradas e contagens, após
+auditoria na própria transação. Rebuild recompõe também contagem/bytes da coleção
+a partir dos documentos; não repara documentos inválidos nem identidade/catálogo
+inválido. A remoção é do índice, não da coleção. Ainda não há comando offline,
+lock da raiz integrado à manutenção, backfill online ou conexão com o servidor.
+
+Build/rebuild/remoção examinam no máximo 10000 documentos e 8 MiB de JSON. A
+limpeza de entradas/contagens antigas tem limite de 10000 registros por tabela;
+excesso aborta toda a manutenção e preserva o estado anterior. Prefixos usam o
+intervalo entre collection_id e a próxima identidade, evitando excluir valores
+que começam com o maior scalar Unicode e têm sufixo. A operação não toca outra
+coleção, mesmo quando documentos e valores têm nomes iguais.
+
+A auditoria confere, em um snapshot, documentos contra entradas esperadas,
+referências de cada entrada, contagens exatas por valor e contagem/bytes da
+coleção. Percorre cursores e retém apenas um registro/grupo por vez, com parsing
+limitado ao tamanho de documento; não materializa mapas da coleção. O custo
+percorre todos os registros auditados e faz lookups, sem promessa de latência ou
+medição de RSS neste incremento. Não aplica o limite de cardinalidade do build
+à auditoria: ela pode verificar um índice que cresceu além desse limite.
+
+Sete testes adicionais e um worker subordinado cobrem:
+
+- build/rebuild/remoção, preservação de snapshots antigos e isolamento de coleção;
+- detecção de entrada ausente/extra, referência errada, contagem ausente/zero/extra
+  ou divergente e estatística inválida, com reparo por rebuild quando aplicável;
+- rejeição por definição, geração ou documento inválido e limites de limpeza;
+  aceite exato de 10000 documentos/8 MiB, seguido de recusa ao exceder o orçamento;
+- 21 combinações de erro retornado e 28 de subprocesso morto em sete checkpoints
+  (limpeza, progresso, entradas construídas, ready, auditoria, pré e pós-commit).
+
+Nos subprocessos, criação, reconstrução, remoção e reparo são interrompidos com
+kill após confirmação do checkpoint, com deadline de 15 segundos e coleta do
+processo. O worker encerra se o pai desaparecer. Reabertura e auditoria verificam
+o estado anterior ou o commit confirmado. Reparo interrompido antes do commit
+preserva a corrupção preexistente e a auditoria continua recusando-a; não
+transforma esse índice em confiável. Erro após commit permanece CommitUncertain.
+
+Essas evidências demonstram recuperação nos checkpoints testados do candidato,
+não queda de energia, interrupção em cada instrução do commit ou liberação do
+recurso no produto. Exclusão/recriação de coleção, crash de mutações, coordenação
+de grupos, backup/restore e planner continuam pendentes. ADR permanece proposto.

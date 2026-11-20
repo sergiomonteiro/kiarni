@@ -2,14 +2,14 @@
 use super::*;
 use kiarni_engine::writes::{self, Operation};
 
-enum Mutation<'a> {
+pub(super) enum Mutation<'a> {
     Insert(&'a PreparedInsert),
     Update(Operation, &'a [u8]),
     Delete,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Checkpoint {
+pub(super) enum Checkpoint {
     Document,
     OldEntry,
     NewEntry,
@@ -18,7 +18,7 @@ enum Checkpoint {
     Committed,
 }
 
-fn index_value(json: &[u8], field: &str) -> Result<Option<String>, Error> {
+pub(super) fn index_value(json: &[u8], field: &str) -> Result<Option<String>, Error> {
     let document =
         DocumentInput::parse(json, DEFAULT_MAX_DOCUMENT_BYTES).map_err(|_| Error::InvalidLayout)?;
     let Some(raw) = document.fields().get(field) else {
@@ -32,12 +32,12 @@ fn index_value(json: &[u8], field: &str) -> Result<Option<String>, Error> {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-enum Failure {
+pub(super) enum Failure {
     Aborted(Error),
     CommitUncertain,
 }
 
-fn apply(
+pub(super) fn apply(
     db: &Database,
     collection: &Collection,
     id: &str,
@@ -53,15 +53,12 @@ fn apply(
     Ok(true)
 }
 
-fn stage(
+pub(super) fn begin_write(
     db: &Database,
     collection: &Collection,
-    id: &str,
-    mutation: Mutation<'_>,
-    mut checkpoint: impl FnMut(Checkpoint) -> Result<(), Error>,
-) -> Result<Option<redb::WriteTransaction>, Error> {
-    if !valid_name(id) {
-        return Err(Error::InvalidDocument);
+) -> Result<redb::WriteTransaction, Error> {
+    if collection.id == 0 || !valid_name(&collection.name) {
+        return Err(Error::InvalidLayout);
     }
     let mut write = storage(db.begin_write())?;
     storage(write.set_durability(Durability::Immediate))?;
@@ -85,7 +82,6 @@ fn stage(
     {
         return Err(Error::InvalidLayout);
     }
-    let changed;
     {
         let metadata = storage(write.open_table(METADATA))?;
         if storage(metadata.len())? != 2
@@ -97,6 +93,23 @@ fn stage(
         }
         let collections = storage(write.open_table(COLLECTIONS))?;
         check_collection(&collections, collection)?;
+    }
+    Ok(write)
+}
+
+fn stage(
+    db: &Database,
+    collection: &Collection,
+    id: &str,
+    mutation: Mutation<'_>,
+    mut checkpoint: impl FnMut(Checkpoint) -> Result<(), Error>,
+) -> Result<Option<redb::WriteTransaction>, Error> {
+    if !valid_name(id) {
+        return Err(Error::InvalidDocument);
+    }
+    let write = begin_write(db, collection)?;
+    let changed;
+    {
         let catalog = storage(write.open_table(CATALOG))?;
         let field = storage(catalog.get(collection.id))?
             .map(|v| decode_definition(v.value()).map(str::to_owned))
