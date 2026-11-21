@@ -202,8 +202,9 @@ Documento, estatísticas e entradas já têm manutenção transacional candidata
 descrita abaixo. Construção/reconstrução, remoção do índice e auditoria também
 têm evidência isolada. Exclusão/recriação de coleção e interrupção abrupta das
 mutações têm os testes adicionais abaixo. Export/restore do storage candidato
-também têm evidência isolada; o próximo incremento é completar o contrato de
-artefato com hashes e publicação, antes de integrar o writer do produto.
+também têm evidência isolada. O envelope com hashes/publicação tem o candidato
+Unix descrito abaixo; o próximo incremento é completar a publicação da instalação
+restaurada com lock e entrega vazia de credenciais, antes de integrar o writer.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -379,10 +380,63 @@ Seis testes adicionais e um worker subordinado demonstram:
   e pós-publicação do manifesto, com deadline de 15 segundos, coleta do worker,
   auditoria da cópia reconhecível e confirmação de origem intacta.
 
-Este incremento é a primitiva de storage, não o artefato distribuível dos ADRs
-0028/0029. Ainda não tem backup.json/hashes, validação de artefato não confiável,
-proteções NOFOLLOW ancoradas em descriptors, publicação atômica sem substituição
-da raiz/entrega de credenciais, lock de instalação ou integração CLI. Não trata
-manifesto como assinatura e não prova queda de energia. Os comandos atuais só
-aceitam formato 1. Integrar o formato candidato exige completar esse envelope e
-seus testes, além de grupos de escrita, planner e revisão deste ADR proposto.
+Esta primitiva de storage não implementa sozinha o artefato dos ADRs 0028/0029.
+O envelope candidato abaixo complementa hashes/leitura/publicação de store, mas
+não habilita restauração de instalação/credenciais nem CLI. Manifesto não é
+assinatura e não há prova de queda de energia. Os comandos atuais só aceitam
+formato 1; grupos de escrita, planner e revisão deste ADR continuam pendentes.
+
+### Evidência do envelope de backup candidato
+
+`crates/storage/src/format_v2/artifact.rs`, Unix e somente em `cfg(test)`, usa o
+layout dos ADRs 0028/0029: backup.json e store/{format.json,data.redb}. A proposta
+mantém versão 1 do schema JSON e declara **format_version 2**; não altera o
+contrato aceito para os comandos atuais, que recusam esse formato. A fixture
+`crates/storage/tests/fixtures/backup-format2.json` fixa o schema/ordem de escrita,
+não representa um backup com dados válidos.
+
+Manifesto limitado a 1 KiB, com campos/duplicados estritos, magic/engine conhecidos,
+contagens/tamanhos decimais u64 em strings, exatamente dois caminhos fixos em ordem
+e SHA-256 em 64 caracteres hexadecimais minúsculos. O export audita o snapshot,
+calcula hashes após fechar o store exportado, grava/sincroniza o manifesto e
+sincroniza o diretório privado antes de rename NOREPLACE. Diretório de staging
+é criado explicitamente com 0700, arquivos com 0600. O pai deve pertencer ao
+usuário e não permitir escrita por grupo/outros. Recusa plataformas/FS sem rename
+sem substituição; não há fallback check-then-rename.
+
+Restauração do **store**, ainda sem instalação/auth: abre diretórios e filhos por
+descriptors, com NOFOLLOW/NONBLOCK, valida proprietário/modo/tipo/número de links,
+enumera entradas exatas por descriptor e copia somente os dois arquivos fixos para
+staging privado. Usa buffer de 64 KiB, exige tamanho exato, relê os bytes copiados
+para comparar hashes e só então abre a cópia para auditoria/reexport. Hash correto
+não dispensa integridade lógica nem validação das contagens do manifesto.
+Publica o store auditado por rename sem substituição, sem escrever na origem.
+Não restaura dentro do artefato nem importa credenciais.
+
+Antes do rename, erro não publica o destino; um staging próprio pode permanecer.
+Depois dele, falha de confirmação ou sync do pai é PublicationUncertain, sem
+inferir ausência ou repetir com sobrescrita. A cópia intermediária de restauração
+é removida por seu guard privado no término normal. Kill pode deixar staging
+privado; não há limpeza automática de caminhos preexistentes ou de terceiros.
+
+Seis testes novos e um worker subordinado cobrem roundtrip das sete tabelas
+com 607 documentos e store vazio, fixture estrita/duplicados/limites e vetor
+conhecido SHA-256 de abc, alteração de conteúdo com mesmo tamanho, tamanho
+divergente, contagem incorreta e corrupção lógica com hash recalculado. Dez
+formas inseguras (symlink, hardlink, modos e entradas extras) são recusadas.
+Testes também recusam pai gravável por grupo, destino interno ao artefato e
+disputa do nome após preflight, preservando o destino concorrente. Oito erros
+retornados e oito kill/restart em cópia/verificação/pré/pós-rename de backup e
+restore confirmam destino ausente ou completo e origem byte a byte intacta.
+
+sha2 0.11 e rustix 1.1 foram adicionados **somente como dependências de teste** do
+storage, reutilizando pacotes/versões já presentes no produto. Licenças locais
+verificadas: sha2 MIT OR Apache-2.0 e rustix inclui alternativa MIT. Nenhum pacote
+novo ou dependência normal do binário foi introduzido.
+
+Este candidato não é API/CLI disponível, assinatura criptográfica, backup de
+instalação nem prova contra processo malicioso do próprio usuário ou energia.
+Faltam lock da instalação, bootstrap/entrega vazia de credenciais com suas duas
+janelas de publicação, grupos do writer, planner e aceite da proposta antes de
+habilitar formato 2. A CI ainda precisa demonstrar a execução deste incremento
+em cada plataforma; passagem local não certifica macOS ou outro filesystem.

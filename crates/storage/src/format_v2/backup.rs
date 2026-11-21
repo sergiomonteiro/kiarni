@@ -3,7 +3,7 @@ use super::*;
 use redb::{ReadTransaction, WriteTransaction};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Point {
+pub(super) enum Point {
     Batch,
     Audited,
     BeforeManifest,
@@ -11,7 +11,7 @@ enum Point {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-enum CopyFailure {
+pub(super) enum CopyFailure {
     Incomplete(Error),
     PublicationUncertain,
 }
@@ -88,7 +88,7 @@ fn begin(db: &Database) -> Result<WriteTransaction, Error> {
     Ok(write)
 }
 
-fn export(
+pub(super) fn export(
     read: &ReadTransaction,
     root: &Path,
     point: impl FnMut(Point) -> Result<(), Error>,
@@ -171,7 +171,7 @@ fn export_copy(
     Ok(actual)
 }
 
-fn restore(
+pub(super) fn restore(
     source: &Path,
     target: &Path,
     point: impl FnMut(Point) -> Result<(), Error>,
@@ -194,4 +194,4 @@ fn restore(
     export(&storage(db.begin_read())?, target, point)
 }
 
-mod tests;
+pub(super) mod tests;

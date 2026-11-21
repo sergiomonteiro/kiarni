@@ -3,7 +3,7 @@ use collections::{create_collection, drop_collection};
 use lifecycle::{Action, maintain};
 use mutations::{Mutation, apply};
 
-fn fixture(large: bool) -> (tempfile::TempDir, Database, Collection) {
+pub(in crate::format_v2) fn fixture(large: bool) -> (tempfile::TempDir, Database, Collection) {
     let temp = tempfile::tempdir().unwrap();
     let db = create(&temp.path().join("source")).unwrap();
     let collection = create_collection(&db, "indexed", |_| Ok(())).unwrap();
@@ -48,7 +48,7 @@ fn fixture(large: bool) -> (tempfile::TempDir, Database, Collection) {
     (temp, db, collection)
 }
 
-fn equal(left: &ReadTransaction, right: &ReadTransaction) {
+pub(in crate::format_v2) fn equal(left: &ReadTransaction, right: &ReadTransaction) {
     macro_rules! check {
         ($table:expr) => {{
             let l = left.open_table($table).unwrap();

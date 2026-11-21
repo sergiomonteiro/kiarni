@@ -1,5 +1,7 @@
 //! ADR 0034 candidate. Not compiled into the server or exposed through Store.
 use super::*;
+#[cfg(unix)]
+mod artifact;
 mod backup;
 mod collections;
 mod lifecycle;

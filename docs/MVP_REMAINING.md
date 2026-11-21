@@ -68,8 +68,9 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   no crate storage, incluindo rollback e snapshots concorrentes. Build/rebuild,
   remoção do índice e auditoria têm testes de orçamento e kill/restart. O ciclo de
   coleção preserva gerações e há crash/restart de insert/PUT/PATCH/delete. A cópia
-  e restauração do storage candidato auditam as sete tabelas de um snapshot; hashes
-  e envelope de publicação ainda precisam de integração. O
+  e restauração do storage candidato auditam as sete tabelas de um snapshot. Há
+  envelope candidato com hashes, validação por descriptors e rename sem substituição;
+  publicação da instalação/credenciais e integração CLI ainda estão pendentes. O
   servidor ainda usa somente formato 1, sem índice secundário.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.

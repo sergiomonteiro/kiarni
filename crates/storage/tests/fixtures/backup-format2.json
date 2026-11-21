@@ -1,0 +1,1 @@
+{"magic":"kiarni-backup","version":1,"format_version":2,"engine":"redb-4.5.0","collections":"0","documents":"0","document_bytes":"0","files":[{"path":"store/format.json","bytes":"2","sha256":"0000000000000000000000000000000000000000000000000000000000000000"},{"path":"store/data.redb","bytes":"3","sha256":"0000000000000000000000000000000000000000000000000000000000000000"}]}

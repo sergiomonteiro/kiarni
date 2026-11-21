@@ -20,6 +20,10 @@ serde_json = { version = "1", features = ["raw_value", "arbitrary_precision"] }
 [dev-dependencies]
 tempfile = "3.27"
 
+[target.'cfg(unix)'.dev-dependencies]
+sha2 = "0.11"
+rustix = { version = "1.1", features = ["fs", "process"] }
+
 [target.'cfg(unix)'.dependencies]
 rustix = { version = "1.1", features = ["time"], optional = true }
 
