@@ -42,6 +42,23 @@ pub struct AuthResult {
     pub token_file: Option<PathBuf>,
 }
 
+/// Experimental offline Rust entrypoint for a new format-2 installation or its
+/// bootstrap recovery. Never migrates format 1 or starts HTTP. CLI still uses 1.
+/// Credentials are delivered through the existing private auth journal; only
+/// their path is returned. Store closes before the installation lock is released.
+pub fn initialize_indexed_installation(
+    config: Config,
+) -> Result<AuthResult, Box<dyn std::error::Error>> {
+    let root = bootstrap::Root::lock(config.data_dir().as_ref())?;
+    let (store, startup) = root.start_indexed(now()?)?;
+    let result = AuthResult {
+        epoch: startup.keyset.epoch(),
+        token_file: startup.token_file,
+    };
+    drop(store);
+    Ok(result)
+}
+
 pub fn manage_auth(
     config: Config,
     command: AuthCommand,

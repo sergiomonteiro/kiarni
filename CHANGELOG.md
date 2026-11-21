@@ -7,6 +7,11 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
+- API Rust experimental `initialize_indexed_installation` compõe formato 2 com
+  lock da instalação, auditoria e bootstrap/auth persistidos. Registro versão 2
+  fixa a escolha antes de criar o store; retomada legada é recusada. Não muda CLI
+  ou HTTP; backup/restore operacional indexado permanece pendente.
+
 - Servidor Rust single-node, multi-cliente, com storage JSON persistente,
   coleções, CRUD e IDs gerados/validados. Índice primário por `_id`.
 - Consultas AST com filter/sort/limit/project/ID, comparação decimal exata,

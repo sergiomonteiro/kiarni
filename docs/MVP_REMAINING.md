@@ -65,8 +65,9 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   entregues no crate: codec/preflight compartilhados, IndexedStore com engine
   privado e CRUD/grupos/consulta/export auditados; IndexedMaintenance restringe
   recuperação até auditoria completa. O servidor e comandos continuam no formato
-  1. Faltam bootstrap/auth/CLI, integração HTTP/writer/métricas/feeds e medições
-  no produto. Não atribuir ao HTTP os ganhos do spike ou da API Rust isolada.
+  1. G3.1 compõe bootstrap/auth e lock pela API Rust offline, com escolha
+  de formato persistida antes da criação. Faltam envelope backup/restore e CLI
+  de formato 2, integração HTTP/writer/métricas/feeds e medições no produto. Não atribuir ao HTTP os ganhos do spike ou da API Rust isolada.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.

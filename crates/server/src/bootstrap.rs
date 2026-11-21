@@ -6,7 +6,7 @@ use std::{
 };
 
 use kiarni_auth::activation::{Startup, Store as Auth};
-use kiarni_storage::Store;
+use kiarni_storage::{IndexedStore, Store};
 use rustix::fs::{self as unix, FlockOperation, Mode, OFlags};
 use serde::{Deserialize, Serialize};
 
@@ -34,6 +34,21 @@ enum Phase {
 struct Record {
     version: u8,
     phase: Phase,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct IndexedRecord {
+    version: u8,
+    store_format: u8,
+    phase: Phase,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum BootstrapRecord {
+    Legacy(Record),
+    Indexed(IndexedRecord),
 }
 
 pub struct Root {
@@ -115,6 +130,10 @@ impl Root {
     }
 
     fn phase(&self) -> Result<Option<Phase>> {
+        self.phase_for(1)
+    }
+
+    fn phase_for(&self, format: u8) -> Result<Option<Phase>> {
         let file = match unix::openat(
             &self.directory,
             RECORD,
@@ -133,15 +152,26 @@ impl Root {
         if bytes.len() > 1024 || bytes.first() != Some(&b'{') {
             return Err("invalid_bootstrap_record".into());
         }
-        let record: Record =
+        let record: BootstrapRecord =
             serde_json::from_slice(&bytes).map_err(|_| "invalid_bootstrap_record")?;
-        if record.version != 1 {
+        let (stored_format, phase) = match record {
+            BootstrapRecord::Legacy(record) if record.version == 1 => (1, record.phase),
+            BootstrapRecord::Indexed(record) if record.version == 2 && record.store_format == 2 => {
+                (2, record.phase)
+            }
+            _ => return Err("unsupported_bootstrap_record".into()),
+        };
+        if stored_format != format {
             return Err("unsupported_bootstrap_record".into());
         }
-        Ok(Some(record.phase))
+        Ok(Some(phase))
     }
 
     fn publish(&self, phase: Phase) -> Result<()> {
+        self.publish_for(1, phase)
+    }
+
+    fn publish_for(&self, format: u8, phase: Phase) -> Result<()> {
         let mut file = File::from(
             unix::openat(
                 &self.directory,
@@ -152,7 +182,15 @@ impl Root {
             .map_err(|_| "bootstrap_stage_unavailable")?,
         );
         private_file(&file)?;
-        let bytes = serde_json::to_vec(&Record { version: 1, phase })?;
+        let bytes = match format {
+            1 => serde_json::to_vec(&Record { version: 1, phase })?,
+            2 => serde_json::to_vec(&IndexedRecord {
+                version: 2,
+                store_format: 2,
+                phase,
+            })?,
+            _ => return Err("unsupported_bootstrap_record".into()),
+        };
         file.set_len(0)
             .and_then(|()| file.write_all(&bytes))
             .and_then(|()| file.sync_all())
@@ -166,7 +204,21 @@ impl Root {
     }
 
     pub fn start(&self, now: u64) -> Result<(Store, Startup)> {
-        let mut phase = match self.phase()? {
+        self.start_with(now, 1, Store::create, Store::open)
+    }
+
+    pub fn start_indexed(&self, now: u64) -> Result<(IndexedStore, Startup)> {
+        self.start_with(now, 2, IndexedStore::create, IndexedStore::open)
+    }
+
+    fn start_with<S>(
+        &self,
+        now: u64,
+        format: u8,
+        create: fn(&Path) -> std::result::Result<S, kiarni_storage::Error>,
+        open: fn(&Path) -> std::result::Result<S, kiarni_storage::Error>,
+    ) -> Result<(S, Startup)> {
+        let mut phase = match self.phase_for(format)? {
             Some(phase) => phase,
             None => {
                 for entry in fs::read_dir(&self.path).map_err(|_| "data_directory_unavailable")? {
@@ -175,7 +227,7 @@ impl Root {
                         return Err("unrecognized_data_directory".into());
                     }
                 }
-                self.publish(Phase::InitializingStore)?;
+                self.publish_for(format, Phase::InitializingStore)?;
                 Phase::InitializingStore
             }
         };
@@ -185,13 +237,13 @@ impl Root {
                 if error.kind() == std::io::ErrorKind::NotFound
                     && phase == Phase::InitializingStore =>
             {
-                Store::create(&path)?
+                create(&path)?
             }
-            Ok(_) => self.open_existing_store()?,
+            Ok(_) => open(&self.existing_store_path()?)?,
             Err(_) => return Err("missing_store".into()),
         };
         if phase == Phase::InitializingStore {
-            self.publish(Phase::StoreReady)?;
+            self.publish_for(format, Phase::StoreReady)?;
             phase = Phase::StoreReady;
         }
         if phase != Phase::StoreReady {
@@ -200,12 +252,12 @@ impl Root {
         let auth = Auth::open(&self.path, None)?;
         if phase == Phase::StoreReady {
             auth.prepare_initial_marker()?;
-            self.publish(Phase::InitializingAuth)?;
+            self.publish_for(format, Phase::InitializingAuth)?;
             phase = Phase::InitializingAuth;
         }
         let startup = auth.resume_prepared(now, phase == Phase::Initialized)?;
         if phase != Phase::Initialized {
-            self.publish(Phase::Initialized)?;
+            self.publish_for(format, Phase::Initialized)?;
         }
         Ok((store, startup))
     }
@@ -270,3 +322,6 @@ impl Drop for Root {
         let _ = unix::flock(&self.lock, FlockOperation::Unlock);
     }
 }
+
+#[cfg(test)]
+mod indexed_tests;

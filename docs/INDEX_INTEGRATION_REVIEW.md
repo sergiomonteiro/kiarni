@@ -70,12 +70,13 @@ secundário. O aceite restrito do ADR não conclui os itens 2–6 de integraçã
 | --- | --- | --- |
 | G1 — Codec compartilhado (entregue) | Codificação/preflight compartilhados pelo Store atual e candidato, com política explícita de versão | Fixtures 1/2, formatos inválidos e recusa de 2 sem abrir o banco; API/CLI atuais intactas |
 | G2 — Fachada de storage (entregue no crate) | IndexedStore encapsula formato 2, CRUD, grupos, query, auditoria/export e recuperação restrita; Store atual permanece 1 | Testes externos usando somente API pública, auditoria antes de abrir para consulta e regressão do formato 1 |
-| G3 — Composição operacional | Definir administração offline, lock/bootstrap/auth e envelope backup/restore versionados | Restauração + primeiro serve com credencial nova, duas publicações, nomes em disputa, origem intacta e sem migração implícita |
+| G3 — Composição operacional (parcial: bootstrap Rust) | Lock/bootstrap/auth compostos pela API Rust; administração/CLI e envelope backup/restore ainda pendentes | Restauração + primeiro serve com credencial nova, duas publicações, nomes em disputa, origem intacta e sem migração implícita |
 | G4 — Query/writer/feeds no servidor | Integrar seleção tipada, carregamento de candidatos, métricas e confirmação/publicação no writer | Clientes independentes, limites de admissão/erro, captura/ordem de feeds, backpressure e nenhum evento pré-commit |
 | G5 — Aceite do recurso | Medir binário integrado e revisar contrato/documentação/ADRs | Casos seletivo/denso, leitura/escrita, comandos/ambiente/dataset reproduzíveis e CI completa do commit final |
 
 G1 e G2 estão entregues no crate sem selecionar formato 2 no servidor. O próximo
-incremento é G3: composição operacional com bootstrap/auth/CLI.
+incremento é completar G3: envelope de backup/restore e CLI, após a composição
+de bootstrap/auth Rust de G3.1 descrita abaixo.
 Cada etapa precisa preservar a recusa de caminhos incompletos. Esta
 sequência não cria flags/endpoints ainda inexistentes nem exige implementar
 todas as etapas na mesma sessão.
@@ -181,3 +182,48 @@ relatórios do spike preservam fonte, ambiente e resultados históricos.
 - `git diff --check`: aprovado.
 
 A CI do commit de G2 deve ser consultada separadamente destas evidências locais.
+
+## G3.1 — Bootstrap indexado com lock e autenticação
+
+[initialize_indexed_installation](../crates/server/src/lib.rs) é um entrypoint
+Rust experimental e offline para criar ou retomar uma instalação indexada.
+Não abre rede nem muda a CLI. Reusa [Root](../crates/server/src/bootstrap.rs),
+as fases da ADR 0009 e o journal real de autenticação. Mantém o lock exclusivo
+da raiz até fechar o store e concluir o bootstrap. Não expõe Database ou store
+para escapar desse ciclo de vida; retorna somente epoch e eventual caminho da
+entrega privada, sem conteúdo de credencial.
+
+A escolha de formato é durável antes da criação do store. Bootstrap legado
+continua JSON versão 1, sem novos campos. A instalação indexada usa versão 2,
+store_format 2 e as mesmas fases, com schema estrito e teto de 1 KiB. Cada
+entrypoint exige sua versão antes de criar/abrir dados ou preparar auth. Assim,
+crash em initializing_store não permite que serve legado retome criando formato
+1. Não converte raízes ou registros experimentais anteriores implicitamente.
+
+Antes de preparar/retomar auth, a abertura indexada audita todo o store. Uma
+entrada e sua contagem faltantes recusam startup, sem emitir credencial. Estado
+com auth ausente/incompleta falha fechado; instalação expirada ou revogada não
+recebe token automaticamente. Snapshot de store instalado numa nova raiz
+store_ready recebe credencial independente da origem, que permanece utilizável.
+
+Dois [testes externos](../crates/server/tests/indexed_bootstrap.rs) exercitam o
+entrypoint público, emissão única, reabertura e recusa de legado/raiz insegura ou
+desconhecida. Quatro [testes internos](../crates/server/src/bootstrap/indexed_tests.rs)
+cobrem schema/versionamento, auditoria antes de auth, expiração/revogação e cópia
+com credencial independente. Um deles mata um subprocesso em cinco estados
+duráveis de bootstrap, verifica disputa real do lock, recusa cruzada e retomada.
+O worker ignorado isoladamente é executado por esse teste pai. São fixtures de
+interrupção de processo, não prova de queda de energia ou de RSS/latência.
+
+G3 permanece parcial: envelope de backup/restore de formato 2, publicação da
+instalação restaurada, administração offline, comandos e primeiro serve indexado
+ainda não estão integrados. HTTP, feeds, métricas e medições continuam pendentes.
+Os checks originais da issue 10 permanecem um concluído e cinco parciais.
+
+Verificações locais de G3.1: `cargo fmt --all -- --check`,
+`cargo clippy --workspace --all-targets -- -D warnings`,
+`cargo test --workspace --locked` (365 aprovados, zero falhas, onze workers
+ignorados isoladamente e exercitados pelos pais), `python3 scripts/check_docs.py`,
+`python3 scripts/check_product_dependencies.py` e `git diff --check`: aprovados.
+A suíte completa foi executada fora do sandbox para sockets locais. CI do commit
+é evidência separada, a acompanhar após envio.

@@ -2,6 +2,7 @@
 
 - Status: **aceita para a fachada Rust experimental**, em diretório novo.
 - Aceite restrito: 2026-11-21, após G1 e validação acumulada do candidato.
+  G3.1 estende a composição interna para bootstrap/auth offline, conforme seção final.
   Habilitação no servidor/CLI e homologação do custo permanecem pendentes.
 - Data: 2026-11-19.
 - Requisito: RF-04; integração posterior ao aceite técnico M3, issue #10.
@@ -638,3 +639,28 @@ A [revisão G2](../INDEX_INTEGRATION_REVIEW.md#g2--api-de-storage-indexado-compi
 registra três testes externos da API pública e um teste privado de recusa/reparo
 de índice incompleto, além de todas as suites anteriores reutilizadas. Nenhuma
 dependência normal ou serviço obrigatório foi adicionado por esta promoção.
+
+## G3.1 — Composição interna com bootstrap e auth
+
+Aceite restrito à API Rust de preparação offline de instalação indexada nova ou
+retomada da mesma instalação, sem abrir listener. Reusar o protocolo de fases,
+lock exclusivo e journal da ADR 0009. Versionar o registro de bootstrap para
+fixar a escolha antes da criação do store: versão 1 continua exclusiva do legado;
+versão 2 exige store_format: 2 e a mesma enumeração de fases. JSON estrito e
+limitado a 1 KiB. Caminho legado recusa registro 2 antes de qualquer criação ou
+auth, inclusive após crash em initializing_store com store ainda ausente. Não
+converter registros nem aceitar implicitamente esqueletos experimentais antigos.
+A escolha do backend é explícita no entrypoint Rust, nunca inferida como upgrade.
+
+Antes de preparar ou recuperar auth, abrir o store pela fachada IndexedStore,
+com auditoria lógica integral. Recusar formato 1, manifesto/layout inválido ou
+índice inconsistente antes de emitir credencial. Manter o lock da raiz até fechar
+o store e concluir a autenticação. Retomada de auth inicializada, expirada ou
+revogada não emite automaticamente outra credencial. Estado restaurado store_ready
+pode completar auth com nova entrega, sem copiar credenciais de origem.
+
+Esta composição ainda não habilita formato 2 em serve, auth, backup ou restore
+pela CLI; esses caminhos continuam exigindo formato 1. A API Rust experimental
+é etapa de integração operacional, não nova recomendação de instalação ao usuário.
+Testar exclusão entre processos, retomada das fases, erros anteriores à emissão,
+credenciais independentes após cópia e regressão do bootstrap legado.
