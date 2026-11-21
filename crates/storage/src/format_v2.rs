@@ -4,6 +4,7 @@ use super::*;
 mod artifact;
 mod backup;
 mod collections;
+mod groups;
 mod lifecycle;
 mod mutations;
 

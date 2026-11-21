@@ -71,7 +71,9 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   e restauração do storage candidato auditam as sete tabelas de um snapshot. Há
   envelope candidato com hashes, validação por descriptors e rename sem substituição;
   a instalação candidata já publica bootstrap/lock e entrega vazia de credenciais
-  com testes das duas janelas. Ativação de auth e integração CLI ainda estão pendentes. O
+  com testes das duas janelas. Grupos de PUT/PATCH mantêm índices atomicamente no
+  candidato, com comparação ao formato 1 e crash/restart. Ativação de auth e
+  integração CLI/writer/planner ainda estão pendentes. O
   servidor ainda usa somente formato 1, sem índice secundário.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.

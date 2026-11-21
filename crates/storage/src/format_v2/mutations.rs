@@ -6,6 +6,7 @@ pub(super) enum Mutation<'a> {
     Insert(&'a PreparedInsert),
     Update(Operation, &'a [u8]),
     Delete,
+    Prepared(&'a writes::PreparedWrite),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -117,6 +118,24 @@ fn stage(
         return Err(Error::InvalidDocument);
     }
     let write = begin_write(db, collection)?;
+    if !stage_in(&write, collection, id, mutation, &mut checkpoint)? {
+        return Ok(None);
+    }
+    checkpoint(Checkpoint::BeforeCommit)?;
+    Ok(Some(write))
+}
+
+pub(super) fn stage_in(
+    write: &redb::WriteTransaction,
+    collection: &Collection,
+    id: &str,
+    mutation: Mutation<'_>,
+    mut checkpoint: impl FnMut(Checkpoint) -> Result<(), Error>,
+) -> Result<bool, Error> {
+    if !valid_name(id) {
+        return Err(Error::InvalidDocument);
+    }
+    check_collection(&storage(write.open_table(COLLECTIONS))?, collection)?;
     let changed;
     {
         let catalog = storage(write.open_table(CATALOG))?;
@@ -148,6 +167,14 @@ fn stage(
                     writes::prepare(operation, id, current, body, DEFAULT_MAX_DOCUMENT_BYTES)
                         .map_err(Error::Write)?;
                 // Preserve the exact previous bytes on semantic no-op.
+                Some(if prepared.changed() {
+                    prepared.json().to_vec()
+                } else {
+                    current.to_vec()
+                })
+            }
+            Mutation::Prepared(prepared) => {
+                let current = old.as_deref().ok_or(Error::MissingDocument)?;
                 Some(if prepared.changed() {
                     prepared.json().to_vec()
                 } else {
@@ -199,7 +226,7 @@ fn stage(
         }
         changed = old != new;
         if !changed {
-            return Ok(None);
+            return Ok(false);
         }
         match &new {
             Some(json) => {
@@ -249,8 +276,7 @@ fn stage(
         ))?;
         checkpoint(Checkpoint::Statistics)?;
     }
-    checkpoint(Checkpoint::BeforeCommit)?;
-    Ok(Some(write))
+    Ok(changed)
 }
 
 #[cfg(test)]

@@ -204,8 +204,9 @@ têm evidência isolada. Exclusão/recriação de coleção e interrupção abru
 mutações têm os testes adicionais abaixo. Export/restore do storage candidato
 também têm evidência isolada. O envelope com hashes/publicação tem o candidato
 Unix descrito abaixo. A instalação restaurada também tem publicação candidata
-com lock e entrega vazia de credenciais; o próximo incremento é validar a
-manutenção de índices nos grupos de escrita, antes da integração com o writer.
+com lock e entrega vazia de credenciais. Grupos internos de PUT/PATCH também
+têm manutenção transacional candidata; o próximo incremento é validar a escolha
+entre índice e scan, antes da integração no writer/servidor.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -477,6 +478,51 @@ têm deadline de 15 segundos, kill/coleta e término por EOF quando o pai some.
 Isso comprova o esqueleto restaurado nos checkpoints do candidato, não um serve
 de formato 2: os comandos atuais continuam recusando esse formato. O registro
 store_ready não habilita uma nova versão de storage implicitamente. Ativação de
-auth/geração de novas credenciais no primeiro serve, integração CLI, grupos do
-writer, planner e aceite da proposta permanecem pendentes. Nenhuma credencial
+auth/geração de novas credenciais no primeiro serve, integração CLI/writer,
+planner e aceite da proposta permanecem pendentes. Nenhuma credencial
 da origem é copiada ou mostrada. Não há nova garantia de energia ou migração.
+
+### Evidência de manutenção em grupos de escrita
+
+`crates/storage/src/format_v2/groups.rs`, somente em `cfg(test)`, reutiliza os
+tipos internos Update, CapturedReceipt e GroupError do produto, com os mesmos
+limites de 32 operações/8 MiB de corpos e limite individual de documento. Não
+cria API de transação multi-documento pública, worker, fila ou integração HTTP.
+Resolve nomes/identidades dentro da transação, processa PUT/PATCH em ordem e
+aplica a mesma manutenção de documento/índice/estatísticas das escritas simples.
+O preparo do engine é reaproveitado, sem preparar a transformação duas vezes.
+
+Rejeições de domínio são resultados individuais, antes de alterar aquela
+operação; outras operações válidas podem confirmar. Erro de layout, engine,
+integridade ou encoding interno aborta o grupo inteiro, incluindo alterações
+anteriores. Grupo sem mudança aborta sem commit e sem transições. Havendo
+mudança, um único commit Immediate confirma dados, entradas e contagens.
+Erro no commit ou na confirmação posterior continua CommitUncertain.
+
+Captura opcional preserva os estados before/after por operação, inclusive os
+intermediários do mesmo documento, mas só entrega receipt/transições depois de
+commit confirmado. As referências compartilhadas seguem os tipos existentes do
+produto. Não emite eventos; integração com o dispatcher permanece fora desta
+etapa. Os limites de resultados retidos seguem a quantidade de operações e o
+tamanho máximo dos documentos; 8 MiB continua sendo limite de **corpos recebidos**,
+não promessa de memória total/RSS do grupo.
+
+Seis testes adicionais e um worker subordinado demonstram:
+
+- resultados ordenados, erros individuais, no-op e transições do mesmo ID,
+  comparados diretamente com update_group_captured do formato 1 e com aplicação
+  sequencial; resultado final das sete tabelas, snapshot antigo e JSON exato;
+- bordas de zero/32/33 operações, captura incompatível, limite individual inválido,
+  aceite de exatamente 8 MiB de corpos e recusa de excesso sem escrita;
+- falha de integridade depois de uma operação válida abortando tudo, incluindo
+  contador que estoura na segunda atualização e tabela ausente sem recriação;
+- quatro erros retornados e quatro kill/restart depois das operações 0/1,
+  grupo preparado e commit confirmado, auditando duas coleções/índice/contagens;
+- quatro writers com doze grupos cada e leitores verificando que mudanças nas
+  duas coleções aparecem juntas no mesmo snapshot, sem visibilidade parcial.
+
+O helper transacional compartilhado continua compilado somente em testes. O
+writer/coordenador e seus limites de admissão, métricas e feeds do produto não
+foram alterados. Integração e validação HTTP, planner, ativação auth/CLI e revisão
+do ADR ainda são necessárias antes de habilitar formato 2. Falhas injetadas/kill
+nos checkpoints não certificam energia, desempenho ou falha em cada instrução.
