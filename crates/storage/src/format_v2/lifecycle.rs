@@ -1,6 +1,7 @@
-//! Offline candidate lifecycle; no CLI or server integration.
+//! Bounded synchronous index maintenance; installation locking belongs to the caller.
 use super::*;
 use mutations::{Failure, begin_write, index_value};
+#[cfg(test)]
 mod tests;
 
 const MAX_DOCUMENTS: u64 = 10000;
@@ -23,6 +24,7 @@ pub(super) enum Point {
     Committed,
 }
 
+#[cfg(test)]
 pub(super) fn audit(db: &Database, collection: &Collection) -> Result<(), Error> {
     validate(db)?;
     let read = storage(db.begin_read())?;

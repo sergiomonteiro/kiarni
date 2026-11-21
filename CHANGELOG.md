@@ -28,12 +28,16 @@ A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendênci
 - Avaliação RF-04 de índice secundário string parcial: equivalência com scan,
   testes de atualização/remoção/crash e medições pareadas. Integração adiada
   conforme ADR 0033; API continua com índice primário e scan limitado.
+- API Rust interna experimental IndexedStore: formato 2 explícito em diretório
+  novo, engine privado, índices mantidos em CRUD/grupos, snapshots e export.
+  IndexedMaintenance restringe recuperação até auditoria completa. Servidor e
+  comandos continuam no formato 1; sem migração ou índice secundário no HTTP.
 - Evidências de instalação isolada e observação com Prometheus externo,
   diagnóstico de scan versus ID e consumidor lento, com escopo/duração explícitos.
 
 Limitações conhecidas: [revisão](./docs/RELEASE_REVIEW.md) e
 [plano restante](./docs/MVP_REMAINING.md). Não há cluster, replicação, sharding,
 replay/exactly-once, garantia de evento para cliente desconectado ou compatibilidade
-com ReQL. Não declarar índice secundário, SDK completo ou upgrade automático como
-implementados. Baselines de desempenho não são promessa arbitrária de TPS/RSS.
+com ReQL. Não declarar índice secundário no HTTP/CLI, SDK completo ou upgrade
+automático como implementados. Baselines não são promessa arbitrária de TPS/RSS.
 Nenhuma tag, Release ou publicação de imagem em registry é criada por este documento.

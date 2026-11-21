@@ -16,9 +16,11 @@ mod backup;
 mod format;
 pub use backup::ExportSummary;
 mod counts;
-// Candidate format is exercised only by tests until its complete lifecycle exists.
-#[cfg(test)]
 mod format_v2;
+pub use format_v2::{
+    IndexedAccess, IndexedCopyError, IndexedMaintenance, IndexedQueryError, IndexedQueryResult,
+    IndexedSnapshot, IndexedStore, IndexedWriteError,
+};
 mod telemetry;
 pub use telemetry::STATE_BYTES as TELEMETRY_STATE_BYTES;
 pub mod updates;

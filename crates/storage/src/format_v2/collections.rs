@@ -1,4 +1,4 @@
-//! Candidate collection generations. Not exposed through Store or HTTP.
+//! Transactional collection generations for the explicit indexed-store facade.
 use super::*;
 use mutations::{Failure, begin_schema, begin_write};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -122,4 +122,5 @@ pub(super) fn drop_collection(
     point(Point::Committed).map_err(|_| Failure::CommitUncertain)
 }
 
+#[cfg(test)]
 mod tests;

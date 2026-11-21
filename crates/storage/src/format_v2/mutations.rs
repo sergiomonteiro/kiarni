@@ -1,9 +1,12 @@
-//! Transactional candidate only; no server, group writer or feed integration.
+//! Shared transactional document/index maintenance. This layer never publishes feeds.
 use super::*;
-use kiarni_engine::writes::{self, Operation};
+use kiarni_engine::writes;
+#[cfg(test)]
+use kiarni_engine::writes::Operation;
 
 pub(super) enum Mutation<'a> {
     Insert(&'a PreparedInsert),
+    #[cfg(test)]
     Update(Operation, &'a [u8]),
     Delete,
     Prepared(&'a writes::PreparedWrite),
@@ -33,7 +36,7 @@ pub(super) fn index_value(json: &[u8], field: &str) -> Result<Option<String>, Er
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(super) enum Failure {
+pub enum Failure {
     Aborted(Error),
     CommitUncertain,
 }
@@ -161,6 +164,7 @@ pub(super) fn stage_in(
                 }
                 Some(input.json().to_vec())
             }
+            #[cfg(test)]
             Mutation::Update(operation, body) => {
                 let current = old.as_deref().ok_or(Error::MissingDocument)?;
                 let prepared =

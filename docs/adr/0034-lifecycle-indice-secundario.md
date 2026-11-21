@@ -1,6 +1,8 @@
 # ADR 0034 — Contrato e ciclo de vida do índice secundário
 
-- Status: **proposta**, ainda sem autorização de mudança do formato do produto.
+- Status: **aceita para a fachada Rust experimental**, em diretório novo.
+- Aceite restrito: 2026-11-21, após G1 e validação acumulada do candidato.
+  Habilitação no servidor/CLI e homologação do custo permanecem pendentes.
 - Data: 2026-11-19.
 - Requisito: RF-04; integração posterior ao aceite técnico M3, issue #10.
 - Complementa a [avaliação 0033](./0033-avaliacao-indice-secundario.md).
@@ -13,11 +15,11 @@ pelo lookup. O produto usa formato 1, catálogo de coleções com identidade nã
 reutilizada, primário e scan limitado; seu backup valida exatamente esse layout.
 Não basta copiar a tabela experimental para habilitar índices com segurança.
 
-Esta proposta especifica o primeiro lifecycle implementável. Não cria comandos,
-endpoints ou migrações. Uma implementação candidata de criação e validação de
-tabelas existe apenas na suíte de testes do storage, em destino novo. API e dados
-existentes continuam inalterados.
-A escolha abaixo precisa ser aceita e demonstrada antes de habilitar o recurso.
+Este ADR aceita o contrato persistido e a API Rust interna IndexedStore, com
+engine privado e seleção explícita de formato 2 em diretório novo. Não cria
+comandos, endpoints ou migrações. Store e servidor atuais continuam no formato 1;
+API HTTP e dados existentes permanecem inalterados. O aceite não libera formato
+2 no servidor nem torna o limiar 1/8 uma conclusão de benchmark.
 
 Formato 1 continua abrindo pelo caminho atual; versão 2 só pode ser criada em
 destino novo. Não editar manifesto para converter um store nem migrar in-place.
@@ -27,7 +29,7 @@ antes de publicar. A interface dessa conversão fica para incremento próprio;
 até lá, nenhuma promessa de upgrade/downgrade entre formatos. Binários antigos
 devem recusar versão 2 no preflight, sem abrir o engine para escrita.
 
-## Contrato proposto
+## Contrato aceito para a fachada Rust
 
 Um índice opcional por coleção, sobre um campo simples da raiz, com nome sujeito
 ao mesmo limite ASCII de 1–128 bytes do catálogo de coleções. `_id` continua
@@ -44,7 +46,7 @@ de filter/sort/limit/project; o índice fornece apenas candidatos.
 
 ## Formato candidato e compatibilidade
 
-Reservar uma versão lógica **2**, implementada somente como candidata em testes.
+Versão lógica **2**, disponível explicitamente por IndexedStore no crate storage.
 Manter manifesto e
 metadado interno concordantes, com redb 4.5.0; não adicionar tabelas silenciosamente
 ao formato 1. Além das tabelas atuais, propor:
@@ -184,7 +186,7 @@ build e a preservação do orçamento de scan restringem utilidade inicial; rela
 exige decisão explícita sobre o contrato de consulta. Nenhuma dependência externa
 ou serviço adicional é necessário.
 
-## Condições de aceitação e sequência de implementação
+## Condições de habilitação no servidor e sequência de implementação
 
 1. Fixar codificação/fixtures do formato 2 e implementar criação em destino novo,
    recusa de formatos inválidos e validação estrutural, ainda sem habilitar no HTTP.
@@ -208,12 +210,17 @@ com lock e entrega vazia de credenciais. Grupos internos de PUT/PATCH e seleçã
 ID/índice/scan também têm evidência candidata. A [revisão de integração](../INDEX_INTEGRATION_REVIEW.md)
 consolida o gate e a promoção incremental. Codec/preflight já são compartilhados
 no código de produção, com a abertura padrão restrita ao formato 1. O próximo
-passo é a fachada completa de storage sem habilitação do backend no servidor.
+passo de fachada está entregue por IndexedStore, sem selecionar esse backend no
+servidor. A composição operacional e integração HTTP ainda precisam ser concluídas.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
-Este ADR permanece proposto até revisar a codificação candidata e essas condições;
-issue #10 continua aberta. O [ADR 0011](./0011-formato-inicial-e-catalogo.md) segue
-vigente para o produto atual.
+O aceite é restrito ao formato/fachada internos; issue #10 continua aberta até
+concluir integração e medições. O [ADR 0011](./0011-formato-inicial-e-catalogo.md)
+segue vigente para Store e servidor de formato 1.
+
+As seções de evidência abaixo preservam a sequência histórica do candidato.
+Menções a cfg(test)/proposta descrevem aquelas etapas; a seção G2 final registra
+quais partes já passaram a código normal do crate.
 
 ### Evidência do primeiro incremento
 
@@ -598,3 +605,36 @@ incluindo Store::open real sobre manifesto 2 com banco ausente/inválido. A
 registra a evidência e a próxima fachada G2. CRUD/indexação, planner, artefato e
 instalação de formato 2 ainda estão somente no candidato; nenhum servidor passou
 a usar índice secundário por essa extração. O ADR continua proposto.
+
+### G2 — Aceite e promoção da fachada Rust interna
+
+Em 2026-11-21 o contrato de persistência/lifecycle aqui definido é aceito para
+IndexedStore, selecionado explicitamente em diretório novo. O aceite se apoia na
+evidência acumulada e CI de G1 (40560d0), sem aceitar ativação no servidor, migração
+ou o limiar 1/8 como decisão de desempenho. Os registros anteriores de proposta
+e cfg(test) são históricos; esta seção descreve o estado atual.
+
+O núcleo de formato 2 (coleções, mutações, grupos, planner e export de snapshot)
+passou a código normal do crate. IndexedStore tem Database privado e controla
+todas as escritas. IndexedSnapshot mantém uma transação sem expor o engine.
+Os tipos de resultado distinguem aborto, commit incerto e publicação incerta.
+Captura de grupos/delete só sai da fachada após commit confirmado; não emite
+eventos, altera o writer do servidor ou registra payloads por padrão.
+
+IndexedStore::open exige auditoria lógica completa. IndexedMaintenance permite
+recuperação explícita de um store estruturalmente válido, sem expor consultas
+ou CRUD, e só produz um IndexedStore depois de nova auditoria. Não garante
+recuperação de catálogo/documentos arbitrariamente corrompidos nem remove os
+limites de build/rebuild. A auditoria de abertura usa memória limitada, mas seu
+custo proporcional aos registros ainda requer medição operacional.
+
+Store::create/open e os comandos atuais continuam no formato 1, recusando 2 antes
+de abrir redb. Novas APIs Rust são aditivas e experimentais, sem compromisso de
+SDK/compatibilidade entre releases. Artefato/instalação candidatos continuam em
+cfg(test); integração de bootstrap/auth/CLI, métricas/admissão/writer/feeds e
+medições HTTP ainda faltam. A issue #10 permanece aberta.
+
+A [revisão G2](../INDEX_INTEGRATION_REVIEW.md#g2--api-de-storage-indexado-compilada-normalmente)
+registra três testes externos da API pública e um teste privado de recusa/reparo
+de índice incompleto, além de todas as suites anteriores reutilizadas. Nenhuma
+dependência normal ou serviço obrigatório foi adicionado por esta promoção.

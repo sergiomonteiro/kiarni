@@ -1,14 +1,22 @@
-//! ADR 0034 candidate. Not compiled into the server or exposed through Store.
+//! Format-2 backend, explicitly selected through IndexedStore; server defaults stay v1.
 use super::*;
+#[cfg(all(test, unix))]
 use std::io::Read;
-#[cfg(unix)]
+#[cfg(all(test, unix))]
 mod artifact;
 mod backup;
 mod collections;
+mod facade;
 mod groups;
 mod lifecycle;
 mod mutations;
 mod queries;
+pub use backup::CopyFailure as IndexedCopyError;
+pub use facade::{IndexedMaintenance, IndexedSnapshot, IndexedStore};
+pub use mutations::Failure as IndexedWriteError;
+pub use queries::{
+    Failure as IndexedQueryError, Output as IndexedQueryResult, Plan as IndexedAccess,
+};
 
 const CATALOG: TableDefinition<u64, &[u8]> = TableDefinition::new("index_catalog");
 const ENTRIES: TableDefinition<(u64, &str, &str), ()> = TableDefinition::new("secondary_entries");

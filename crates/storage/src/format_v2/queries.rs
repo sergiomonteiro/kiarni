@@ -1,21 +1,22 @@
-//! Candidate access selection; no HTTP or metrics contract is enabled.
+//! Indexed access selection; HTTP/admission/metrics integration is separate.
 use super::*;
 use kiarni_engine::query::{self, Query};
 use redb::ReadTransaction;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Plan {
+pub enum Plan {
     Primary,
     Secondary,
     Scan,
 }
 #[derive(Clone, Copy)]
-enum Mode {
+pub(super) enum Mode {
     Automatic,
+    #[cfg(test)]
     Scan,
 }
 #[derive(Debug, PartialEq, Eq)]
-enum Failure {
+pub enum Failure {
     Storage(Error),
     Query(query::Error),
 }
@@ -30,11 +31,11 @@ impl From<query::Error> for Failure {
     }
 }
 #[derive(Debug, PartialEq, Eq)]
-struct Output {
-    documents: Vec<Vec<u8>>,
-    plan: Plan,
-    examined: usize,
-    document_bytes: usize,
+pub struct Output {
+    pub documents: Vec<Vec<u8>>,
+    pub plan: Plan,
+    pub examined: usize,
+    pub document_bytes: usize,
 }
 
 fn literal(query: &Query, field: &str) -> Result<Option<String>, Failure> {
@@ -44,7 +45,7 @@ fn literal(query: &Query, field: &str) -> Result<Option<String>, Failure> {
         .map(|(_, value)| value))
 }
 
-fn execute(
+pub(super) fn execute(
     read: &ReadTransaction,
     collection: &Collection,
     query: &Query,
@@ -151,4 +152,5 @@ fn execute(
     })
 }
 
+#[cfg(test)]
 mod tests;

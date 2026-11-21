@@ -27,9 +27,9 @@ Passagem da base não certifica um commit futuro ou qualquer filesystem/hardware
 Fontes: [formato candidato](../crates/storage/src/format_v2.rs),
 [grupos](../crates/storage/src/format_v2/groups.rs),
 [planner](../crates/storage/src/format_v2/queries.rs) e testes relacionados.
-Os arquivos sob format_v2 continuam em `cfg(test)`. Não correspondem a um
-servidor com índice secundário disponível nem a cumprimento integral dos itens
-2–6 da issue. O item 1 exige propor o ADR, não aceitá-lo implicitamente.
+O núcleo sob format_v2 foi promovido para código normal por IndexedStore;
+envelope/instalação continuam em cfg(test). O servidor ainda não oferece índice
+secundário. O aceite restrito do ADR não conclui os itens 2–6 de integração da issue.
 
 ## Fronteiras identificadas na revisão
 
@@ -69,19 +69,19 @@ servidor com índice secundário disponível nem a cumprimento integral dos iten
 | Incremento | Resultado revisável | Verificação necessária antes do seguinte |
 | --- | --- | --- |
 | G1 — Codec compartilhado (entregue) | Codificação/preflight compartilhados pelo Store atual e candidato, com política explícita de versão | Fixtures 1/2, formatos inválidos e recusa de 2 sem abrir o banco; API/CLI atuais intactas |
-| G2 — Fachada completa de storage | Encapsular catálogo, CRUD, grupos, auditoria e export por versão, sem expor Database ou habilitar o servidor sobre 2 | Escritas e grupos mantêm invariantes; budgets, snapshot e crash/restart; regressão do formato 1 |
+| G2 — Fachada de storage (entregue no crate) | IndexedStore encapsula formato 2, CRUD, grupos, query, auditoria/export e recuperação restrita; Store atual permanece 1 | Testes externos usando somente API pública, auditoria antes de abrir para consulta e regressão do formato 1 |
 | G3 — Composição operacional | Definir administração offline, lock/bootstrap/auth e envelope backup/restore versionados | Restauração + primeiro serve com credencial nova, duas publicações, nomes em disputa, origem intacta e sem migração implícita |
 | G4 — Query/writer/feeds no servidor | Integrar seleção tipada, carregamento de candidatos, métricas e confirmação/publicação no writer | Clientes independentes, limites de admissão/erro, captura/ordem de feeds, backpressure e nenhum evento pré-commit |
 | G5 — Aceite do recurso | Medir binário integrado e revisar contrato/documentação/ADRs | Casos seletivo/denso, leitura/escrita, comandos/ambiente/dataset reproduzíveis e CI completa do commit final |
 
-G1 está entregue sem abrir dados de formato 2 no produto. O próximo incremento
-é G2: fachada completa de storage, ainda sem selecionar esse backend no servidor.
+G1 e G2 estão entregues no crate sem selecionar formato 2 no servidor. O próximo
+incremento é G3: composição operacional com bootstrap/auth/CLI.
 Cada etapa precisa preservar a recusa de caminhos incompletos. Esta
 sequência não cria flags/endpoints ainda inexistentes nem exige implementar
 todas as etapas na mesma sessão.
 
-O ADR 0034 permanece proposto. Seu aceite deve distinguir contrato persistido,
-habilitação operacional e hipótese de custo; uma medição favorável não substitui
+O ADR 0034 foi aceito para a fachada Rust experimental e diretório novo, distinguindo
+contrato persistido, habilitação operacional e hipótese de custo. Medição não substitui
 segurança de dados e testes de regressão. O checklist da issue continua com um
 item entregue e cinco de integração/validação pendentes, com avanços parciais.
 
@@ -108,6 +108,48 @@ de execução fora do sandbox para sockets locais. CI da base bdcc896 aprovada;
 a CI deste incremento precisa ser observada separadamente. Sem dependências,
 migração, endpoint ou comando novos, sem ganho de consulta alegado.
 
+## G2 — API de storage indexado compilada normalmente
+
+[IndexedStore](../crates/storage/src/format_v2/facade.rs) cria/abre explicitamente
+formato 2, sem expor Database, WriteTransaction ou tabelas ao caller. Store
+continua no formato 1 e o servidor não seleciona o novo backend. Não há migração
+nem mudança de defaults. A API Rust é interna ao workspace experimental, sem
+promessa de compatibilidade entre releases ou SDK publicado.
+
+A fachada controla coleção/lista/contagem, inserção preparada, leitura, PUT/PATCH,
+delete/captura do estado anterior, grupos e transições intermediárias, lifecycle
+de índices, consultas e export/restore do store. Snapshots mantêm catálogo,
+dados, entradas/contagens e estatísticas da mesma transação, inclusive ao exportar
+depois de escritas concorrentes. Erro de commit/cópia incerta segue tipado, sem
+retornar captura para publicação quando a confirmação falha. Não emite feeds.
+
+Open faz auditoria lógica integral antes de admitir consulta, com cursores e
+cache configurado. Esse custo de startup cresce com a base; precisa ser medido
+antes da habilitação no servidor. `check_readable` é verificação estrutural;
+`audit` é a verificação completa. Manutenção e abertura são síncronas, não tarefas
+despachadas pelo servidor neste incremento.
+
+IndexedMaintenance é um handle separado, com engine privado, para abrir um store
+estruturalmente válido que falha na auditoria lógica. Só oferece identificação
+de coleção, auditoria, rebuild/drop de índice e conversão para IndexedStore após
+auditoria completa. Não oferece query nem mutações comuns. Não repara catálogo
+inválido/documentos inválidos, não ignora budgets de manutenção, nem transforma
+um índice incompleto em pronto por existir uma tabela.
+
+Três testes de integração em
+[indexed_store.rs](../crates/storage/tests/indexed_store.rs) usam a API pública,
+sem redb/tabelas: consulta seletiva real (1 de 16 candidatos), CRUD/grupos/captura,
+snapshots, export/restore, reopen, gerações, paginação e concorrência. Um teste
+privado injeta perda de entrada **e** contagem, demonstra recusa de open/into_store
+e recuperação explícita por rebuild. As suites anteriores de falha/crash/budget
+continuam exercitando o mesmo núcleo agora compilado normalmente.
+
+G2 não implementa telemetria/admissão de servidor, ativação de auth, comandos ou
+endpoint de índice. Administração exposta ao operador ainda deve ser offline sob
+lock da instalação, conforme ADR. O limiar de planner 1/8 permanece hipótese;
+não há ganho HTTP alegado. A divisão entre carregamento/storage e engine/tempos
+HTTP precisa ser preservada em G4, em vez de copiar o wrapper de query inteiro.
+
 ## Verificações da fronteira tipada (bdcc896)
 
 A fronteira tipada tem três testes em
@@ -126,3 +168,16 @@ A CI deste incremento é distinta da CI da base citada acima; observar o commit
 enviado antes de usar sua passagem como evidência de plataforma.
 Não repetir as medições antigas como se fossem feitas nesta revisão: os
 relatórios do spike preservam fonte, ambiente e resultados históricos.
+
+## Verificações de G2
+
+- `cargo fmt --all -- --check`: aprovado.
+- `cargo clippy --workspace --all-targets -- -D warnings`: aprovado.
+- `cargo test --workspace --locked`: 359 aprovados, zero falhas e dez workers
+  ignorados como testes diretos, exercitados pelos pais. Executado fora do
+  sandbox para permitir os testes com sockets locais.
+- `python3 scripts/check_docs.py`: aprovado.
+- `python3 scripts/check_product_dependencies.py`: aprovado, nove pacotes.
+- `git diff --check`: aprovado.
+
+A CI do commit de G2 deve ser consultada separadamente destas evidências locais.

@@ -1,4 +1,4 @@
-//! Candidate grouped PUT/PATCH. Reuses the product's internal request/receipt types.
+//! Grouped PUT/PATCH for explicit format 2, using the product internal request/receipt types.
 use super::*;
 use crate::updates::{
     CapturedReceipt, GroupError, MAX_BODY_BYTES, MAX_OPERATIONS, Receipt, Transition, Update,
@@ -8,13 +8,13 @@ use kiarni_engine::writes;
 use std::sync::Arc;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Point {
+pub(super) enum Point {
     Operation(usize),
     Staged,
     Committed,
 }
 
-fn apply(
+pub(super) fn apply(
     db: &Database,
     updates: &[Update<'_>],
     max_bytes: usize,
@@ -127,4 +127,5 @@ fn apply(
     })
 }
 
+#[cfg(test)]
 mod tests;

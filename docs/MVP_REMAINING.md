@@ -59,28 +59,14 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 
 - Observar resultados de CI Linux/macOS e validar operação prolongada e coleta
   externa; não transformar passagem local em evidência de outra plataforma.
-- Integrar índice secundário em incremento próprio conforme ADR 0033: a
-  avaliação está concluída, e lifecycle/planner/formato precisam de desenho e
-  testes antes de mudar o produto. Não tratar o ganho do spike como ganho HTTP.
-  O [ADR 0034 proposto](./adr/0034-lifecycle-indice-secundario.md) detalha contrato,
-  criação offline limitada, integridade e compatibilidade. Codificação/criação e
-  validação estrutural e manutenção transacional do formato candidato têm testes
-  no crate storage, incluindo rollback e snapshots concorrentes. Build/rebuild,
-  remoção do índice e auditoria têm testes de orçamento e kill/restart. O ciclo de
-  coleção preserva gerações e há crash/restart de insert/PUT/PATCH/delete. A cópia
-  e restauração do storage candidato auditam as sete tabelas de um snapshot. Há
-  envelope candidato com hashes, validação por descriptors e rename sem substituição;
-  a instalação candidata já publica bootstrap/lock e entrega vazia de credenciais
-  com testes das duas janelas. Grupos de PUT/PATCH mantêm índices atomicamente no
-  candidato, com comparação ao formato 1 e crash/restart. Há planner candidato
-  ID/índice/scan com equivalência de resultados/erros e preservação de budgets.
-  Aceite do contrato, ativação de auth, integração CLI/writer/planner e medições
-  no produto ainda estão pendentes. O
-  servidor ainda usa somente formato 1, sem índice secundário.
-  A [revisão de integração](./INDEX_INTEGRATION_REVIEW.md) registra as evidências,
-  fronteiras e sequência de promoção. Codec/preflight já são compartilhados no
-  caminho de produção, preservando a abertura padrão do formato 1. Próximo:
-  fachada completa de storage, sem habilitar formato 2 no servidor.
+- Integração de índice secundário (#10): avaliação RF-04 concluída no ADR 0033.
+  [ADR 0034](./adr/0034-lifecycle-indice-secundario.md) aceito para API Rust interna
+  experimental, em diretório novo. G1/G2 da [revisão](./INDEX_INTEGRATION_REVIEW.md)
+  entregues no crate: codec/preflight compartilhados, IndexedStore com engine
+  privado e CRUD/grupos/consulta/export auditados; IndexedMaintenance restringe
+  recuperação até auditoria completa. O servidor e comandos continuam no formato
+  1. Faltam bootstrap/auth/CLI, integração HTTP/writer/métricas/feeds e medições
+  no produto. Não atribuir ao HTTP os ganhos do spike ou da API Rust isolada.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.

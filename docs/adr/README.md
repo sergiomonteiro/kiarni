@@ -76,7 +76,8 @@ Primeiro incremento do M3/RF-08:
 
 - [0033 — Avaliação do índice secundário de campo simples](./0033-avaliacao-indice-secundario.md).
 
-## Proposta de integração após a avaliação RF-04
+## Integração experimental após a avaliação RF-04
 
 - [0034 — Contrato e ciclo de vida do índice secundário](./0034-lifecycle-indice-secundario.md).
-  Proposta da issue #10; não altera o formato 1 nem habilita índices no produto.
+  Aceita para fachada Rust interna em raiz nova; formato 1 e servidor atuais
+  permanecem inalterados, com integração operacional/HTTP da issue #10 pendente.

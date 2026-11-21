@@ -1,4 +1,4 @@
-//! Snapshot copy candidate only. No artifact hashes, CLI or overwrite publication.
+//! Logical snapshot copies for explicit format 2; artifact/auth integration is separate.
 use super::*;
 use redb::{ReadTransaction, WriteTransaction};
 
@@ -11,7 +11,7 @@ pub(super) enum Point {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub(super) enum CopyFailure {
+pub enum CopyFailure {
     Incomplete(Error),
     PublicationUncertain,
 }
@@ -21,7 +21,7 @@ impl From<Error> for CopyFailure {
     }
 }
 
-fn audit_snapshot(read: &ReadTransaction) -> Result<ExportSummary, Error> {
+pub(super) fn audit_snapshot(read: &ReadTransaction) -> Result<ExportSummary, Error> {
     validate_snapshot(read)?;
     let collections = storage(read.open_table(COLLECTIONS))?;
     let documents = storage(read.open_table(DOCUMENTS))?;
@@ -192,4 +192,5 @@ pub(super) fn restore(
     export(&storage(db.begin_read())?, target, point)
 }
 
+#[cfg(test)]
 pub(super) mod tests;

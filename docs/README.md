@@ -52,7 +52,7 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 ## Entender e contribuir
 
 - [Avaliação de índice secundário](./spikes/secondary-index.md): correção, custos e decisão RF-04.
-- [Proposta de integração do índice](./adr/0034-lifecycle-indice-secundario.md): contrato e formato candidato testado; sem habilitação no servidor.
+- [Contrato do índice experimental](./adr/0034-lifecycle-indice-secundario.md): fachada Rust aceita; sem habilitação no servidor.
 - [Revisão da integração do índice](./INDEX_INTEGRATION_REVIEW.md): evidências do candidato e sequência para promoção ao produto.
 - [Canal e compatibilidade pré-1.0](./RELEASE_POLICY.md).
 - [Contribuir](../CONTRIBUTING.md): ambiente, workspace, testes, fixtures e PRs.
