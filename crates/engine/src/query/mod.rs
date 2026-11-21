@@ -211,6 +211,24 @@ impl Query {
         self.0.id.as_deref()
     }
 
+    /// A direct string equality on a literal root field, for access selection.
+    /// This does not choose a plan or impose storage-specific index limits.
+    pub fn direct_string_equality(&self) -> Result<Option<(&str, String)>, Error> {
+        let Some(filter) = &self.0.filter else {
+            return Ok(None);
+        };
+        if !matches!(filter.op, Op::Eq) {
+            return Ok(None);
+        }
+        let field = filter.field.as_deref().ok_or(Error::InvalidQuery)?;
+        let value = filter.value.as_ref().ok_or(Error::InvalidQuery)?;
+        if kind(value.get()) != 4 {
+            return Ok(None);
+        }
+        let value = serde_json::from_str(value.get()).map_err(|_| Error::InvalidQuery)?;
+        Ok(Some((field, value)))
+    }
+
     pub fn to_json(&self) -> Result<Vec<u8>, Error> {
         serde_json::to_vec(&self.0).map_err(|_| Error::InvalidQuery)
     }

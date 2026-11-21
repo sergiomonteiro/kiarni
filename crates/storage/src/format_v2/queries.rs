@@ -38,14 +38,10 @@ struct Output {
 }
 
 fn literal(query: &Query, field: &str) -> Result<Option<String>, Failure> {
-    let ast: serde_json::Value =
-        serde_json::from_slice(&query.to_json()?).map_err(|_| Error::InvalidLayout)?;
-    let filter = &ast["filter"];
-    Ok((filter["op"] == "eq" && filter["field"] == field)
-        .then(|| filter["value"].as_str())
-        .flatten()
-        .filter(|v| v.len() <= 128)
-        .map(str::to_owned))
+    Ok(query
+        .direct_string_equality()?
+        .filter(|(name, value)| *name == field && value.len() <= 128)
+        .map(|(_, value)| value))
 }
 
 fn execute(

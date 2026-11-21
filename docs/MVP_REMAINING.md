@@ -77,6 +77,9 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   Aceite do contrato, ativação de auth, integração CLI/writer/planner e medições
   no produto ainda estão pendentes. O
   servidor ainda usa somente formato 1, sem índice secundário.
+  A [revisão de integração](./INDEX_INTEGRATION_REVIEW.md) registra as evidências,
+  fronteiras e sequência de promoção; primeiro compartilhar codec/preflight,
+  sem habilitar formato 2 no servidor.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.

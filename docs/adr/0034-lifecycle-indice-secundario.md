@@ -204,10 +204,10 @@ têm evidência isolada. Exclusão/recriação de coleção e interrupção abru
 mutações têm os testes adicionais abaixo. Export/restore do storage candidato
 também têm evidência isolada. O envelope com hashes/publicação tem o candidato
 Unix descrito abaixo. A instalação restaurada também tem publicação candidata
-com lock e entrega vazia de credenciais. Grupos internos de PUT/PATCH também
-têm manutenção transacional candidata. A escolha entre índice e scan tem a
-evidência abaixo; o próximo incremento é consolidar o gate de integração e
-aceite do contrato, antes de habilitar formato 2 no writer/servidor.
+com lock e entrega vazia de credenciais. Grupos internos de PUT/PATCH e seleção
+ID/índice/scan também têm evidência candidata. A [revisão de integração](../INDEX_INTEGRATION_REVIEW.md)
+consolida o gate e a promoção incremental; o próximo passo é compartilhar o
+codec/preflight mantendo o produto restrito ao formato 1.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -534,8 +534,9 @@ nos checkpoints não certificam energia, desempenho ou falha em cada instrução
 validada e uma transação de leitura. Valida identidade/geração e mantém catálogo,
 estatísticas, contagens, entradas e documentos no mesmo snapshot. Prioridade:
 lookup primário por ID; igualdade direta elegível de string sobre o campo da
-definição; scan. Inspeciona a serialização da AST validada, sem expor novos
-operadores nem modificar o contrato do engine.
+definição; scan. A versão inicial inspecionava a serialização da AST; após a
+revisão passou a usar o acesso tipado Query::direct_string_equality, sem expor
+novos operadores ou modificar a semântica de avaliação/serialização do engine.
 
 Usa secundário somente se a coleção inteira couber em 10000 documentos/8 MiB e
 a contagem exata do valor for no máximo `documentos / 8`. Zero candidatos também
