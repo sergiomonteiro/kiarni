@@ -203,8 +203,9 @@ descrita abaixo. Construção/reconstrução, remoção do índice e auditoria t
 têm evidência isolada. Exclusão/recriação de coleção e interrupção abrupta das
 mutações têm os testes adicionais abaixo. Export/restore do storage candidato
 também têm evidência isolada. O envelope com hashes/publicação tem o candidato
-Unix descrito abaixo; o próximo incremento é completar a publicação da instalação
-restaurada com lock e entrega vazia de credenciais, antes de integrar o writer.
+Unix descrito abaixo. A instalação restaurada também tem publicação candidata
+com lock e entrega vazia de credenciais; o próximo incremento é validar a
+manutenção de índices nos grupos de escrita, antes da integração com o writer.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -434,9 +435,48 @@ storage, reutilizando pacotes/versões já presentes no produto. Licenças locai
 verificadas: sha2 MIT OR Apache-2.0 e rustix inclui alternativa MIT. Nenhum pacote
 novo ou dependência normal do binário foi introduzido.
 
-Este candidato não é API/CLI disponível, assinatura criptográfica, backup de
-instalação nem prova contra processo malicioso do próprio usuário ou energia.
-Faltam lock da instalação, bootstrap/entrega vazia de credenciais com suas duas
-janelas de publicação, grupos do writer, planner e aceite da proposta antes de
-habilitar formato 2. A CI ainda precisa demonstrar a execução deste incremento
+Este envelope não é API/CLI disponível, assinatura criptográfica nem prova contra
+processo malicioso do próprio usuário ou energia. A publicação de instalação
+complementar tem a evidência abaixo. Faltam integração com o bootstrap/CLI real,
+grupos do writer, planner e aceite da proposta antes de habilitar formato 2.
+A CI ainda precisa demonstrar a execução deste incremento
 em cada plataforma; passagem local não certifica macOS ou outro filesystem.
+
+### Evidência de publicação da instalação restaurada
+
+`crates/storage/src/format_v2/artifact/installation.rs`, Unix e somente em
+`cfg(test)`, compõe o restore de store já auditado com uma nova raiz privada.
+Cria serve.lock 0600 e adquire flock exclusivo não bloqueante antes de abrir
+qualquer engine copiado; mantém esse descriptor até terminar a publicação.
+Grava/sincroniza bootstrap.json `{"version":1,"phase":"store_ready"}` depois
+da validação do store, sem criar auth ou emitir credenciais.
+
+A estrutura candidata segue ADRs 0009/0029: raiz 0700 com store, serve.lock e
+bootstrap.json, e diretório irmão `<raiz>.credentials` 0700, vazio. Os dois nomes
+devem estar ausentes, inclusive diretórios vazios, arquivos ou symlinks existentes.
+Staging, arquivos e diretórios são sincronizados antes de publicação. Publica a
+entrega primeiro, confirma sync do pai e só então publica a raiz, ambos com
+rename NOREPLACE. Não há afirmação de atomicidade dos dois diretórios juntos.
+
+Falha antes de publicar a entrega não publica a raiz. A partir de entrega
+publicada, erros de confirmação, disputa do nome da raiz ou sync retornam
+PublicationUncertain; entrega e destinos existentes não são removidos. Repetição
+recusa os nomes já existentes. Staging próprio pode permanecer no erro ou kill;
+sucesso remove o staging vazio. O lock segue a raiz renomeada e só é liberado
+após terminar a operação; kill o libera pelo fechamento dos descriptors.
+
+Cinco testes novos e um worker subordinado verificam roundtrip das sete tabelas,
+bootstrap privado/fase correta, ausência de auth e entrega vazia, origem intacta,
+lock bloqueando outro descriptor e processo durante a publicação e disponível
+após sucesso/kill. Também exercitam nomes existentes/symlinks e disputas da
+entrega/raiz sem sobrescrita ou limpeza de dados concorrentes, origem inválida,
+destino dentro do artefato, quatro erros retornados e quatro kill/restart nas
+janelas preparado, entrega publicada, pré-raiz e raiz publicada. Os subprocessos
+têm deadline de 15 segundos, kill/coleta e término por EOF quando o pai some.
+
+Isso comprova o esqueleto restaurado nos checkpoints do candidato, não um serve
+de formato 2: os comandos atuais continuam recusando esse formato. O registro
+store_ready não habilita uma nova versão de storage implicitamente. Ativação de
+auth/geração de novas credenciais no primeiro serve, integração CLI, grupos do
+writer, planner e aceite da proposta permanecem pendentes. Nenhuma credencial
+da origem é copiada ou mostrada. Não há nova garantia de energia ou migração.

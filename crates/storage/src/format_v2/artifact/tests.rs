@@ -2,7 +2,7 @@ use super::super::backup::tests::{equal, fixture as base_fixture};
 use super::*;
 use std::os::unix::fs::{PermissionsExt, symlink};
 
-fn fixture(large: bool) -> (tempfile::TempDir, Database, Collection) {
+pub(super) fn fixture(large: bool) -> (tempfile::TempDir, Database, Collection) {
     let value = base_fixture(large);
     fs::set_permissions(value.0.path(), fs::Permissions::from_mode(0o700)).unwrap();
     value

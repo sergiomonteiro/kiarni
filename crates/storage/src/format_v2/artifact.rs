@@ -363,4 +363,5 @@ fn restore_store(
     Ok(actual)
 }
 
+mod installation;
 mod tests;
