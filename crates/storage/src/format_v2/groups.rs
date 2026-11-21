@@ -8,13 +8,14 @@ use kiarni_engine::writes;
 use std::sync::Arc;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum Point {
+pub(crate) enum Point {
     Operation(usize),
     Staged,
     Committed,
 }
 
-pub(super) fn apply(
+pub(crate) fn apply(
+    metrics: Option<&crate::telemetry::Metrics>,
     db: &Database,
     updates: &[Update<'_>],
     max_bytes: usize,
@@ -113,7 +114,7 @@ pub(super) fn apply(
     }
     if changed {
         point(Point::Staged)?;
-        write.commit().map_err(|_| GroupError::CommitUncertain)?;
+        commit(write, metrics).map_err(|_| GroupError::CommitUncertain)?;
         point(Point::Committed).map_err(|_| GroupError::CommitUncertain)?;
     } else {
         storage(write.abort())?;

@@ -1,4 +1,4 @@
-//! Transactional collection generations for the explicit indexed-store facade.
+//! Transactional collection generations and index metadata.
 use super::*;
 use mutations::{Failure, begin_schema, begin_write};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -11,6 +11,7 @@ pub(super) enum Point {
 }
 
 pub(super) fn create_collection(
+    metrics: Option<&crate::telemetry::Metrics>,
     db: &Database,
     name: &str,
     mut point: impl FnMut(Point) -> Result<(), Error>,
@@ -63,12 +64,13 @@ pub(super) fn create_collection(
         ))
     };
     let (write, collection) = stage().map_err(Failure::Aborted)?;
-    write.commit().map_err(|_| Failure::CommitUncertain)?;
+    commit(write, metrics).map_err(|_| Failure::CommitUncertain)?;
     point(Point::Committed).map_err(|_| Failure::CommitUncertain)?;
     Ok(collection)
 }
 
 pub(super) fn drop_collection(
+    metrics: Option<&crate::telemetry::Metrics>,
     db: &Database,
     collection: &Collection,
     mut point: impl FnMut(Point) -> Result<(), Error>,
@@ -118,7 +120,7 @@ pub(super) fn drop_collection(
         Ok(write)
     };
     let write = stage().map_err(Failure::Aborted)?;
-    write.commit().map_err(|_| Failure::CommitUncertain)?;
+    commit(write, metrics).map_err(|_| Failure::CommitUncertain)?;
     point(Point::Committed).map_err(|_| Failure::CommitUncertain)
 }
 

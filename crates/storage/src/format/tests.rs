@@ -5,16 +5,14 @@ const V1: &[u8] = include_bytes!("../../tests/fixtures/format-v1.json");
 const V2: &[u8] = include_bytes!("../../tests/fixtures/format-v2.json");
 
 #[test]
-fn golden_codecs_keep_legacy_bytes_and_explicit_version_identity() {
-    for (version, fixture) in [(Version::Legacy, V1), (Version::Indexed, V2)] {
-        assert_eq!(encode(version).unwrap(), fixture.trim_ascii_end());
-        assert_eq!(decode(fixture).unwrap(), version);
-        let mut padded = fixture.trim_ascii_end().to_vec();
-        padded.resize(1024, b' ');
-        assert_eq!(decode(&padded).unwrap(), version);
-        padded.push(b' ');
-        assert_eq!(decode(&padded), Err(Error::InvalidManifest));
-    }
+fn current_codec_has_golden_bytes_and_bounded_manifest() {
+    assert_eq!(encode().unwrap(), V2.trim_ascii_end());
+    let mut padded = V2.trim_ascii_end().to_vec();
+    padded.resize(1024, b' ');
+    assert_eq!(decode(&padded), Ok(()));
+    padded.push(b' ');
+    assert_eq!(decode(&padded), Err(Error::InvalidManifest));
+    assert_eq!(decode(V1), Err(Error::UnsupportedFormat));
 }
 
 #[test]
@@ -54,31 +52,18 @@ fn malformed_unknown_and_incompatible_manifests_keep_distinct_errors() {
 }
 
 #[test]
-fn caller_policy_rejects_other_versions_before_touching_the_engine() {
+fn old_development_version_is_refused_before_touching_the_engine() {
     let temp = tempfile::tempdir().unwrap();
-    for (version, fixture) in [(Version::Legacy, V1), (Version::Indexed, V2)] {
-        let root = temp.path().join(format!("v{}", version.number()));
-        fs::create_dir(&root).unwrap();
-        fs::write(root.join("format.json"), fixture).unwrap();
-        let other = if version == Version::Legacy {
-            Version::Indexed
-        } else {
-            Version::Legacy
-        };
-        // Rejection precedes even checking for a data file.
-        assert_eq!(preflight(&root, other), Err(Error::UnsupportedFormat));
-        assert_eq!(preflight(&root, version), Err(Error::Io));
-        fs::write(root.join("data.redb"), b"must not be opened").unwrap();
-        assert_eq!(preflight(&root, version), Ok(()));
-        assert_eq!(preflight(&root, other), Err(Error::UnsupportedFormat));
-        if version == Version::Indexed {
-            assert!(matches!(Store::open(&root), Err(Error::UnsupportedFormat)));
-        }
-        assert_eq!(
-            fs::read(root.join("data.redb")).unwrap(),
-            b"must not be opened"
-        );
-    }
+    let root = temp.path().join("old");
+    fs::create_dir(&root).unwrap();
+    fs::write(root.join("format.json"), V1).unwrap();
+    assert_eq!(preflight(&root), Err(Error::UnsupportedFormat));
+    fs::write(root.join("data.redb"), b"must not be opened").unwrap();
+    assert!(matches!(Store::open(&root), Err(Error::UnsupportedFormat)));
+    assert_eq!(
+        fs::read(root.join("data.redb")).unwrap(),
+        b"must not be opened"
+    );
 }
 
 #[test]
@@ -88,40 +73,31 @@ fn filesystem_shapes_and_manifest_limits_are_checked_without_repair() {
     fs::create_dir(&root).unwrap();
     fs::write(root.join("data.redb"), b"unchanged").unwrap();
     fs::create_dir(root.join("format.json")).unwrap();
-    assert_eq!(
-        preflight(&root, Version::Legacy),
-        Err(Error::InvalidManifest)
-    );
+    assert_eq!(preflight(&root), Err(Error::InvalidManifest));
     fs::remove_dir(root.join("format.json")).unwrap();
     fs::write(root.join("format.json"), [b' '; 1025]).unwrap();
-    assert_eq!(
-        preflight(&root, Version::Legacy),
-        Err(Error::InvalidManifest)
-    );
-    fs::write(root.join("format.json"), V1).unwrap();
+    assert_eq!(preflight(&root), Err(Error::InvalidManifest));
+    fs::write(root.join("format.json"), V2).unwrap();
     fs::remove_file(root.join("data.redb")).unwrap();
     fs::create_dir(root.join("data.redb")).unwrap();
-    assert_eq!(preflight(&root, Version::Legacy), Err(Error::InvalidLayout));
+    assert_eq!(preflight(&root), Err(Error::InvalidLayout));
     let file = temp.path().join("file");
     fs::write(&file, b"x").unwrap();
-    assert_eq!(preflight(&file, Version::Legacy), Err(Error::InvalidLayout));
+    assert_eq!(preflight(&file), Err(Error::InvalidLayout));
     #[cfg(unix)]
     {
         use std::os::unix::fs::symlink;
         fs::remove_file(root.join("format.json")).unwrap();
         let external = temp.path().join("external.json");
-        fs::write(&external, V1).unwrap();
+        fs::write(&external, V2).unwrap();
         symlink(&external, root.join("format.json")).unwrap();
-        assert_eq!(
-            preflight(&root, Version::Legacy),
-            Err(Error::InvalidManifest)
-        );
-        assert_eq!(fs::read(&external).unwrap(), V1);
+        assert_eq!(preflight(&root), Err(Error::InvalidManifest));
+        assert_eq!(fs::read(&external).unwrap(), V2);
     }
 }
 
 #[test]
-fn actual_legacy_creation_and_reopen_use_the_shared_codec() {
+fn normal_creation_and_reopen_use_only_the_current_codec() {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().join("store");
     let store = Store::create(&root).unwrap();
@@ -129,15 +105,12 @@ fn actual_legacy_creation_and_reopen_use_the_shared_codec() {
     drop(store);
     assert_eq!(
         fs::read(root.join("format.json")).unwrap(),
-        V1.trim_ascii_end()
+        V2.trim_ascii_end()
     );
     let store = Store::open(&root).unwrap();
     assert_eq!(
         store.list_collections(10, None).unwrap().collections,
         vec!["items"]
     );
-    assert_eq!(
-        preflight(&root, Version::Indexed),
-        Err(Error::UnsupportedFormat)
-    );
+    assert_eq!(preflight(&root), Ok(()));
 }

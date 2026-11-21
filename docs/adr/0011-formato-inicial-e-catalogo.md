@@ -4,6 +4,11 @@
 - Data: 2026-11-10; M0-F3b, RF-01/02/04.
 - Complementa ADRs 0001/0003/0007. O ADR 0003 seleciona redb 4.5.0 para M1.
 
+
+Atualização do formato atual (2026-11-21): O layout inicial de três tabelas foi substituído pelo formato 2, com índices,
+conforme ADR 0034. Não há suporte legado nem migração automática. Este documento
+preserva a decisão histórica; Store atual usa um único backend.
+
 ## Contexto
 
 O layout antigo do spike exige status string e não tem catálogo/versionamento.

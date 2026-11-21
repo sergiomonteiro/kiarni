@@ -35,11 +35,14 @@ referência do commit. Não há compatibilidade prometida com ReQL/drivers exter
 Mudanças devem atualizar contratos, fixtures, documentação e changelog. As decisões
 que exigem ADR seguem AGENTS/CONTRIBUTING; isso não autoriza quebra silenciosa.
 
-Formato persistido atual: 1. Não há migração ou downgrade automáticos, nem teste
+Formato persistido atual: 2, em um único backend Store. O layout 1 era de
+desenvolvimento e não é suportado pelo binário atual. Não há instalações em uso
+a preservar, conforme decisão registrada no ADR 0034. Não há migração ou downgrade automáticos, nem teste
 de atualização entre duas releases distintas. Formato desconhecido deve ser
 recusado; não editar metadados para fazê-lo parecer compatível. Antes de ensaiar
 outra versão, preservar backup consistente, validar restauração e usar raiz de
-teste independente. Um índice experimental não é uma migração do formato real.
+teste independente. Arquivos antigos são recusados e nunca apagados automaticamente. Não editar
+versões em metadados para contornar essa recusa.
 
 A avaliação de índice secundário atende ao RF-04 conforme
 [ADR 0033](./adr/0033-avaliacao-indice-secundario.md); a plataforma desta alpha

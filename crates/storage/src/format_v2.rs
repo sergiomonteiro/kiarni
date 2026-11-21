@@ -1,26 +1,40 @@
-//! Format-2 backend, explicitly selected through IndexedStore; server defaults stay v1.
+//! The current format-2 backend used by the single production Store.
 use super::*;
 #[cfg(all(test, unix))]
 use std::io::Read;
 #[cfg(all(test, unix))]
 mod artifact;
-mod backup;
+pub(crate) mod backup;
 mod collections;
 mod facade;
-mod groups;
+pub(crate) mod groups;
 mod lifecycle;
 mod mutations;
 mod queries;
+mod store;
 pub use backup::CopyFailure as IndexedCopyError;
-pub use facade::{IndexedMaintenance, IndexedSnapshot, IndexedStore};
+pub use facade::{IndexedMaintenance, IndexedSnapshot};
 pub use mutations::Failure as IndexedWriteError;
 pub use queries::{
     Failure as IndexedQueryError, Output as IndexedQueryResult, Plan as IndexedAccess,
 };
 
+fn commit(
+    write: redb::WriteTransaction,
+    metrics: Option<&crate::telemetry::Metrics>,
+) -> Result<(), redb::CommitError> {
+    let started = std::time::Instant::now();
+    let result = write.commit();
+    if let Some(metrics) = metrics {
+        metrics.commit(result.is_ok(), started.elapsed());
+    }
+    result
+}
+
 const CATALOG: TableDefinition<u64, &[u8]> = TableDefinition::new("index_catalog");
 const ENTRIES: TableDefinition<(u64, &str, &str), ()> = TableDefinition::new("secondary_entries");
-const STATS: TableDefinition<u64, (&str, u64, u64)> = TableDefinition::new("collection_stats");
+pub(crate) const STATS: TableDefinition<u64, (&str, u64, u64)> =
+    TableDefinition::new("collection_stats");
 const COUNTS: TableDefinition<(u64, &str), u64> = TableDefinition::new("secondary_counts");
 const HEADER: [u8; 4] = [1, 1, 1, 128]; // revision, string kind, ready, UTF-8 byte limit
 
@@ -47,7 +61,7 @@ fn decode_definition(bytes: &[u8]) -> Result<&str, Error> {
 
 /// Preflight always precedes the redb open, including recovery.
 fn preflight(root: &Path) -> Result<(), Error> {
-    format::preflight(root, format::Version::Indexed)
+    format::preflight(root)
 }
 
 fn open(root: &Path) -> Result<Database, Error> {
@@ -105,7 +119,7 @@ fn create_candidate(root: &Path, publish: bool) -> Result<Database, Error> {
         );
     }
     let mut file = create_file(&root.join("format.json"))?;
-    io(file.write_all(&format::encode(format::Version::Indexed)?))?;
+    io(file.write_all(&format::encode()?))?;
     io(file.sync_all())?;
     sync_dir(root)?;
     sync_dir(
@@ -223,7 +237,7 @@ fn definition_has_fixed_bytes_and_strict_validation() {
 }
 
 #[test]
-fn new_destination_roundtrip_and_old_store_refusal() {
+fn normal_store_roundtrip_and_incompatible_development_store_refusal() {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().join("candidate");
     let db = create(&root).unwrap();
@@ -252,16 +266,21 @@ fn new_destination_roundtrip_and_old_store_refusal() {
     write.commit().unwrap();
     drop(db);
     drop(open(&root).unwrap());
-    let before = fs::read(root.join("data.redb")).unwrap();
-    assert!(matches!(Store::open(&root), Err(Error::UnsupportedFormat)));
+    drop(Store::open(&root).unwrap());
     assert!(create(&root).is_err());
-    assert_eq!(fs::read(root.join("data.redb")).unwrap(), before);
     let old = temp.path().join("old");
-    drop(Store::create(&old).unwrap());
-    let before = fs::read(old.join("data.redb")).unwrap();
+    fs::create_dir(&old).unwrap();
+    fs::write(
+        old.join("format.json"),
+        include_bytes!("../tests/fixtures/format-v1.json"),
+    )
+    .unwrap();
+    fs::write(old.join("data.redb"), b"old development data").unwrap();
     assert!(matches!(open(&old), Err(Error::UnsupportedFormat)));
-    assert_eq!(fs::read(old.join("data.redb")).unwrap(), before);
-    drop(Store::open(&old).unwrap());
+    assert_eq!(
+        fs::read(old.join("data.redb")).unwrap(),
+        b"old development data"
+    );
 }
 
 #[test]

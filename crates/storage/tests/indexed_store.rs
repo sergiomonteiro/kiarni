@@ -1,10 +1,8 @@
 use kiarni_core::{DEFAULT_MAX_DOCUMENT_BYTES, DocumentInput};
 use kiarni_engine::{query::Query, writes::Operation};
-use kiarni_storage::{
-    Error, IndexedAccess, IndexedStore, IndexedWriteError, Store, updates::Update,
-};
+use kiarni_storage::{Error, IndexedAccess, Store, updates::Update};
 
-fn insert(store: &IndexedStore, collection: &kiarni_storage::Collection, id: &str, status: &str) {
+fn insert(store: &Store, collection: &kiarni_storage::Collection, id: &str, status: &str) {
     let json = format!("{{\"_id\":\"{id}\",\"status\":\"{status}\",\"n\":9007199254740993}}");
     let input = DocumentInput::parse(json.as_bytes(), DEFAULT_MAX_DOCUMENT_BYTES)
         .unwrap()
@@ -20,7 +18,7 @@ fn q() -> Query {
 fn explicit_facade_indexes_mutations_groups_snapshots_and_export() {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().join("indexed");
-    let store = IndexedStore::create(&root).unwrap();
+    let store = Store::create(&root).unwrap();
     let collection = store.create_collection("items").unwrap();
     for n in 0..16 {
         insert(
@@ -117,12 +115,10 @@ fn explicit_facade_indexes_mutations_groups_snapshots_and_export() {
     assert_eq!(old.export(&backup).unwrap().documents, 16);
     let restored = temp.path().join("restored");
     assert_eq!(
-        IndexedStore::restore_store(&backup, &restored)
-            .unwrap()
-            .documents,
+        Store::restore_store(&backup, &restored).unwrap().documents,
         16
     );
-    let copy = IndexedStore::open(&restored).unwrap();
+    let copy = Store::open(&restored).unwrap();
     assert_eq!(
         copy.query(&copy.collection("items").unwrap(), &q())
             .unwrap()
@@ -142,7 +138,7 @@ fn explicit_facade_indexes_mutations_groups_snapshots_and_export() {
     assert_eq!(store.audit().unwrap().documents, 15);
     drop(old);
     drop(store);
-    let store = IndexedStore::open(&root).unwrap();
+    let store = Store::open(&root).unwrap();
     assert_eq!(
         store
             .query(&store.collection("items").unwrap(), &q())
@@ -151,22 +147,22 @@ fn explicit_facade_indexes_mutations_groups_snapshots_and_export() {
             .len(),
         1
     );
-    assert!(matches!(Store::open(&root), Err(Error::UnsupportedFormat)));
+    store.audit().unwrap();
 }
 
 #[test]
 fn generations_admission_and_default_store_remain_explicit() {
     let temp = tempfile::tempdir().unwrap();
-    let store = IndexedStore::create(&temp.path().join("indexed")).unwrap();
+    let store = Store::create(&temp.path().join("indexed")).unwrap();
     let collection = store.create_collection("items").unwrap();
     insert(&store, &collection, "a", "wanted");
     assert_eq!(
         store.drop_collection(&collection),
-        Err(IndexedWriteError::Aborted(Error::CollectionNotEmpty))
+        Err(Error::CollectionNotEmpty)
     );
     assert!(matches!(
         store.update_document(&collection, "a", Operation::MergePatch, b"{}", 0),
-        Err(IndexedWriteError::Aborted(Error::InvalidLimit))
+        Err(Error::InvalidLimit)
     ));
     assert!(
         store
@@ -200,7 +196,7 @@ fn generations_admission_and_default_store_remain_explicit() {
                 .prepare_insert()
                 .unwrap()
         ),
-        Err(IndexedWriteError::Aborted(Error::CollectionMissing))
+        Err(Error::CollectionMissing)
     );
     insert(&store, &new, "a", "wanted");
     assert_eq!(store.query(&new, &q()).unwrap().plan, IndexedAccess::Scan);
@@ -218,21 +214,27 @@ fn generations_admission_and_default_store_remain_explicit() {
     assert!(store.list_collections(0, None).is_err());
     assert!(store.collection("bad/name").is_err());
     let legacy = temp.path().join("legacy");
-    drop(Store::create(&legacy).unwrap());
+    std::fs::create_dir(&legacy).unwrap();
+    std::fs::write(
+        legacy.join("format.json"),
+        include_bytes!("fixtures/format-v1.json"),
+    )
+    .unwrap();
+    std::fs::write(legacy.join("data.redb"), b"old development data").unwrap();
     let before = std::fs::read(legacy.join("data.redb")).unwrap();
     assert!(matches!(
-        IndexedStore::open(&legacy),
+        Store::open(&legacy),
         Err(Error::UnsupportedFormat)
     ));
     assert_eq!(std::fs::read(legacy.join("data.redb")).unwrap(), before);
-    assert!(IndexedStore::create(&legacy).is_err());
+    assert!(Store::create(&legacy).is_err());
     assert_eq!(std::fs::read(legacy.join("data.redb")).unwrap(), before);
 }
 
 #[test]
 fn facade_writers_and_snapshots_keep_index_and_documents_together() {
     let temp = tempfile::tempdir().unwrap();
-    let store = IndexedStore::create(&temp.path().join("store")).unwrap();
+    let store = Store::create(&temp.path().join("store")).unwrap();
     let collection = store.create_collection("items").unwrap();
     for n in 0..32 {
         insert(

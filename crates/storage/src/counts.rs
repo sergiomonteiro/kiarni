@@ -11,39 +11,11 @@ pub struct DocumentCount {
 }
 
 impl Store {
-    /// Count primary entries in one catalog/document snapshot with bounded lookahead.
-    /// Does not copy, parse, or validate document JSON; not an integrity check.
+    /// Bounded primary-entry count from one catalog/document snapshot.
     pub fn count_documents(&self, name: &str) -> Result<DocumentCount, Error> {
         self.telemetry
             .measure(crate::telemetry::Operation::Count, || {
-                if !valid_name(name) {
-                    return Err(Error::InvalidName);
-                }
-                let read = storage(self.db.begin_read())?;
-                let catalog = storage(read.open_table(COLLECTIONS))?;
-                let id = storage(catalog.get(name))?
-                    .ok_or(Error::CollectionMissing)?
-                    .value();
-                let documents = storage(read.open_table(DOCUMENTS))?;
-                let entries = storage(documents.range((id, "")..=(id, "\u{10ffff}")))?;
-                let mut count = 0;
-                let mut bytes = 0;
-                for entry in entries {
-                    let (_, value) = storage(entry)?;
-                    let length = value.value().len();
-                    if length > DEFAULT_MAX_DOCUMENT_BYTES {
-                        return Err(Error::InvalidLayout);
-                    }
-                    if count == COUNT_MAX_DOCUMENTS || bytes + length > COUNT_MAX_BYTES {
-                        return Ok(DocumentCount {
-                            count,
-                            exact: false,
-                        });
-                    }
-                    bytes += length;
-                    count += 1;
-                }
-                Ok(DocumentCount { count, exact: true })
+                self.snapshot()?.count_documents(name)
             })
     }
 }

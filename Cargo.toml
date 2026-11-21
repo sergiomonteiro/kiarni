@@ -16,7 +16,6 @@ members = [
     "spikes/auth",
     "spikes/transport",
     "spikes/writes",
-    "spikes/format",
     "spikes/config",
     "spikes/group-commit",
 ]

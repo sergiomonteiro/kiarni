@@ -1,12 +1,40 @@
 # ADR 0034 — Contrato e ciclo de vida do índice secundário
 
-- Status: **aceita para a fachada Rust experimental**, em diretório novo.
+- Status: **aceita para o Store único de formato 2**, sem suporte legado.
 - Aceite restrito: 2026-11-21, após G1 e validação acumulada do candidato.
   G3.1 estende a composição interna para bootstrap/auth offline, conforme seção final.
   Habilitação no servidor/CLI e homologação do custo permanecem pendentes.
 - Data: 2026-11-19.
 - Requisito: RF-04; integração posterior ao aceite técnico M3, issue #10.
 - Complementa a [avaliação 0033](./0033-avaliacao-indice-secundario.md).
+
+## Revisão de direção — sem legado em uso
+
+Decisão do responsável pelo projeto em 2026-11-21: não há instalações em uso nem
+dados de usuários que exijam retrocompatibilidade. A integração passa a visar
+**um único backend/formato atual**, com índices, no caminho normal do produto.
+Não manter suporte operacional paralelo ao formato 1, construir migração ou
+criar comandos separados de instalação apenas para preservar o formato antigo.
+As exigências anteriores de manutenção do caminho legado ficam superadas por
+esta decisão; as seções abaixo preservam a evolução e as evidências anteriores.
+
+Manter identificação/versionamento em disco para detectar dados incompatíveis.
+O número 2 pode continuar identificando o layout atual: não é promessa de suporte
+à versão 1. Artefatos de desenvolvimento antigos serão recusados; esta decisão
+não autoriza apagá-los, convertê-los ou alterar seus metadados automaticamente.
+
+A consolidação substitui o caminho normal pelo núcleo indexado. Store é o único
+backend de servidor, writer, bootstrap e backup/restore. IndexedStore e o
+entrypoint separado initialize_indexed_installation foram removidos; operações
+normais de escrita mantêm documentos/índices/estatísticas no mesmo commit.
+Bootstrap atual é versão 2/store_format 2; envelope de backup mantém schema 1,
+com format_version 2. O código de exportação do layout 1 foi removido.
+
+Métricas de primitivas e commits continuam nos limites reais do Store; commits
+de manutenção de índice também são contados. O planner HTTP segue ID/scan neste
+incremento; administração offline de índices pela CLI, caminho secundário HTTP
+e homologação de desempenho permanecem pendentes. Não há ganho HTTP alegado.
+As seções seguintes registram o histórico anterior à consolidação.
 
 ## Contexto e fronteira desta entrega
 
@@ -664,3 +692,23 @@ pela CLI; esses caminhos continuam exigindo formato 1. A API Rust experimental
 é etapa de integração operacional, não nova recomendação de instalação ao usuário.
 Testar exclusão entre processos, retomada das fases, erros anteriores à emissão,
 credenciais independentes após cópia e regressão do bootstrap legado.
+
+## Consolidação — caminho normal único
+
+Servidor e comandos existentes criam/abrem somente formato 2. Abertura executa
+auditoria lógica integral; falha não é reparada ou mascarada por scan. A
+recuperação restrita IndexedMaintenance permanece, pois é uma capacidade
+distinta necessária para rebuild/drop antes de voltar ao Store auditado.
+Snapshot continua distinto do Store por representar uma transação de leitura.
+
+A exportação normal copia as sete tabelas pelo núcleo antes validado, em lotes
+limitados, audita origem/destino e publica manifesto somente após fechar/sync.
+O restore operacional valida hashes da cópia, abre/audita o formato atual e
+reexporta antes de publicar raiz e entrega de credenciais. O primeiro serve usa
+o mesmo Store, mantém credenciais novas e índices; mutações HTTP subsequentes
+mantêm esses índices e podem ser auditadas após shutdown.
+
+O wrapper kiarni-format-spike foi removido. Seus testes de contrato e crash
+foram movidos para crates/storage/tests/format.rs, preservando as verificações
+úteis e adaptando somente o layout esperado. Relatórios antigos são históricos.
+Não removeram-se os testes de consistência, concorrência e falhas do núcleo.

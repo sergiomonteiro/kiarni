@@ -107,7 +107,7 @@ impl Metrics {
         self.duration[index].observe(started.elapsed());
         result
     }
-    fn commit(&self, confirmed: bool, elapsed: Duration) {
+    pub(crate) fn commit(&self, confirmed: bool, elapsed: Duration) {
         add(&self.commits[usize::from(!confirmed)], 1);
         self.commit_duration.observe(elapsed);
     }

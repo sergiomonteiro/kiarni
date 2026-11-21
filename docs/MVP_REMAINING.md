@@ -60,14 +60,14 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 - Observar resultados de CI Linux/macOS e validar operação prolongada e coleta
   externa; não transformar passagem local em evidência de outra plataforma.
 - Integração de índice secundário (#10): avaliação RF-04 concluída no ADR 0033.
-  [ADR 0034](./adr/0034-lifecycle-indice-secundario.md) aceito para API Rust interna
-  experimental, em diretório novo. G1/G2 da [revisão](./INDEX_INTEGRATION_REVIEW.md)
-  entregues no crate: codec/preflight compartilhados, IndexedStore com engine
-  privado e CRUD/grupos/consulta/export auditados; IndexedMaintenance restringe
-  recuperação até auditoria completa. O servidor e comandos continuam no formato
-  1. G3.1 compõe bootstrap/auth e lock pela API Rust offline, com escolha
-  de formato persistida antes da criação. Faltam envelope backup/restore e CLI
-  de formato 2, integração HTTP/writer/métricas/feeds e medições no produto. Não atribuir ao HTTP os ganhos do spike ou da API Rust isolada.
+  O [ADR 0034](./adr/0034-lifecycle-indice-secundario.md) revisado dispensa legado:
+  Store único de formato 2 é usado por servidor, writer, bootstrap e backup/restore.
+  Removidos IndexedStore, inicialização paralela e wrapper kiarni-format-spike;
+  testes de contrato/crash foram transferidos para storage. Mutações HTTP mantêm
+  os índices atomicamente, mas consultas HTTP ainda usam ID/scan. Faltam integrar
+  planner secundário/telemetria de acesso HTTP, administração offline de índices
+  pela CLI e medir o produto. Não atribuir ao HTTP os ganhos do spike. Layouts
+  antigos são recusados sem migração ou apagamento automático.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.

@@ -5,7 +5,7 @@ Data: 2026-11-10. RF-01/02/04, ainda M0.
 
 ## Resultado
 
-O [spike isolado](../../spikes/format/) exercita layout candidato com manifesto
+O [spike isolado original](https://github.com/sergiomonteiro/kiarni/tree/f355eef/spikes/format) exercita layout candidato com manifesto
 `format.json`, banco `data.redb` e tabelas metadata, collections e documents.
 Nenhuma mudança no servidor/binário, storage antigo, feeds ou handlers. redb 4.5.0
 continua candidato, fixado apenas neste experimento. Não há migração de arquivos
@@ -28,7 +28,7 @@ não IDs globais nem credenciais; não transferir handles entre bancos distintos
 ## Verificação reproduzível
 
 ```bash
-cargo test -p kiarni-format-spike --locked --offline
+cargo test -p kiarni-storage --test format --locked --offline
 cargo fmt --all -- --check
 cargo clippy --workspace --all-targets --locked --offline -- -D warnings
 cargo test --workspace --locked --offline
@@ -82,3 +82,8 @@ revisão antes de escrever dados do produto.
 
 Próximo incremento: M0-F3c, consolidar defaults, limites/admissão e precedência
 CLI/variáveis de ambiente, sem implementar o servidor M1 nem aceitar ADRs.
+
+O wrapper de compatibilidade do spike foi removido na consolidação do Store.
+Os testes de contrato e o worker de crash estão agora em
+[crates/storage/tests/format.rs](../../crates/storage/tests/format.rs), adaptados
+ao formato atual. Resultados e formato descritos acima são evidência histórica.

@@ -123,13 +123,14 @@ pub(super) fn audit_tables(
 }
 
 pub(super) fn maintain(
+    metrics: Option<&crate::telemetry::Metrics>,
     db: &Database,
     collection: &Collection,
     action: Action<'_>,
     mut point: impl FnMut(Point) -> Result<(), Error>,
 ) -> Result<(), Failure> {
     let write = stage(db, collection, action, &mut point).map_err(Failure::Aborted)?;
-    write.commit().map_err(|_| Failure::CommitUncertain)?;
+    commit(write, metrics).map_err(|_| Failure::CommitUncertain)?;
     point(Point::Committed).map_err(|_| Failure::CommitUncertain)
 }
 

@@ -4,6 +4,12 @@
 - Data: 2026-11-14
 - Complementa ADRs 0013, 0011 e 0009; não altera formato do store.
 
+
+Atualização do formato atual (2026-11-21): O envelope continua versão 1, mas format_version atual é 2 e o snapshot
+contém sete tabelas, incluindo catálogo/entradas/contagens de índices, conforme
+ADR 0034. O layout antigo de desenvolvimento não é suportado. Os parágrafos
+que descrevem três tabelas/formato 1 registram o contrato histórico.
+
 ## Contrato
 
 `kiarni backup --data-dir ORIGEM --output DESTINO` exporta uma instalação

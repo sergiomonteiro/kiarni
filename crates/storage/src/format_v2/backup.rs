@@ -1,9 +1,9 @@
-//! Logical snapshot copies for explicit format 2; artifact/auth integration is separate.
+//! Audited snapshot copies; installation publication belongs to the server.
 use super::*;
 use redb::{ReadTransaction, WriteTransaction};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum Point {
+pub(crate) enum Point {
     Batch,
     Audited,
     BeforeManifest,
@@ -21,7 +21,7 @@ impl From<Error> for CopyFailure {
     }
 }
 
-pub(super) fn audit_snapshot(read: &ReadTransaction) -> Result<ExportSummary, Error> {
+pub(crate) fn audit_snapshot(read: &ReadTransaction) -> Result<ExportSummary, Error> {
     validate_snapshot(read)?;
     let collections = storage(read.open_table(COLLECTIONS))?;
     let documents = storage(read.open_table(DOCUMENTS))?;
@@ -88,7 +88,7 @@ fn begin(db: &Database) -> Result<WriteTransaction, Error> {
     Ok(write)
 }
 
-pub(super) fn export(
+pub(crate) fn export(
     read: &ReadTransaction,
     root: &Path,
     point: impl FnMut(Point) -> Result<(), Error>,
@@ -153,7 +153,7 @@ fn export_copy(
     io(io(fs::File::open(root.join("data.redb")))?.sync_all())?;
     sync_dir(root)?;
     point(Point::BeforeManifest)?;
-    let bytes = format::encode(format::Version::Indexed)?;
+    let bytes = format::encode()?;
     *publishing = true;
     let mut file = create_file(&root.join("format.json"))?;
     io(file.write_all(&bytes))?;
@@ -169,7 +169,7 @@ fn export_copy(
     Ok(actual)
 }
 
-pub(super) fn restore(
+pub(crate) fn restore(
     source: &Path,
     target: &Path,
     point: impl FnMut(Point) -> Result<(), Error>,
@@ -193,4 +193,4 @@ pub(super) fn restore(
 }
 
 #[cfg(test)]
-pub(super) mod tests;
+pub(crate) mod tests;

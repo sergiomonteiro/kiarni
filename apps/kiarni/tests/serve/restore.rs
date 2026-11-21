@@ -38,7 +38,7 @@ fn restored_server_uses_new_credentials_preserves_documents_and_resets_future_on
             original_addr,
             &revoked,
             "orders",
-            r#"{"_id":"doc","n":9007199254740993,"p":1.234567890123456789}"#
+            r#"{"_id":"doc","n":9007199254740993,"p":1.234567890123456789,"status":"wanted"}"#
         )
         .starts_with("HTTP/1.1 201 ")
     );
@@ -46,7 +46,25 @@ fn restored_server_uses_new_credentials_preserves_documents_and_resets_future_on
         insert_document(original_addr, &revoked, "orders", r#"{"_id":"second"}"#)
             .starts_with("HTTP/1.1 201 ")
     );
+    for n in 0..14 {
+        assert!(
+            insert_document(
+                original_addr,
+                &revoked,
+                "orders",
+                &format!(r#"{{"_id":"bulk{n}","status":"bulk"}}"#)
+            )
+            .starts_with("HTTP/1.1 201 ")
+        );
+    }
     source.terminate();
+    {
+        let store = kiarni_storage::Store::open(&original.join("store")).unwrap();
+        store
+            .create_index(&store.collection("orders").unwrap(), "status")
+            .unwrap();
+        store.audit().unwrap();
+    }
     assert!(auth_command(&original, "rotate").status.success());
     let active = keys(&original)
         .into_iter()
@@ -137,7 +155,7 @@ fn restored_server_uses_new_credentials_preserves_documents_and_resets_future_on
             restored_addr,
             new_key,
             "orders",
-            r#"{"_id":"after_restore"}"#
+            r#"{"_id":"after_restore","status":"wanted"}"#
         )
         .starts_with("HTTP/1.1 201 ")
     );
@@ -150,7 +168,50 @@ fn restored_server_uses_new_credentials_preserves_documents_and_resets_future_on
         }
     }
     drop(stream);
+    assert!(
+        update_document(
+            restored_addr,
+            new_key,
+            "PATCH",
+            "doc",
+            r#"{"status":"done"}"#
+        )
+        .starts_with("HTTP/1.1 200 ")
+    );
+    assert!(
+        update_document(
+            restored_addr,
+            new_key,
+            "PUT",
+            "doc",
+            r#"{"status":"done","n":9007199254740993}"#
+        )
+        .starts_with("HTTP/1.1 200 ")
+    );
+    assert!(
+        update_document(restored_addr, new_key, "PATCH", "doc", "{}").starts_with("HTTP/1.1 200 ")
+    );
+    assert!(
+        request(
+            restored_addr,
+            "DELETE",
+            "/v1/collections/orders/documents/bulk0",
+            Some(new_key)
+        )
+        .starts_with("HTTP/1.1 204 ")
+    );
     server.terminate();
+    {
+        let store = kiarni_storage::Store::open(&restored.join("store")).unwrap();
+        store.audit().unwrap();
+        let collection = store.collection("orders").unwrap();
+        // Rebuild requires the catalog definition to have survived backup/restore;
+        // audit verifies entries against the HTTP insert and PATCH above.
+        store.rebuild_index(&collection).unwrap();
+        store.audit().unwrap();
+        let document = store.get_document(&collection, "doc").unwrap().unwrap();
+        assert!(std::str::from_utf8(&document).unwrap().contains("done"));
+    }
     let mut restarted = start(&restored, restored_addr);
     wait_until_listening(&mut restarted, restored_addr);
     assert!(keys(&restored) == values);

@@ -4,6 +4,11 @@
 - Data: 2026-11-14
 - Complementa ADRs 0013, 0028 e 0009. Formatos de backup/store inalterados.
 
+
+Atualização do formato atual (2026-11-21): A restauração agora exige store formato 2 dentro do mesmo envelope versão 1,
+com auditoria integral de índices e bootstrap versão 2/store_format 2. Esta
+extensão segue ADR 0034 e preserva o protocolo de publicação sem sobrescrita.
+
 ## Contrato
 
 `kiarni restore --from BACKUP --data-dir NOVA_RAIZ` valida e restaura o artefato

@@ -6,6 +6,7 @@ use kiarni_engine::writes::Operation;
 
 pub(super) enum Mutation<'a> {
     Insert(&'a PreparedInsert),
+    RawInsert(&'a [u8]),
     #[cfg(test)]
     Update(Operation, &'a [u8]),
     Delete,
@@ -42,6 +43,7 @@ pub enum Failure {
 }
 
 pub(super) fn apply(
+    metrics: Option<&crate::telemetry::Metrics>,
     db: &Database,
     collection: &Collection,
     id: &str,
@@ -52,7 +54,7 @@ pub(super) fn apply(
     let Some(write) = staged else {
         return Ok(false);
     };
-    write.commit().map_err(|_| Failure::CommitUncertain)?;
+    commit(write, metrics).map_err(|_| Failure::CommitUncertain)?;
     checkpoint(Checkpoint::Committed).map_err(|_| Failure::CommitUncertain)?;
     Ok(true)
 }
@@ -155,6 +157,17 @@ pub(super) fn stage_in(
             }
         }
         let new = match mutation {
+            Mutation::RawInsert(json) => {
+                let input = DocumentInput::parse(json, DEFAULT_MAX_DOCUMENT_BYTES)
+                    .map_err(|_| Error::InvalidDocument)?;
+                if input.id() != Some(id) {
+                    return Err(Error::InvalidDocument);
+                }
+                if old.is_some() {
+                    return Err(Error::DuplicateId);
+                }
+                Some(json.to_vec())
+            }
             Mutation::Insert(input) => {
                 if input.id() != id {
                     return Err(Error::InvalidDocument);
@@ -329,6 +342,7 @@ mod tests {
             .prepare_insert()
             .unwrap();
         apply(
+            None,
             db,
             collection,
             prepared.id(),
@@ -433,6 +447,7 @@ mod tests {
             ] {
                 assert!(
                     apply(
+                        None,
                         &db,
                         &collection,
                         "a",
@@ -454,6 +469,7 @@ mod tests {
             );
             assert!(
                 !apply(
+                    None,
                     &db,
                     &collection,
                     "a",
@@ -464,6 +480,7 @@ mod tests {
             );
             assert_consistent(&db, &collection);
             apply(
+                None,
                 &db,
                 &collection,
                 "a",
@@ -486,6 +503,7 @@ mod tests {
             ] {
                 let body = serde_json::to_vec(&serde_json::json!({"status":value})).unwrap();
                 apply(
+                    None,
                     &db,
                     &collection,
                     "a",
@@ -496,6 +514,7 @@ mod tests {
                 assert_consistent(&db, &collection);
             }
             apply(
+                None,
                 &db,
                 &collection,
                 "a",
@@ -504,9 +523,9 @@ mod tests {
             )
             .unwrap();
             assert_consistent(&db, &collection);
-            apply(&db, &collection, "a", Mutation::Delete, |_| Ok(())).unwrap();
+            apply(None, &db, &collection, "a", Mutation::Delete, |_| Ok(())).unwrap();
             assert_eq!(
-                apply(&db, &collection, "a", Mutation::Delete, |_| Ok(())),
+                apply(None, &db, &collection, "a", Mutation::Delete, |_| Ok(())),
                 Err(Failure::Aborted(Error::MissingDocument))
             );
             assert_consistent(&db, &collection);
@@ -546,17 +565,13 @@ mod tests {
                     _ => Mutation::Delete,
                 };
                 assert_eq!(
-                    apply(
-                        &db,
-                        &collection,
-                        "a",
-                        mutation,
-                        |point| if point == failed {
+                    apply(None, &db, &collection, "a", mutation, |point| {
+                        if point == failed {
                             Err(Error::Storage)
                         } else {
                             Ok(())
                         }
-                    ),
+                    }),
                     Err(if failed == Checkpoint::Committed {
                         Failure::CommitUncertain
                     } else {
@@ -650,6 +665,7 @@ mod tests {
                 .to_vec();
             assert!(
                 apply(
+                    None,
                     &db,
                     &collection,
                     "a",
@@ -715,6 +731,7 @@ mod tests {
         ] {
             assert!(
                 apply(
+                    None,
                     &db,
                     &collection,
                     "a",
@@ -738,6 +755,7 @@ mod tests {
         }
         assert!(
             !apply(
+                None,
                 &db,
                 &collection,
                 "a",
@@ -760,6 +778,7 @@ mod tests {
         write.commit().unwrap();
         assert_eq!(
             apply(
+                None,
                 &db,
                 &collection,
                 "a",
@@ -804,6 +823,7 @@ mod tests {
                         )
                         .unwrap();
                         apply(
+                            None,
                             db,
                             collection,
                             &format!("d{n}"),

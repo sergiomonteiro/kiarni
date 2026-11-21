@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use kiarni_format_spike::{Error, Store};
+use kiarni_storage::{Error, Store};
 
 fn open_error(root: &Path) -> Error {
     Store::open(root).err().expect("must reject")
@@ -75,7 +75,7 @@ fn unsupported_or_invalid_manifest_never_opens_or_changes_engine_file() {
     let original = fs::read(root.join("data.redb")).unwrap();
     for (manifest, expected) in [
         (
-            br#"{"magic":"kiarni","version":2,"engine":"redb-4.5.0"}"#.as_slice(),
+            br#"{"magic":"kiarni","version":1,"engine":"redb-4.5.0"}"#.as_slice(),
             Error::UnsupportedFormat,
         ),
         (
@@ -91,7 +91,7 @@ fn unsupported_or_invalid_manifest_never_opens_or_changes_engine_file() {
             Error::UnsupportedFormat,
         ),
         (
-            br#"{"magic":"kiarni","version":1,"version":2,"engine":"redb-4.5.0"}"#,
+            br#"{"magic":"kiarni","version":1,"version":1,"engine":"redb-4.5.0"}"#,
             Error::InvalidManifest,
         ),
         (
@@ -146,7 +146,7 @@ fn missing_or_partial_initialization_never_bootstraps_or_overwrites() {
     );
     fs::write(
         root.join("format.json"),
-        br#"{"magic":"kiarni","version":1,"engine":"redb-4.5.0"}"#,
+        br#"{"magic":"kiarni","version":2,"engine":"redb-4.5.0"}"#,
     )
     .unwrap();
     fs::remove_file(root.join("data.redb")).unwrap();
@@ -206,33 +206,50 @@ fn created_files_are_private_and_final_symlinks_are_refused() {
 }
 
 #[cfg(unix)]
+struct Worker(std::process::Child);
+#[cfg(unix)]
+impl Drop for Worker {
+    fn drop(&mut self) {
+        let _ = self.0.kill();
+        let _ = self.0.wait();
+    }
+}
+
+#[cfg(unix)]
 #[test]
 fn committed_catalog_and_document_survive_killed_writer_and_lock_release() {
-    use std::io::{BufRead, BufReader};
     use std::process::{Command, Stdio};
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().join("data");
     drop(Store::create(&root).unwrap());
-    let mut child = Command::new(env!("CARGO_BIN_EXE_format-worker"))
-        .arg(&root)
-        .stdin(Stdio::piped())
-        .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .spawn()
-        .unwrap();
-    let mut marker = String::new();
-    BufReader::new(child.stdout.take().unwrap())
-        .read_line(&mut marker)
-        .unwrap();
-    assert_eq!(marker.trim(), "COMMITTED");
+    let mut child = Worker(
+        Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", "format_worker", "--ignored"])
+            .env("KIARNI_TEST_FORMAT_ROOT", &root)
+            .env("KIARNI_TEST_FORMAT_SIGNAL", temp.path().join("signal"))
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()
+            .unwrap(),
+    );
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(8);
+    while !temp.path().join("signal").exists() {
+        assert!(child.0.try_wait().unwrap().is_none());
+        assert!(
+            std::time::Instant::now() < deadline,
+            "worker checkpoint deadline"
+        );
+        std::thread::sleep(std::time::Duration::from_millis(10));
+    }
     assert_eq!(open_error(&root), Error::Storage);
-    child.kill().unwrap();
-    child.wait().unwrap();
+    child.0.kill().unwrap();
+    child.0.wait().unwrap();
     let original_manifest = fs::read(root.join("format.json")).unwrap();
     let dirty_database = fs::read(root.join("data.redb")).unwrap();
     fs::write(
         root.join("format.json"),
-        br#"{"magic":"kiarni","version":2,"engine":"redb-4.5.0"}"#,
+        br#"{"magic":"kiarni","version":1,"engine":"redb-4.5.0"}"#,
     )
     .unwrap();
     assert_eq!(open_error(&root), Error::UnsupportedFormat);
@@ -273,5 +290,27 @@ fn concurrent_drop_and_insert_are_serialized_with_catalog_checks() {
             assert!(store.get_fixture(&collection, "doc").unwrap().is_some())
         }
         other => panic!("invalid transaction outcome: {other:?}"),
+    }
+}
+
+#[cfg(unix)]
+#[test]
+#[ignore = "subprocess worker for persisted format recovery"]
+fn format_worker() {
+    let Some(root) = std::env::var_os("KIARNI_TEST_FORMAT_ROOT") else {
+        return;
+    };
+    let store = Store::open(Path::new(&root)).unwrap();
+    let collection = store.create_collection("committed").unwrap();
+    store
+        .insert_fixture(&collection, br#"{"_id":"doc","n":1e10001}"#)
+        .unwrap();
+    fs::write(
+        std::env::var_os("KIARNI_TEST_FORMAT_SIGNAL").unwrap(),
+        b"COMMITTED",
+    )
+    .unwrap();
+    loop {
+        std::thread::park();
     }
 }

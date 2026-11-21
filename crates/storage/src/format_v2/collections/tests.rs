@@ -10,17 +10,22 @@ fn insert(db: &Database, collection: &Collection) {
     .unwrap()
     .prepare_insert()
     .unwrap();
-    apply(db, collection, input.id(), Mutation::Insert(&input), |_| {
-        Ok(())
-    })
+    apply(
+        None,
+        db,
+        collection,
+        input.id(),
+        Mutation::Insert(&input),
+        |_| Ok(()),
+    )
     .unwrap();
 }
 fn setup(mode: &str) -> (tempfile::TempDir, Database) {
     let temp = tempfile::tempdir().unwrap();
     let db = create(&temp.path().join("store")).unwrap();
     if mode != "create" {
-        let collection = create_collection(&db, "tasks", |_| Ok(())).unwrap();
-        maintain(&db, &collection, Action::Build("status"), |_| Ok(())).unwrap();
+        let collection = create_collection(None, &db, "tasks", |_| Ok(())).unwrap();
+        maintain(None, &db, &collection, Action::Build("status"), |_| Ok(())).unwrap();
         if !matches!(mode, "drop" | "insert") {
             insert(&db, &collection);
         }
@@ -64,10 +69,10 @@ fn recreated_collection_has_new_identity_and_rejects_old_handles() {
         id: 1,
     };
     insert(&db, &old);
-    apply(&db, &old, "a", Mutation::Delete, |_| Ok(())).unwrap();
+    apply(None, &db, &old, "a", Mutation::Delete, |_| Ok(())).unwrap();
     let snapshot = db.begin_read().unwrap();
-    drop_collection(&db, &old, |_| Ok(())).unwrap();
-    let new = create_collection(&db, "tasks", |_| Ok(())).unwrap();
+    drop_collection(None, &db, &old, |_| Ok(())).unwrap();
+    let new = create_collection(None, &db, "tasks", |_| Ok(())).unwrap();
     assert_eq!(new.id, 2);
     assert_eq!(next(&db), 3);
     let read = db.begin_read().unwrap();
@@ -95,21 +100,21 @@ fn recreated_collection_has_new_identity_and_rejects_old_handles() {
             .is_some()
     );
     assert_eq!(
-        apply(&db, &old, "a", Mutation::Delete, |_| Ok(())),
+        apply(None, &db, &old, "a", Mutation::Delete, |_| Ok(())),
         Err(Failure::Aborted(Error::CollectionMissing))
     );
     assert_eq!(
-        drop_collection(&db, &old, |_| Ok(())),
+        drop_collection(None, &db, &old, |_| Ok(())),
         Err(Failure::Aborted(Error::CollectionMissing))
     );
     assert_eq!(
-        maintain(&db, &old, Action::Rebuild, |_| Ok(())),
+        maintain(None, &db, &old, Action::Rebuild, |_| Ok(())),
         Err(Failure::Aborted(Error::CollectionMissing))
     );
     assert_eq!(audit(&db, &old), Err(Error::CollectionMissing));
     insert(&db, &new);
     audit(&db, &new).unwrap();
-    maintain(&db, &new, Action::Build("status"), |_| Ok(())).unwrap();
+    maintain(None, &db, &new, Action::Build("status"), |_| Ok(())).unwrap();
     audit(&db, &new).unwrap();
     drop(read);
     drop(snapshot);
@@ -129,7 +134,7 @@ fn errors_do_not_delete_documents_or_adopt_orphaned_data() {
         };
         if case == 0 {
             assert_eq!(
-                drop_collection(&db, &old, |_| Ok(())),
+                drop_collection(None, &db, &old, |_| Ok(())),
                 Err(Failure::Aborted(Error::CollectionNotEmpty))
             );
             audit(&db, &old).unwrap();
@@ -177,14 +182,14 @@ fn errors_do_not_delete_documents_or_adopt_orphaned_data() {
                 _ => unreachable!(),
             }
             write.commit().unwrap();
-            assert!(drop_collection(&db, &old, |_| Ok(())).is_err());
+            assert!(drop_collection(None, &db, &old, |_| Ok(())).is_err());
         }
         assert!(present(&db));
-        assert!(create_collection(&db, "tasks", |_| Ok(())).is_err());
+        assert!(create_collection(None, &db, "tasks", |_| Ok(())).is_err());
     }
     let (_temp, db) = setup("create");
     assert!(matches!(
-        create_collection(&db, "", |_| Ok(())),
+        create_collection(None, &db, "", |_| Ok(())),
         Err(Failure::Aborted(Error::InvalidName))
     ));
     let write = db.begin_write().unwrap();
@@ -195,7 +200,7 @@ fn errors_do_not_delete_documents_or_adopt_orphaned_data() {
         .unwrap();
     write.commit().unwrap();
     assert!(matches!(
-        create_collection(&db, "tasks", |_| Ok(())),
+        create_collection(None, &db, "tasks", |_| Ok(())),
         Err(Failure::Aborted(Error::CollectionIdsExhausted))
     ));
     assert!(!present(&db));
@@ -212,7 +217,7 @@ fn errors_do_not_delete_documents_or_adopt_orphaned_data() {
         .insert((1, "orphan"), 1)
         .unwrap();
     write.commit().unwrap();
-    assert!(create_collection(&db, "tasks", |_| Ok(())).is_err());
+    assert!(create_collection(None, &db, "tasks", |_| Ok(())).is_err());
     assert_eq!(next(&db), 1);
     assert!(!present(&db));
 }
@@ -223,7 +228,7 @@ fn collection_failures_preserve_counter_and_catalog_atomically() {
         for failed in points() {
             let (_temp, db) = setup(mode);
             let result = if mode == "create" {
-                create_collection(&db, "tasks", |p| {
+                create_collection(None, &db, "tasks", |p| {
                     if p == failed {
                         Err(Error::Storage)
                     } else {
@@ -233,6 +238,7 @@ fn collection_failures_preserve_counter_and_catalog_atomically() {
                 .map(|_| ())
             } else {
                 drop_collection(
+                    None,
                     &db,
                     &Collection {
                         name: "tasks".into(),
@@ -306,8 +312,8 @@ fn collection_failures_preserve_counter_and_catalog_atomically() {
 fn concurrent_duplicate_creation_allocates_only_one_generation() {
     let (_temp, db) = setup("create");
     let outcomes = std::thread::scope(|scope| {
-        let a = scope.spawn(|| create_collection(&db, "tasks", |_| Ok(())));
-        let b = scope.spawn(|| create_collection(&db, "tasks", |_| Ok(())));
+        let a = scope.spawn(|| create_collection(None, &db, "tasks", |_| Ok(())));
+        let b = scope.spawn(|| create_collection(None, &db, "tasks", |_| Ok(())));
         [a.join().unwrap(), b.join().unwrap()]
     });
     assert_eq!(outcomes.iter().filter(|v| v.is_ok()).count(), 1);
@@ -346,10 +352,10 @@ fn crash_worker() {
     };
     match mode.as_str() {
         "create" => {
-            create_collection(&db, "tasks", |p| pause(p, &point)).unwrap();
+            create_collection(None, &db, "tasks", |p| pause(p, &point)).unwrap();
         }
         "drop" => {
-            drop_collection(&db, &collection, |p| pause(p, &point)).unwrap();
+            drop_collection(None, &db, &collection, |p| pause(p, &point)).unwrap();
         }
         _ => {
             let input = DocumentInput::parse(
@@ -372,7 +378,7 @@ fn crash_worker() {
                 "delete" => Mutation::Delete,
                 _ => panic!("unknown worker mode"),
             };
-            apply(&db, &collection, "a", mutation, |p| pause(p, &point)).unwrap();
+            apply(None, &db, &collection, "a", mutation, |p| pause(p, &point)).unwrap();
         }
     }
     panic!("requested checkpoint not reached");

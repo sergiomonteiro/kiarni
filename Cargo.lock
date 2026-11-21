@@ -196,14 +196,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "kiarni-format-spike"
-version = "0.1.0"
-dependencies = [
- "kiarni-storage",
- "tempfile",
-]
-
-[[package]]
 name = "kiarni-group-commit-spike"
 version = "0.1.0"
 dependencies = [

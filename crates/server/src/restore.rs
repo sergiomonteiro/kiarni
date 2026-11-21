@@ -110,7 +110,7 @@ fn manifest(directory: &File) -> Result<(Manifest, ExportSummary)> {
         serde_json::from_slice(&bytes).map_err(|_| "invalid_backup_manifest")?;
     if manifest.magic != "kiarni-backup"
         || manifest.version != 1
-        || manifest.format_version != 1
+        || manifest.format_version != 2
         || manifest.engine != "redb-4.5.0"
     {
         return Err("unsupported_backup_format".into());
@@ -356,9 +356,10 @@ mod tests {
         store
             .insert_fixture(
                 &collection,
-                br#"{"_id":"doc","n":9007199254740993,"p":1.234567890123456789}"#,
+                br#"{"_id":"doc","n":9007199254740993,"p":1.234567890123456789,"status":"ready"}"#,
             )
             .unwrap();
+        store.create_index(&collection, "status").unwrap();
         drop(store);
         drop(root);
         let artifact = parent.join("backup");
@@ -394,7 +395,7 @@ mod tests {
             serde_json::from_slice(&fs::read(path.join("bootstrap.json")).unwrap()).unwrap();
         assert_eq!(
             phase,
-            serde_json::json!({"version":1,"phase":"store_ready"})
+            serde_json::json!({"version":2,"store_format":2,"phase":"store_ready"})
         );
         assert!(!path.join("auth").exists());
         assert_eq!(fs::metadata(path).unwrap().mode() & 0o7777, 0o700);
@@ -453,7 +454,7 @@ mod tests {
                 .get_document(&store.collection("orders").unwrap(), "doc")
                 .unwrap()
                 .unwrap(),
-            br#"{"_id":"doc","n":9007199254740993,"p":1.234567890123456789}"#
+            br#"{"_id":"doc","n":9007199254740993,"p":1.234567890123456789,"status":"ready"}"#
         );
         store.create_collection("next").unwrap();
         drop(store);
@@ -495,7 +496,7 @@ mod tests {
             let mut value: serde_json::Value = serde_json::from_slice(&original).unwrap();
             match case {
                 0 => value["version"] = serde_json::json!(2),
-                1 => value["format_version"] = serde_json::json!(2),
+                1 => value["format_version"] = serde_json::json!(1),
                 2 => value["engine"] = serde_json::json!("other"),
                 3 => value["extra"] = serde_json::json!(true),
                 4 => value["files"][0]["path"] = serde_json::json!("../outside"),
@@ -578,7 +579,7 @@ mod tests {
     }
     #[test]
     fn invalid_structure_with_recomputed_hashes_still_fails_and_never_mutates_backup() {
-        for case in 0..5 {
+        for case in 0..7 {
             let temp = temporary();
             let artifact = setup(temp.path());
             let db = Database::open(artifact.join("store/data.redb")).unwrap();
@@ -611,6 +612,24 @@ mod tests {
                         .unwrap()
                         .insert((1, "doc"), br#"{"_id":"wrong"}"#.as_slice())
                         .unwrap();
+                }
+                5 | 6 => {
+                    write
+                        .open_table(TableDefinition::<(u64, &str, &str), ()>::new(
+                            "secondary_entries",
+                        ))
+                        .unwrap()
+                        .remove((1, "ready", "doc"))
+                        .unwrap();
+                    if case == 6 {
+                        write
+                            .open_table(TableDefinition::<(u64, &str), u64>::new(
+                                "secondary_counts",
+                            ))
+                            .unwrap()
+                            .remove((1, "ready"))
+                            .unwrap();
+                    }
                 }
                 _ => {
                     write

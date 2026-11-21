@@ -4,6 +4,11 @@ M3, operação/RF-01. Issue [#2](https://github.com/sergiomonteiro/kiarni/issues
 [ADR 0013](./adr/0013-backup-e-restauracao.md) e
 [ADR 0029](./adr/0029-restauracao-em-nova-raiz.md).
 
+O artefato usa envelope versão 1 e store formato 2. Documentos, catálogo de
+índices, entradas e contagens são restaurados juntos, com auditoria completa.
+Artefatos do layout antigo de desenvolvimento são recusados, sem conversão.
+O bootstrap publicado é versão 2, store_format 2, fase store_ready.
+
 ## Executar e iniciar
 
 Use um artefato produzido por [kiarni backup](./BACKUP.md), sob seu usuário, com
@@ -62,7 +67,8 @@ do backup. Isso reaproveita a validação de tabelas/metadados, nomes, identidad
 únicas, referências a coleções, JSON e correspondência de `_id` com a chave.
 Contagens de coleções/documentos/bytes JSON precisam coincidir com o manifesto.
 O contador de coleções, inclusive lacunas após exclusões, e o JSON bruto com
-precisão numérica são preservados.
+precisão numérica e as definições de índices são preservados. Entradas ausentes,
+extras ou contagens divergentes são recusadas mesmo com hashes recalculados.
 
 O método precisa temporariamente de espaço para duas cópias do store, além do
 artefato. Cada engine tem cache configurado em 8 MiB, valida um documento de cada

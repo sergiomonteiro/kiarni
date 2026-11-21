@@ -4,6 +4,12 @@
 - Data: 2026-11-10
 - Requisitos: M0-F2/G3, RF-01/RF-07. Complementa ADR 0008 sem aceitá-lo.
 
+
+Atualização do formato atual (2026-11-21): O protocolo de fases e o journal de auth permanecem. Conforme ADR 0034, o
+registro de bootstrap da instalação atual é JSON estrito versão 2, com
+store_format 2 e phase, limitado a 1 KiB; o caminho legado foi removido. Não
+altera as versões próprias dos registros do journal de autenticação.
+
 ## Proposta e alternativas
 
 Alternativas: exigir provisionamento prévio com argumento adicional; regenerar

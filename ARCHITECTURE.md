@@ -230,6 +230,18 @@ O spike deve decidir se há um serializador lógico de commits ou outro mecanism
 
 ## 10. Ciclo de vida e operação
 
+### Formato persistido atual
+
+Store usa um único backend, formato lógico 2, com documentos, catálogo de
+coleções, definições/entradas de índices e estatísticas transacionais. O layout
+1 de desenvolvimento não é suportado; não há migração ou apagamento automático.
+[Decisão e invariantes](./docs/adr/0034-lifecycle-indice-secundario.md).
+Bootstrap versão 2 fixa store_format 2 antes de criar o banco. Startup audita a
+integridade lógica antes de preparar auth. Backup/restore preservam as sete
+tabelas e restauram numa nova instalação com credenciais independentes.
+O planner HTTP ainda usa ID/scan; a seleção secundária e sua observabilidade
+serão conectadas em incremento próprio, sem atribuir ganhos do spike ao HTTP.
+
 ### Startup
 
 1. Carregar CLI, variáveis de ambiente e configuração; aplicar precedência documentada.

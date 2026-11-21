@@ -79,5 +79,6 @@ Primeiro incremento do M3/RF-08:
 ## Integração experimental após a avaliação RF-04
 
 - [0034 — Contrato e ciclo de vida do índice secundário](./0034-lifecycle-indice-secundario.md).
-  Aceita para fachada Rust interna em raiz nova; formato 1 e servidor atuais
-  permanecem inalterados, com integração operacional/HTTP da issue #10 pendente.
+  Aceita para Store único de formato 2, sem suporte legado. Servidor, writer e
+  backup/restore usam o mesmo núcleo; planner secundário HTTP, administração de
+  índices pela CLI e medições da issue #10 permanecem pendentes.

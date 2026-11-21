@@ -2,9 +2,37 @@
 
 - Data: 2026-11-20; RF-04, evolução posterior ao aceite técnico M3.
 - Base do candidato: `7fde91c6f4eb5a0ca232951a0232269ee054779a`.
-- Contrato: [ADR 0034 proposto](./adr/0034-lifecycle-indice-secundario.md).
+- Contrato: [ADR 0034 aceito](./adr/0034-lifecycle-indice-secundario.md).
 - Resultado: evidência suficiente para iniciar promoção **incremental**;
-  habilitação do formato 2 no servidor **ainda não aprovada por esta revisão**.
+  promoção para Store único concluída no incremento de consolidação abaixo;
+  planner secundário HTTP e administração de índices pela CLI ainda pendentes.
+
+## Estado atual: Store único no caminho normal
+
+A decisão do responsável em 2026-11-21 retirou a exigência de retrocompatibilidade:
+não há bancos em uso. A consolidação usa Store de formato 2 no servidor, writer,
+bootstrap e backup/restore. Remove IndexedStore, o entrypoint separado de
+inicialização, a implementação de export do layout 1 e o wrapper do spike de
+formato. Seus testes de contrato/crash estão em crates/storage/tests/format.rs.
+
+Bootstrap só aceita versão 2/store_format 2; envelope de backup continua schema
+1 com format_version 2. Layouts antigos são recusados antes do engine e não são
+apagados/convertidos automaticamente. Store preserva telemetria de primitivas,
+commits, no-op e grupos. Abertura exige auditoria lógica; IndexedMaintenance é
+recuperação restrita, não outro backend de produção.
+
+Um teste black-box cobre backup/restore de banco com índice, primeiro serve com
+credencial independente, insert/PATCH HTTP, auditoria e rebuild após shutdown e
+reinício. Os testes anteriores de hashes, publicação, disputa, kill/restart,
+backpressure e grupos passam a exercitar o mesmo Store normal.
+
+Próximo recorte: ligar o planner secundário ao carregamento HTTP preservando
+admissão, erros e tempos de storage/engine, e definir administração offline de
+índices pela CLI. Medições seguem pendentes. O HTTP ainda usa ID/scan, embora as
+mutações já mantenham índices; não há ganho HTTP alegado.
+
+As tabelas e etapas G1–G3.1 abaixo preservam o histórico e suas evidências. A
+exigência antiga de manter formato 1 está superada pelo ADR 0034 revisado.
 
 ## Evidência e seu limite
 
@@ -74,9 +102,9 @@ secundário. O aceite restrito do ADR não conclui os itens 2–6 de integraçã
 | G4 — Query/writer/feeds no servidor | Integrar seleção tipada, carregamento de candidatos, métricas e confirmação/publicação no writer | Clientes independentes, limites de admissão/erro, captura/ordem de feeds, backpressure e nenhum evento pré-commit |
 | G5 — Aceite do recurso | Medir binário integrado e revisar contrato/documentação/ADRs | Casos seletivo/denso, leitura/escrita, comandos/ambiente/dataset reproduzíveis e CI completa do commit final |
 
-G1 e G2 estão entregues no crate sem selecionar formato 2 no servidor. O próximo
-incremento é completar G3: envelope de backup/restore e CLI, após a composição
-de bootstrap/auth Rust de G3.1 descrita abaixo.
+G1/G2, G3.1 e a consolidação do Store normal estão entregues. A próxima
+implementação segue o estado atual descrito acima, sem backend legado ou CLI
+paralela.
 Cada etapa precisa preservar a recusa de caminhos incompletos. Esta
 sequência não cria flags/endpoints ainda inexistentes nem exige implementar
 todas as etapas na mesma sessão.
@@ -206,7 +234,7 @@ com auth ausente/incompleta falha fechado; instalação expirada ou revogada nã
 recebe token automaticamente. Snapshot de store instalado numa nova raiz
 store_ready recebe credencial independente da origem, que permanece utilizável.
 
-Dois [testes externos](../crates/server/tests/indexed_bootstrap.rs) exercitam o
+Dois [testes externos históricos](https://github.com/sergiomonteiro/kiarni/blob/f355eef/crates/server/tests/indexed_bootstrap.rs) exercitam o
 entrypoint público, emissão única, reabertura e recusa de legado/raiz insegura ou
 desconhecida. Quatro [testes internos](../crates/server/src/bootstrap/indexed_tests.rs)
 cobrem schema/versionamento, auditoria antes de auth, expiração/revogação e cópia
@@ -227,3 +255,25 @@ ignorados isoladamente e exercitados pelos pais), `python3 scripts/check_docs.py
 `python3 scripts/check_product_dependencies.py` e `git diff --check`: aprovados.
 A suíte completa foi executada fora do sandbox para sockets locais. CI do commit
 é evidência separada, a acompanhar após envio.
+
+## Verificações da consolidação
+
+- `cargo fmt --all -- --check`: aprovado.
+- `cargo clippy --workspace --all-targets -- -D warnings`: aprovado.
+- `cargo clippy --workspace --all-targets --all-features -- -D warnings`: aprovado.
+- `cargo test --workspace --locked`: 363 aprovados, zero falhas.
+- `cargo test --workspace --all-features --locked`: 363 aprovados, zero falhas.
+  Doze workers ignorados como testes diretos são exercitados pelos pais. A suíte
+  completa usa sockets locais e foi executada fora do sandbox.
+- `cargo test -p kiarni-storage --test format --locked`: oito aprovados, um
+  worker ignorado isoladamente e exercitado pelo pai, após portar o contrato.
+- `python3 scripts/check_docs.py`,
+  `python3 scripts/check_product_dependencies.py` e `git diff --check`: aprovados.
+
+Dois testes exclusivos do entrypoint experimental removido saíram junto dele;
+bootstrap normal segue coberto por testes de processo e da API HTTP. O núcleo
+mantém seus testes transacionais/crash; não se descartou a proteção desses
+invariantes. Storage/server e o wrapper de formato têm redução líquida de 560
+linhas Rust em src, incluindo testes internos, em relação à base f355eef. O crate
+de compatibilidade deixou o workspace; nenhuma dependência de runtime foi adicionada.
+CI do novo commit deve ser consultada separadamente das evidências locais.

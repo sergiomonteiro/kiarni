@@ -46,6 +46,7 @@ fn fixture(indexed: bool) -> (tempfile::TempDir, Database) {
             .prepare_insert()
             .unwrap();
         mutations::apply(
+            None,
             &db,
             &collection(),
             input.id(),
@@ -55,7 +56,7 @@ fn fixture(indexed: bool) -> (tempfile::TempDir, Database) {
         .unwrap();
     }
     if indexed {
-        maintain(&db, &collection(), Action::Build("kind"), |_| Ok(())).unwrap();
+        maintain(None, &db, &collection(), Action::Build("kind"), |_| Ok(())).unwrap();
     }
     (temp, db)
 }
@@ -95,7 +96,7 @@ fn build_rebuild_and_drop_audit_and_preserve_old_snapshots() {
     let (temp, db) = fixture(false);
     audit(&db, &collection()).unwrap();
     let previous = db.begin_read().unwrap();
-    maintain(&db, &collection(), Action::Build("kind"), |_| {
+    maintain(None, &db, &collection(), Action::Build("kind"), |_| {
         audit(&db, &collection()).unwrap();
         Ok(())
     })
@@ -133,12 +134,12 @@ fn build_rebuild_and_drop_audit_and_preserve_old_snapshots() {
             .unwrap()
             .is_some()
     );
-    assert!(maintain(&db, &collection(), Action::Build("kind"), |_| Ok(())).is_err());
+    assert!(maintain(None, &db, &collection(), Action::Build("kind"), |_| Ok(())).is_err());
     corrupt_count(&db);
     assert_eq!(audit(&db, &collection()), Err(Error::InvalidLayout));
-    maintain(&db, &collection(), Action::Rebuild, |_| Ok(())).unwrap();
+    maintain(None, &db, &collection(), Action::Rebuild, |_| Ok(())).unwrap();
     audit(&db, &collection()).unwrap();
-    maintain(&db, &collection(), Action::Drop, |_| Ok(())).unwrap();
+    maintain(None, &db, &collection(), Action::Drop, |_| Ok(())).unwrap();
     assert!(!has_index(&db));
     audit(&db, &collection()).unwrap();
     // Old snapshot retains its index and count across rebuild and drop.
@@ -238,7 +239,7 @@ fn audit_detects_missing_extra_wrong_counts_and_stats_and_rebuild_repairs() {
             Err(Error::InvalidLayout),
             "case {case}"
         );
-        maintain(&db, &collection(), Action::Rebuild, |_| Ok(())).unwrap();
+        maintain(None, &db, &collection(), Action::Rebuild, |_| Ok(())).unwrap();
         audit(&db, &collection()).unwrap();
     }
 }
@@ -256,7 +257,7 @@ fn failure_windows_preserve_previous_state_and_report_uncertainty() {
                 1 => Action::Rebuild,
                 _ => Action::Drop,
             };
-            let result = maintain(&db, &collection(), action, |point| {
+            let result = maintain(None, &db, &collection(), action, |point| {
                 if point == failed {
                     Err(Error::Storage)
                 } else {
@@ -311,6 +312,7 @@ fn maintenance_is_scoped_to_collection_identity() {
         .prepare_insert()
         .unwrap();
     mutations::apply(
+        None,
         &db,
         &other,
         prepared.id(),
@@ -318,9 +320,9 @@ fn maintenance_is_scoped_to_collection_identity() {
         |_| Ok(()),
     )
     .unwrap();
-    maintain(&db, &other, Action::Build("kind"), |_| Ok(())).unwrap();
+    maintain(None, &db, &other, Action::Build("kind"), |_| Ok(())).unwrap();
     for action in [Action::Build("kind"), Action::Rebuild, Action::Drop] {
-        maintain(&db, &collection(), action, |_| Ok(())).unwrap();
+        maintain(None, &db, &collection(), action, |_| Ok(())).unwrap();
         audit(&db, &other).unwrap();
         audit(&db, &collection()).unwrap();
         assert_eq!(
@@ -349,7 +351,7 @@ fn maintenance_is_scoped_to_collection_identity() {
         id: 2,
     };
     assert_eq!(
-        maintain(&db, &stale, Action::Build("kind"), |_| Ok(())),
+        maintain(None, &db, &stale, Action::Build("kind"), |_| Ok(())),
         Err(Failure::Aborted(Error::CollectionMissing))
     );
     audit(&db, &other).unwrap();
@@ -410,7 +412,7 @@ fn budgets_invalid_documents_and_generation_abort_without_publication() {
         } else {
             Action::Build("kind")
         };
-        assert!(maintain(&db, &collection(), action, |_| Ok(())).is_err());
+        assert!(maintain(None, &db, &collection(), action, |_| Ok(())).is_err());
         assert_eq!(has_index(&db), case == 3);
         if case == 3 {
             assert!(
@@ -424,7 +426,7 @@ fn budgets_invalid_documents_and_generation_abort_without_publication() {
             );
         }
         // Invalid definitions fail before changing the catalog.
-        assert!(maintain(&db, &collection(), Action::Build("_id"), |_| Ok(())).is_err());
+        assert!(maintain(None, &db, &collection(), Action::Build("_id"), |_| Ok(())).is_err());
     }
 }
 
@@ -441,7 +443,7 @@ fn crash_worker() {
         "drop" => Action::Drop,
         _ => Action::Rebuild,
     };
-    maintain(&db, &collection(), action, |point| {
+    maintain(None, &db, &collection(), action, |point| {
         if format!("{point:?}") == requested {
             println!("LIFECYCLE_CHECKPOINT");
             std::io::stdout().flush().unwrap();
@@ -493,7 +495,7 @@ fn exact_document_and_byte_budgets_build_then_reject_one_more() {
             }
         }
         write.commit().unwrap();
-        maintain(&db, &collection(), Action::Build("kind"), |_| Ok(())).unwrap();
+        maintain(None, &db, &collection(), Action::Build("kind"), |_| Ok(())).unwrap();
         audit(&db, &collection()).unwrap();
         let read = db.begin_read().unwrap();
         let (_, count, bytes) = read
@@ -517,6 +519,7 @@ fn exact_document_and_byte_budgets_build_then_reject_one_more() {
         .prepare_insert()
         .unwrap();
         mutations::apply(
+            None,
             &db,
             &collection(),
             prepared.id(),
@@ -525,7 +528,7 @@ fn exact_document_and_byte_budgets_build_then_reject_one_more() {
         )
         .unwrap();
         assert_eq!(
-            maintain(&db, &collection(), Action::Rebuild, |_| Ok(())),
+            maintain(None, &db, &collection(), Action::Rebuild, |_| Ok(())),
             Err(Failure::Aborted(Error::QueryLimit))
         );
         audit(&db, &collection()).unwrap();

@@ -54,24 +54,28 @@ fn ordered_results_capture_intermediate_states_and_match_sequential_writes() {
     ];
     let flags = [true; 9];
     let old = db.begin_read().unwrap();
-    let reference = Store::create(&temp.path().join("format1-reference")).unwrap();
+    let reference = Store::create(&temp.path().join("sequential-reference")).unwrap();
     for name in ["indexed", "empty", "plain"] {
         reference.create_collection(name).unwrap();
     }
-    let write = reference.db.begin_write().unwrap();
-    {
-        let source = old.open_table(DOCUMENTS).unwrap();
-        let mut target = write.open_table(DOCUMENTS).unwrap();
-        for row in source.iter().unwrap() {
-            let (key, value) = row.unwrap();
-            target.insert(key.value(), value.value()).unwrap();
-        }
+    for row in old.open_table(DOCUMENTS).unwrap().iter().unwrap() {
+        let (key, value) = row.unwrap();
+        let (cid, _) = key.value();
+        let name = match cid {
+            1 => "indexed",
+            2 => "empty",
+            3 => "plain",
+            _ => panic!("unexpected fixture collection"),
+        };
+        reference
+            .insert_fixture(&reference.collection(name).unwrap(), value.value())
+            .unwrap();
     }
-    write.commit().unwrap();
     let baseline = reference
         .update_group_captured(&updates, DEFAULT_MAX_DOCUMENT_BYTES, &flags)
         .unwrap();
     let result = apply(
+        None,
         &db,
         &updates,
         DEFAULT_MAX_DOCUMENT_BYTES,
@@ -152,6 +156,7 @@ fn ordered_results_capture_intermediate_states_and_match_sequential_writes() {
             id: if i == 4 { 3 } else { 1 },
         };
         mutations::apply(
+            None,
             &peer,
             &collection,
             update.id,
@@ -181,23 +186,36 @@ fn ordered_results_capture_intermediate_states_and_match_sequential_writes() {
 fn bounds_and_noops_preserve_the_existing_group_contract() {
     let (_temp, db, _) = fixture(false);
     assert!(matches!(
-        apply(&db, &[], DEFAULT_MAX_DOCUMENT_BYTES, None, |_| Ok(())),
+        apply(None, &db, &[], DEFAULT_MAX_DOCUMENT_BYTES, None, |_| Ok(())),
         Err(GroupError::InvalidGroup)
     ));
     let updates: Vec<_> = (0..32).map(|_| patch("indexed", "d000", b"{}")).collect();
-    let result = apply(&db, &updates, DEFAULT_MAX_DOCUMENT_BYTES, None, |_| {
-        panic!("no-op group must not commit")
-    })
+    let result = apply(
+        None,
+        &db,
+        &updates,
+        DEFAULT_MAX_DOCUMENT_BYTES,
+        None,
+        |_| panic!("no-op group must not commit"),
+    )
     .unwrap();
     assert!(!result.receipt.committed);
     assert!(result.transitions.iter().all(Option::is_none));
     let too_many: Vec<_> = (0..33).map(|_| patch("indexed", "d000", b"{}")).collect();
     assert!(matches!(
-        apply(&db, &too_many, DEFAULT_MAX_DOCUMENT_BYTES, None, |_| Ok(())),
+        apply(
+            None,
+            &db,
+            &too_many,
+            DEFAULT_MAX_DOCUMENT_BYTES,
+            None,
+            |_| Ok(())
+        ),
         Err(GroupError::InvalidGroup)
     ));
     assert!(matches!(
         apply(
+            None,
             &db,
             &updates,
             DEFAULT_MAX_DOCUMENT_BYTES,
@@ -207,12 +225,12 @@ fn bounds_and_noops_preserve_the_existing_group_contract() {
         Err(GroupError::InvalidGroup)
     ));
     assert!(matches!(
-        apply(&db, &updates, 0, None, |_| Ok(())),
+        apply(None, &db, &updates, 0, None, |_| Ok(())),
         Err(GroupError::Aborted(Error::InvalidLimit))
     ));
     let body = vec![b' '; DEFAULT_MAX_DOCUMENT_BYTES];
     let eight: Vec<_> = (0..8).map(|_| patch("indexed", "d000", &body)).collect();
-    let result = apply(&db, &eight, DEFAULT_MAX_DOCUMENT_BYTES, None, |_| {
+    let result = apply(None, &db, &eight, DEFAULT_MAX_DOCUMENT_BYTES, None, |_| {
         panic!("invalid inputs must not commit")
     })
     .unwrap();
@@ -221,7 +239,9 @@ fn bounds_and_noops_preserve_the_existing_group_contract() {
     assert!(!result.receipt.committed);
     let nine: Vec<_> = (0..9).map(|_| patch("indexed", "d000", &body)).collect();
     assert!(matches!(
-        apply(&db, &nine, DEFAULT_MAX_DOCUMENT_BYTES, None, |_| Ok(())),
+        apply(None, &db, &nine, DEFAULT_MAX_DOCUMENT_BYTES, None, |_| Ok(
+            ()
+        )),
         Err(GroupError::InvalidGroup)
     ));
     audit(&db);
@@ -269,6 +289,7 @@ fn integrity_failure_after_an_update_rolls_back_the_whole_group() {
         };
         assert!(matches!(
             apply(
+                None,
                 &db,
                 &[patch("indexed", "d000", br#"{"status":"first"}"#), second],
                 DEFAULT_MAX_DOCUMENT_BYTES,
@@ -313,6 +334,7 @@ fn injected_failures_expose_no_receipt_before_commit_and_keep_snapshot_atomicity
         let (_temp, db, _) = fixture(false);
         let before = db.begin_read().unwrap();
         let result = apply(
+            None,
             &db,
             &pair(),
             DEFAULT_MAX_DOCUMENT_BYTES,
@@ -355,6 +377,7 @@ fn concurrent_groups_and_readers_observe_only_complete_groups() {
                         serde_json::to_vec(&serde_json::json!({"status":format!("s{thread}-{n}")}))
                             .unwrap();
                     apply(
+                        None,
                         db,
                         &[patch("indexed", "d000", &body), patch("plain", "x", &body)],
                         DEFAULT_MAX_DOCUMENT_BYTES,
@@ -388,6 +411,7 @@ fn worker() {
     let requested = std::env::var("KIARNI_V2_GROUP_POINT").unwrap();
     let db = open(Path::new(&root)).unwrap();
     apply(
+        None,
         &db,
         &pair(),
         DEFAULT_MAX_DOCUMENT_BYTES,

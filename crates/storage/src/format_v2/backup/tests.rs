@@ -6,16 +6,17 @@ use mutations::{Mutation, apply};
 pub(in crate::format_v2) fn fixture(large: bool) -> (tempfile::TempDir, Database, Collection) {
     let temp = tempfile::tempdir().unwrap();
     let db = create(&temp.path().join("source")).unwrap();
-    let collection = create_collection(&db, "indexed", |_| Ok(())).unwrap();
-    create_collection(&db, "empty", |_| Ok(())).unwrap();
-    let plain = create_collection(&db, "plain", |_| Ok(())).unwrap();
-    let removed = create_collection(&db, "removed", |_| Ok(())).unwrap();
-    drop_collection(&db, &removed, |_| Ok(())).unwrap();
+    let collection = create_collection(None, &db, "indexed", |_| Ok(())).unwrap();
+    create_collection(None, &db, "empty", |_| Ok(())).unwrap();
+    let plain = create_collection(None, &db, "plain", |_| Ok(())).unwrap();
+    let removed = create_collection(None, &db, "removed", |_| Ok(())).unwrap();
+    drop_collection(None, &db, &removed, |_| Ok(())).unwrap();
     let input = DocumentInput::parse(br#"{"_id":"x","status":null}"#, DEFAULT_MAX_DOCUMENT_BYTES)
         .unwrap()
         .prepare_insert()
         .unwrap();
     apply(
+        None,
         &db,
         &plain,
         input.id(),
@@ -44,7 +45,7 @@ pub(in crate::format_v2) fn fixture(large: bool) -> (tempfile::TempDir, Database
         }
     }
     write.commit().unwrap();
-    maintain(&db, &collection, Action::Build("status"), |_| Ok(())).unwrap();
+    maintain(None, &db, &collection, Action::Build("status"), |_| Ok(())).unwrap();
     (temp, db, collection)
 }
 
@@ -83,6 +84,7 @@ fn multiple_batches_copy_one_snapshot_and_restore_without_touching_source() {
             assert!(!output.join("format.json").exists());
             if batches == 1 {
                 apply(
+                    None,
                     &db,
                     &collection,
                     "d000",
@@ -93,7 +95,7 @@ fn multiple_batches_copy_one_snapshot_and_restore_without_touching_source() {
                     |_| Ok(()),
                 )
                 .unwrap();
-                create_collection(&db, "later", |_| Ok(())).unwrap();
+                create_collection(None, &db, "later", |_| Ok(())).unwrap();
             }
         }
         Ok(())
@@ -118,17 +120,22 @@ fn multiple_batches_copy_one_snapshot_and_restore_without_touching_source() {
     let target = open(&restored).unwrap();
     equal(&read, &target.begin_read().unwrap());
     assert_eq!(
-        create_collection(&target, "next", |_| Ok(())).unwrap().id,
+        create_collection(None, &target, "next", |_| Ok(()))
+            .unwrap()
+            .id,
         5
     );
-    assert_eq!(create_collection(&db, "next", |_| Ok(())).unwrap().id, 6);
+    assert_eq!(
+        create_collection(None, &db, "next", |_| Ok(())).unwrap().id,
+        6
+    );
 }
 
 #[test]
 fn empty_and_unindexed_stores_copy_and_existing_destinations_are_refused() {
     let temp = tempfile::tempdir().unwrap();
     let db = create(&temp.path().join("source")).unwrap();
-    create_collection(&db, "plain", |_| Ok(())).unwrap();
+    create_collection(None, &db, "plain", |_| Ok(())).unwrap();
     let read = db.begin_read().unwrap();
     let out = temp.path().join("out");
     assert_eq!(export(&read, &out, |_| Ok(())).unwrap().documents, 0);
@@ -278,7 +285,13 @@ fn restore_refuses_live_or_incompatible_sources_before_creating_destination() {
     drop(db);
     restore(&source, &output, |_| Ok(())).unwrap();
     let old = temp.path().join("format1");
-    drop(Store::create(&old).unwrap());
+    fs::create_dir(&old).unwrap();
+    fs::write(
+        old.join("format.json"),
+        include_bytes!("../../../tests/fixtures/format-v1.json"),
+    )
+    .unwrap();
+    fs::write(old.join("data.redb"), b"old development data").unwrap();
     let before = fs::read(old.join("data.redb")).unwrap();
     let destination = temp.path().join("wrong-format");
     assert_eq!(

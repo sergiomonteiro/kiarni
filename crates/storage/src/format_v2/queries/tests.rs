@@ -11,7 +11,7 @@ fn collection() -> Collection {
 fn fixture(n: usize, wanted: usize, wide: bool) -> (tempfile::TempDir, Database) {
     let temp = tempfile::tempdir().unwrap();
     let db = create(&temp.path().join("store")).unwrap();
-    collections::create_collection(&db, "tasks", |_| Ok(())).unwrap();
+    collections::create_collection(None, &db, "tasks", |_| Ok(())).unwrap();
     let write = db.begin_write().unwrap();
     {
         let mut docs = write.open_table(DOCUMENTS).unwrap();
@@ -31,7 +31,7 @@ fn fixture(n: usize, wanted: usize, wide: bool) -> (tempfile::TempDir, Database)
         }
     }
     write.commit().unwrap();
-    maintain(&db, &collection(), Action::Build("kind"), |_| Ok(())).unwrap();
+    maintain(None, &db, &collection(), Action::Build("kind"), |_| Ok(())).unwrap();
     (temp, db)
 }
 fn query(value: serde_json::Value) -> Query {
@@ -54,6 +54,7 @@ fn compare(read: &ReadTransaction, query: &Query) -> Result<Output, Failure> {
 }
 fn patch(db: &Database, id: &str, body: &[u8]) {
     apply(
+        None,
         db,
         &collection(),
         id,
@@ -109,7 +110,7 @@ fn selective_dense_empty_id_and_threshold_choose_expected_paths() {
         Plan::Scan
     );
     let (_temp, db) = fixture(16, 1, false);
-    maintain(&db, &collection(), Action::Drop, |_| Ok(())).unwrap();
+    maintain(None, &db, &collection(), Action::Drop, |_| Ok(())).unwrap();
     assert_eq!(
         compare(&db.begin_read().unwrap(), &equality("wanted".into()))
             .unwrap()
@@ -137,6 +138,7 @@ fn mixed_json_unicode_and_fallback_predicates_match_scan() {
     ] {
         let body = serde_json::to_vec(&serde_json::json!({"kind":value})).unwrap();
         apply(
+            None,
             &db,
             &collection(),
             "d00000",
@@ -225,6 +227,7 @@ fn budgets_apply_to_the_collection_and_id_keeps_its_exception() {
     .prepare_insert()
     .unwrap();
     apply(
+        None,
         &db,
         &collection(),
         input.id(),
@@ -265,6 +268,7 @@ fn budgets_apply_to_the_collection_and_id_keeps_its_exception() {
             .unwrap();
         assert_eq!(input.json().len(), bytes);
         apply(
+            None,
             &db,
             &collection(),
             input.id(),
@@ -284,6 +288,7 @@ fn budgets_apply_to_the_collection_and_id_keeps_its_exception() {
         .prepare_insert()
         .unwrap();
     apply(
+        None,
         &db,
         &collection(),
         input.id(),

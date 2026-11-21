@@ -195,7 +195,7 @@ fn run(
     let manifest = Manifest {
         magic: "kiarni-backup",
         version: 1,
-        format_version: 1,
+        format_version: 2,
         engine: "redb-4.5.0",
         collections: summary.collections.to_string(),
         documents: summary.documents.to_string(),
@@ -271,7 +271,7 @@ mod tests {
         let manifest: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
         assert_eq!(manifest["magic"], "kiarni-backup");
         assert_eq!(manifest["version"], 1);
-        assert_eq!(manifest["format_version"], 1);
+        assert_eq!(manifest["format_version"], 2);
         assert_eq!(manifest["engine"], "redb-4.5.0");
         let files = manifest["files"].as_array().unwrap();
         assert_eq!(files.len(), 2);

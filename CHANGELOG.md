@@ -7,10 +7,13 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
-- API Rust experimental `initialize_indexed_installation` compõe formato 2 com
-  lock da instalação, auditoria e bootstrap/auth persistidos. Registro versão 2
-  fixa a escolha antes de criar o store; retomada legada é recusada. Não muda CLI
-  ou HTTP; backup/restore operacional indexado permanece pendente.
+- Consolidação do storage: Store único no formato 2 para servidor, writer e
+  backup/restore. Removidos backend antigo, fachada IndexedStore e entrypoint
+  paralelo de bootstrap. Formato 1 de desenvolvimento é recusado, sem migração
+  ou apagamento automático. Índices são mantidos nas mutações HTTP, mas o planner
+  HTTP ainda usa ID/scan; administração de índices pela CLI permanece pendente.
+- Removido wrapper kiarni-format-spike; testes de contrato e crash transferidos
+  para crates/storage/tests/format.rs. Relatórios históricos preservados.
 
 - Servidor Rust single-node, multi-cliente, com storage JSON persistente,
   coleções, CRUD e IDs gerados/validados. Índice primário por `_id`.
@@ -31,12 +34,8 @@ A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendênci
 - Referências de API/CLI/configuração, diagnóstico e contribuição; exemplos
   executados no CI. Quickstart distribuído com seus arquivos de exemplo.
 - Avaliação RF-04 de índice secundário string parcial: equivalência com scan,
-  testes de atualização/remoção/crash e medições pareadas. Integração adiada
-  conforme ADR 0033; API continua com índice primário e scan limitado.
-- API Rust interna experimental IndexedStore: formato 2 explícito em diretório
-  novo, engine privado, índices mantidos em CRUD/grupos, snapshots e export.
-  IndexedMaintenance restringe recuperação até auditoria completa. Servidor e
-  comandos continuam no formato 1; sem migração ou índice secundário no HTTP.
+  testes de atualização/remoção/crash e medições pareadas no ADR 0033. Núcleo
+  integrado ao Store; seleção secundária HTTP e medições no produto pendentes.
 - Evidências de instalação isolada e observação com Prometheus externo,
   diagnóstico de scan versus ID e consumidor lento, com escopo/duração explícitos.
 

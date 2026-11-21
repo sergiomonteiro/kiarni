@@ -813,7 +813,11 @@ fn incomplete_collection_body_times_out_without_writing_and_split_body_succeeds(
 
 fn phase(root: &Path, name: &str) {
     let file = root.join("bootstrap.json");
-    fs::write(&file, format!(r#"{{"version":1,"phase":"{name}"}}"#)).unwrap();
+    fs::write(
+        &file,
+        format!(r#"{{"version":2,"store_format":2,"phase":"{name}"}}"#),
+    )
+    .unwrap();
     fs::set_permissions(file, fs::Permissions::from_mode(0o600)).unwrap();
 }
 

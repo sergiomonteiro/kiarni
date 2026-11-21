@@ -4,6 +4,9 @@ M3, operação/RF-01, issue [#1](https://github.com/sergiomonteiro/kiarni/issues
 Implementado conforme [ADR 0013](./adr/0013-backup-e-restauracao.md) e
 [ADR 0028](./adr/0028-artefato-de-backup-offline.md).
 
+O formato atual é 2, com um único backend. Artefatos de desenvolvimento do
+formato 1 são recusados; não há migração ou apagamento automático.
+
 ## Executar
 
 Encerre o servidor e aguarde sua saída: Ctrl+C no terminal ou SIGTERM
@@ -42,20 +45,21 @@ primeiro/
 ```
 
 Uma única transação de leitura fornece catálogo, documentos, metadados e contador
-de identidades das coleções. JSON bruto e precisão numérica são preservados. A
+de identidades das coleções, definições/entradas de índices e estatísticas.
+As sete tabelas pertencem ao mesmo snapshot; a auditoria verifica equivalência
+entre documentos, entradas e contagens antes e depois da cópia. JSON bruto e precisão numérica são preservados. A
 exportação valida nomes, IDs, referências de coleções e correspondência de `_id`
 com a chave; dados inconsistentes provocam erro, não um backup parcial publicado.
 
 O novo banco é materializado incrementalmente. Escritas do destino são confirmadas
 em lotes de até 256 registros lógicos ou aproximadamente 4 MiB de payloads e
 chaves, com overshoot máximo de uma entrada (1 MiB de JSON mais até 136 bytes de
-chave). Um índice temporário em disco valida
-identidades sem carregar o catálogo inteiro em RAM; ele é removido antes do
-fechamento. Cache configurado é 8 MiB por engine (origem e destino). A validação
+chave). As referências inversas em collection_stats validam identidades
+sem carregar o catálogo inteiro em RAM. Cache configurado é 8 MiB por engine (origem e destino). A validação
 retém um documento de cada vez; hash usa buffer de 64 KiB. Esses limites não são
 uma medição ou promessa de RSS total do processo.
 
-`backup.json` contém magic `kiarni-backup`, versão 1, versão lógica do store 1,
+`backup.json` contém magic `kiarni-backup`, versão 1, versão lógica do store 2,
 engine `redb-4.5.0`, contagens de coleções/documentos/bytes JSON em strings decimais
 e uma lista fixa de dois arquivos. Cada registro inclui caminho relativo, tamanho
 em string e SHA-256 hexadecimal minúsculo. Manifesto tem menos de 1 KiB.

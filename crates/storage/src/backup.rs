@@ -1,131 +1,27 @@
-//! Snapshot export, independent of CLI, authentication and artifact publication.
+//! Snapshot export contract and regression tests.
 use super::*;
-use redb::{ReadTransaction, WriteTransaction};
-const IDS: TableDefinition<u64, &str> = TableDefinition::new("backup_collection_ids");
-const BATCH_ITEMS: usize = 256;
-const BATCH_BYTES: usize = 4 * 1024 * 1024;
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub struct ExportSummary {
     pub collections: u64,
     pub documents: u64,
     pub document_bytes: u64,
 }
-#[derive(Default)]
-struct Batch {
-    items: usize,
-    bytes: usize,
+#[cfg(test)]
+fn export(read: &redb::ReadTransaction, root: &Path) -> Result<ExportSummary, Error> {
+    format_v2::backup::export(read, root, |_| Ok(())).map_err(copy_error)
 }
-fn begin(db: &Database) -> Result<WriteTransaction, Error> {
-    let mut write = storage(db.begin_write())?;
-    storage(write.set_durability(Durability::Immediate))?;
-    Ok(write)
-}
-impl Batch {
-    fn advance(
-        &mut self,
-        db: &Database,
-        write: WriteTransaction,
-        bytes: usize,
-    ) -> Result<WriteTransaction, Error> {
-        self.items += 1;
-        self.bytes += bytes;
-        if self.items >= BATCH_ITEMS || self.bytes >= BATCH_BYTES {
-            storage(write.commit())?;
-            self.items = 0;
-            self.bytes = 0;
-            begin(db)
-        } else {
-            Ok(write)
-        }
+fn copy_error(error: IndexedCopyError) -> Error {
+    match error {
+        IndexedCopyError::Incomplete(error) => error,
+        IndexedCopyError::PublicationUncertain => Error::Storage,
     }
 }
 impl Store {
-    /// Export exactly one snapshot into a new private store directory.
-    /// A failed export can leave a partial destination; callers must stage it.
     pub fn export_snapshot(&self, root: &Path) -> Result<ExportSummary, Error> {
-        let read = storage(self.db.begin_read())?;
-        export(&read, root)
+        format_v2::backup::export(&storage(self.db.begin_read())?, root, |_| Ok(()))
+            .map_err(copy_error)
     }
 }
-fn export(read: &ReadTransaction, root: &Path) -> Result<ExportSummary, Error> {
-    let metadata = storage(read.open_table(METADATA))?;
-    let next = storage(metadata.get("next_collection_id"))?
-        .ok_or(Error::InvalidLayout)?
-        .value();
-    if storage(metadata.len())? != 2
-        || next == 0
-        || storage(metadata.get("format_version"))?.map(|v| v.value()) != Some(1)
-    {
-        return Err(Error::InvalidLayout);
-    }
-    let collections = storage(read.open_table(COLLECTIONS))?;
-    let documents = storage(read.open_table(DOCUMENTS))?;
-    let target = Store::create(root)?;
-    let mut write = begin(&target.db)?;
-    {
-        let mut out = storage(write.open_table(METADATA))?;
-        storage(out.insert("next_collection_id", next))?;
-        storage(write.open_table(IDS))?;
-    }
-    let mut batch = Batch::default();
-    let mut summary = ExportSummary {
-        collections: 0,
-        documents: 0,
-        document_bytes: 0,
-    };
-    for entry in storage(collections.iter())? {
-        let (name, id) = storage(entry)?;
-        let (name, id) = (name.value(), id.value());
-        if !valid_name(name) || id == 0 || id >= next {
-            return Err(Error::InvalidLayout);
-        }
-        {
-            let mut ids = storage(write.open_table(IDS))?;
-            if storage(ids.insert(id, name))?.is_some() {
-                return Err(Error::InvalidLayout);
-            }
-            storage(storage(write.open_table(COLLECTIONS))?.insert(name, id))?;
-        }
-        summary.collections = summary
-            .collections
-            .checked_add(1)
-            .ok_or(Error::InvalidLayout)?;
-        write = batch.advance(&target.db, write, name.len() + 8)?;
-    }
-    for entry in storage(documents.iter())? {
-        let (key, bytes) = storage(entry)?;
-        let (cid, id) = key.value();
-        let bytes = bytes.value();
-        if !valid_name(id) || storage(storage(write.open_table(IDS))?.get(cid))?.is_none() {
-            return Err(Error::InvalidLayout);
-        }
-        let document = DocumentInput::parse(bytes, DEFAULT_MAX_DOCUMENT_BYTES)
-            .map_err(|_| Error::InvalidLayout)?;
-        if document.id() != Some(id) {
-            return Err(Error::InvalidLayout);
-        }
-        storage(storage(write.open_table(DOCUMENTS))?.insert((cid, id), bytes))?;
-        summary.documents = summary
-            .documents
-            .checked_add(1)
-            .ok_or(Error::InvalidLayout)?;
-        summary.document_bytes = summary
-            .document_bytes
-            .checked_add(bytes.len() as u64)
-            .ok_or(Error::InvalidLayout)?;
-        write = batch.advance(&target.db, write, bytes.len() + id.len() + 8)?;
-    }
-    storage(write.delete_table(IDS))?;
-    storage(write.commit())?;
-    storage(target.db.close())?;
-    drop(target.telemetry_file);
-    io(io(fs::File::open(root.join("data.redb")))?.sync_all())?;
-    io(io(fs::File::open(root.join("format.json")))?.sync_all())?;
-    sync_dir(root)?;
-    Ok(summary)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -155,6 +51,20 @@ mod tests {
                 docs.insert((orders.id, id.as_str()), bytes.as_bytes())
                     .unwrap();
             }
+        }
+        {
+            let docs = write.open_table(DOCUMENTS).unwrap();
+            let mut count = 0u64;
+            let mut bytes = 0u64;
+            for row in docs.range((orders.id, "")..(orders.id + 1, "")).unwrap() {
+                count += 1;
+                bytes += row.unwrap().1.value().len() as u64;
+            }
+            write
+                .open_table(crate::format_v2::STATS)
+                .unwrap()
+                .insert(orders.id, ("orders", count, bytes))
+                .unwrap();
         }
         write.commit().unwrap();
         let snapshot = source.db.begin_read().unwrap();

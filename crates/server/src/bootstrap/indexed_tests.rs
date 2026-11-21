@@ -9,7 +9,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-fn seed(store: &IndexedStore) {
+fn seed(store: &Store) {
     let collection = store.create_collection("items").unwrap();
     for n in 0..16 {
         let status = if n == 0 { "wanted" } else { "bulk" };
@@ -23,7 +23,7 @@ fn seed(store: &IndexedStore) {
     store.create_index(&collection, "status").unwrap();
 }
 
-fn assert_indexed(store: &IndexedStore) {
+fn assert_indexed(store: &Store) {
     let collection = store.collection("items").unwrap();
     let query = Query::parse(
         br#"{"from":"items","limit":10,"filter":{"op":"eq","field":"status","value":"wanted"}}"#,
@@ -41,28 +41,28 @@ fn restored_store_gets_independent_credentials_and_revocation_is_not_reset() {
     let temp = tempfile::tempdir().unwrap();
     let source = temp.path().join("source");
     let root = Root::lock(&source).unwrap();
-    let (store, startup) = root.start_indexed(100).unwrap();
+    let (store, startup) = root.start(100).unwrap();
     seed(&store);
     let old_token = fs::read(startup.token_file.unwrap()).unwrap();
     let copied = temp.path().join("copied");
     let target = Root::lock(&copied).unwrap();
     store.export_snapshot(&copied.join("store")).unwrap();
-    target.publish_for(2, Phase::StoreReady).unwrap();
-    let (restored, first) = target.start_indexed(101).unwrap();
+    target.publish(Phase::StoreReady).unwrap();
+    let (restored, first) = target.start(101).unwrap();
     assert!(first.created);
     assert_ne!(fs::read(first.token_file.unwrap()).unwrap(), old_token);
     assert_indexed(&restored);
     drop(restored);
     let active = fs::read(copied.join("auth/active.json")).unwrap();
     let (restored, expired) = target
-        .start_indexed(102 + kiarni_auth::activation::DEFAULT_LIFETIME)
+        .start(102 + kiarni_auth::activation::DEFAULT_LIFETIME)
         .unwrap();
     assert!(!expired.created);
     assert!(expired.token_file.is_none());
     assert_eq!(fs::read(copied.join("auth/active.json")).unwrap(), active);
     drop(restored);
     let revoked = Auth::open(&copied, None).unwrap().revoke_all().unwrap();
-    let (restored, resumed) = target.start_indexed(103).unwrap();
+    let (restored, resumed) = target.start(103).unwrap();
     assert_eq!(resumed.keyset.epoch(), revoked.keyset.epoch());
     assert!(resumed.token_file.is_none());
     assert!(!resumed.created);
@@ -81,10 +81,10 @@ fn incomplete_index_or_missing_auth_cannot_authorize_new_delivery() {
     let temp = tempfile::tempdir().unwrap();
     let path = temp.path().join("corrupt");
     let root = Root::lock(&path).unwrap();
-    let store = IndexedStore::create(&path.join("store")).unwrap();
+    let store = Store::create(&path.join("store")).unwrap();
     seed(&store);
     drop(store);
-    root.publish_for(2, Phase::StoreReady).unwrap();
+    root.publish(Phase::StoreReady).unwrap();
     let db = redb::Database::open(path.join("store/data.redb")).unwrap();
     let write = db.begin_write().unwrap();
     write
@@ -103,21 +103,21 @@ fn incomplete_index_or_missing_auth_cannot_authorize_new_delivery() {
         .unwrap();
     write.commit().unwrap();
     db.close().unwrap();
-    assert!(root.start_indexed(100).is_err());
+    assert!(root.start(100).is_err());
     assert!(!path.join("auth").exists());
     assert!(!temp.path().join("corrupt.credentials").exists());
     assert!(matches!(
-        IndexedStore::open(&path.join("store")),
+        Store::open(&path.join("store")),
         Err(Error::InvalidLayout)
     ));
 
     let path = temp.path().join("missing-auth");
     let root = Root::lock(&path).unwrap();
-    drop(IndexedStore::create(&path.join("store")).unwrap());
-    root.publish_for(2, Phase::InitializingAuth).unwrap();
+    drop(Store::create(&path.join("store")).unwrap());
+    root.publish(Phase::InitializingAuth).unwrap();
     fs::create_dir(path.join("auth")).unwrap();
     fs::set_permissions(path.join("auth"), fs::Permissions::from_mode(0o700)).unwrap();
-    assert!(root.start_indexed(100).is_err());
+    assert!(root.start(100).is_err());
     let delivery = temp.path().join("missing-auth.credentials");
     assert!(!delivery.exists() || fs::read_dir(delivery).unwrap().count() == 0);
     assert!(!path.join("auth/active.json").exists());
@@ -149,19 +149,19 @@ fn indexed_bootstrap_worker() {
         }
     };
     let root = Root::lock(&path).unwrap();
-    root.publish_for(2, Phase::InitializingStore).unwrap();
+    root.publish(Phase::InitializingStore).unwrap();
     pause("initializing_store");
-    let store = IndexedStore::create(&path.join("store")).unwrap();
+    let store = Store::create(&path.join("store")).unwrap();
     seed(&store);
-    root.publish_for(2, Phase::StoreReady).unwrap();
+    root.publish(Phase::StoreReady).unwrap();
     pause("store_ready");
     let auth = Auth::open(&path, None).unwrap();
     auth.prepare_initial_marker().unwrap();
-    root.publish_for(2, Phase::InitializingAuth).unwrap();
+    root.publish(Phase::InitializingAuth).unwrap();
     pause("initializing_auth");
     let _startup = auth.resume_prepared(100, false).unwrap();
     pause("auth_confirmed");
-    root.publish_for(2, Phase::Initialized).unwrap();
+    root.publish(Phase::Initialized).unwrap();
     pause("initialized");
     drop(store);
 }
@@ -209,24 +209,17 @@ fn process_lock_and_kill_recovery_cover_each_bootstrap_phase() {
         child.0.kill().unwrap();
         child.0.wait().unwrap();
         let root = Root::lock_existing(&path).unwrap();
-        let record = fs::read(path.join("bootstrap.json")).unwrap();
-        assert!(root.start(101).is_err());
-        assert_eq!(fs::read(path.join("bootstrap.json")).unwrap(), record);
-        if point == "initializing_store" {
-            assert!(!path.join("store").exists());
-            assert!(!path.join("auth").exists());
-        }
-        let (store, startup) = root.start_indexed(101).unwrap();
+        let (store, startup) = root.start(101).unwrap();
         assert_eq!(
             startup.created,
             !matches!(point, "auth_confirmed" | "initialized")
         );
-        assert!(root.phase_for(2).unwrap() == Some(Phase::Initialized));
+        assert!(root.phase().unwrap() == Some(Phase::Initialized));
         if point != "initializing_store" {
             assert_indexed(&store);
         }
         drop(store);
-        let (store, startup) = root.start_indexed(102).unwrap();
+        let (store, startup) = root.start(102).unwrap();
         assert!(!startup.created);
         assert!(startup.token_file.is_none());
         store.audit().unwrap();
@@ -255,7 +248,7 @@ fn bootstrap_format_record_is_strict_and_checked_before_creation() {
         let record = path.join("bootstrap.json");
         fs::write(&record, &bytes).unwrap();
         fs::set_permissions(&record, fs::Permissions::from_mode(0o600)).unwrap();
-        assert!(root.start_indexed(100).is_err());
+        assert!(root.start(100).is_err());
         assert!(root.start(100).is_err());
         assert_eq!(fs::read(&record).unwrap(), bytes);
         assert!(!path.join("store").exists());
