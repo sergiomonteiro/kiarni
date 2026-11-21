@@ -1,5 +1,6 @@
 //! ADR 0034 candidate. Not compiled into the server or exposed through Store.
 use super::*;
+use std::io::Read;
 #[cfg(unix)]
 mod artifact;
 mod backup;
@@ -38,31 +39,7 @@ fn decode_definition(bytes: &[u8]) -> Result<&str, Error> {
 
 /// Preflight always precedes the redb open, including recovery.
 fn preflight(root: &Path) -> Result<(), Error> {
-    if !io(fs::symlink_metadata(root))?.file_type().is_dir() {
-        return Err(Error::InvalidLayout);
-    }
-    let path = root.join("format.json");
-    if !io(fs::symlink_metadata(&path))?.file_type().is_file() {
-        return Err(Error::InvalidManifest);
-    }
-    let mut bytes = Vec::new();
-    io(io(fs::File::open(path))?
-        .take(MAX_MANIFEST + 1)
-        .read_to_end(&mut bytes))?;
-    if bytes.len() as u64 > MAX_MANIFEST {
-        return Err(Error::InvalidManifest);
-    }
-    let manifest: Manifest = serde_json::from_slice(&bytes).map_err(|_| Error::InvalidManifest)?;
-    if manifest.magic != "kiarni" || manifest.version != 2 || manifest.engine != "redb-4.5.0" {
-        return Err(Error::UnsupportedFormat);
-    }
-    if !io(fs::symlink_metadata(root.join("data.redb")))?
-        .file_type()
-        .is_file()
-    {
-        return Err(Error::InvalidLayout);
-    }
-    Ok(())
+    format::preflight(root, format::Version::Indexed)
 }
 
 fn open(root: &Path) -> Result<Database, Error> {
@@ -119,10 +96,8 @@ fn create_candidate(root: &Path, publish: bool) -> Result<Database, Error> {
                 .open(&path),
         );
     }
-    let mut manifest = supported_manifest();
-    manifest.version = 2;
     let mut file = create_file(&root.join("format.json"))?;
-    io(file.write_all(&serde_json::to_vec(&manifest).map_err(|_| Error::InvalidManifest)?))?;
+    io(file.write_all(&format::encode(format::Version::Indexed)?))?;
     io(file.sync_all())?;
     sync_dir(root)?;
     sync_dir(

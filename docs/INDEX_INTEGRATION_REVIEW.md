@@ -68,14 +68,15 @@ servidor com índice secundário disponível nem a cumprimento integral dos iten
 
 | Incremento | Resultado revisável | Verificação necessária antes do seguinte |
 | --- | --- | --- |
-| G1 — Codec compartilhado | Extrair codificação/preflight versionados para módulo compartilhado, mantendo create/open atuais restritos ao formato 1 | Fixtures 1/2, formatos inválidos e recusa de 2 sem tocar no banco; API/CLI atuais intactas |
+| G1 — Codec compartilhado (entregue) | Codificação/preflight compartilhados pelo Store atual e candidato, com política explícita de versão | Fixtures 1/2, formatos inválidos e recusa de 2 sem abrir o banco; API/CLI atuais intactas |
 | G2 — Fachada completa de storage | Encapsular catálogo, CRUD, grupos, auditoria e export por versão, sem expor Database ou habilitar o servidor sobre 2 | Escritas e grupos mantêm invariantes; budgets, snapshot e crash/restart; regressão do formato 1 |
 | G3 — Composição operacional | Definir administração offline, lock/bootstrap/auth e envelope backup/restore versionados | Restauração + primeiro serve com credencial nova, duas publicações, nomes em disputa, origem intacta e sem migração implícita |
 | G4 — Query/writer/feeds no servidor | Integrar seleção tipada, carregamento de candidatos, métricas e confirmação/publicação no writer | Clientes independentes, limites de admissão/erro, captura/ordem de feeds, backpressure e nenhum evento pré-commit |
 | G5 — Aceite do recurso | Medir binário integrado e revisar contrato/documentação/ADRs | Casos seletivo/denso, leitura/escrita, comandos/ambiente/dataset reproduzíveis e CI completa do commit final |
 
-G1 é o próximo incremento: pode ser revisado sem abrir dados de formato 2 no
-produto. Cada etapa precisa preservar a recusa de caminhos incompletos. Esta
+G1 está entregue sem abrir dados de formato 2 no produto. O próximo incremento
+é G2: fachada completa de storage, ainda sem selecionar esse backend no servidor.
+Cada etapa precisa preservar a recusa de caminhos incompletos. Esta
 sequência não cria flags/endpoints ainda inexistentes nem exige implementar
 todas as etapas na mesma sessão.
 
@@ -84,7 +85,30 @@ habilitação operacional e hipótese de custo; uma medição favorável não su
 segurança de dados e testes de regressão. O checklist da issue continua com um
 item entregue e cinco de integração/validação pendentes, com avanços parciais.
 
-## Verificações deste incremento
+## G1 — Codec no caminho de produção
+
+[format.rs](../crates/storage/src/format.rs) é código normal do crate storage,
+usado por Store::create/open para formato 1 e pelas rotinas do candidato para
+formato 2. Substitui o manifesto/preflight duplicados. Codificação reconhece as
+duas versões; cada caller deve exigir sua versão antes de inspecionar data.redb
+ou abrir/reparar redb. Reconhecer versão 2 não autoriza Store::open a usá-la.
+
+Cinco [testes novos](../crates/storage/src/format/tests.rs) fixam os bytes das duas
+versões, incluindo igualdade do manifesto criado pelo Store real com a fixture
+v1. Exercitam 1024/1025 bytes, schema/duplicados/tipos inválidos, magic/engine ou
+versão desconhecida, forma dos arquivos/symlink e política cruzada entre versões.
+Formato 2 é recusado pelo Store real mesmo com data.redb ausente ou contendo bytes
+que não podem ser abertos como banco. Nenhum arquivo recusado é inicializado ou
+reparado. Store atual é criado/reaberto normalmente e preserva seus dados.
+
+Verificações locais de G1: fmt, clippy, 355 testes do workspace, dez workers
+subordinados ignorados como testes diretos/exercitados pelos pais, documentação,
+fronteira de nove pacotes de produto e diff sem erros. A suíte completa precisou
+de execução fora do sandbox para sockets locais. CI da base bdcc896 aprovada;
+a CI deste incremento precisa ser observada separadamente. Sem dependências,
+migração, endpoint ou comando novos, sem ganho de consulta alegado.
+
+## Verificações da fronteira tipada (bdcc896)
 
 A fronteira tipada tem três testes em
 [query_access.rs](../crates/engine/tests/query_access.rs), além dos testes do

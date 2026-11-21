@@ -206,8 +206,9 @@ também têm evidência isolada. O envelope com hashes/publicação tem o candid
 Unix descrito abaixo. A instalação restaurada também tem publicação candidata
 com lock e entrega vazia de credenciais. Grupos internos de PUT/PATCH e seleção
 ID/índice/scan também têm evidência candidata. A [revisão de integração](../INDEX_INTEGRATION_REVIEW.md)
-consolida o gate e a promoção incremental; o próximo passo é compartilhar o
-codec/preflight mantendo o produto restrito ao formato 1.
+consolida o gate e a promoção incremental. Codec/preflight já são compartilhados
+no código de produção, com a abertura padrão restrita ao formato 1. O próximo
+passo é a fachada completa de storage sem habilitação do backend no servidor.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -581,3 +582,19 @@ falsificar estatísticas ainda exige auditoria. Não há garantia universal de
 detecção por lookup, como demonstrado desde ADR 0033. O teste não homologa
 performance HTTP, limiar de custo, RSS ou integração dos endpoints. A proposta
 segue pendente de revisão e habilitação explícita no produto, sem migração.
+
+### Primeiro incremento de promoção ao produto
+
+O manifesto/preflight está em `crates/storage/src/format.rs`, módulo normal
+compartilhado pelo Store atual e candidato. Elimina as duas implementações
+duplicadas, preserva os bytes do formato 1 e exige versão explícita do caller.
+Store::create/open continuam fixados na versão 1; reconhecer/serializar versão 2
+no codec não inicia seu engine nem migra dados. O candidato exige versão 2.
+
+Cinco testes fixam fixtures das versões 1/2, limite de 1 KiB, schema/duplicados,
+distinção dos erros, formas de arquivo e rejeição cruzada antes do banco,
+incluindo Store::open real sobre manifesto 2 com banco ausente/inválido. A
+[revisão G1](../INDEX_INTEGRATION_REVIEW.md#g1--codec-no-caminho-de-produção)
+registra a evidência e a próxima fachada G2. CRUD/indexação, planner, artefato e
+instalação de formato 2 ainda estão somente no candidato; nenhum servidor passou
+a usar índice secundário por essa extração. O ADR continua proposto.

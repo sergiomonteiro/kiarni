@@ -153,9 +153,7 @@ fn export_copy(
     io(io(fs::File::open(root.join("data.redb")))?.sync_all())?;
     sync_dir(root)?;
     point(Point::BeforeManifest)?;
-    let mut manifest = supported_manifest();
-    manifest.version = 2;
-    let bytes = serde_json::to_vec(&manifest).map_err(|_| Error::InvalidManifest)?;
+    let bytes = format::encode(format::Version::Indexed)?;
     *publishing = true;
     let mut file = create_file(&root.join("format.json"))?;
     io(file.write_all(&bytes))?;

@@ -18,7 +18,7 @@ fn check(root: &Path) -> Result<()> {
         .take(1025)
         .read_to_end(&mut bytes)
         .map_err(|_| Fault::Io)?;
-    #[derive(Deserialize)]
+    #[derive(serde::Deserialize)]
     #[serde(deny_unknown_fields)]
     struct Record {
         version: u8,

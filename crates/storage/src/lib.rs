@@ -1,18 +1,19 @@
 //! Versioned redb storage, collection catalog and transactional documents.
 
-use std::{fmt, fs, io::Read, io::Write, path::Path};
+use std::{fmt, fs, io::Write, path::Path};
 
 use kiarni_core::{DEFAULT_MAX_DOCUMENT_BYTES, DocumentInput, PreparedInsert};
 use redb::{
     Database, Durability, ReadableDatabase, ReadableTable, ReadableTableMetadata, TableDefinition,
     TableHandle,
 };
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 #[cfg(all(unix, feature = "profiling"))]
 pub mod profiling;
 
 mod backup;
+mod format;
 pub use backup::ExportSummary;
 mod counts;
 // Candidate format is exercised only by tests until its complete lifecycle exists.
@@ -26,7 +27,6 @@ pub use counts::{COUNT_MAX_BYTES, COUNT_MAX_DOCUMENTS, DocumentCount};
 const METADATA: TableDefinition<&str, u64> = TableDefinition::new("metadata");
 const COLLECTIONS: TableDefinition<&str, u64> = TableDefinition::new("collections");
 const DOCUMENTS: TableDefinition<(u64, &str), &[u8]> = TableDefinition::new("documents");
-const MAX_MANIFEST: u64 = 1024;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Error {
@@ -79,50 +79,6 @@ fn io<T>(result: std::io::Result<T>) -> Result<T, Error> {
 
 fn storage<T, E>(result: Result<T, E>) -> Result<T, Error> {
     result.map_err(|_| Error::Storage)
-}
-
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct Manifest {
-    magic: String,
-    version: u64,
-    engine: String,
-}
-
-fn supported_manifest() -> Manifest {
-    Manifest {
-        magic: "kiarni".into(),
-        version: 1,
-        engine: "redb-4.5.0".into(),
-    }
-}
-
-fn validate_manifest(root: &Path) -> Result<(), Error> {
-    if !io(fs::symlink_metadata(root))?.file_type().is_dir() {
-        return Err(Error::InvalidLayout);
-    }
-    let path = root.join("format.json");
-    if !io(fs::symlink_metadata(&path))?.file_type().is_file() {
-        return Err(Error::InvalidManifest);
-    }
-    let mut bytes = Vec::new();
-    io(io(fs::File::open(path))?
-        .take(MAX_MANIFEST + 1)
-        .read_to_end(&mut bytes))?;
-    if bytes.len() as u64 > MAX_MANIFEST {
-        return Err(Error::InvalidManifest);
-    }
-    let manifest: Manifest = serde_json::from_slice(&bytes).map_err(|_| Error::InvalidManifest)?;
-    if manifest.magic != "kiarni" || manifest.version != 1 || manifest.engine != "redb-4.5.0" {
-        return Err(Error::UnsupportedFormat);
-    }
-    if !io(fs::symlink_metadata(root.join("data.redb")))?
-        .file_type()
-        .is_file()
-    {
-        return Err(Error::InvalidLayout);
-    }
-    Ok(())
 }
 
 fn valid_name(name: &str) -> bool {
@@ -416,8 +372,7 @@ impl Store {
         storage(db.close())?;
         io(io(fs::File::open(&path))?.sync_all())?;
         sync_dir(root)?;
-        let bytes =
-            serde_json::to_vec(&supported_manifest()).map_err(|_| Error::InvalidManifest)?;
+        let bytes = format::encode(format::Version::Legacy)?;
         let mut manifest = create_file(&root.join("format.json"))?;
         io(manifest.write_all(&bytes))?;
         io(manifest.sync_all())?;
@@ -431,7 +386,7 @@ impl Store {
     }
 
     pub fn open(root: &Path) -> Result<Self, Error> {
-        validate_manifest(root)?; // Must precede any redb writer/recovery open.
+        format::preflight(root, format::Version::Legacy)?; // Must precede any redb writer/recovery open.
         let db = storage(
             Database::builder()
                 .set_cache_size(8 * 1024 * 1024)

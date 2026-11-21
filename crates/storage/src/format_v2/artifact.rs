@@ -31,14 +31,14 @@ const READ: OFlags = OFlags::RDONLY
     .union(OFlags::CLOEXEC);
 const PATHS: [&str; 2] = ["store/format.json", "store/data.redb"];
 
-#[derive(Serialize, Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Record {
     path: String,
     bytes: String,
     sha256: String,
 }
-#[derive(Serialize, Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Manifest {
     magic: String,
