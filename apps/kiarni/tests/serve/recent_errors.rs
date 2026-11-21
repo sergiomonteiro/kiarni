@@ -1,5 +1,32 @@
 use super::*;
 const PATH: &str = "/v1/errors/recent";
+fn wait_for_completed_probe(server: &mut Server, addr: SocketAddr) {
+    let deadline = Instant::now() + Duration::from_secs(5);
+    loop {
+        assert!(server.0.try_wait().unwrap().is_none(), "startup failed");
+        if let Ok(mut stream) = TcpStream::connect_timeout(&addr, Duration::from_millis(50)) {
+            stream
+                .set_read_timeout(Some(Duration::from_secs(2)))
+                .unwrap();
+            stream
+                .set_write_timeout(Some(Duration::from_secs(2)))
+                .unwrap();
+            write!(
+                stream,
+                "GET /v1/health/ready HTTP/1.1\r\nHost: {addr}\r\n\r\n"
+            )
+            .unwrap();
+            let mut response = String::new();
+            stream.read_to_string(&mut response).unwrap();
+            assert!(response.starts_with("HTTP/1.1 401 "));
+            // Completion is recorded before EOF. A connect-and-drop probe can
+            // otherwise race snapshots and legitimately increment dropped_total.
+            return;
+        }
+        assert!(Instant::now() < deadline, "server did not listen");
+        thread::sleep(Duration::from_millis(10));
+    }
+}
 fn recent(addr: SocketAddr, key: &str) -> serde_json::Value {
     let wire = request(addr, "GET", PATH, Some(key));
     assert!(wire.starts_with("HTTP/1.1 200 "));
@@ -18,7 +45,7 @@ fn bounded_authenticated_history_is_private_works_with_logs_off_and_resets() {
             .spawn()
             .unwrap(),
     );
-    wait_until_listening(&mut server, addr);
+    wait_for_completed_probe(&mut server, addr);
     let key = token(&root);
     assert!(request(addr, "GET", PATH, None).starts_with("HTTP/1.1 401 "));
     let wrong_method = request(addr, "POST", PATH, Some(&key));
@@ -80,7 +107,7 @@ fn bounded_authenticated_history_is_private_works_with_logs_off_and_resets() {
             .spawn()
             .unwrap(),
     );
-    wait_until_listening(&mut restarted, addr);
+    wait_for_completed_probe(&mut restarted, addr);
     for entry in recent(addr, &key)["errors"].as_array().unwrap() {
         assert!(!old_ids.iter().any(|id| entry["request_id"] == *id));
     }
