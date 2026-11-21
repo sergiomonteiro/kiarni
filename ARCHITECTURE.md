@@ -115,7 +115,7 @@ Executar spike M0 para validar: concorrência entre leitores e escritores; durab
 ### Índices
 
 - Índice primário `_id` é obrigatório.
-- Índice secundário simples é candidato condicionado ao spike.
+- Índice secundário de campo simples é opcional, com contrato no ADR 0034.
 - Índices devem ser atualizados na mesma transação da mutação, quando suportado.
 - Query planner começa com lookup por ID ou scan limitado; usar índice apenas quando houver equivalência comprovada por testes.
 - Sem índices compostos, full-text ou geoespaciais no MVP.
@@ -239,8 +239,10 @@ coleções, definições/entradas de índices e estatísticas transacionais. O l
 Bootstrap versão 2 fixa store_format 2 antes de criar o banco. Startup audita a
 integridade lógica antes de preparar auth. Backup/restore preservam as sete
 tabelas e restauram numa nova instalação com credenciais independentes.
-O planner HTTP ainda usa ID/scan; a seleção secundária e sua observabilidade
-serão conectadas em incremento próprio, sem atribuir ganhos do spike ao HTTP.
+O planner HTTP usa ID, secundário seletivo ou scan, no mesmo snapshot e com
+os budgets originais. Métricas distinguem os três caminhos; query_read não
+inclui avaliação/serialização. Administração de índices pela CLI e medições
+no produto permanecem pendentes; não atribuir ganhos do spike ao HTTP.
 
 ### Startup
 

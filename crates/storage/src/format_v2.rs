@@ -16,7 +16,8 @@ pub use backup::CopyFailure as IndexedCopyError;
 pub use facade::{IndexedMaintenance, IndexedSnapshot};
 pub use mutations::Failure as IndexedWriteError;
 pub use queries::{
-    Failure as IndexedQueryError, Output as IndexedQueryResult, Plan as IndexedAccess,
+    Candidates as QueryCandidates, Failure as IndexedQueryError, Output as IndexedQueryResult,
+    Plan as IndexedAccess, ReadFailure as QueryReadError,
 };
 
 fn commit(

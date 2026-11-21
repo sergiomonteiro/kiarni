@@ -107,6 +107,7 @@ export const QUERY_SERIES = Object.freeze([
     .map(([outcome,label]) => [`completed_total{outcome="${outcome}"}`,label,'totals']),
   ['execution_total{access="id"}','Execuções com caminho por ID escolhido','totals'],
   ['execution_total{access="scan"}','Execuções com caminho de scan escolhido','totals'],
+  ['execution_total{access="secondary"}','Execuções com índice secundário escolhido','totals'],
   ['documents_returned_total','Documentos em respostas montadas com sucesso','totals'],
   ['result_bytes_total','Bytes de envelopes montados com sucesso','totals'],
   ...['total','wait','execution'].flatMap(stage => [

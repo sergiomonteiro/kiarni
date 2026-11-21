@@ -22,7 +22,7 @@ const OUTCOMES: [&str; 10] = [
 pub(crate) struct Metrics {
     completed: [AtomicU64; 10],
     duration: [Histogram; 3],
-    access: [AtomicU64; 2],
+    access: [AtomicU64; 3],
     documents: AtomicU64,
     bytes: AtomicU64,
 }
@@ -30,6 +30,16 @@ pub(crate) struct Metrics {
 pub(crate) enum Access {
     Id,
     Scan,
+    Secondary,
+}
+impl From<kiarni_storage::IndexedAccess> for Access {
+    fn from(plan: kiarni_storage::IndexedAccess) -> Self {
+        match plan {
+            kiarni_storage::IndexedAccess::Primary => Self::Id,
+            kiarni_storage::IndexedAccess::Scan => Self::Scan,
+            kiarni_storage::IndexedAccess::Secondary => Self::Secondary,
+        }
+    }
 }
 pub(crate) struct Trace {
     started: Instant,
@@ -92,6 +102,7 @@ impl Metrics {
                 &self.access[match access {
                     Access::Id => 0,
                     Access::Scan => 1,
+                    Access::Secondary => 2,
                 }],
                 1,
             );
@@ -116,7 +127,7 @@ impl Metrics {
             histogram.write_to(&mut text, "kiarni_query_duration_seconds", "stage", stage);
         }
         text.push_str("# HELP kiarni_query_execution_total Selected query access paths, not examined documents.\n# TYPE kiarni_query_execution_total counter\n");
-        for (access, counter) in ["id", "scan"].iter().zip(&self.access) {
+        for (access, counter) in ["id", "scan", "secondary"].iter().zip(&self.access) {
             let _ = writeln!(
                 text,
                 "kiarni_query_execution_total{{access=\"{access}\"}} {}",
@@ -217,6 +228,7 @@ mod tests {
             let mut trace = Trace::start();
             trace.documents = 10;
             trace.bytes = 100;
+            trace.access = Some(Access::Secondary);
             metrics.finish(trace, Some(code));
         }
         assert_eq!(value(&metrics.completed[6]), 1);
@@ -224,5 +236,6 @@ mod tests {
         assert_eq!(value(&metrics.completed[4]), 1);
         assert_eq!(value(&metrics.documents), 0);
         assert_eq!(value(&metrics.bytes), 0);
+        assert_eq!(value(&metrics.access[2]), 3);
     }
 }

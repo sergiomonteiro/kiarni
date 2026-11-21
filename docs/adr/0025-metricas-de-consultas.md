@@ -20,7 +20,7 @@ Contagem de documentos compartilha o gate mas não entra nas métricas de query.
   Wait cobre entrada no gate, inclusive recusa; execution só existe se admitida,
   incluindo reparse, snapshot, avaliação, serialização e limite do envelope.
   Não incluir escrita no socket, recepção de headers ou autenticação.
-- `kiarni_query_execution_total{access="id"|"scan"}`: caminho escolhido após
+- `kiarni_query_execution_total{access="id"|"scan"|"secondary"}`: caminho escolhido após
   parse da AST na execução admitida, inclusive quando depois falha. Não é
   contador de leituras de páginas ou documentos examinados.
 - `kiarni_query_documents_returned_total` e `kiarni_query_result_bytes_total`:
@@ -37,6 +37,13 @@ Sem nomes de coleção, AST, campos, IDs, tokens ou request IDs nos rótulos. Se
 histórico/amostras individuais. Coleta concorrente, não snapshot transacional;
 reinício zera contadores. Panic/término abrupto não garantem observação. Erros de
 transporte após processamento não mudam o outcome da query; ver HTTP/logs.
+
+Atualização 2026-11-21, ADR 0034: secondary é uma terceira categoria fixa,
+preenchida após seleção efetiva do índice e preservada em falha posterior.
+Antes da seleção, manter a classificação inicial id/scan, inclusive para coleção
+inexistente. query_read cobre seleção/carregamento, excluindo avaliação/serialização.
+Dashboard atual valida 42 séries de query, com quinze totais/caminhos e 27 valores
+de histogramas. Sem novo campo na resposta HTTP nem rótulos com dados de usuário.
 
 ## Escopo
 

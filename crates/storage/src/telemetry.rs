@@ -269,7 +269,7 @@ mod store_tests {
         store.list_collections(1, None).unwrap();
         store.collection("private_collection").unwrap();
         store.count_documents("private_collection").unwrap();
-        store.query_documents(&collection, None).unwrap();
+        store.fixture_documents(&collection, None).unwrap();
         store.check_readable().unwrap();
         store
             .update_document(

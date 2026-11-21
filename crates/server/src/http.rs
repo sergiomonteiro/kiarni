@@ -767,10 +767,17 @@ impl Health {
             .store
             .collection(name)
             .map_err(super::collections::storage_error)?;
-        let documents = self
-            .store
-            .query_documents(&collection, query.id())
-            .map_err(|error| {
+        let loaded = self.store.query_candidates(&collection, &query);
+        let access = match &loaded {
+            Ok(candidates) => Some(candidates.plan),
+            Err(error) => error.plan,
+        };
+        if let Some(access) = access {
+            trace.access = Some(access.into());
+        }
+        let candidates = loaded.map_err(|failure| match failure.error {
+            kiarni_storage::IndexedQueryError::Query(error) => Code::from(error),
+            kiarni_storage::IndexedQueryError::Storage(error) => {
                 if error == kiarni_storage::Error::QueryLimit {
                     trace.scan_limit = true;
                 }
@@ -778,19 +785,21 @@ impl Health {
                     kiarni_storage::Error::InvalidLayout => Code::InternalError,
                     _ => super::collections::storage_error(error),
                 }
-            })?;
+            }
+        })?;
         if self.stop.load(Ordering::Relaxed) {
             return Err(Code::ShuttingDown);
         }
-        let output = query
-            .evaluate_documents(&documents)
-            .map_err(|error| match error {
-                kiarni_engine::query::Error::DatasetLimit => {
-                    trace.scan_limit = true;
-                    Code::QueryTooComplex
-                }
-                _ => Code::from(error),
-            })?;
+        let output =
+            query
+                .evaluate_documents(&candidates.documents)
+                .map_err(|error| match error {
+                    kiarni_engine::query::Error::DatasetLimit => {
+                        trace.scan_limit = true;
+                        Code::QueryTooComplex
+                    }
+                    _ => Code::from(error),
+                })?;
         if self.stop.load(Ordering::Relaxed) {
             return Err(Code::ShuttingDown);
         }

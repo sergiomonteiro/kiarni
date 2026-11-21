@@ -1,4 +1,4 @@
-//! Indexed access selection; HTTP/admission/metrics integration is separate.
+//! Shared access selection and bounded snapshot loading, separate from evaluation.
 use super::*;
 use kiarni_engine::query::{self, Query};
 use redb::ReadTransaction;
@@ -45,12 +45,65 @@ fn literal(query: &Query, field: &str) -> Result<Option<String>, Failure> {
         .map(|(_, value)| value))
 }
 
+/// Loaded candidates share one snapshot; evaluation remains a separate stage.
+#[derive(Debug)]
+pub struct Candidates {
+    pub documents: Vec<DocumentInput>,
+    pub plan: Plan,
+    pub document_bytes: usize,
+}
+#[derive(Debug, PartialEq, Eq)]
+pub struct ReadFailure {
+    pub plan: Option<Plan>,
+    pub error: Failure,
+}
+impl From<Error> for ReadFailure {
+    fn from(error: Error) -> Self {
+        Self {
+            plan: None,
+            error: Failure::Storage(error),
+        }
+    }
+}
+impl std::fmt::Display for ReadFailure {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.error.fmt(f)
+    }
+}
+impl std::error::Error for ReadFailure {}
+
 pub(super) fn execute(
     read: &ReadTransaction,
     collection: &Collection,
     query: &Query,
     mode: Mode,
 ) -> Result<Output, Failure> {
+    let candidates = load(read, collection, query, mode).map_err(|error| error.error)?;
+    Ok(Output {
+        documents: query.evaluate_documents(&candidates.documents)?,
+        plan: candidates.plan,
+        examined: candidates.documents.len(),
+        document_bytes: candidates.document_bytes,
+    })
+}
+
+pub(super) fn load(
+    read: &ReadTransaction,
+    collection: &Collection,
+    query: &Query,
+    mode: Mode,
+) -> Result<Candidates, ReadFailure> {
+    let mut plan = None;
+    load_inner(read, collection, query, mode, &mut plan)
+        .map_err(|error| ReadFailure { plan, error })
+}
+fn load_inner(
+    read: &ReadTransaction,
+    collection: &Collection,
+    query: &Query,
+    mode: Mode,
+    selected: &mut Option<Plan>,
+) -> Result<Candidates, Failure> {
     if collection.name != query.collection() {
         return Err(Error::InvalidName.into());
     }
@@ -90,6 +143,14 @@ pub(super) fn execute(
             }
         }
     }
+    let plan = if query.id().is_some() {
+        Plan::Primary
+    } else if chosen.is_some() {
+        Plan::Secondary
+    } else {
+        Plan::Scan
+    };
+    *selected = Some(plan);
     let mut inputs = Vec::new();
     let mut bytes = 0usize;
     let mut append = |id: &str, json: &[u8]| -> Result<(), Error> {
@@ -105,13 +166,12 @@ pub(super) fn execute(
         inputs.push(input);
         Ok(())
     };
-    let plan = if let Some(id) = query.id() {
+    if let Some(id) = query.id() {
         // Scan mode disables only secondary selection: preserve the product's ID
         // lookup and its budget exception in both the reference and new paths.
         if let Some(value) = storage(documents.get((cid, id)))? {
             append(id, value.value())?;
         }
-        Plan::Primary
     } else if let Some((field, value, expected)) = chosen {
         let entries = storage(read.open_table(ENTRIES))?;
         let mut seen = 0u64;
@@ -134,20 +194,16 @@ pub(super) fn execute(
         if seen != expected {
             return Err(Error::InvalidLayout.into());
         }
-        Plan::Secondary
     } else {
         let end = cid.checked_add(1).ok_or(Error::InvalidLayout)?;
         for row in storage(documents.range((cid, "")..(end, "")))? {
             let (key, value) = storage(row)?;
             append(key.value().1, value.value())?;
         }
-        Plan::Scan
     };
-    let examined = inputs.len();
-    Ok(Output {
-        documents: query.evaluate_documents(&inputs)?,
+    Ok(Candidates {
+        documents: inputs,
         plan,
-        examined,
         document_bytes: bytes,
     })
 }

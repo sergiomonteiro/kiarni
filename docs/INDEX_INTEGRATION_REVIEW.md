@@ -5,7 +5,8 @@
 - Contrato: [ADR 0034 aceito](./adr/0034-lifecycle-indice-secundario.md).
 - Resultado: evidência suficiente para iniciar promoção **incremental**;
   promoção para Store único concluída no incremento de consolidação abaixo;
-  planner secundário HTTP e administração de índices pela CLI ainda pendentes.
+  planner secundário HTTP integrado; administração de índices pela CLI e
+  medições no produto ainda pendentes.
 
 ## Estado atual: Store único no caminho normal
 
@@ -26,10 +27,11 @@ credencial independente, insert/PATCH HTTP, auditoria e rebuild após shutdown e
 reinício. Os testes anteriores de hashes, publicação, disputa, kill/restart,
 backpressure e grupos passam a exercitar o mesmo Store normal.
 
-Próximo recorte: ligar o planner secundário ao carregamento HTTP preservando
-admissão, erros e tempos de storage/engine, e definir administração offline de
-índices pela CLI. Medições seguem pendentes. O HTTP ainda usa ID/scan, embora as
-mutações já mantenham índices; não há ganho HTTP alegado.
+Planner secundário integrado ao carregamento HTTP, preservando admissão, erros,
+orçamento da coleção inteira e tempos de storage/engine. Métricas e dashboard
+distinguem id/scan/secondary, inclusive em falha posterior à escolha. Próximo
+recorte: administração offline de índices pela CLI, seguida de medições no produto.
+Nenhuma medição de ganho de latência HTTP foi produzida nesta integração.
 
 As tabelas e etapas G1–G3.1 abaixo preservam o histórico e suas evidências. A
 exigência antiga de manter formato 1 está superada pelo ADR 0034 revisado.
@@ -277,3 +279,39 @@ invariantes. Storage/server e o wrapper de formato têm redução líquida de 56
 linhas Rust em src, incluindo testes internos, em relação à base f355eef. O crate
 de compatibilidade deixou o workspace; nenhuma dependência de runtime foi adicionada.
 CI do novo commit deve ser consultada separadamente das evidências locais.
+
+## Planner no fluxo HTTP
+
+Store::query_candidates seleciona e carrega candidatos num snapshot, sem avaliar
+a AST. O engine continua avaliando no handler HTTP e montando o mesmo envelope.
+QueryReadError preserva o plano selecionado quando a carga falha depois da
+seleção. query_read cobre apenas seleção/carga/parsing; sort/resultado inválido
+não transforma uma carga bem-sucedida em falha de storage. O carregador antigo
+query_documents foi removido; testes de fixtures usam o mesmo núcleo atual.
+
+Um teste black-box executa as mesmas oito consultas antes/depois de criar o
+índice offline: compara envelopes, JSON numérico exato, sort/projeção, resultado
+vazio, ID, literal escapado, fallback denso/tipo não elegível e erros de
+sort/limite HTTP. Demonstra caminhos secondary=5/scan=2/id=1 na execução indexada,
+com seis sucessos e duas falhas posteriores à leitura. Contadores de leitura
+permanecem oito sucessos, sem incluir avaliação/serialização. Reinício zera as
+métricas e preserva o índice.
+
+Outro teste HTTP cresce uma coleção indexada além de 8 MiB: filtro seletivo
+continua falhando por orçamento, enquanto lookup por ID projetado permanece
+aceito. Teste privado injeta entrada ausente após startup, confirma falha de
+carga com plano Secondary e contabilização de erro de query_read. Nenhuma falha
+ou corrupção é mascarada como fallback. Gate FIFO e resposta pública não mudam.
+
+Dashboard valida 238 séries fixas, 42 de query, e exibe o novo caminho em quinze
+linhas de totais/caminhos. Parser mantém validação de u64, histograma, presença e
+duplicação. Chromium real verifica o painel completo. Administração offline
+pela CLI continua pendente; não criar índices implicitamente por consulta.
+
+Verificações locais do planner HTTP: fmt, Clippy do workspace com e sem todas
+as features, `cargo test --workspace --locked` e
+`cargo test --workspace --all-features --locked` (365 aprovados em cada execução,
+zero falhas; doze workers exercitados pelos pais), parser do dashboard (onze
+aprovados), Chromium real (um cenário aprovado), documentação, fronteira de
+nove pacotes e diff: aprovados. Testes com sockets/Chromium executados fora do
+sandbox. CI do commit novo é evidência separada, a observar após envio.

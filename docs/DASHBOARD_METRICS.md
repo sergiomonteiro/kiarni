@@ -6,14 +6,14 @@ origem e controles da API. Não requer selecionar uma coleção e não interromp
 um stream ativo. Consome uma vaga HTTP comum; com somente uma vaga configurada,
 pare o stream antes de coletar.
 
-A coleta valida 237 séries fixas. São onze tabelas, com seletor para as doze
+A coleta valida 238 séries fixas. São onze tabelas, com seletor para as doze
 primitivas de storage, em vez de abrir todas ao mesmo tempo:
 
 - HTTP: cinco classes de status e três resultados de transporte (oito valores).
 - Respostas comuns: sete buckets, soma e contagem (nove valores).
 - Streams encerrados: sete buckets, soma e contagem (nove valores).
-- Consultas: dez outcomes, caminhos ID/scan e totais de documentos/bytes de
-  respostas montadas (quatorze valores).
+- Consultas: dez outcomes, caminhos ID/scan/secondary e totais de documentos/bytes de
+  respostas montadas (quinze valores).
 - Processamento de consultas: três histogramas de total, wait e execution,
   cada um com sete buckets, soma e contagem (27 valores).
 - Storage: arquivo/commits/grupos (nove valores), histograma de commit (nove) e
@@ -39,8 +39,8 @@ latência de entrega de eventos. [Semântica HTTP](./HTTP_METRICS.md).
 Consultas têm uma tabela de resultados/caminhos e três seções expansíveis para
 os tempos. Rejeição de entrada pode ter amostra total sem espera ou execução;
 recusa do gate tem total/espera, sem execução. Não interpretar as contagens de
-estágios como necessariamente iguais. Caminho ID/scan significa escolha após
-parse na execução admitida, inclusive se ela falhar depois; não é quantidade
+estágios como necessariamente iguais. Caminho ID/scan/secondary significa seleção na execução admitida, inclusive
+se ela falhar depois; antes da seleção mantém a classificação inicial id/scan; não é quantidade
 de documentos examinados. Documentos e bytes são de respostas montadas com
 sucesso, não prova de entrega. Contagem de documentos usa o gate, mas não entra
 nessas métricas de query. Veja [semântica de consultas](./QUERY_METRICS.md).

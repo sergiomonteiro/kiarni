@@ -19,7 +19,7 @@ mod counts;
 mod format_v2;
 pub use format_v2::{
     IndexedAccess, IndexedCopyError, IndexedMaintenance, IndexedQueryError, IndexedQueryResult,
-    IndexedSnapshot, IndexedWriteError,
+    IndexedSnapshot, IndexedWriteError, QueryCandidates, QueryReadError,
 };
 mod telemetry;
 pub use telemetry::STATE_BYTES as TELEMETRY_STATE_BYTES;
@@ -112,50 +112,25 @@ pub struct CollectionPage {
 }
 
 impl Store {
-    /// Load a bounded snapshot of one collection, or use its primary index.
-    /// Limits apply to documents examined, before filtering/projection.
-    pub fn query_documents(
+    #[cfg(test)]
+    fn fixture_documents(
         &self,
         collection: &Collection,
         id: Option<&str>,
     ) -> Result<Vec<DocumentInput>, Error> {
-        self.telemetry
-            .measure(crate::telemetry::Operation::QueryRead, || {
-                if id.is_some_and(|id| !valid_name(id)) {
-                    return Err(Error::InvalidDocument);
-                }
-                let read = storage(self.db.begin_read())?;
-                let collections = storage(read.open_table(COLLECTIONS))?;
-                check_collection(&collections, collection)?;
-                let table = storage(read.open_table(DOCUMENTS))?;
-                let mut output = Vec::new();
-                let mut bytes = 0usize;
-                let mut append = |key: &str, json: &[u8]| -> Result<(), Error> {
-                    if output.len() >= 10000 || bytes.saturating_add(json.len()) > 8 * 1024 * 1024 {
-                        return Err(Error::QueryLimit);
-                    }
-                    let input = DocumentInput::parse(json, DEFAULT_MAX_DOCUMENT_BYTES)
-                        .map_err(|_| Error::InvalidLayout)?;
-                    if input.id() != Some(key) {
-                        return Err(Error::InvalidLayout);
-                    }
-                    bytes += json.len();
-                    output.push(input);
-                    Ok(())
-                };
-                if let Some(id) = id {
-                    if let Some(value) = storage(table.get((collection.id, id)))? {
-                        append(id, value.value())?;
-                    }
-                } else {
-                    for entry in
-                        storage(table.range((collection.id, "")..=(collection.id, "\u{10ffff}")))?
-                    {
-                        let (key, value) = storage(entry)?;
-                        append(key.value().1, value.value())?;
-                    }
-                }
-                Ok(output)
+        let mut ast = serde_json::json!({"from": collection.name, "limit": 1000});
+        if let Some(id) = id {
+            ast["id"] = serde_json::json!(id);
+        }
+        let query = kiarni_engine::query::Query::parse(
+            &serde_json::to_vec(&ast).map_err(|_| Error::Storage)?,
+        )
+        .map_err(|_| Error::Storage)?;
+        self.query_candidates(collection, &query)
+            .map(|v| v.documents)
+            .map_err(|failure| match failure.error {
+                IndexedQueryError::Storage(error) => error,
+                _ => Error::Storage,
             })
     }
 
@@ -220,7 +195,7 @@ mod tests {
         store
             .update_before_commit(&collection, "doc", MergePatch, br#"{"v":2}"#, 1024, || {
                 assert_eq!(store.get_document(&collection, "doc")?.unwrap(), original);
-                let snapshot = store.query_documents(&collection, None)?;
+                let snapshot = store.fixture_documents(&collection, None)?;
                 assert_eq!(snapshot[0].fields()["v"].get(), "1");
                 Ok(())
             })
@@ -270,18 +245,21 @@ mod tests {
         }
         write.commit().unwrap();
         assert!(matches!(
-            store.query_documents(&many, None),
+            store.fixture_documents(&many, None),
             Err(Error::QueryLimit)
         ));
         assert!(matches!(
-            store.query_documents(&large, None),
+            store.fixture_documents(&large, None),
             Err(Error::QueryLimit)
         ));
         assert_eq!(
-            store.query_documents(&many, Some("d10000")).unwrap().len(),
+            store
+                .fixture_documents(&many, Some("d10000"))
+                .unwrap()
+                .len(),
             1
         );
-        assert_eq!(store.query_documents(&large, Some("i")).unwrap().len(), 1);
+        assert_eq!(store.fixture_documents(&large, Some("i")).unwrap().len(), 1);
     }
 
     #[test]

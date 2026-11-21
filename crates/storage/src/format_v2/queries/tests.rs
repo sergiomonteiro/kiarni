@@ -1,4 +1,49 @@
 use super::*;
+
+#[test]
+fn candidate_loading_keeps_plan_on_corruption_and_excludes_evaluation_from_read_metrics() {
+    let temp = tempfile::tempdir().unwrap();
+    let store = Store::create(&temp.path().join("store")).unwrap();
+    let collection = store.create_collection("items").unwrap();
+    for n in 0..16 {
+        store
+            .insert_fixture(
+                &collection,
+                format!(
+                    r#"{{"_id":"d{n:02}","status":"{}","bad":[]}}"#,
+                    if n == 0 { "wanted" } else { "bulk" }
+                )
+                .as_bytes(),
+            )
+            .unwrap();
+    }
+    store.create_index(&collection, "status").unwrap();
+    let query = Query::parse(br#"{"from":"items","limit":10,"filter":{"op":"eq","field":"status","value":"wanted"},"sort":[{"field":"bad","direction":"asc"}]}"#).unwrap();
+    let loaded = store.query_candidates(&collection, &query).unwrap();
+    assert_eq!(loaded.plan, Plan::Secondary);
+    assert_eq!(loaded.documents.len(), 1);
+    assert!(matches!(
+        store.query(&collection, &query),
+        Err(Failure::Query(query::Error::UnsupportedSortValue))
+    ));
+    let write = store.db.begin_write().unwrap();
+    write
+        .open_table(ENTRIES)
+        .unwrap()
+        .remove((collection.id, "wanted", "d00"))
+        .unwrap();
+    write.commit().unwrap();
+    let failure = store.query_candidates(&collection, &query).unwrap_err();
+    assert_eq!(failure.plan, Some(Plan::Secondary));
+    assert_eq!(failure.error, Failure::Storage(Error::InvalidLayout));
+    let text = store.prometheus_metrics();
+    assert!(text.contains(
+        "kiarni_storage_operations_total{operation=\"query_read\",outcome=\"success\"} 2\n"
+    ));
+    assert!(text.contains(
+        "kiarni_storage_operations_total{operation=\"query_read\",outcome=\"error\"} 1\n"
+    ));
+}
 use lifecycle::{Action, maintain};
 use mutations::{Mutation, apply};
 

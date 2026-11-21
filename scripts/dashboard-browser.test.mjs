@@ -140,7 +140,8 @@ test('embedded dashboard authenticates, paginates, clears session and handles fa
     assert.equal(await page.locator('#http-values tr').count(),8);
     assert.equal(await page.locator('#response-values tr').count(),9);
     assert.equal(await page.locator('#stream-values tr').count(),9);
-    assert.equal(await page.locator('#query-values tr').count(),14);
+    assert.equal(await page.locator('#query-values tr').count(),15);
+    assert.equal(await queryMetricValue('execution_total{access="secondary"}'),'0');
     assert.equal(await page.locator('#storage-values tr').count(),9);
     assert.equal(await page.locator('#storage-commit-values tr').count(),9);
     assert.equal(await page.locator('#storage-operation-values tr').count(),11);

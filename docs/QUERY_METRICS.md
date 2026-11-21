@@ -49,10 +49,18 @@ segundos. Buckets cumulativos: 0.001, 0.01, 0.1, 1, 5, 30 e +Inf; cada stage
 expõe sum/count. Buckets não são percentis. A duração não é tempo isolado de
 storage nem tempo completo percebido pelo cliente.
 
-`kiarni_query_execution_total{access="id"|"scan"}` registra o caminho escolhido
-após parse na execução admitida. Id significa AST com `id`; sem esse campo,
-scan. Também conta uma escolha cuja execução falha depois, por exemplo coleção
-inexistente. Não mede documentos examinados, páginas lidas ou acesso a disco.
+`kiarni_query_execution_total{access="id"|"scan"|"secondary"}` registra o caminho
+selecionado na execução admitida, inclusive falhas posteriores. Após parse, a
+classificação inicial continua id para AST com id, scan nos demais casos; assim,
+coleção inexistente mantém a contabilização anterior. O planner substitui scan
+por secondary quando escolhe o índice. Falha após essa seleção, na leitura,
+avaliação ou montagem do resultado, continua contabilizada como secondary.
+Não mede documentos examinados, páginas lidas ou acesso físico ao disco.
+
+Seleção/carregamento pertencem à primitiva de storage query_read; avaliação e
+serialização continuam fora dela, dentro da execução HTTP. Uma falha de sort ou
+limite de resultado pode coexistir com query_read success. Orçamentos, admissão e
+outcomes permanecem iguais; [semântica e seletividade](./API.md).
 
 `kiarni_query_documents_returned_total` e `kiarni_query_result_bytes_total`
 acumulam somente respostas montadas com sucesso; bytes incluem o envelope JSON.

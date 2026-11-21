@@ -289,12 +289,32 @@ impl Store {
                 Ok(prepared)
             })
     }
+    pub fn query_candidates(
+        &self,
+        collection: &Collection,
+        query: &kiarni_engine::query::Query,
+    ) -> Result<QueryCandidates, QueryReadError> {
+        self.telemetry
+            .measure(crate::telemetry::Operation::QueryRead, || {
+                self.snapshot()
+                    .map_err(QueryReadError::from)?
+                    .query_candidates(collection, query)
+            })
+    }
     pub fn query(
         &self,
         collection: &Collection,
         query: &kiarni_engine::query::Query,
     ) -> Result<IndexedQueryResult, IndexedQueryError> {
-        self.snapshot()?.query(collection, query)
+        let candidates = self
+            .query_candidates(collection, query)
+            .map_err(|error| error.error)?;
+        Ok(IndexedQueryResult {
+            documents: query.evaluate_documents(&candidates.documents)?,
+            plan: candidates.plan,
+            examined: candidates.documents.len(),
+            document_bytes: candidates.document_bytes,
+        })
     }
     pub fn restore_store(source: &Path, target: &Path) -> Result<ExportSummary, IndexedCopyError> {
         backup::restore(source, target, |_| Ok(()))

@@ -133,14 +133,26 @@ Desempate final sempre `_id` crescente; sem sort também `_id` crescente.
 Project aceita até 32 nomes únicos e preserva `_id`; lista vazia retorna só `_id`.
 Ausência de project devolve documento inteiro. Não altera os campos de filter/sort.
 
-ID usa índice primário e pode combinar filtro. Sem ID, a consulta captura um
-snapshot, com teto de **10.000 documentos/8 MiB de JSON** antes da avaliação.
-Um limit pequeno ou filtro seletivo não evita esse scan. Exceder orçamento dá
-422/query_too_complex, sem resultado parcial. Uma query/contagem executa por vez;
-admissão FIFO espera até 100 ms antes de 503/service_unavailable. Resultado deve
-caber no envelope configurado; count nesse envelope é quantidade **retornada**,
-não total da coleção. Não há paginação de documentos ou índice secundário declarado
-como pronto. Mais contexto: [ADR 0006](./adr/0006-ast-e-comparacao-json.md).
+ID usa índice primário e pode combinar filtro. Sem ID, o planner usa um índice
+secundário existente somente para igualdade direta de string de até 128 bytes
+UTF-8 no campo simples indexado, quando a contagem de candidatos é no máximo
+1/8 da coleção. Casos densos, tipos/operadores não elegíveis e consultas sem
+índice usam scan. Tudo é lido de um único snapshot e avaliado pelo mesmo engine.
+Esse limiar é hipótese de custo, não garantia de menor latência.
+
+O orçamento de **10.000 documentos/8 MiB de JSON da coleção inteira** continua
+valendo antes da avaliação: índice/filtro/limit seletivo não transforma coleção
+acima do orçamento em consulta aceita. Nesse caso, o scan retorna
+422/query_too_complex sem resultado parcial. A busca por ID mantém sua exceção.
+Uma query/contagem executa por vez; admissão FIFO espera até 100 ms antes de
+503/service_unavailable. Resultado deve caber no envelope configurado; count é
+quantidade **retornada**, não total da coleção. Não há paginação de documentos.
+
+O caminho selecionado aparece em métricas fixas id/scan/secondary, inclusive
+quando a execução falha; não muda o envelope da query. Administração de índices
+pela CLI ainda não foi integrada: esta etapa usa definições já existentes no
+Store e não cria índices automaticamente. Contratos: [ADR 0006](./adr/0006-ast-e-comparacao-json.md)
+e [ADR 0034](./adr/0034-lifecycle-indice-secundario.md).
 
 ### Contagem da coleção
 

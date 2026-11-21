@@ -57,8 +57,8 @@ test('query metrics preserve counters and distinguish total/wait/execution histo
   const {parseQueryMetrics,QUERY_SERIES} = await import('../crates/server/dashboard/metrics.mjs');
   const text = QUERY_SERIES.map(([name]) => `kiarni_query_${name} ${name === 'completed_total{outcome="success"}' ? '18446744073709551615' : name.includes('_sum{') ? '1.234567890123456789e-10' : '0'}`).join('\n');
   const rows = parseQueryMetrics(fixture() + text);
-  assert.equal(rows.length,41);
-  assert.equal(rows.filter(row => row.group === 'totals').length,14);
+  assert.equal(rows.length,42);
+  assert.equal(rows.filter(row => row.group === 'totals').length,15);
   for (const group of ['total','wait','execution']) assert.equal(rows.filter(row => row.group === group).length,9);
   assert.equal(rows.find(row => row.name === 'completed_total{outcome="success"}').value,'18446744073709551615');
   assert.equal(rows.find(row => row.name === 'duration_seconds_sum{stage="wait"}').value,'1.234567890123456789e-10');

@@ -31,9 +31,10 @@ Bootstrap atual é versão 2/store_format 2; envelope de backup mantém schema 1
 com format_version 2. O código de exportação do layout 1 foi removido.
 
 Métricas de primitivas e commits continuam nos limites reais do Store; commits
-de manutenção de índice também são contados. O planner HTTP segue ID/scan neste
-incremento; administração offline de índices pela CLI, caminho secundário HTTP
-e homologação de desempenho permanecem pendentes. Não há ganho HTTP alegado.
+de manutenção de índice também são contados. O planner HTTP agora seleciona
+ID/secundário/scan com observabilidade fixa. Administração offline de índices
+pela CLI e homologação de desempenho permanecem pendentes. Não há ganho HTTP
+medido/alegado nesta integração.
 As seções seguintes registram o histórico anterior à consolidação.
 
 ## Contexto e fronteira desta entrega
@@ -712,3 +713,19 @@ O wrapper kiarni-format-spike foi removido. Seus testes de contrato e crash
 foram movidos para crates/storage/tests/format.rs, preservando as verificações
 úteis e adaptando somente o layout esperado. Relatórios antigos são históricos.
 Não removeram-se os testes de consistência, concorrência e falhas do núcleo.
+
+## Integração do planner HTTP
+
+Usar o planner existente no caminho HTTP admitido, separando seleção/carregamento
+num snapshot da avaliação pelo engine. A primitiva query_read mede só planning e
+carregamento; avaliação/serialização continuam na execução HTTP, como antes.
+Carregamento retorna caminho escolhido também em erro posterior à seleção.
+Antes de escolher plano, manter a classificação inicial id/scan já documentada
+na ADR 0025 (inclusive coleção inexistente); seleção secundária substitui scan.
+
+Adicionar somente access="secondary" à família fixa kiarni_query_execution_total,
+incluindo falhas posteriores à seleção. Sem nomes de campos/coleções/valores nos
+rótulos. Atualizar parser e apresentação do dashboard para a nova série fixa.
+Não mudar AST, envelope, admissões, publicação de feeds ou formatos persistidos.
+Preservar fallback denso/não elegível, budgets da coleção inteira e exceção de ID;
+limiar 1/8 continua hipótese de custo a medir no produto. Não é promessa de ganho.

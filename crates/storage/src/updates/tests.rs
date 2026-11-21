@@ -56,7 +56,7 @@ fn ordered_mixed_updates_retain_individual_json_and_commit_together() {
             if checkpoint == Checkpoint::Staged {
                 assert_eq!(value(&store, &a)["v"], 0);
                 assert_eq!(value(&store, &b)["v"], 0);
-                assert_eq!(store.query_documents(&a, None)?.len(), 1);
+                assert_eq!(store.fixture_documents(&a, None)?.len(), 1);
             }
             Ok(())
         })

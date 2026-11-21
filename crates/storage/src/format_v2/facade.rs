@@ -139,6 +139,13 @@ impl IndexedSnapshot {
         }
         Ok(DocumentCount { count, exact: true })
     }
+    pub fn query_candidates(
+        &self,
+        collection: &Collection,
+        query: &Query,
+    ) -> Result<QueryCandidates, QueryReadError> {
+        queries::load(&self.read, collection, query, queries::Mode::Automatic)
+    }
     pub fn query(
         &self,
         collection: &Collection,

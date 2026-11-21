@@ -30,7 +30,7 @@ release publicada ou o MVP completo.
 - [Métricas de storage](./STORAGE_METRICS.md): primitivas, commits e tamanho
   lógico do arquivo, com limites de interpretação.
 - [Métricas de consultas](./QUERY_METRICS.md): resultados, espera, execução e
-  caminhos ID/scan, sem conteúdo da AST.
+  caminhos ID/scan/secondary, sem conteúdo da AST.
 - [Métricas HTTP](./HTTP_METRICS.md): conclusões, erros, transporte e latência
   de respostas/streams, independentes do logger.
 - [Métricas dos feeds](./CHANGEFEED_METRICS.md): séries, filas e encerramentos.
@@ -52,7 +52,7 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 ## Entender e contribuir
 
 - [Avaliação de índice secundário](./spikes/secondary-index.md): correção, custos e decisão RF-04.
-- [Contrato do índice experimental](./adr/0034-lifecycle-indice-secundario.md): fachada Rust aceita; sem habilitação no servidor.
+- [Contrato do índice experimental](./adr/0034-lifecycle-indice-secundario.md): Store único, manutenção transacional e planner HTTP; administração CLI e medições pendentes.
 - [Revisão da integração do índice](./INDEX_INTEGRATION_REVIEW.md): evidências do candidato e sequência para promoção ao produto.
 - [Canal e compatibilidade pré-1.0](./RELEASE_POLICY.md).
 - [Contribuir](../CONTRIBUTING.md): ambiente, workspace, testes, fixtures e PRs.

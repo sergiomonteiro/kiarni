@@ -20,17 +20,17 @@ retorna Ok(None) no storage e pode produzir 404 no HTTP.
 | catalog_list | list_collections e sua leitura limitada. |
 | catalog_lookup | collection, lookup de identidade/geração. |
 | count | count_documents, exata ou limite inferior válido. |
-| query_read | query_documents, leitura e parsing do snapshot limitado; exclui avaliação da AST. |
-| document_read | get_document, incluindo validação do JSON retornado por get_fixture. |
-| insert | insert_fixture, também usado por insert_document. |
+| query_read | query_candidates, seleção, leitura e parsing num snapshot limitado; exclui avaliação da AST e serialização. |
+| document_read | get_document, incluindo validação do JSON/chave no snapshot. |
+| insert | insert_document ou insert_fixture, com manutenção transacional de índice. |
 | update | update_before_commit, usado pelo update_document individual. |
-| delete | delete_document_inner, com ou sem captura para feeds. |
+| delete | delete_inner, com ou sem captura para feeds. |
 | collection_create | create_collection. |
 | collection_drop | drop_collection. |
 | update_group | apply_update_group, com ou sem captura para feeds. |
 
 Chamadas aninhadas não contam duas vezes a mesma primitiva: get_fixture direto
-não é medido; insert_document delega ao insert_fixture medido. Chamadas diretas
+não é medido; insert_document/insert_fixture medem cada inserção uma vez. Chamadas diretas
 ao redb em fixtures/spikes não entram. Uma query HTTP pode fazer catalog_lookup
 e query_read; esses valores não são número de requisições, documentos ou páginas.
 
