@@ -1,5 +1,6 @@
 //! ADR 0034 candidate. Not compiled into the server or exposed through Store.
 use super::*;
+mod backup;
 mod collections;
 mod lifecycle;
 mod mutations;
@@ -72,6 +73,10 @@ fn open(root: &Path) -> Result<Database, Error> {
 }
 
 fn create(root: &Path) -> Result<Database, Error> {
+    create_candidate(root, true)
+}
+
+fn create_candidate(root: &Path, publish: bool) -> Result<Database, Error> {
     let mut builder = fs::DirBuilder::new();
     #[cfg(unix)]
     {
@@ -103,6 +108,13 @@ fn create(root: &Path) -> Result<Database, Error> {
     storage(db.close())?;
     io(io(fs::File::open(&path))?.sync_all())?;
     sync_dir(root)?;
+    if !publish {
+        return storage(
+            Database::builder()
+                .set_cache_size(8 * 1024 * 1024)
+                .open(&path),
+        );
+    }
     let mut manifest = supported_manifest();
     manifest.version = 2;
     let mut file = create_file(&root.join("format.json"))?;
@@ -120,6 +132,10 @@ fn create(root: &Path) -> Result<Database, Error> {
 /// Structural validation only: does not prove document/index equivalence.
 fn validate(db: &Database) -> Result<(), Error> {
     let read = storage(db.begin_read())?;
+    validate_snapshot(&read)
+}
+
+fn validate_snapshot(read: &redb::ReadTransaction) -> Result<(), Error> {
     let mut names = storage(read.list_tables())?
         .take(8)
         .map(|t| t.name().to_owned())

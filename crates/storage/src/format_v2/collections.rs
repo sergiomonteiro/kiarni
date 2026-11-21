@@ -2,7 +2,7 @@
 use super::*;
 use mutations::{Failure, begin_schema, begin_write};
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum Point {
+pub(super) enum Point {
     Catalog,
     Statistics,
     Secondary,
@@ -10,7 +10,7 @@ enum Point {
     Committed,
 }
 
-fn create_collection(
+pub(super) fn create_collection(
     db: &Database,
     name: &str,
     mut point: impl FnMut(Point) -> Result<(), Error>,
@@ -68,7 +68,7 @@ fn create_collection(
     Ok(collection)
 }
 
-fn drop_collection(
+pub(super) fn drop_collection(
     db: &Database,
     collection: &Collection,
     mut point: impl FnMut(Point) -> Result<(), Error>,

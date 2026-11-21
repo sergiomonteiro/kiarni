@@ -38,7 +38,7 @@ pub(super) fn audit(db: &Database, collection: &Collection) -> Result<(), Error>
 }
 
 // Stream one document or index record at a time; never collect a whole index.
-fn audit_tables(
+pub(super) fn audit_tables(
     collection: &Collection,
     documents: &impl ReadableTable<(u64, &'static str), &'static [u8]>,
     catalog: &impl ReadableTable<u64, &'static [u8]>,

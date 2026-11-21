@@ -201,8 +201,9 @@ O item 1 tem a evidência candidata descrita abaixo, sem habilitação no servid
 Documento, estatísticas e entradas já têm manutenção transacional candidata,
 descrita abaixo. Construção/reconstrução, remoção do índice e auditoria também
 têm evidência isolada. Exclusão/recriação de coleção e interrupção abrupta das
-mutações têm os testes adicionais abaixo. O próximo incremento é incluir o
-formato candidato em export/restore validado, antes de integrar o writer do produto.
+mutações têm os testes adicionais abaixo. Export/restore do storage candidato
+também têm evidência isolada; o próximo incremento é completar o contrato de
+artefato com hashes e publicação, antes de integrar o writer do produto.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -338,3 +339,50 @@ eventos ou alteração do formato 1. Não demonstram energia, falha dentro de ca
 instrução do commit, concorrência de grupos ou compatibilidade de backup. Antes
 de habilitar formato 2, ainda concluir export/restore, grupos, planner e revisão
 da proposta. Nenhuma migração ou decisão de estabilidade foi adicionada.
+
+### Evidência de cópia e restauração do snapshot de storage
+
+`crates/storage/src/format_v2/backup.rs`, somente em `cfg(test)`, copia as sete
+tabelas tipadas de um único ReadTransaction: metadados, coleções, documentos,
+catálogo, entradas, estatísticas e contagens secundárias. Audita a origem nesse
+snapshot antes de criar o destino e a cópia antes de marcá-la como reconhecível.
+A auditoria global complementa a de coleção com rejeição de documentos, entradas
+e contagens pertencentes a identidades inexistentes.
+
+Destino deve ser novo. Sua inicialização privada mantém formato ausente durante
+a cópia e os commits em lotes de 256 registros ou 4 MiB contabilizados, mais o
+registro que cruza o limiar. Não carrega a coleção inteira em RAM. Somente após
+auditoria, fechamento do engine e sync dos dados/diretório grava format.json,
+sincroniza arquivo e diretórios. Erro anterior é Incomplete e pode deixar staging
+parcial sem manifesto, nunca reutilizado automaticamente. Erro a partir da
+tentativa de gravar o manifesto é PublicationUncertain: a cópia completa pode
+existir; não interpretar como rollback nem sobrescrever ao repetir.
+
+A restauração candidata abre uma cópia limpa de storage com redb read-only e
+reexporta o snapshot para outro diretório novo. Recusa origem em uso/incompatível
+e destino dentro da origem; não executa recovery ou escreve no banco original.
+Mantém formato 2, IDs/gaps do contador, JSON bruto e definições de índices, sem
+rebuild que esconda inconsistência. A origem permanece byte a byte intacta nos
+testes. Não converte formato 1 nem modifica o restore atual.
+
+Seis testes adicionais e um worker subordinado demonstram:
+
+- comparação exata das sete tabelas, com 607 documentos, coleção vazia e coleção
+  sem índice, JSON de precisão exata e mais de 5 MiB em múltiplos lotes; mudanças
+  de documento e catálogo na origem entre lotes não entram na cópia do snapshot;
+- cópia/restauração de store sem índice, preservação de identidades e recusa de
+  destinos existentes/nested, origem ativa e formato 1, sem modificar a origem;
+- nove corrupções recusadas antes de criar destino: entrada ausente/extra,
+  contagem incorreta, definição inválida, estatística divergente, identidades
+  órfãs em documentos/entradas/contagens e coleção com identidade duplicada;
+- quatro erros retornados e quatro kill/restart em lote, auditoria, pré-manifesto
+  e pós-publicação do manifesto, com deadline de 15 segundos, coleta do worker,
+  auditoria da cópia reconhecível e confirmação de origem intacta.
+
+Este incremento é a primitiva de storage, não o artefato distribuível dos ADRs
+0028/0029. Ainda não tem backup.json/hashes, validação de artefato não confiável,
+proteções NOFOLLOW ancoradas em descriptors, publicação atômica sem substituição
+da raiz/entrega de credenciais, lock de instalação ou integração CLI. Não trata
+manifesto como assinatura e não prova queda de energia. Os comandos atuais só
+aceitam formato 1. Integrar o formato candidato exige completar esse envelope e
+seus testes, além de grupos de escrita, planner e revisão deste ADR proposto.
