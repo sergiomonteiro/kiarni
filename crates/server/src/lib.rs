@@ -11,7 +11,9 @@ mod documents;
 mod gate;
 mod healthcheck;
 mod http;
+mod indexes;
 pub use healthcheck::healthcheck;
+pub use indexes::{IndexCommand, manage_index};
 mod logging;
 mod metrics;
 #[cfg(feature = "profiling")]

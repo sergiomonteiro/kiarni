@@ -15,7 +15,7 @@ real de documento, `.credentials`, banco ou backup privado em uma issue pública
 | 415/unsupported_media_type | Use application/json, ou application/merge-patch+json para PATCH; somente charset UTF-8 opcional. Não envie Content-Encoding. |
 | 422/id_mismatch ou immutable_id | PUT deve omitir ID ou manter o da rota. PATCH não pode incluir `_id` na raiz. |
 | 413/document_too_large | Confira corpo e estado final depois de ID/merge. Diminuir payload de PATCH não garante que o documento final caiba. |
-| 422/query_too_complex | Confira tamanho/estrutura da AST e orçamento de scan. limit pequeno e filtro seletivo não evitam ler a coleção. Se o ID for conhecido, use id; não declare índice secundário disponível. |
+| 422/query_too_complex | Confira tamanho/estrutura da AST e orçamento da coleção. limit, filtro e índice seletivos não ampliam esse orçamento. Se o ID for conhecido, use id. [Índices e manutenção offline](./INDEXES.md). |
 | 422/unsupported_number ou unsupported_sort_value | Comparação exata tem token/expoente limitados; sort só aceita escalares. Não converta silenciosamente números em float. |
 | 422/result_too_large | Projete menos campos ou retorne menos documentos; limite cobre envelope inteiro. Não é resposta parcial. |
 | Query lenta ou 503/service_unavailable | Compare espera de admissão e execução nas métricas de consultas. Query/count compartilham uma execução; a espera FIFO é limitada. Confira também concorrência HTTP. |

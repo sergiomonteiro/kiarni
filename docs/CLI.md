@@ -20,9 +20,14 @@ cliente de documentos, migração ou atualização automática implementados.
 | `kiarni auth revoke-all` | Offline: revoga todas as credenciais ativas; reiniciar não cria outra automaticamente. Use rotate para recuperar acesso. |
 | `kiarni backup --output DESTINO` | Offline: exporta snapshot consistente para destino novo, sem credenciais. |
 | `kiarni restore --from BACKUP` | Offline: valida e publica em raiz nova selecionada por `--data-dir`; novas credenciais no primeiro serve. |
+| `kiarni index create --collection NOME --field CAMPO` | Offline: cria um índice de campo simples na coleção existente. |
+| `kiarni index rebuild --collection NOME` | Offline: reconstrói o índice e preserva a definição. |
+| `kiarni index drop --collection NOME` | Offline: remove somente o índice. |
+| `kiarni index audit` | Offline: verifica integridade lógica do banco inteiro. |
 
-Os cinco comandos operacionais (serve, healthcheck, auth, backup, restore) usam a
-configuração abaixo. As opções exclusivas `--token-file`, `--output`, `--from`
+Os comandos operacionais (serve, healthcheck, auth, backup, restore e index) usam
+a configuração abaixo. As opções exclusivas `--token-file`, `--output`, `--from`,
+`--collection` e `--field`
 não são campos de configuração JSON/env. Mesmo opções sem efeito no comando
 offline são validadas; não use combinações inválidas. Exit code 0 indica sucesso,
 1 indica erro; erros locais são códigos curtos em stderr, não envelopes HTTP.
@@ -37,6 +42,11 @@ A raiz de dados é criada se o pai existir. Raiz/credenciais privadas exigem UID
 atual e modo 0700; arquivos privados, 0600, sem links indevidos. Nunca corrigir
 corrupção apagando arquivos de bootstrap/auth/lock enquanto o processo estiver
 vivo. Use backup e diagnóstico antes de qualquer intervenção.
+
+Administração de índices exige instalação initialized e servidor parado. Não
+inicializa auth nem altera credenciais. Criação exige auditoria completa; rebuild
+ou drop podem recuperar um índice inconsistente pela abertura restrita. Use
+`index audit` global antes de serve. [Comandos, limites e recuperação](./INDEXES.md).
 
 ## Precedência e formatos
 
@@ -142,6 +152,7 @@ healthcheck_failed. Expiração/revogação gera falha legítima; ele não renov
 | `data_directory_locked` | Outro servidor ou comando offline usa essa raiz; não remova locks à força. |
 | `insecure_data_directory`, `insecure_data_file` | Dono, permissões, tipo e links do layout existente. |
 | `unsupported_auth_command`, `missing_backup_output`, `missing_restore_source` | Comando/opção obrigatória ausente ou não implementado. |
+| `unsupported_index_command`, `missing_index_collection`, `missing_index_field`, `index_already_exists`, `index_not_found`, `index_maintenance_limit` | [Sintaxe, estado e limites da manutenção offline](./INDEXES.md). |
 | `healthcheck_failed` | Servidor, configuração/Host, validade e arquivo privado da credencial. Sem detalhes/segredos na saída. |
 
 Algumas validações são agregadas como invalid_configuration antes das verificações

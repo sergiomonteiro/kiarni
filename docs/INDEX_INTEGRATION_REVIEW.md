@@ -5,7 +5,7 @@
 - Contrato: [ADR 0034 aceito](./adr/0034-lifecycle-indice-secundario.md).
 - Resultado: evidência suficiente para iniciar promoção **incremental**;
   promoção para Store único concluída no incremento de consolidação abaixo;
-  planner secundário HTTP integrado; administração de índices pela CLI e
+  planner secundário HTTP e administração offline pela CLI integrados;
   medições no produto ainda pendentes.
 
 ## Estado atual: Store único no caminho normal
@@ -29,8 +29,9 @@ backpressure e grupos passam a exercitar o mesmo Store normal.
 
 Planner secundário integrado ao carregamento HTTP, preservando admissão, erros,
 orçamento da coleção inteira e tempos de storage/engine. Métricas e dashboard
-distinguem id/scan/secondary, inclusive em falha posterior à escolha. Próximo
-recorte: administração offline de índices pela CLI, seguida de medições no produto.
+distinguem id/scan/secondary, inclusive em falha posterior à escolha. A
+[administração offline pela CLI](./INDEXES.md) integra lock e recuperação restrita.
+O próximo recorte são workloads e medições no produto.
 Nenhuma medição de ganho de latência HTTP foi produzida nesta integração.
 
 As tabelas e etapas G1–G3.1 abaixo preservam o histórico e suas evidências. A
@@ -306,7 +307,7 @@ ou corrupção é mascarada como fallback. Gate FIFO e resposta pública não mu
 Dashboard valida 238 séries fixas, 42 de query, e exibe o novo caminho em quinze
 linhas de totais/caminhos. Parser mantém validação de u64, histograma, presença e
 duplicação. Chromium real verifica o painel completo. Administração offline
-pela CLI continua pendente; não criar índices implicitamente por consulta.
+pela CLI foi entregue no incremento abaixo; consultas não criam índices implicitamente.
 
 Verificações locais do planner HTTP: fmt, Clippy do workspace com e sem todas
 as features, `cargo test --workspace --locked` e
@@ -315,3 +316,41 @@ zero falhas; doze workers exercitados pelos pais), parser do dashboard (onze
 aprovados), Chromium real (um cenário aprovado), documentação, fronteira de
 nove pacotes e diff: aprovados. Testes com sockets/Chromium executados fora do
 sandbox. CI do commit novo é evidência separada, a observar após envio.
+
+## Administração offline de índices
+
+[manage_index](../crates/server/src/indexes.rs) mantém o lock da instalação até
+fechar o engine. O entrypoint de [CLI](../apps/kiarni/src/cli.rs) aceita
+create/rebuild/drop/audit com argumentos próprios únicos e limitados; usa a mesma
+configuração, sem novos campos JSON/env e sem bind. [Guia operacional](./INDEXES.md).
+
+Criação abre o Store auditado; rebuild/drop e audit usam IndexedMaintenance,
+que agora permite ler apenas o campo da definição como metadado. Não expõe
+queries, CRUD ou engine. A raiz precisa estar initialized. Nenhum desses caminhos
+chama start/ativação de auth ou emite credencial. Reparo de uma coleção não
+transforma o resto da instalação em pronto; audit global e open normal permanecem.
+
+Cinco testes internos cobrem recuperação, tabela ausente, autenticação revogada
+inalterada, instalação incompleta, limite de 8 MiB, falhas retornadas e kill em
+sete fronteiras de operação (antes/depois de cada mutação e na abertura de audit).
+O worker é ignorado isoladamente e executado pelo pai. Testes anteriores do
+núcleo continuam cobrindo as janelas internas da transação e o teto de documentos.
+
+Uma integração CLI valida sintaxe/privacidade/limites sem criar raiz. Outra usa
+binário + servidor reais: recusa as quatro operações com serve ativo, opera com
+porta ocupada sem bind, cria índice usado por query HTTP, mantém índice em
+escritas, reconstrói/remove e reinicia com documentos/credenciais preservados.
+Os cinco comandos do guia são executados pelo teste documental junto do fluxo
+API já existente. Sem nova dependência ou mudança do formato persistido.
+
+Item 2 da issue passa a atendido; faltam workloads e medições no produto (item 6).
+A escolha inicial 1/8 ainda não é conclusão de benchmark nem ganho HTTP alegado.
+
+Verificações locais da administração CLI: `cargo fmt --all -- --check`,
+Clippy com e sem todas as features e as duas execuções completas do workspace
+(default e all-features, com --locked): aprovados, 372 testes em cada execução,
+zero falhas, treze workers exercitados pelos pais. `scripts/docs_smoke.py`
+executou quinze comandos curl publicados, cinco comandos offline de índice,
+HEADs/SSE/credenciais e precedência de configuração. Documentação, fronteira de
+nove pacotes e diff aprovados. Testes com sockets executados fora do sandbox.
+CI do novo commit deve ser consultada separadamente dessas evidências locais.

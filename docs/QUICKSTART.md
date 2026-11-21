@@ -85,7 +85,8 @@ kc -H 'Content-Type: application/json' --data-binary @examples/query.json "$api_
 ```
 
 O corpo usa from, filter, sort, limit e project. Limit é obrigatório e um valor
-pequeno não evita scan. A consulta é pontual, não reconciliada automaticamente
+pequeno não amplia o orçamento da coleção. Índice secundário existente pode
+reduzir candidatos quando elegível/seletivo; [administração de índices é offline](https://github.com/sergiomonteiro/kiarni/blob/main/docs/INDEXES.md). A consulta é pontual, não reconciliada automaticamente
 pelo feed. Agora altere status para shipped e remova optional (200):
 
 <!-- verify:quickstart -->

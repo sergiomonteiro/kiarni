@@ -104,6 +104,82 @@ pub fn auth(mut args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std:
     Ok(())
 }
 
+pub fn index(mut args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std::error::Error>> {
+    let operation = args.next().ok_or("unsupported_index_command")?;
+    if !["create", "rebuild", "drop", "audit"]
+        .iter()
+        .any(|value| operation == *value)
+    {
+        return Err("unsupported_index_command".into());
+    }
+    let (mut collection, mut field) = (None, None);
+    let mut config = Vec::new();
+    let mut pairs = 0;
+    while let Some(key) = args.next() {
+        pairs += 1;
+        if pairs > 32 {
+            return Err("config_source_too_large".into());
+        }
+        let value = args.next().ok_or("missing_config_value")?;
+        if key == "--collection" {
+            if collection
+                .replace(
+                    value
+                        .into_string()
+                        .map_err(|_| "invalid_index_collection")?,
+                )
+                .is_some()
+            {
+                return Err("duplicate_index_argument".into());
+            }
+        } else if key == "--field" {
+            if field
+                .replace(value.into_string().map_err(|_| "invalid_index_field")?)
+                .is_some()
+            {
+                return Err("duplicate_index_argument".into());
+            }
+        } else {
+            config.push(key);
+            config.push(value);
+        }
+    }
+    use kiarni_server::IndexCommand;
+    let command = match operation.to_str() {
+        Some("audit") => {
+            if collection.is_some() || field.is_some() {
+                return Err("unexpected_index_argument".into());
+            }
+            IndexCommand::Audit
+        }
+        Some("create") => IndexCommand::Create {
+            collection: collection.as_deref().ok_or("missing_index_collection")?,
+            field: field.as_deref().ok_or("missing_index_field")?,
+        },
+        _ => {
+            if field.is_some() {
+                return Err("unexpected_index_argument".into());
+            }
+            let collection = collection.as_deref().ok_or("missing_index_collection")?;
+            if operation == "rebuild" {
+                IndexCommand::Rebuild { collection }
+            } else {
+                IndexCommand::Drop { collection }
+            }
+        }
+    };
+    match kiarni_server::manage_index(configuration(config.into_iter())?, command)? {
+        Some(summary) => println!(
+            "Auditoria concluída ({} coleções, {} documentos).",
+            summary.collections, summary.documents
+        ),
+        None => println!(
+            "Manutenção de índice concluída. Execute kiarni index audit antes de iniciar serve."
+        ),
+    }
+    Ok(())
+}
+
 pub fn backup(args: impl Iterator<Item = OsString>) -> Result<(), Box<dyn std::error::Error>> {
     let mut args = args;
     let mut output = None;

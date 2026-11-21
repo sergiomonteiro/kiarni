@@ -27,6 +27,10 @@ impl IndexedMaintenance {
     pub fn audit(&self) -> Result<ExportSummary, Error> {
         backup::audit_snapshot(&storage(self.db.begin_read())?)
     }
+    /// Definition metadata only; does not make a damaged index queryable.
+    pub fn index_field(&self, collection: &Collection) -> Result<Option<String>, Error> {
+        IndexedSnapshot::new(&self.db)?.index_field(collection)
+    }
     pub fn rebuild_index(&self, collection: &Collection) -> Result<(), IndexedWriteError> {
         lifecycle::maintain(
             None,
@@ -69,6 +73,12 @@ impl IndexedSnapshot {
             name: name.into(),
             id,
         })
+    }
+    pub fn index_field(&self, collection: &Collection) -> Result<Option<String>, Error> {
+        check_collection(&storage(self.read.open_table(COLLECTIONS))?, collection)?;
+        storage(storage(self.read.open_table(CATALOG))?.get(collection.id))?
+            .map(|value| decode_definition(value.value()).map(str::to_owned))
+            .transpose()
     }
     pub fn list_collections(
         &self,

@@ -87,6 +87,9 @@ impl Store {
                 .map_err(write_error)
             })
     }
+    pub fn index_field(&self, collection: &Collection) -> Result<Option<String>, Error> {
+        self.snapshot()?.index_field(collection)
+    }
     pub fn create_index(
         &self,
         collection: &Collection,

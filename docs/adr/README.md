@@ -80,5 +80,5 @@ Primeiro incremento do M3/RF-08:
 
 - [0034 — Contrato e ciclo de vida do índice secundário](./0034-lifecycle-indice-secundario.md).
   Aceita para Store único de formato 2, sem suporte legado. Servidor, writer e
-  backup/restore usam o mesmo núcleo; planner secundário HTTP, administração de
-  índices pela CLI e medições da issue #10 permanecem pendentes.
+  backup/restore usam o mesmo núcleo, com planner secundário HTTP e administração
+  offline pela CLI; medições da issue #10 permanecem pendentes.

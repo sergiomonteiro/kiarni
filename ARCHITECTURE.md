@@ -241,8 +241,9 @@ integridade lógica antes de preparar auth. Backup/restore preservam as sete
 tabelas e restauram numa nova instalação com credenciais independentes.
 O planner HTTP usa ID, secundário seletivo ou scan, no mesmo snapshot e com
 os budgets originais. Métricas distinguem os três caminhos; query_read não
-inclui avaliação/serialização. Administração de índices pela CLI e medições
-no produto permanecem pendentes; não atribuir ganhos do spike ao HTTP.
+inclui avaliação/serialização. [Administração de índices](./docs/INDEXES.md) usa
+CLI offline com lock e abertura restrita para recuperação; não altera auth.
+Medições no produto permanecem pendentes; não atribuir ganhos do spike ao HTTP.
 
 ### Startup
 

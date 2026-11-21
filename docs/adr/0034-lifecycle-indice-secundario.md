@@ -33,7 +33,8 @@ com format_version 2. O código de exportação do layout 1 foi removido.
 Métricas de primitivas e commits continuam nos limites reais do Store; commits
 de manutenção de índice também são contados. O planner HTTP agora seleciona
 ID/secundário/scan com observabilidade fixa. Administração offline de índices
-pela CLI e homologação de desempenho permanecem pendentes. Não há ganho HTTP
+pela CLI está integrada conforme a seção final; homologação de desempenho
+permanece pendente. Não há ganho HTTP
 medido/alegado nesta integração.
 As seções seguintes registram o histórico anterior à consolidação.
 
@@ -729,3 +730,39 @@ rótulos. Atualizar parser e apresentação do dashboard para a nova série fixa
 Não mudar AST, envelope, admissões, publicação de feeds ou formatos persistidos.
 Preservar fallback denso/não elegível, budgets da coleção inteira e exceção de ID;
 limiar 1/8 continua hipótese de custo a medir no produto. Não é promessa de ganho.
+
+## Administração offline pela CLI
+
+Comandos aceitos neste incremento, sem endpoint HTTP de manutenção:
+
+- `kiarni index create --collection NOME --field CAMPO --data-dir RAIZ`.
+- `kiarni index rebuild --collection NOME --data-dir RAIZ`.
+- `kiarni index drop --collection NOME --data-dir RAIZ`.
+- `kiarni index audit --data-dir RAIZ` (auditoria integral, sem mutações).
+
+Opções de operação são pares CLI, únicas e limitadas; não são novos campos de
+configuração JSON/ambiente. Campo/coleção usam 1–128 bytes ASCII alfanuméricos,
+underscore ou hífen; campo _id é recusado. Um índice opcional por coleção, sem
+nome separado. Rebuild preserva a definição. Campo só é aceito em create;
+coleção é obrigatória nas mutações e não é aceita no audit global.
+
+Exigir raiz existente com fase initialized e arquivos privados, lock exclusivo
+não bloqueante antes do engine e até fechá-lo. Não criar instalação, abrir rede,
+iniciar/recuperar auth ou emitir token. Criação abre Store com auditoria completa;
+rebuild/drop e audit usam IndexedMaintenance, estruturalmente validado. Ler a
+definição é metadado permitido nesse handle restrito; não autoriza consultas ou
+CRUD. Catálogo inválido, tabelas faltantes e documentos inválidos não são reparados
+implicitamente. Estado não initialized exige diagnóstico, sem bootstrap automático.
+
+Sucesso de mutação refere-se ao índice da coleção após commit confirmado e sua
+auditoria transacional. Não declarar o banco inteiro recuperado por reparar uma
+coleção; auditoria global explícita e abertura normal continuam necessárias.
+Reusar os budgets de manutenção: 10000 documentos/8 MiB de JSON, inclusive para
+remoção, e até 10000 registros antigos por tabela de entradas/contagens.
+Orçamento excedido aborta tudo. Auditoria integral é streaming, mas não tem teto
+igual ao backfill nem prazo físico prometido.
+
+CLI distingue index_already_exists, index_not_found, index_maintenance_limit,
+invalid_index_collection/field e falhas de sintaxe, sem ecoar valores privados.
+Erro commit_uncertain exige inspeção/auditoria antes de repetir; não presumir
+rollback nem apagar dados/locks. Não emitir changefeeds por manutenção offline.

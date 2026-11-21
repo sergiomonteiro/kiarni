@@ -170,7 +170,7 @@ fn run(
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
         Err(_) => return Err("backup_destination_unavailable".into()),
     }
-    let store = root.backup_store()?;
+    let store = root.open_initialized_store()?;
     let mut random = [0u8; 16];
     getrandom::fill(&mut random).map_err(|_| "backup_entropy_unavailable")?;
     let staging = format!(".kiarni-backup-{}", hex(&random));
@@ -326,7 +326,10 @@ mod tests {
             .collect();
         assert_eq!(after, credentials);
         let root = Root::lock_existing(&source).unwrap();
-        root.backup_store().unwrap().check_readable().unwrap();
+        root.open_initialized_store()
+            .unwrap()
+            .check_readable()
+            .unwrap();
         assert_eq!(
             hex(&Sha256::digest(b"abc")),
             "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
@@ -514,7 +517,10 @@ mod tests {
                 verify(&stages[0]);
             }
             let root = Root::lock_existing(&source).unwrap();
-            root.backup_store().unwrap().check_readable().unwrap();
+            root.open_initialized_store()
+                .unwrap()
+                .check_readable()
+                .unwrap();
         }
     }
 }

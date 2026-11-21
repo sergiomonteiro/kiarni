@@ -25,6 +25,7 @@ release publicada ou o MVP completo.
 
 - [Validação operacional](./OPERATIONAL_VALIDATION.md): instalação isolada e Prometheus externo.
 - [Revisão do candidato/M3](./RELEASE_REVIEW.md): checklist, RFs, evidências e pendências do gate.
+- [Administração offline de índices](./INDEXES.md): create/rebuild/drop/audit, limites e recuperação.
 - [Diagnóstico operacional](./TROUBLESHOOTING.md): sintomas, códigos e próximos passos.
 - [Status HTTP](./SERVER_STATUS.md): versão, uptime e ocupação da admissão.
 - [Métricas de storage](./STORAGE_METRICS.md): primitivas, commits e tamanho
@@ -52,7 +53,7 @@ registra essas entregas e a documentação que deverá acompanhá-las.
 ## Entender e contribuir
 
 - [Avaliação de índice secundário](./spikes/secondary-index.md): correção, custos e decisão RF-04.
-- [Contrato do índice experimental](./adr/0034-lifecycle-indice-secundario.md): Store único, manutenção transacional e planner HTTP; administração CLI e medições pendentes.
+- [Contrato do índice experimental](./adr/0034-lifecycle-indice-secundario.md): Store único, manutenção transacional e planner HTTP; administração CLI integrada; medições no produto pendentes.
 - [Revisão da integração do índice](./INDEX_INTEGRATION_REVIEW.md): evidências do candidato e sequência para promoção ao produto.
 - [Canal e compatibilidade pré-1.0](./RELEASE_POLICY.md).
 - [Contribuir](../CONTRIBUTING.md): ambiente, workspace, testes, fixtures e PRs.

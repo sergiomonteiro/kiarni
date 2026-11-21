@@ -184,6 +184,11 @@ fn generations_admission_and_default_store_remain_explicit() {
     store.drop_collection(&collection).unwrap();
     let new = store.create_collection("items").unwrap();
     assert_eq!(
+        store.index_field(&collection),
+        Err(Error::CollectionMissing)
+    );
+    assert_eq!(store.index_field(&new).unwrap(), None);
+    assert_eq!(
         store.get_document(&collection, "a"),
         Err(Error::CollectionMissing)
     );

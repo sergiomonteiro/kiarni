@@ -25,6 +25,8 @@ mod dashboard;
 mod healthcheck;
 #[path = "serve/http_metrics.rs"]
 mod http_metrics;
+#[path = "serve/indexes.rs"]
+mod indexes;
 #[path = "serve/logs.rs"]
 mod logs;
 #[path = "serve/public_origin.rs"]

@@ -65,8 +65,8 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   Removidos IndexedStore, inicialização paralela e wrapper kiarni-format-spike;
   testes de contrato/crash foram transferidos para storage. Mutações HTTP mantêm
   os índices atomicamente; consultas HTTP selecionam ID/secundário/scan com
-  métricas e budgets preservados. Faltam administração offline de índices pela
-  CLI e medições no produto. Não atribuir ao HTTP os ganhos do spike. Layouts
+  métricas e budgets preservados. [Administração offline pela CLI](./INDEXES.md)
+  integra lock, auditoria e recuperação restrita. Faltam medições no produto. Não atribuir ao HTTP os ganhos do spike. Layouts
   antigos são recusados sem migração ou apagamento automático.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
@@ -97,4 +97,4 @@ de performance aguarda o momento combinado; registrar uma issue não a antecipa.
 | [#7](https://github.com/sergiomonteiro/kiarni/issues/7) | M3: validar instalação limpa e gate do MVP |
 | [#8](https://github.com/sergiomonteiro/kiarni/issues/8) | RF-04: concluir avaliação de índice secundário simples |
 | [#9](https://github.com/sergiomonteiro/kiarni/issues/9) | Performance: investigar regressão de leitura e custo da telemetria |
-| [#10](https://github.com/sergiomonteiro/kiarni/issues/10) | Índice secundário integrado ao Store/HTTP/backup; administração offline e medições pendentes |
+| [#10](https://github.com/sergiomonteiro/kiarni/issues/10) | Índice secundário integrado ao Store/HTTP/backup/CLI offline; medições pendentes |

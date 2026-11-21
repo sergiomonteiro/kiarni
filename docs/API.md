@@ -149,9 +149,8 @@ Uma query/contagem executa por vez; admissão FIFO espera até 100 ms antes de
 quantidade **retornada**, não total da coleção. Não há paginação de documentos.
 
 O caminho selecionado aparece em métricas fixas id/scan/secondary, inclusive
-quando a execução falha; não muda o envelope da query. Administração de índices
-pela CLI ainda não foi integrada: esta etapa usa definições já existentes no
-Store e não cria índices automaticamente. Contratos: [ADR 0006](./adr/0006-ast-e-comparacao-json.md)
+quando a execução falha; não muda o envelope da query. Definições são administradas pelos [comandos offline de índice](./INDEXES.md);
+consultas não criam índices automaticamente. Contratos: [ADR 0006](./adr/0006-ast-e-comparacao-json.md)
 e [ADR 0034](./adr/0034-lifecycle-indice-secundario.md).
 
 ### Contagem da coleção

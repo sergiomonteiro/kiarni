@@ -47,7 +47,8 @@ versões em metadados para contornar essa recusa.
 A avaliação de índice secundário atende ao RF-04 conforme
 [ADR 0033](./adr/0033-avaliacao-indice-secundario.md); a plataforma desta alpha
 usa Store único e planner HTTP com ID, secundário seletivo e scan limitado.
-Administração de índices pela CLI e medições do produto continuam pendentes.
+Administração de índices usa a [CLI offline](./INDEXES.md). Medições do produto
+continuam pendentes.
 Os ganhos medidos no spike não comprovam ganhos de latência HTTP. SDK inicial continua questão do roadmap do PRD;
 a documentação HTTP e os clientes genéricos usados no aceite não são um SDK
 publicado. Esta revisão não acrescenta requisito de SDK ou compatibilidade.

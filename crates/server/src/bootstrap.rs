@@ -6,7 +6,7 @@ use std::{
 };
 
 use kiarni_auth::activation::{Startup, Store as Auth};
-use kiarni_storage::Store;
+use kiarni_storage::{IndexedMaintenance, Store};
 use rustix::fs::{self as unix, FlockOperation, Mode, OFlags};
 use serde::{Deserialize, Serialize};
 
@@ -232,11 +232,19 @@ impl Root {
         Ok(Store::open(&self.existing_store_path()?)?)
     }
 
-    pub fn backup_store(&self) -> Result<Store> {
+    fn initialized_store_path(&self) -> Result<PathBuf> {
         if self.phase()? != Some(Phase::Initialized) {
             return Err("installation_not_initialized".into());
         }
-        self.open_existing_store()
+        self.existing_store_path()
+    }
+
+    pub fn open_initialized_store(&self) -> Result<Store> {
+        Ok(Store::open(&self.initialized_store_path()?)?)
+    }
+
+    pub fn index_maintenance(&self) -> Result<IndexedMaintenance> {
+        Ok(IndexedMaintenance::open(&self.initialized_store_path()?)?)
     }
 
     pub fn prepare_restored(&self) -> Result<()> {

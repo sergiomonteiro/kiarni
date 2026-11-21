@@ -7,6 +7,9 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
+- Comandos offline `index create`, `index rebuild`, `index drop` e `index audit`,
+  com lock da instalação, validação de argumentos, budgets e recuperação restrita.
+  Não iniciam servidor/bootstrap/auth nem alteram credenciais; audit é global.
 - Planner secundário integrado às consultas HTTP, com candidatos carregados no
   mesmo snapshot e avaliação separada. Mantidos semântica, erros, limites e gate;
   métricas/dashboard distinguem id/scan/secondary também em erros. query_read
@@ -15,8 +18,7 @@ A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendênci
   backup/restore. Removidos backend antigo, fachada IndexedStore e entrypoint
   paralelo de bootstrap. Formato 1 de desenvolvimento é recusado, sem migração
   ou apagamento automático. Índices são mantidos nas mutações HTTP; o planner
-  HTTP usa ID/secundário seletivo/scan; administração de índices pela CLI e
-  medições de performance permanecem pendentes.
+  HTTP usa ID/secundário seletivo/scan; medições de performance permanecem pendentes.
 - Removido wrapper kiarni-format-spike; testes de contrato e crash transferidos
   para crates/storage/tests/format.rs. Relatórios históricos preservados.
 
@@ -47,6 +49,6 @@ A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendênci
 Limitações conhecidas: [revisão](./docs/RELEASE_REVIEW.md) e
 [plano restante](./docs/MVP_REMAINING.md). Não há cluster, replicação, sharding,
 replay/exactly-once, garantia de evento para cliente desconectado ou compatibilidade
-com ReQL. Não declarar administração de índices pela CLI, SDK completo, upgrade
-automático ou ganhos de performance HTTP como implementados. Baselines não são promessa arbitrária de TPS/RSS.
+com ReQL. Não declarar SDK completo, upgrade automático ou ganhos de performance HTTP
+como implementados. Baselines não são promessa arbitrária de TPS/RSS.
 Nenhuma tag, Release ou publicação de imagem em registry é criada por este documento.

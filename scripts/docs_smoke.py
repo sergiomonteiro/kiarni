@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shlex
 import socket
 import subprocess
 import tempfile
@@ -134,7 +135,24 @@ def exercise(binary):
                     assert re.fullmatch('req_[a-f0-9]{32}',json.loads(error)['request_id'])
             assert counter == len(expected_statuses)
             assert token.encode() not in result.stdout + result.stderr
-            print(f'Documentation smoke passed: {counter} published curl commands, 8 HEADs, error envelope, exact JSON, live SSE, CLI/probe and JSON/env/CLI precedence.')
+            # The API walkthrough removed the collection. Prepare it again, then
+            # execute the actual offline commands published in the index guide.
+            assert server.request('/v1/collections',token,'POST',b'{"name":"orders"}')[0] == 201
+            assert server.request('/v1/collections/orders/documents',token,'POST',(ROOT/'docs/examples/document.json').read_bytes())[0] == 201
+            server.stop()
+            blocks = re.findall(r'<!-- verify:index -->\s*```bash\n(.*?)\n```', (ROOT/'docs/INDEXES.md').read_text(), re.S)
+            assert len(blocks) == 1
+            lines = blocks[0].splitlines()
+            assert len(lines) == 5
+            for line in lines:
+                args = shlex.split(line)
+                assert args[:2] == ['kiarni','index']
+                result = cli(*args[1:])
+                assert token.encode() not in result.stdout + result.stderr
+            start({}, None)
+            assert next(iter(credentials(data))) == token
+            assert server.request('/v1/collections/orders/documents/first',token)[0] == 200
+            print(f'Documentation smoke passed: {counter} published curl commands, 5 offline index commands, 8 HEADs, error envelope, exact JSON, live SSE, CLI/probe and JSON/env/CLI precedence.')
         finally:
             if connection:
                 connection.close()
