@@ -7,6 +7,7 @@ mod collections;
 mod groups;
 mod lifecycle;
 mod mutations;
+mod queries;
 
 const CATALOG: TableDefinition<u64, &[u8]> = TableDefinition::new("index_catalog");
 const ENTRIES: TableDefinition<(u64, &str, &str), ()> = TableDefinition::new("secondary_entries");

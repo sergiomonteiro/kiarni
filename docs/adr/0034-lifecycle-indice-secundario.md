@@ -205,8 +205,9 @@ mutações têm os testes adicionais abaixo. Export/restore do storage candidato
 também têm evidência isolada. O envelope com hashes/publicação tem o candidato
 Unix descrito abaixo. A instalação restaurada também tem publicação candidata
 com lock e entrega vazia de credenciais. Grupos internos de PUT/PATCH também
-têm manutenção transacional candidata; o próximo incremento é validar a escolha
-entre índice e scan, antes da integração no writer/servidor.
+têm manutenção transacional candidata. A escolha entre índice e scan tem a
+evidência abaixo; o próximo incremento é consolidar o gate de integração e
+aceite do contrato, antes de habilitar formato 2 no writer/servidor.
 Não é migração de instalações existentes. Os testes do [spike](../spikes/secondary-index.md) sustentam
 a hipótese de indexação, mas não validam este lifecycle, formato ou planner.
 Este ADR permanece proposto até revisar a codificação candidata e essas condições;
@@ -523,6 +524,59 @@ Seis testes adicionais e um worker subordinado demonstram:
 
 O helper transacional compartilhado continua compilado somente em testes. O
 writer/coordenador e seus limites de admissão, métricas e feeds do produto não
-foram alterados. Integração e validação HTTP, planner, ativação auth/CLI e revisão
+foram alterados. Integração e validação HTTP do planner, ativação auth/CLI e revisão
 do ADR ainda são necessárias antes de habilitar formato 2. Falhas injetadas/kill
 nos checkpoints não certificam energia, desempenho ou falha em cada instrução.
+
+### Evidência de seleção de acesso e equivalência de consultas
+
+`crates/storage/src/format_v2/queries.rs`, somente em `cfg(test)`, recebe Query
+validada e uma transação de leitura. Valida identidade/geração e mantém catálogo,
+estatísticas, contagens, entradas e documentos no mesmo snapshot. Prioridade:
+lookup primário por ID; igualdade direta elegível de string sobre o campo da
+definição; scan. Inspeciona a serialização da AST validada, sem expor novos
+operadores nem modificar o contrato do engine.
+
+Usa secundário somente se a coleção inteira couber em 10000 documentos/8 MiB e
+a contagem exata do valor for no máximo `documentos / 8`. Zero candidatos também
+é elegível, inclusive coleção vazia. A razão 1/8 permanece hipótese conservadora,
+não limiar homologado por benchmark do produto. Tipos/valores fora do índice,
+campo diferente, ranges, composições, coleção sem definição e caso denso usam
+scan. Fora do orçamento da coleção, executa o scan que preserva seu erro de
+limite, sem sucesso silencioso por reduzir candidatos. ID mantém sua exceção,
+inclusive no modo de referência que desabilita somente o secundário.
+
+Toda entrada usada precisa apontar para documento existente com chave/_id e
+campo consistentes. Contagem zero persistida, contagem maior que a coleção,
+linha extra ou quantidade retornada diferente da contagem produzem InvalidLayout,
+sem mascarar erro com fallback. O intervalo aceita todos os IDs ASCII válidos.
+Documentos carregados seguem os mesmos limites e são entregues ao engine real
+para filtro/sort/limit/project, comparação exata, erro de sort e limite de saída.
+
+O resultado interno registra uma categoria finita Primary/Secondary/Scan,
+documentos examinados e bytes carregados; não coloca valores/IDs em labels ou
+logs. Não altera HTTP, resposta pública, admissão ou métricas do produto.
+
+Seis testes adicionais verificam:
+
+- escolha seletiva/densa/vazia, ausência de índice e prioridade de ID, incluindo
+  o limiar exato de uma ocorrência em 7 versus 8 documentos;
+- equivalência com scan em tipos mistos, missing/null, campos compostos armazenados,
+  strings vazias/NUL, Unicode distinto/maior scalar com sufixo e 128/130 bytes;
+  arrays/objetos como literais continuam recusados pela AST, sem ampliar a API;
+- fallback para exists/range/all/not, ordenação/projeção e JSON numérico exato;
+  erros de sort/UnsupportedNumber só nos selecionados e ResultTooLarge preservado;
+- bordas exatas de 10000 documentos/8 MiB, recusa ao exceder e busca por ID válida
+  em coleção maior, com comparação de sucesso **e erro** ao caminho de scan;
+- referência faltante/extra/incorreta, contagem ausente/zero/excessiva e handle
+  antigo recusados nos casos detectáveis, sem fallback de integridade;
+- quatro writers com 80 mutações e leitores comparando planos no mesmo snapshot,
+  preservando também snapshot anterior e auditoria após as escritas.
+
+A equivalência pressupõe store íntegro, criado/auditado pelo lifecycle e mantido
+nas transações já testadas. Query não varre os documentos excluídos pelo índice
+para procurar corrupção lógica arbitrária; apagar entrada e contagem juntas ou
+falsificar estatísticas ainda exige auditoria. Não há garantia universal de
+detecção por lookup, como demonstrado desde ADR 0033. O teste não homologa
+performance HTTP, limiar de custo, RSS ou integração dos endpoints. A proposta
+segue pendente de revisão e habilitação explícita no produto, sem migração.

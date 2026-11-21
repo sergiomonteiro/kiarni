@@ -72,8 +72,10 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   envelope candidato com hashes, validação por descriptors e rename sem substituição;
   a instalação candidata já publica bootstrap/lock e entrega vazia de credenciais
   com testes das duas janelas. Grupos de PUT/PATCH mantêm índices atomicamente no
-  candidato, com comparação ao formato 1 e crash/restart. Ativação de auth e
-  integração CLI/writer/planner ainda estão pendentes. O
+  candidato, com comparação ao formato 1 e crash/restart. Há planner candidato
+  ID/índice/scan com equivalência de resultados/erros e preservação de budgets.
+  Aceite do contrato, ativação de auth, integração CLI/writer/planner e medições
+  no produto ainda estão pendentes. O
   servidor ainda usa somente formato 1, sem índice secundário.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
