@@ -196,3 +196,65 @@ redb, threads e buffers crescentes do benchmark. Cada célula em processo novo
 evita herdar o histórico do allocator da célula anterior. Em outras plataformas,
 os campos de RSS podem ser nulos. Valores de `--seconds` vão de 1 a 60 e
 `--repetitions` de 1 a 5; o teto de amostras é de 1 milhão por rodada.
+
+## Índice secundário no produto HTTP
+
+`index_http.py` compara o mesmo binário/formato 2 com índice opcional ausente ou
+presente. Não usa o exemplo Rust do spike nem uma versão antiga do servidor.
+Os dois modos mantêm estatísticas, telemetria e o writer normal do produto.
+
+```bash
+cargo build -p kiarni --release --locked --offline
+python3 benches/index_http.py --output /tmp/index-http-main-NOVO.json --documents 4096 --document-bytes 1024 --clients 1 8 --repeat 3 --seconds 2 --warmup 5
+python3 benches/index_http.py --output /tmp/index-http-small-NOVO.json --documents 1024 --document-bytes 256 --clients 1 --repeat 3 --seconds 1 --warmup 5 --cases needle edge over dense put_indexed put_other churn
+```
+
+Saídas precisam ser novas. O primeiro comando mede 144 rodadas (72 pares); o
+segundo, 42 rodadas (21 pares). Não executar builds, testes ou outras cargas
+junto das medições. Setup/warmup, restauração, auditoria e verificação após
+reinício ficam fora da janela de throughput/latência.
+
+O dataset tem documentos de tamanho exato, `_id`, score, tag, revision e padding.
+Buckets de tag contêm 1 documento, N/64, N/16, N/8, N/8+1 e o restante denso.
+Consultas eq tag também medem valor ausente; há controle por ID e filtro composto
+que exige scan. Sort por score decrescente, limit 10 e project preservam retorno
+pequeno conhecido. O relatório verifica o caminho id/scan/secondary por diferença
+de contadores do servidor, excluindo warmup por barreira com o processo pai.
+
+Há PUT que muda tag a cada confirmação e PUT que muda só revision/padding;
+cada cliente tem seu próprio ID. Churn alterna POST/DELETE num ID reservado por
+cliente, mantendo cardinalidade entre N e N+clientes. Recusa busy preserva o
+estado conhecido para a próxima tentativa; resultado incerto interrompe o
+cliente e invalida a rodada, sem retry de uma escrita desconhecida. Inserts e
+deletes têm percentis separados além do agregado.
+
+Clientes são processos Python em closed-loop, uma conexão TCP por requisição.
+Latência inclui HTTP, decode e validação da resposta; construção do payload é
+anterior ao timer, mas consome CPU e afeta throughput. A janela agregada vai do
+primeiro cliente liberado ao último encerrado. Somente respostas corretas
+200/201/204 entram em confirmações/percentis de sucesso; falhas, códigos,
+incertezas e percentis de falha são separados. Há teto de 100000 tentativas por
+cliente/rodada, que invalida a medição se atingido.
+
+Cada membro do par usa nova instalação restaurada pela CLI de um dos dois
+artefatos equivalentes. A ordem se inverte entre repetições de cada célula e
+alterna entre cenários/clientes. Depois da carga, encerra serve, audita pela CLI,
+reinicia e verifica o estado de cada escritor ou o resultado da consulta. O
+relatório inclui commits/grupos, tamanho lógico do arquivo, hashes do dataset,
+binário/fontes e metadata de host/toolchain/filesystem. Não contém credenciais.
+A criação/auditoria offline do seed é medida separadamente, incluindo abertura
+e auditoria; não é tempo isolado de backfill.
+
+Resumo usa a mediana das razões de pares completos e válidos; não é percentil
+agrupado nem intervalo de confiança. Ausência/duplicação de membro ou falha não
+vira ganho por exclusão silenciosa. O dataset respeita os budgets do produto.
+Caches não são descartados, afinidade/governor não são fixados, host e clientes
+são compartilhados. Não demonstra cold-cache, limite de CPU/RSS, capacidade em
+outro hardware ou optimalidade do limiar 1/8 fora dos casos medidos.
+
+O harness reutiliza transporte, percentis e metadata de `http_load.py` e o ciclo
+de processo de `scripts/release_smoke.py`. Os testes de medição acima cobrem
+partição/tamanho do dataset, pares/ordem, seleção esperada e separação de busy,
+falha e confirmação. Um smoke completo curto pode usar N=128, tamanho 128,
+clientes 1/2, repeat 1, seconds 0.15 e warmup 2; ele valida o medidor, não fornece
+uma baseline de desempenho.
