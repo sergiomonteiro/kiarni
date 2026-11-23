@@ -76,3 +76,13 @@ de primitivas/commit também nos grupos PUT/PATCH. Elas permanecem ativas com
 log_level=off e não são a feature opcional de profiling. Seu impacto ainda não
 foi medido em uma nova matriz; os benchmarks anteriores mantêm a proveniência
 das versões que efetivamente mediram.
+
+## Índice secundário no HTTP — 2026-11-22
+
+[Relatório e três matrizes brutas](./benchmarks/secondary-index-http-2026-11-22.md):
+270 rodadas válidas no mesmo binário, sem/com índice opcional, com custo de
+escrita, rejeições e estado após reinício. Tags espalhadas, 4.096 × 1 KiB,
+um cliente: throughput pareado 53,32× para um candidato e 4,42× em N/8;
+alterar o campo indexado reduziu throughput em 14,4%. São medidas locais de
+closed-loop, sem perfil CPU/RSS ou capacidade universal. Mantido o limiar
+conservador; sua optimalidade fora dos casos medidos não foi demonstrada.

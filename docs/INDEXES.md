@@ -114,4 +114,7 @@ do comando audit:
 demonstram lock retido, recuperação de processo e nenhuma nova credencial.
 As janelas internas de build/rebuild/drop continuam cobertas pelos testes do
 mesmo núcleo transacional. Isso não simula queda de energia ou falha física.
-Benchmarks no produto e homologação do limiar de seletividade permanecem pendentes.
+As [medições HTTP](./benchmarks/secondary-index-http-2026-11-22.md)
+registram benefício seletivo até 1/8 nos fixtures medidos e custo de manutenção
+nas escritas. Mantido o limiar conservador; não é ponto ótimo universal nem
+garantia de latência em qualquer carga.

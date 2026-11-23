@@ -97,4 +97,4 @@ de performance aguarda o momento combinado; registrar uma issue não a antecipa.
 | [#7](https://github.com/sergiomonteiro/kiarni/issues/7) | M3: validar instalação limpa e gate do MVP |
 | [#8](https://github.com/sergiomonteiro/kiarni/issues/8) | RF-04: concluir avaliação de índice secundário simples |
 | [#9](https://github.com/sergiomonteiro/kiarni/issues/9) | Performance: investigar regressão de leitura e custo da telemetria |
-| [#10](https://github.com/sergiomonteiro/kiarni/issues/10) | Índice secundário integrado ao Store/HTTP/backup/CLI offline; medições pendentes |
+| [#10](https://github.com/sergiomonteiro/kiarni/issues/10) | Índice secundário integrado ao Store/HTTP/backup/CLI offline; [medições concluídas](./benchmarks/secondary-index-http-2026-11-22.md) |

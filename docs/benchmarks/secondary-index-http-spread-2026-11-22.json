@@ -1,0 +1,6351 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-23T00:25:49.184247+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "fc1eff3d692d1989c4dc9bc6d0e1e90b842dffad",
+    "workspace_dirty": false,
+    "source_sha256": "38a394419c77ebf658c739805f47b26691a8cdb9469fb5569d428a0d6ec482e4",
+    "binary_sha256": "18b8343941d02387446aa13e5d8f0560f797082ca0ae9f9cffb13a9e58c8243f",
+    "data_filesystem": "ext4",
+    "data_block_bytes": 4096,
+    "cpu_load_before": [
+      0.798828125,
+      1.0576171875,
+      1.27587890625
+    ],
+    "cgroup_v2_limits": [
+      {
+        "memory.max": "max"
+      },
+      {
+        "cpu.max": "max 100000",
+        "memory.max": "max"
+      },
+      {
+        "cpu.max": "max 100000",
+        "memory.max": "max"
+      },
+      {
+        "cpu.max": "max 100000",
+        "memory.max": "max"
+      },
+      {
+        "cpu.max": "max 100000",
+        "cpuset.cpus.effective": "0-15",
+        "memory.max": "max"
+      },
+      {
+        "cpuset.cpus.effective": "0-15"
+      }
+    ],
+    "cpu_load_after": [
+      2.18505859375,
+      2.31201171875,
+      1.81787109375
+    ]
+  },
+  "measurement_source_sha256": "e0e05d63d5047ff97a6c595400a785dda0acaa1e80a09b43e4e68f0890d2512f",
+  "parameters": {
+    "documents": 4096,
+    "document_bytes": 1024,
+    "layout": "spread",
+    "clients": [
+      1,
+      8
+    ],
+    "cases": [
+      "needle",
+      "edge",
+      "over",
+      "dense",
+      "put_indexed",
+      "put_other",
+      "churn"
+    ],
+    "repetitions": 3,
+    "seconds_per_round": 3.0,
+    "warmup_per_client": 5,
+    "server_config": {
+      "max_requests": 32,
+      "max_streams": 8,
+      "feed_queue": 4,
+      "max_document_bytes": 1048576,
+      "max_query_bytes": 16384,
+      "max_result_bytes": 4194304,
+      "read_timeout_ms": 5000,
+      "write_timeout_ms": 5000,
+      "heartbeat_ms": 1000,
+      "log_level": "off"
+    },
+    "load_model": "closed_loop; one new TCP connection/request; process/client",
+    "pair_order": "alternates each pair; fresh CLI restore/server per member",
+    "commit": "Immediate; normal bounded writer grouping; no subscribers",
+    "binary_profile": "release, default features; build command recorded in methodology",
+    "build_command": [
+      "cargo",
+      "build",
+      "-p",
+      "kiarni",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "latency": "HTTP, decode and response validation; excludes payload construction",
+    "retry_policy": "no uncertain write retries; churn retains known state after busy",
+    "attempt_cap_per_client": 100000
+  },
+  "results": [
+    {
+      "case": "needle",
+      "indexed": false,
+      "clients": 1,
+      "trial": 1,
+      "pair": 1,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.014194898,
+      "attempts": 177,
+      "confirmed": 177,
+      "confirmed_ops_per_second": 58.72214836454149,
+      "success_latency": {
+        "p50_ms": 17.0159,
+        "p95_ms": 18.994,
+        "p99_ms": 19.5441,
+        "max_ms": 19.9554
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 177
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 177,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 177,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.10949490099999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 177,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.0159,
+            "p95_ms": 18.994,
+            "p99_ms": 19.5441,
+            "max_ms": 19.9554
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": true,
+      "clients": 1,
+      "trial": 2,
+      "pair": 1,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000105532,
+      "attempts": 8359,
+      "confirmed": 8359,
+      "confirmed_ops_per_second": 2786.2353210047013,
+      "success_latency": {
+        "p50_ms": 0.3559,
+        "p95_ms": 0.4726,
+        "p99_ms": 0.5708,
+        "max_ms": 1.0642
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8359
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 8359
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 8359,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.66427044,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 8359,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 0.3559,
+            "p95_ms": 0.4726,
+            "p99_ms": 0.5708,
+            "max_ms": 1.0642
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": true,
+      "clients": 1,
+      "trial": 3,
+      "pair": 2,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001269331,
+      "attempts": 761,
+      "confirmed": 761,
+      "confirmed_ops_per_second": 253.55938307157547,
+      "success_latency": {
+        "p50_ms": 3.8538,
+        "p95_ms": 4.8233,
+        "p99_ms": 5.3843,
+        "max_ms": 14.9208
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 761
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 761
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 761,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.334573092,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 761,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 3.8538,
+            "p95_ms": 4.8233,
+            "p99_ms": 5.3843,
+            "max_ms": 14.9208
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": false,
+      "clients": 1,
+      "trial": 4,
+      "pair": 2,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.012586308,
+      "attempts": 173,
+      "confirmed": 173,
+      "confirmed_ops_per_second": 57.42574064702946,
+      "success_latency": {
+        "p50_ms": 17.4655,
+        "p95_ms": 19.1808,
+        "p99_ms": 20.9923,
+        "max_ms": 21.2469
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 173
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 173,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 173,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.114869225,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 173,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.4655,
+            "p95_ms": 19.1808,
+            "p99_ms": 20.9923,
+            "max_ms": 21.2469
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": false,
+      "clients": 1,
+      "trial": 5,
+      "pair": 3,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000003109,
+      "attempts": 172,
+      "confirmed": 172,
+      "confirmed_ops_per_second": 57.33327391695046,
+      "success_latency": {
+        "p50_ms": 17.2884,
+        "p95_ms": 19.6238,
+        "p99_ms": 20.9362,
+        "max_ms": 21.513
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 172
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 172,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 172,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.11188298399999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 172,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.2884,
+            "p95_ms": 19.6238,
+            "p99_ms": 20.9362,
+            "max_ms": 21.513
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": true,
+      "clients": 1,
+      "trial": 6,
+      "pair": 3,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.003946712,
+      "attempts": 175,
+      "confirmed": 175,
+      "confirmed_ops_per_second": 58.25669253749399,
+      "success_latency": {
+        "p50_ms": 17.1184,
+        "p95_ms": 19.362,
+        "p99_ms": 19.7479,
+        "max_ms": 20.8449
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 175
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 175,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 175,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.11411581700000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 175,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.1184,
+            "p95_ms": 19.362,
+            "p99_ms": 19.7479,
+            "max_ms": 20.8449
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": true,
+      "clients": 1,
+      "trial": 7,
+      "pair": 4,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.014297963,
+      "attempts": 169,
+      "confirmed": 169,
+      "confirmed_ops_per_second": 56.0661228831544,
+      "success_latency": {
+        "p50_ms": 17.5171,
+        "p95_ms": 19.8273,
+        "p99_ms": 21.3895,
+        "max_ms": 36.8112
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 169
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 169,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 169,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.107690438,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 169,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.5171,
+            "p95_ms": 19.8273,
+            "p99_ms": 21.3895,
+            "max_ms": 36.8112
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": false,
+      "clients": 1,
+      "trial": 8,
+      "pair": 4,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.005047361,
+      "attempts": 170,
+      "confirmed": 170,
+      "confirmed_ops_per_second": 56.57148775965665,
+      "success_latency": {
+        "p50_ms": 17.637,
+        "p95_ms": 19.8807,
+        "p99_ms": 20.9006,
+        "max_ms": 22.3837
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 170
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 170,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 170,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.11024395799999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 170,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.637,
+            "p95_ms": 19.8807,
+            "p99_ms": 20.9006,
+            "max_ms": 22.3837
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": false,
+      "clients": 1,
+      "trial": 9,
+      "pair": 5,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001475892,
+      "attempts": 1654,
+      "confirmed": 1654,
+      "confirmed_ops_per_second": 551.0622305541409,
+      "success_latency": {
+        "p50_ms": 1.4965,
+        "p95_ms": 3.1086,
+        "p99_ms": 3.6032,
+        "max_ms": 11.5493
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1654
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1654,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1654,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1654,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.6067085299999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1654,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.4965,
+            "p95_ms": 3.1086,
+            "p99_ms": 3.6032,
+            "max_ms": 11.5493
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": true,
+      "clients": 1,
+      "trial": 10,
+      "pair": 5,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000861631,
+      "attempts": 1416,
+      "confirmed": 1416,
+      "confirmed_ops_per_second": 471.8644756466614,
+      "success_latency": {
+        "p50_ms": 1.7757,
+        "p95_ms": 3.3577,
+        "p99_ms": 4.0001,
+        "max_ms": 13.3974
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1416
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1416,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1416,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1416,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.5865772060000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1416,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.7757,
+            "p95_ms": 3.3577,
+            "p99_ms": 4.0001,
+            "max_ms": 13.3974
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": true,
+      "clients": 1,
+      "trial": 11,
+      "pair": 6,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000585279,
+      "attempts": 1559,
+      "confirmed": 1559,
+      "confirmed_ops_per_second": 519.5653031129864,
+      "success_latency": {
+        "p50_ms": 1.6149,
+        "p95_ms": 3.2701,
+        "p99_ms": 4.2835,
+        "max_ms": 6.2507
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1559
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1559,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1559,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1559,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.6220754980000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1559,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.6149,
+            "p95_ms": 3.2701,
+            "p99_ms": 4.2835,
+            "max_ms": 6.2507
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": false,
+      "clients": 1,
+      "trial": 12,
+      "pair": 6,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000721125,
+      "attempts": 1527,
+      "confirmed": 1527,
+      "confirmed_ops_per_second": 508.8776785280238,
+      "success_latency": {
+        "p50_ms": 1.637,
+        "p95_ms": 3.3304,
+        "p99_ms": 4.421,
+        "max_ms": 9.2039
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1527
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1527,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1527,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1527,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.638271051,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1527,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.637,
+            "p95_ms": 3.3304,
+            "p99_ms": 4.421,
+            "max_ms": 9.2039
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": false,
+      "clients": 1,
+      "trial": 13,
+      "pair": 7,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000532319,
+      "attempts": 1633,
+      "confirmed": 1633,
+      "confirmed_ops_per_second": 544.236764143316,
+      "success_latency": {
+        "p50_ms": 1.5721,
+        "p95_ms": 3.1164,
+        "p99_ms": 3.5501,
+        "max_ms": 14.2063
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 817,
+        "201": 816
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1633,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.610802212,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 817,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5413,
+            "p95_ms": 3.076,
+            "p99_ms": 3.5501,
+            "max_ms": 14.2063
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 816,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5994,
+            "p95_ms": 3.1424,
+            "p99_ms": 3.4653,
+            "max_ms": 4.6162
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": true,
+      "clients": 1,
+      "trial": 14,
+      "pair": 7,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000331599,
+      "attempts": 1544,
+      "confirmed": 1544,
+      "confirmed_ops_per_second": 514.6097853032678,
+      "success_latency": {
+        "p50_ms": 1.652,
+        "p95_ms": 3.143,
+        "p99_ms": 3.4887,
+        "max_ms": 8.4035
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 772,
+        "201": 772
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1544,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.556144372,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 772,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.6496,
+            "p95_ms": 3.0257,
+            "p99_ms": 3.4053,
+            "max_ms": 3.7646
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 772,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.6563,
+            "p95_ms": 3.202,
+            "p99_ms": 3.7428,
+            "max_ms": 8.4035
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": true,
+      "clients": 8,
+      "trial": 15,
+      "pair": 8,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000578586,
+      "attempts": 57713,
+      "confirmed": 57713,
+      "confirmed_ops_per_second": 19233.957167219483,
+      "success_latency": {
+        "p50_ms": 0.3869,
+        "p95_ms": 0.5821,
+        "p99_ms": 0.7403,
+        "max_ms": 5.5195
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 57713
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 57713
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 57713,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 15.672334987,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 57713,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 0.3869,
+            "p95_ms": 0.5821,
+            "p99_ms": 0.7403,
+            "max_ms": 5.5195
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": false,
+      "clients": 8,
+      "trial": 16,
+      "pair": 8,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.090740661,
+      "attempts": 232,
+      "confirmed": 174,
+      "confirmed_ops_per_second": 56.29718539494117,
+      "success_latency": {
+        "p50_ms": 107.5527,
+        "p95_ms": 117.0293,
+        "p99_ms": 120.5922,
+        "max_ms": 120.9077
+      },
+      "failure_latency": {
+        "p50_ms": 101.0937,
+        "p95_ms": 101.4407,
+        "p99_ms": 101.4947,
+        "max_ms": 101.4947
+      },
+      "statuses": {
+        "503": 58,
+        "200": 174
+      },
+      "error_codes": {
+        "service_unavailable": 58
+      },
+      "access": {
+        "id": 0,
+        "scan": 174,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 174,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.15822722600000003,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 174,
+          "failed": 58,
+          "success_latency": {
+            "p50_ms": 107.5527,
+            "p95_ms": 117.0293,
+            "p99_ms": 120.5922,
+            "max_ms": 120.9077
+          },
+          "failure_latency": {
+            "p50_ms": 101.0937,
+            "p95_ms": 101.4407,
+            "p99_ms": 101.4947,
+            "max_ms": 101.4947
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": false,
+      "clients": 8,
+      "trial": 17,
+      "pair": 9,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.104933262,
+      "attempts": 230,
+      "confirmed": 170,
+      "confirmed_ops_per_second": 54.75157939159595,
+      "success_latency": {
+        "p50_ms": 107.6351,
+        "p95_ms": 118.5446,
+        "p99_ms": 124.1857,
+        "max_ms": 126.4924
+      },
+      "failure_latency": {
+        "p50_ms": 101.0255,
+        "p95_ms": 101.7266,
+        "p99_ms": 103.138,
+        "max_ms": 103.138
+      },
+      "statuses": {
+        "200": 170,
+        "503": 60
+      },
+      "error_codes": {
+        "service_unavailable": 60
+      },
+      "access": {
+        "id": 0,
+        "scan": 170,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 170,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.16439633199999998,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 170,
+          "failed": 60,
+          "success_latency": {
+            "p50_ms": 107.6351,
+            "p95_ms": 118.5446,
+            "p99_ms": 124.1857,
+            "max_ms": 126.4924
+          },
+          "failure_latency": {
+            "p50_ms": 101.0255,
+            "p95_ms": 101.7266,
+            "p99_ms": 103.138,
+            "max_ms": 103.138
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": true,
+      "clients": 8,
+      "trial": 18,
+      "pair": 9,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.026453103,
+      "attempts": 866,
+      "confirmed": 866,
+      "confirmed_ops_per_second": 286.1435385010821,
+      "success_latency": {
+        "p50_ms": 27.7241,
+        "p95_ms": 30.1057,
+        "p99_ms": 32.4811,
+        "max_ms": 46.068
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 866
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 866
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 866,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.507231904,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 866,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 27.7241,
+            "p95_ms": 30.1057,
+            "p99_ms": 32.4811,
+            "max_ms": 46.068
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": true,
+      "clients": 8,
+      "trial": 19,
+      "pair": 10,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.095785194,
+      "attempts": 233,
+      "confirmed": 176,
+      "confirmed_ops_per_second": 56.85148967735518,
+      "success_latency": {
+        "p50_ms": 106.5923,
+        "p95_ms": 116.2886,
+        "p99_ms": 118.451,
+        "max_ms": 119.7735
+      },
+      "failure_latency": {
+        "p50_ms": 101.1085,
+        "p95_ms": 101.4433,
+        "p99_ms": 101.7248,
+        "max_ms": 101.7248
+      },
+      "statuses": {
+        "200": 176,
+        "503": 57
+      },
+      "error_codes": {
+        "service_unavailable": 57
+      },
+      "access": {
+        "id": 0,
+        "scan": 176,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 176,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.157350642,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 176,
+          "failed": 57,
+          "success_latency": {
+            "p50_ms": 106.5923,
+            "p95_ms": 116.2886,
+            "p99_ms": 118.451,
+            "max_ms": 119.7735
+          },
+          "failure_latency": {
+            "p50_ms": 101.1085,
+            "p95_ms": 101.4433,
+            "p99_ms": 101.7248,
+            "max_ms": 101.7248
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": false,
+      "clients": 8,
+      "trial": 20,
+      "pair": 10,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.100374607,
+      "attempts": 232,
+      "confirmed": 172,
+      "confirmed_ops_per_second": 55.47716705318765,
+      "success_latency": {
+        "p50_ms": 107.9883,
+        "p95_ms": 117.5754,
+        "p99_ms": 122.1785,
+        "max_ms": 122.3276
+      },
+      "failure_latency": {
+        "p50_ms": 101.0427,
+        "p95_ms": 101.6475,
+        "p99_ms": 102.4218,
+        "max_ms": 102.4218
+      },
+      "statuses": {
+        "200": 172,
+        "503": 60
+      },
+      "error_codes": {
+        "service_unavailable": 60
+      },
+      "access": {
+        "id": 0,
+        "scan": 172,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 172,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.15544452200000003,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 172,
+          "failed": 60,
+          "success_latency": {
+            "p50_ms": 107.9883,
+            "p95_ms": 117.5754,
+            "p99_ms": 122.1785,
+            "max_ms": 122.3276
+          },
+          "failure_latency": {
+            "p50_ms": 101.0427,
+            "p95_ms": 101.6475,
+            "p99_ms": 102.4218,
+            "max_ms": 102.4218
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": false,
+      "clients": 8,
+      "trial": 21,
+      "pair": 11,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.110867412,
+      "attempts": 223,
+      "confirmed": 161,
+      "confirmed_ops_per_second": 51.754053991163794,
+      "success_latency": {
+        "p50_ms": 115.5028,
+        "p95_ms": 120.409,
+        "p99_ms": 121.3786,
+        "max_ms": 137.6499
+      },
+      "failure_latency": {
+        "p50_ms": 100.9858,
+        "p95_ms": 101.4216,
+        "p99_ms": 103.1882,
+        "max_ms": 103.1882
+      },
+      "statuses": {
+        "200": 161,
+        "503": 62
+      },
+      "error_codes": {
+        "service_unavailable": 62
+      },
+      "access": {
+        "id": 0,
+        "scan": 161,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 161,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.151179521,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 161,
+          "failed": 62,
+          "success_latency": {
+            "p50_ms": 115.5028,
+            "p95_ms": 120.409,
+            "p99_ms": 121.3786,
+            "max_ms": 137.6499
+          },
+          "failure_latency": {
+            "p50_ms": 100.9858,
+            "p95_ms": 101.4216,
+            "p99_ms": 103.1882,
+            "max_ms": 103.1882
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": true,
+      "clients": 8,
+      "trial": 22,
+      "pair": 11,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.112699104,
+      "attempts": 225,
+      "confirmed": 163,
+      "confirmed_ops_per_second": 52.36612809459658,
+      "success_latency": {
+        "p50_ms": 113.4268,
+        "p95_ms": 119.2295,
+        "p99_ms": 121.124,
+        "max_ms": 133.0945
+      },
+      "failure_latency": {
+        "p50_ms": 101.0583,
+        "p95_ms": 101.6392,
+        "p99_ms": 103.1712,
+        "max_ms": 103.1712
+      },
+      "statuses": {
+        "200": 163,
+        "503": 62
+      },
+      "error_codes": {
+        "service_unavailable": 62
+      },
+      "access": {
+        "id": 0,
+        "scan": 163,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 163,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.154973016,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 163,
+          "failed": 62,
+          "success_latency": {
+            "p50_ms": 113.4268,
+            "p95_ms": 119.2295,
+            "p99_ms": 121.124,
+            "max_ms": 133.0945
+          },
+          "failure_latency": {
+            "p50_ms": 101.0583,
+            "p95_ms": 101.6392,
+            "p99_ms": 103.1712,
+            "max_ms": 103.1712
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": true,
+      "clients": 8,
+      "trial": 23,
+      "pair": 12,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001848793,
+      "attempts": 7105,
+      "confirmed": 7105,
+      "confirmed_ops_per_second": 2366.874712866325,
+      "success_latency": {
+        "p50_ms": 3.52,
+        "p95_ms": 4.4509,
+        "p99_ms": 8.3985,
+        "max_ms": 18.029
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 7105
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1780,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1780,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 7105,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.3732016419999997,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 7105,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 3.52,
+            "p95_ms": 4.4509,
+            "p99_ms": 8.3985,
+            "max_ms": 18.029
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": false,
+      "clients": 8,
+      "trial": 24,
+      "pair": 12,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001814038,
+      "attempts": 8595,
+      "confirmed": 8595,
+      "confirmed_ops_per_second": 2863.2686406272314,
+      "success_latency": {
+        "p50_ms": 2.411,
+        "p95_ms": 3.9155,
+        "p99_ms": 4.3914,
+        "max_ms": 9.5928
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8595
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2152,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2152,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8595,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.377616271,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8595,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.411,
+            "p95_ms": 3.9155,
+            "p99_ms": 4.3914,
+            "max_ms": 9.5928
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": false,
+      "clients": 8,
+      "trial": 25,
+      "pair": 13,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.00161446,
+      "attempts": 8058,
+      "confirmed": 8058,
+      "confirmed_ops_per_second": 2684.5552976180693,
+      "success_latency": {
+        "p50_ms": 2.4845,
+        "p95_ms": 4.2487,
+        "p99_ms": 10.1112,
+        "max_ms": 19.2772
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8058
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2023,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2023,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8058,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.908965608,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8058,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.4845,
+            "p95_ms": 4.2487,
+            "p99_ms": 10.1112,
+            "max_ms": 19.2772
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": true,
+      "clients": 8,
+      "trial": 26,
+      "pair": 13,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.002258528,
+      "attempts": 8171,
+      "confirmed": 8171,
+      "confirmed_ops_per_second": 2721.6177167271585,
+      "success_latency": {
+        "p50_ms": 2.4496,
+        "p95_ms": 4.4834,
+        "p99_ms": 5.7651,
+        "max_ms": 17.3938
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8171
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2050,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2050,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8171,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.701416878,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8171,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.4496,
+            "p95_ms": 4.4834,
+            "p99_ms": 5.7651,
+            "max_ms": 17.3938
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": true,
+      "clients": 8,
+      "trial": 27,
+      "pair": 14,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.010193248,
+      "attempts": 2248,
+      "confirmed": 2248,
+      "confirmed_ops_per_second": 746.7959080346724,
+      "success_latency": {
+        "p50_ms": 10.4653,
+        "p95_ms": 12.7027,
+        "p99_ms": 15.2709,
+        "max_ms": 16.915
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 1128,
+        "201": 1120
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2248,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.138847913,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 1128,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 10.4138,
+            "p95_ms": 12.7084,
+            "p99_ms": 15.2407,
+            "max_ms": 16.8738
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 1120,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 10.5229,
+            "p95_ms": 12.6772,
+            "p99_ms": 15.3502,
+            "max_ms": 16.915
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": false,
+      "clients": 8,
+      "trial": 28,
+      "pair": 14,
+      "repetition": 1,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.008528491,
+      "attempts": 2587,
+      "confirmed": 2587,
+      "confirmed_ops_per_second": 859.888815325831,
+      "success_latency": {
+        "p50_ms": 9.1977,
+        "p95_ms": 10.8509,
+        "p99_ms": 13.0711,
+        "max_ms": 16.0326
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 1296,
+        "201": 1291
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2587,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.162574513,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 1296,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 9.1456,
+            "p95_ms": 10.7573,
+            "p99_ms": 11.7271,
+            "max_ms": 15.4631
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 1291,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 9.2426,
+            "p95_ms": 10.9885,
+            "p99_ms": 13.3491,
+            "max_ms": 16.0326
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": true,
+      "clients": 1,
+      "trial": 29,
+      "pair": 15,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000007753,
+      "attempts": 8618,
+      "confirmed": 8618,
+      "confirmed_ops_per_second": 2872.65924275763,
+      "success_latency": {
+        "p50_ms": 0.3293,
+        "p95_ms": 0.4941,
+        "p99_ms": 0.6153,
+        "max_ms": 4.7284
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8618
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 8618
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 8618,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.865556899,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 8618,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 0.3293,
+            "p95_ms": 0.4941,
+            "p99_ms": 0.6153,
+            "max_ms": 4.7284
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": false,
+      "clients": 1,
+      "trial": 30,
+      "pair": 15,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.010864056,
+      "attempts": 149,
+      "confirmed": 149,
+      "confirmed_ops_per_second": 49.487455171904976,
+      "success_latency": {
+        "p50_ms": 20.1481,
+        "p95_ms": 22.5416,
+        "p99_ms": 24.3597,
+        "max_ms": 24.5442
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 149
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 149,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 149,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.102860724,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 149,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 20.1481,
+            "p95_ms": 22.5416,
+            "p99_ms": 24.3597,
+            "max_ms": 24.5442
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": false,
+      "clients": 1,
+      "trial": 31,
+      "pair": 16,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.017012881,
+      "attempts": 149,
+      "confirmed": 149,
+      "confirmed_ops_per_second": 49.38659723276137,
+      "success_latency": {
+        "p50_ms": 20.001,
+        "p95_ms": 22.3835,
+        "p99_ms": 23.4907,
+        "max_ms": 35.0822
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 149
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 149,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 149,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.101642725,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 149,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 20.001,
+            "p95_ms": 22.3835,
+            "p99_ms": 23.4907,
+            "max_ms": 35.0822
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": true,
+      "clients": 1,
+      "trial": 32,
+      "pair": 16,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001153178,
+      "attempts": 713,
+      "confirmed": 713,
+      "confirmed_ops_per_second": 237.57534444648064,
+      "success_latency": {
+        "p50_ms": 4.101,
+        "p95_ms": 5.2978,
+        "p99_ms": 5.8962,
+        "max_ms": 20.8251
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 713
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 713
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 713,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.37552942300000003,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 713,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 4.101,
+            "p95_ms": 5.2978,
+            "p99_ms": 5.8962,
+            "max_ms": 20.8251
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": true,
+      "clients": 1,
+      "trial": 33,
+      "pair": 17,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.012377348,
+      "attempts": 149,
+      "confirmed": 149,
+      "confirmed_ops_per_second": 49.4625947505963,
+      "success_latency": {
+        "p50_ms": 19.9686,
+        "p95_ms": 22.3545,
+        "p99_ms": 34.3025,
+        "max_ms": 39.2286
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 149
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 149,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 149,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.104306849,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 149,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 19.9686,
+            "p95_ms": 22.3545,
+            "p99_ms": 34.3025,
+            "max_ms": 39.2286
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": false,
+      "clients": 1,
+      "trial": 34,
+      "pair": 17,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.019235913,
+      "attempts": 150,
+      "confirmed": 150,
+      "confirmed_ops_per_second": 49.681444021694766,
+      "success_latency": {
+        "p50_ms": 19.898,
+        "p95_ms": 22.132,
+        "p99_ms": 26.5477,
+        "max_ms": 38.4349
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 150
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 150,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 150,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.10170422900000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 150,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 19.898,
+            "p95_ms": 22.132,
+            "p99_ms": 26.5477,
+            "max_ms": 38.4349
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": false,
+      "clients": 1,
+      "trial": 35,
+      "pair": 18,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.004120939,
+      "attempts": 140,
+      "confirmed": 140,
+      "confirmed_ops_per_second": 46.6026511058515,
+      "success_latency": {
+        "p50_ms": 21.3592,
+        "p95_ms": 23.6933,
+        "p99_ms": 25.6404,
+        "max_ms": 40.5839
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 140
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 140,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 140,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.09696484799999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 140,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 21.3592,
+            "p95_ms": 23.6933,
+            "p99_ms": 25.6404,
+            "max_ms": 40.5839
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": true,
+      "clients": 1,
+      "trial": 36,
+      "pair": 18,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001529048,
+      "attempts": 141,
+      "confirmed": 141,
+      "confirmed_ops_per_second": 46.976057117938645,
+      "success_latency": {
+        "p50_ms": 21.1875,
+        "p95_ms": 23.8392,
+        "p99_ms": 24.1897,
+        "max_ms": 24.7368
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 141
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 141,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 141,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.094969542,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 141,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 21.1875,
+            "p95_ms": 23.8392,
+            "p99_ms": 24.1897,
+            "max_ms": 24.7368
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": true,
+      "clients": 1,
+      "trial": 37,
+      "pair": 19,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000423168,
+      "attempts": 1077,
+      "confirmed": 1077,
+      "confirmed_ops_per_second": 358.949368037942,
+      "success_latency": {
+        "p50_ms": 2.5304,
+        "p95_ms": 4.9382,
+        "p99_ms": 6.1222,
+        "max_ms": 9.6576
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1077
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1077,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1077,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1077,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.504578991,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1077,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.5304,
+            "p95_ms": 4.9382,
+            "p99_ms": 6.1222,
+            "max_ms": 9.6576
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": false,
+      "clients": 1,
+      "trial": 38,
+      "pair": 19,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000233008,
+      "attempts": 1614,
+      "confirmed": 1614,
+      "confirmed_ops_per_second": 537.9582171439132,
+      "success_latency": {
+        "p50_ms": 1.5306,
+        "p95_ms": 3.1665,
+        "p99_ms": 4.2424,
+        "max_ms": 8.0146
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1614
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1614,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1614,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1614,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.6192886400000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1614,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5306,
+            "p95_ms": 3.1665,
+            "p99_ms": 4.2424,
+            "max_ms": 8.0146
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": false,
+      "clients": 1,
+      "trial": 39,
+      "pair": 20,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001190689,
+      "attempts": 1600,
+      "confirmed": 1600,
+      "confirmed_ops_per_second": 533.1217392697969,
+      "success_latency": {
+        "p50_ms": 1.5521,
+        "p95_ms": 3.1472,
+        "p99_ms": 4.2061,
+        "max_ms": 5.5532
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1600
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1600,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1600,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1600,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.62390328,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1600,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5521,
+            "p95_ms": 3.1472,
+            "p99_ms": 4.2061,
+            "max_ms": 5.5532
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": true,
+      "clients": 1,
+      "trial": 40,
+      "pair": 20,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000919115,
+      "attempts": 1598,
+      "confirmed": 1598,
+      "confirmed_ops_per_second": 532.5035226749189,
+      "success_latency": {
+        "p50_ms": 1.5463,
+        "p95_ms": 3.2614,
+        "p99_ms": 4.1031,
+        "max_ms": 8.1722
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1598
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1598,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1598,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1598,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.6250326540000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1598,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5463,
+            "p95_ms": 3.2614,
+            "p99_ms": 4.1031,
+            "max_ms": 8.1722
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": true,
+      "clients": 1,
+      "trial": 41,
+      "pair": 21,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001052938,
+      "attempts": 1561,
+      "confirmed": 1561,
+      "confirmed_ops_per_second": 520.1507711624379,
+      "success_latency": {
+        "p50_ms": 1.6098,
+        "p95_ms": 3.0789,
+        "p99_ms": 3.5093,
+        "max_ms": 13.0821
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 781,
+        "201": 780
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1561,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.559403364,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 781,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.587,
+            "p95_ms": 3.0156,
+            "p99_ms": 3.508,
+            "max_ms": 13.0821
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 780,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.6481,
+            "p95_ms": 3.1116,
+            "p99_ms": 3.6134,
+            "max_ms": 6.4329
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": false,
+      "clients": 1,
+      "trial": 42,
+      "pair": 21,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.00225404,
+      "attempts": 1730,
+      "confirmed": 1730,
+      "confirmed_ops_per_second": 576.233715385391,
+      "success_latency": {
+        "p50_ms": 1.4638,
+        "p95_ms": 3.0123,
+        "p99_ms": 3.3422,
+        "max_ms": 5.9639
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 865,
+        "201": 865
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1730,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.585310568,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 865,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.4424,
+            "p95_ms": 2.9833,
+            "p99_ms": 3.2368,
+            "max_ms": 5.482
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 865,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.4949,
+            "p95_ms": 3.0485,
+            "p99_ms": 3.3925,
+            "max_ms": 5.9639
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": false,
+      "clients": 8,
+      "trial": 43,
+      "pair": 22,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.108281383,
+      "attempts": 229,
+      "confirmed": 170,
+      "confirmed_ops_per_second": 54.692603098861724,
+      "success_latency": {
+        "p50_ms": 110.6299,
+        "p95_ms": 116.0951,
+        "p99_ms": 118.9566,
+        "max_ms": 123.3288
+      },
+      "failure_latency": {
+        "p50_ms": 101.0489,
+        "p95_ms": 101.4591,
+        "p99_ms": 103.3709,
+        "max_ms": 103.3709
+      },
+      "statuses": {
+        "503": 59,
+        "200": 170
+      },
+      "error_codes": {
+        "service_unavailable": 59
+      },
+      "access": {
+        "id": 0,
+        "scan": 170,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 170,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.15853161099999996,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 170,
+          "failed": 59,
+          "success_latency": {
+            "p50_ms": 110.6299,
+            "p95_ms": 116.0951,
+            "p99_ms": 118.9566,
+            "max_ms": 123.3288
+          },
+          "failure_latency": {
+            "p50_ms": 101.0489,
+            "p95_ms": 101.4591,
+            "p99_ms": 103.3709,
+            "max_ms": 103.3709
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": true,
+      "clients": 8,
+      "trial": 44,
+      "pair": 22,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000648604,
+      "attempts": 54671,
+      "confirmed": 54671,
+      "confirmed_ops_per_second": 18219.727537280134,
+      "success_latency": {
+        "p50_ms": 0.4068,
+        "p95_ms": 0.6291,
+        "p99_ms": 0.7897,
+        "max_ms": 3.5217
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 54671
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 54671
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 54671,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 15.446966405000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 54671,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 0.4068,
+            "p95_ms": 0.6291,
+            "p99_ms": 0.7897,
+            "max_ms": 3.5217
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": true,
+      "clients": 8,
+      "trial": 45,
+      "pair": 23,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.028912577,
+      "attempts": 853,
+      "confirmed": 853,
+      "confirmed_ops_per_second": 281.6192208640296,
+      "success_latency": {
+        "p50_ms": 28.1914,
+        "p95_ms": 30.5156,
+        "p99_ms": 32.769,
+        "max_ms": 44.0536
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 853
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 853
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 853,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.5284490079999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 853,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 28.1914,
+            "p95_ms": 30.5156,
+            "p99_ms": 32.769,
+            "max_ms": 44.0536
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": false,
+      "clients": 8,
+      "trial": 46,
+      "pair": 23,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.105494073,
+      "attempts": 224,
+      "confirmed": 159,
+      "confirmed_ops_per_second": 51.199582501988566,
+      "success_latency": {
+        "p50_ms": 115.4132,
+        "p95_ms": 120.3344,
+        "p99_ms": 122.5744,
+        "max_ms": 124.1108
+      },
+      "failure_latency": {
+        "p50_ms": 101.0418,
+        "p95_ms": 101.3672,
+        "p99_ms": 101.6496,
+        "max_ms": 101.6496
+      },
+      "statuses": {
+        "200": 159,
+        "503": 65
+      },
+      "error_codes": {
+        "service_unavailable": 65
+      },
+      "access": {
+        "id": 0,
+        "scan": 159,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 159,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.15635368800000005,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 159,
+          "failed": 65,
+          "success_latency": {
+            "p50_ms": 115.4132,
+            "p95_ms": 120.3344,
+            "p99_ms": 122.5744,
+            "max_ms": 124.1108
+          },
+          "failure_latency": {
+            "p50_ms": 101.0418,
+            "p95_ms": 101.3672,
+            "p99_ms": 101.6496,
+            "max_ms": 101.6496
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": false,
+      "clients": 8,
+      "trial": 47,
+      "pair": 24,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.101655417,
+      "attempts": 224,
+      "confirmed": 159,
+      "confirmed_ops_per_second": 51.26294788535499,
+      "success_latency": {
+        "p50_ms": 115.3426,
+        "p95_ms": 120.9856,
+        "p99_ms": 125.1267,
+        "max_ms": 130.9504
+      },
+      "failure_latency": {
+        "p50_ms": 101.0084,
+        "p95_ms": 101.4165,
+        "p99_ms": 101.9226,
+        "max_ms": 101.9226
+      },
+      "statuses": {
+        "200": 159,
+        "503": 65
+      },
+      "error_codes": {
+        "service_unavailable": 65
+      },
+      "access": {
+        "id": 0,
+        "scan": 159,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 159,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.15671870999999998,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 159,
+          "failed": 65,
+          "success_latency": {
+            "p50_ms": 115.3426,
+            "p95_ms": 120.9856,
+            "p99_ms": 125.1267,
+            "max_ms": 130.9504
+          },
+          "failure_latency": {
+            "p50_ms": 101.0084,
+            "p95_ms": 101.4165,
+            "p99_ms": 101.9226,
+            "max_ms": 101.9226
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": true,
+      "clients": 8,
+      "trial": 48,
+      "pair": 24,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.114776621,
+      "attempts": 224,
+      "confirmed": 164,
+      "confirmed_ops_per_second": 52.65225085301551,
+      "success_latency": {
+        "p50_ms": 114.0796,
+        "p95_ms": 118.5873,
+        "p99_ms": 120.1476,
+        "max_ms": 120.1809
+      },
+      "failure_latency": {
+        "p50_ms": 101.0622,
+        "p95_ms": 101.4846,
+        "p99_ms": 101.7742,
+        "max_ms": 101.7742
+      },
+      "statuses": {
+        "200": 164,
+        "503": 60
+      },
+      "error_codes": {
+        "service_unavailable": 60
+      },
+      "access": {
+        "id": 0,
+        "scan": 164,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 164,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.156224443,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 164,
+          "failed": 60,
+          "success_latency": {
+            "p50_ms": 114.0796,
+            "p95_ms": 118.5873,
+            "p99_ms": 120.1476,
+            "max_ms": 120.1809
+          },
+          "failure_latency": {
+            "p50_ms": 101.0622,
+            "p95_ms": 101.4846,
+            "p99_ms": 101.7742,
+            "max_ms": 101.7742
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": true,
+      "clients": 8,
+      "trial": 49,
+      "pair": 25,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.112727588,
+      "attempts": 228,
+      "confirmed": 151,
+      "confirmed_ops_per_second": 48.51050910530241,
+      "success_latency": {
+        "p50_ms": 113.2414,
+        "p95_ms": 122.2962,
+        "p99_ms": 124.3092,
+        "max_ms": 132.239
+      },
+      "failure_latency": {
+        "p50_ms": 101.1619,
+        "p95_ms": 102.0408,
+        "p99_ms": 104.7601,
+        "max_ms": 104.7601
+      },
+      "statuses": {
+        "200": 151,
+        "503": 77
+      },
+      "error_codes": {
+        "service_unavailable": 77
+      },
+      "access": {
+        "id": 0,
+        "scan": 151,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 151,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.16267970599999998,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 151,
+          "failed": 77,
+          "success_latency": {
+            "p50_ms": 113.2414,
+            "p95_ms": 122.2962,
+            "p99_ms": 124.3092,
+            "max_ms": 132.239
+          },
+          "failure_latency": {
+            "p50_ms": 101.1619,
+            "p95_ms": 102.0408,
+            "p99_ms": 104.7601,
+            "max_ms": 104.7601
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": false,
+      "clients": 8,
+      "trial": 50,
+      "pair": 25,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.11702381,
+      "attempts": 223,
+      "confirmed": 153,
+      "confirmed_ops_per_second": 49.085284337305076,
+      "success_latency": {
+        "p50_ms": 117.4243,
+        "p95_ms": 121.7392,
+        "p99_ms": 137.0377,
+        "max_ms": 137.8863
+      },
+      "failure_latency": {
+        "p50_ms": 101.0278,
+        "p95_ms": 103.0377,
+        "p99_ms": 103.4947,
+        "max_ms": 103.4947
+      },
+      "statuses": {
+        "200": 153,
+        "503": 70
+      },
+      "error_codes": {
+        "service_unavailable": 70
+      },
+      "access": {
+        "id": 0,
+        "scan": 153,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 153,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.163902316,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 153,
+          "failed": 70,
+          "success_latency": {
+            "p50_ms": 117.4243,
+            "p95_ms": 121.7392,
+            "p99_ms": 137.0377,
+            "max_ms": 137.8863
+          },
+          "failure_latency": {
+            "p50_ms": 101.0278,
+            "p95_ms": 103.0377,
+            "p99_ms": 103.4947,
+            "max_ms": 103.4947
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": false,
+      "clients": 8,
+      "trial": 51,
+      "pair": 26,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001586918,
+      "attempts": 8478,
+      "confirmed": 8478,
+      "confirmed_ops_per_second": 2824.5059135748807,
+      "success_latency": {
+        "p50_ms": 2.4611,
+        "p95_ms": 4.0035,
+        "p99_ms": 4.401,
+        "max_ms": 9.4449
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8478
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2123,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2123,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8478,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.694648752,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8478,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.4611,
+            "p95_ms": 4.0035,
+            "p99_ms": 4.401,
+            "max_ms": 9.4449
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": true,
+      "clients": 8,
+      "trial": 52,
+      "pair": 26,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.002049192,
+      "attempts": 7221,
+      "confirmed": 7221,
+      "confirmed_ops_per_second": 2405.3569872348717,
+      "success_latency": {
+        "p50_ms": 3.5116,
+        "p95_ms": 4.3903,
+        "p99_ms": 5.9359,
+        "max_ms": 17.8218
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 7221
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1809,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1809,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 7221,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.399426523,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 7221,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 3.5116,
+            "p95_ms": 4.3903,
+            "p99_ms": 5.9359,
+            "max_ms": 17.8218
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": true,
+      "clients": 8,
+      "trial": 53,
+      "pair": 27,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.003435473,
+      "attempts": 8330,
+      "confirmed": 8330,
+      "confirmed_ops_per_second": 2773.4905826625027,
+      "success_latency": {
+        "p50_ms": 2.4568,
+        "p95_ms": 4.2806,
+        "p99_ms": 5.3539,
+        "max_ms": 14.2115
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8330
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2087,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2087,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8330,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.764549063,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8330,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.4568,
+            "p95_ms": 4.2806,
+            "p99_ms": 5.3539,
+            "max_ms": 14.2115
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": false,
+      "clients": 8,
+      "trial": 54,
+      "pair": 27,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.003087184,
+      "attempts": 8714,
+      "confirmed": 8714,
+      "confirmed_ops_per_second": 2901.6806592985013,
+      "success_latency": {
+        "p50_ms": 2.3451,
+        "p95_ms": 4.1452,
+        "p99_ms": 5.116,
+        "max_ms": 15.7169
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8714
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2189,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2189,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8714,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.911218861,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8714,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.3451,
+            "p95_ms": 4.1452,
+            "p99_ms": 5.116,
+            "max_ms": 15.7169
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": false,
+      "clients": 8,
+      "trial": 55,
+      "pair": 28,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.009756242,
+      "attempts": 2568,
+      "confirmed": 2568,
+      "confirmed_ops_per_second": 853.2252426839556,
+      "success_latency": {
+        "p50_ms": 9.2765,
+        "p95_ms": 11.1968,
+        "p99_ms": 13.1077,
+        "max_ms": 16.5848
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 1288,
+        "201": 1280
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2568,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.2582981659999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 1288,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 9.2057,
+            "p95_ms": 11.1879,
+            "p99_ms": 12.9933,
+            "max_ms": 14.628
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 1280,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 9.383,
+            "p95_ms": 11.1993,
+            "p99_ms": 13.4574,
+            "max_ms": 16.5848
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": true,
+      "clients": 8,
+      "trial": 56,
+      "pair": 28,
+      "repetition": 2,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.011344154,
+      "attempts": 2144,
+      "confirmed": 2144,
+      "confirmed_ops_per_second": 711.9744175211931,
+      "success_latency": {
+        "p50_ms": 11.0699,
+        "p95_ms": 12.9288,
+        "p99_ms": 15.4412,
+        "max_ms": 16.8839
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 1072,
+        "201": 1072
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2144,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.134973074,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 1072,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 11.0275,
+            "p95_ms": 12.9821,
+            "p99_ms": 15.8117,
+            "max_ms": 16.8839
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 1072,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 11.1165,
+            "p95_ms": 12.8971,
+            "p99_ms": 15.1771,
+            "max_ms": 16.4247
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": false,
+      "clients": 1,
+      "trial": 57,
+      "pair": 29,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.009602651,
+      "attempts": 157,
+      "confirmed": 157,
+      "confirmed_ops_per_second": 52.16635489998444,
+      "success_latency": {
+        "p50_ms": 18.8721,
+        "p95_ms": 22.2303,
+        "p99_ms": 24.1623,
+        "max_ms": 35.2717
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 157
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 157,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 157,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.10701443699999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 157,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 18.8721,
+            "p95_ms": 22.2303,
+            "p99_ms": 24.1623,
+            "max_ms": 35.2717
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": true,
+      "clients": 1,
+      "trial": 58,
+      "pair": 29,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000185779,
+      "attempts": 8345,
+      "confirmed": 8345,
+      "confirmed_ops_per_second": 2781.494418916116,
+      "success_latency": {
+        "p50_ms": 0.3539,
+        "p95_ms": 0.4877,
+        "p99_ms": 0.5955,
+        "max_ms": 2.2679
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8345
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 8345
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 8345,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.7409136390000002,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 8345,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 0.3539,
+            "p95_ms": 0.4877,
+            "p99_ms": 0.5955,
+            "max_ms": 2.2679
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": true,
+      "clients": 1,
+      "trial": 59,
+      "pair": 30,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001137969,
+      "attempts": 733,
+      "confirmed": 733,
+      "confirmed_ops_per_second": 244.2406872231338,
+      "success_latency": {
+        "p50_ms": 3.9502,
+        "p95_ms": 4.9913,
+        "p99_ms": 5.4462,
+        "max_ms": 19.4656
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 733
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 733
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 733,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.33222707799999995,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 733,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 3.9502,
+            "p95_ms": 4.9913,
+            "p99_ms": 5.4462,
+            "max_ms": 19.4656
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": false,
+      "clients": 1,
+      "trial": 60,
+      "pair": 30,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.015124661,
+      "attempts": 171,
+      "confirmed": 171,
+      "confirmed_ops_per_second": 56.71407295752936,
+      "success_latency": {
+        "p50_ms": 17.7328,
+        "p95_ms": 19.6097,
+        "p99_ms": 20.5345,
+        "max_ms": 21.5087
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 171
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 171,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 171,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.10352350900000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 171,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.7328,
+            "p95_ms": 19.6097,
+            "p99_ms": 20.5345,
+            "max_ms": 21.5087
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": false,
+      "clients": 1,
+      "trial": 61,
+      "pair": 31,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.009622419,
+      "attempts": 169,
+      "confirmed": 169,
+      "confirmed_ops_per_second": 56.1532233854615,
+      "success_latency": {
+        "p50_ms": 17.756,
+        "p95_ms": 19.705,
+        "p99_ms": 20.6009,
+        "max_ms": 20.9934
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 169
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 169,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 169,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.112220712,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 169,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.756,
+            "p95_ms": 19.705,
+            "p99_ms": 20.6009,
+            "max_ms": 20.9934
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": true,
+      "clients": 1,
+      "trial": 62,
+      "pair": 31,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001229082,
+      "attempts": 168,
+      "confirmed": 168,
+      "confirmed_ops_per_second": 55.97706653170436,
+      "success_latency": {
+        "p50_ms": 17.6718,
+        "p95_ms": 19.9529,
+        "p99_ms": 20.6938,
+        "max_ms": 33.1721
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 168
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 168,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 168,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.112104604,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 168,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 17.6718,
+            "p95_ms": 19.9529,
+            "p99_ms": 20.6938,
+            "max_ms": 33.1721
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": true,
+      "clients": 1,
+      "trial": 63,
+      "pair": 32,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.002361613,
+      "attempts": 161,
+      "confirmed": 161,
+      "confirmed_ops_per_second": 53.62445326468407,
+      "success_latency": {
+        "p50_ms": 18.615,
+        "p95_ms": 20.6485,
+        "p99_ms": 29.8924,
+        "max_ms": 34.5331
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 161
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 161,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 161,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.104819717,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 161,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 18.615,
+            "p95_ms": 20.6485,
+            "p99_ms": 29.8924,
+            "max_ms": 34.5331
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": false,
+      "clients": 1,
+      "trial": 64,
+      "pair": 32,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.018703768,
+      "attempts": 163,
+      "confirmed": 163,
+      "confirmed_ops_per_second": 53.99668616970435,
+      "success_latency": {
+        "p50_ms": 18.5597,
+        "p95_ms": 20.7054,
+        "p99_ms": 21.9496,
+        "max_ms": 22.6426
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 163
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 163,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 163,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.10606362999999999,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 163,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 18.5597,
+            "p95_ms": 20.7054,
+            "p99_ms": 21.9496,
+            "max_ms": 22.6426
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": false,
+      "clients": 1,
+      "trial": 65,
+      "pair": 33,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000858822,
+      "attempts": 1616,
+      "confirmed": 1616,
+      "confirmed_ops_per_second": 538.5125045379425,
+      "success_latency": {
+        "p50_ms": 1.5116,
+        "p95_ms": 3.1807,
+        "p99_ms": 4.2412,
+        "max_ms": 9.163
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1616
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1616,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1616,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1616,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.616746521,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1616,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5116,
+            "p95_ms": 3.1807,
+            "p99_ms": 4.2412,
+            "max_ms": 9.163
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": true,
+      "clients": 1,
+      "trial": 66,
+      "pair": 33,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001505054,
+      "attempts": 1410,
+      "confirmed": 1410,
+      "confirmed_ops_per_second": 469.7643264404778,
+      "success_latency": {
+        "p50_ms": 1.7352,
+        "p95_ms": 3.3808,
+        "p99_ms": 4.56,
+        "max_ms": 11.841
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1410
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1410,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1410,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1410,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.585672822,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1410,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.7352,
+            "p95_ms": 3.3808,
+            "p99_ms": 4.56,
+            "max_ms": 11.841
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": true,
+      "clients": 1,
+      "trial": 67,
+      "pair": 34,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001115838,
+      "attempts": 1558,
+      "confirmed": 1558,
+      "confirmed_ops_per_second": 519.140241197181,
+      "success_latency": {
+        "p50_ms": 1.5883,
+        "p95_ms": 3.3565,
+        "p99_ms": 4.4292,
+        "max_ms": 10.3284
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1558
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1558,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1558,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1558,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.631660047,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1558,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5883,
+            "p95_ms": 3.3565,
+            "p99_ms": 4.4292,
+            "max_ms": 10.3284
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": false,
+      "clients": 1,
+      "trial": 68,
+      "pair": 34,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.00319103,
+      "attempts": 1628,
+      "confirmed": 1628,
+      "confirmed_ops_per_second": 542.0900581206118,
+      "success_latency": {
+        "p50_ms": 1.5801,
+        "p95_ms": 3.0397,
+        "p99_ms": 3.4993,
+        "max_ms": 8.2502
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 1628
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1628,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1628,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 1628,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.628039889,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 1628,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5801,
+            "p95_ms": 3.0397,
+            "p99_ms": 3.4993,
+            "max_ms": 8.2502
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": false,
+      "clients": 1,
+      "trial": 69,
+      "pair": 35,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001140364,
+      "attempts": 1680,
+      "confirmed": 1680,
+      "confirmed_ops_per_second": 559.787212938235,
+      "success_latency": {
+        "p50_ms": 1.5184,
+        "p95_ms": 3.0869,
+        "p99_ms": 3.4514,
+        "max_ms": 10.451
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 840,
+        "201": 840
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1680,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.588290946,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 840,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5007,
+            "p95_ms": 2.9996,
+            "p99_ms": 3.4514,
+            "max_ms": 7.7865
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 840,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.5443,
+            "p95_ms": 3.1154,
+            "p99_ms": 3.4094,
+            "max_ms": 10.451
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": true,
+      "clients": 1,
+      "trial": 70,
+      "pair": 35,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.002713097,
+      "attempts": 1473,
+      "confirmed": 1473,
+      "confirmed_ops_per_second": 490.55635767255586,
+      "success_latency": {
+        "p50_ms": 1.7341,
+        "p95_ms": 3.2955,
+        "p99_ms": 3.6831,
+        "max_ms": 7.1969
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 737,
+        "201": 736
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1473,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.566760428,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 737,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.7183,
+            "p95_ms": 3.1185,
+            "p99_ms": 3.5486,
+            "max_ms": 7.1969
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 736,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 1.7573,
+            "p95_ms": 3.3704,
+            "p99_ms": 3.748,
+            "max_ms": 6.3625
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": true,
+      "clients": 8,
+      "trial": 71,
+      "pair": 36,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.000912222,
+      "attempts": 61827,
+      "confirmed": 61827,
+      "confirmed_ops_per_second": 20602.73524388345,
+      "success_latency": {
+        "p50_ms": 0.3664,
+        "p95_ms": 0.5174,
+        "p99_ms": 0.6369,
+        "max_ms": 3.2348
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 61827
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 61827
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 61827,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 16.059626627,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 61827,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 0.3664,
+            "p95_ms": 0.5174,
+            "p99_ms": 0.6369,
+            "max_ms": 3.2348
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "needle",
+      "indexed": false,
+      "clients": 8,
+      "trial": 72,
+      "pair": 36,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.106065955,
+      "attempts": 227,
+      "confirmed": 187,
+      "confirmed_ops_per_second": 60.204774370285385,
+      "success_latency": {
+        "p50_ms": 112.3214,
+        "p95_ms": 116.7272,
+        "p99_ms": 118.5056,
+        "max_ms": 128.1331
+      },
+      "failure_latency": {
+        "p50_ms": 100.9627,
+        "p95_ms": 101.3091,
+        "p99_ms": 102.8388,
+        "max_ms": 102.8388
+      },
+      "statuses": {
+        "200": 187,
+        "503": 40
+      },
+      "error_codes": {
+        "service_unavailable": 40
+      },
+      "access": {
+        "id": 0,
+        "scan": 187,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 187,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.150901905,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 187,
+          "failed": 40,
+          "success_latency": {
+            "p50_ms": 112.3214,
+            "p95_ms": 116.7272,
+            "p99_ms": 118.5056,
+            "max_ms": 128.1331
+          },
+          "failure_latency": {
+            "p50_ms": 100.9627,
+            "p95_ms": 101.3091,
+            "p99_ms": 102.8388,
+            "max_ms": 102.8388
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": false,
+      "clients": 8,
+      "trial": 73,
+      "pair": 37,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.105698009,
+      "attempts": 225,
+      "confirmed": 190,
+      "confirmed_ops_per_second": 61.1778735245343,
+      "success_latency": {
+        "p50_ms": 112.1623,
+        "p95_ms": 116.1434,
+        "p99_ms": 120.6158,
+        "max_ms": 127.3367
+      },
+      "failure_latency": {
+        "p50_ms": 100.9232,
+        "p95_ms": 101.223,
+        "p99_ms": 101.2463,
+        "max_ms": 101.2463
+      },
+      "statuses": {
+        "200": 190,
+        "503": 35
+      },
+      "error_codes": {
+        "service_unavailable": 35
+      },
+      "access": {
+        "id": 0,
+        "scan": 190,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 190,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.148747091,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 190,
+          "failed": 35,
+          "success_latency": {
+            "p50_ms": 112.1623,
+            "p95_ms": 116.1434,
+            "p99_ms": 120.6158,
+            "max_ms": 127.3367
+          },
+          "failure_latency": {
+            "p50_ms": 100.9232,
+            "p95_ms": 101.223,
+            "p99_ms": 101.2463,
+            "max_ms": 101.2463
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "edge",
+      "indexed": true,
+      "clients": 8,
+      "trial": 74,
+      "pair": 37,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.02551297,
+      "attempts": 880,
+      "confirmed": 880,
+      "confirmed_ops_per_second": 290.8597678231074,
+      "success_latency": {
+        "p50_ms": 27.3775,
+        "p95_ms": 29.5249,
+        "p99_ms": 31.1587,
+        "max_ms": 42.5315
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 880
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 880
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 880,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.501818885,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 880,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 27.3775,
+            "p95_ms": 29.5249,
+            "p99_ms": 31.1587,
+            "max_ms": 42.5315
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": true,
+      "clients": 8,
+      "trial": 75,
+      "pair": 38,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.101843372,
+      "attempts": 228,
+      "confirmed": 188,
+      "confirmed_ops_per_second": 60.609120917276286,
+      "success_latency": {
+        "p50_ms": 112.1986,
+        "p95_ms": 116.7604,
+        "p99_ms": 118.3536,
+        "max_ms": 118.7558
+      },
+      "failure_latency": {
+        "p50_ms": 100.9675,
+        "p95_ms": 101.3084,
+        "p99_ms": 101.5337,
+        "max_ms": 101.5337
+      },
+      "statuses": {
+        "200": 188,
+        "503": 40
+      },
+      "error_codes": {
+        "service_unavailable": 40
+      },
+      "access": {
+        "id": 0,
+        "scan": 188,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 188,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.150107795,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 188,
+          "failed": 40,
+          "success_latency": {
+            "p50_ms": 112.1986,
+            "p95_ms": 116.7604,
+            "p99_ms": 118.3536,
+            "max_ms": 118.7558
+          },
+          "failure_latency": {
+            "p50_ms": 100.9675,
+            "p95_ms": 101.3084,
+            "p99_ms": 101.5337,
+            "max_ms": 101.5337
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "over",
+      "indexed": false,
+      "clients": 8,
+      "trial": 76,
+      "pair": 38,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.094482205,
+      "attempts": 225,
+      "confirmed": 189,
+      "confirmed_ops_per_second": 61.07645398464975,
+      "success_latency": {
+        "p50_ms": 113.2011,
+        "p95_ms": 117.1482,
+        "p99_ms": 117.9539,
+        "max_ms": 118.5441
+      },
+      "failure_latency": {
+        "p50_ms": 100.9746,
+        "p95_ms": 101.1245,
+        "p99_ms": 101.2825,
+        "max_ms": 101.2825
+      },
+      "statuses": {
+        "200": 189,
+        "503": 36
+      },
+      "error_codes": {
+        "service_unavailable": 36
+      },
+      "access": {
+        "id": 0,
+        "scan": 189,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 189,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.14984649300000003,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 189,
+          "failed": 36,
+          "success_latency": {
+            "p50_ms": 113.2011,
+            "p95_ms": 117.1482,
+            "p99_ms": 117.9539,
+            "max_ms": 118.5441
+          },
+          "failure_latency": {
+            "p50_ms": 100.9746,
+            "p95_ms": 101.1245,
+            "p99_ms": 101.2825,
+            "max_ms": 101.2825
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": false,
+      "clients": 8,
+      "trial": 77,
+      "pair": 39,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.093610247,
+      "attempts": 233,
+      "confirmed": 181,
+      "confirmed_ops_per_second": 58.50769345476635,
+      "success_latency": {
+        "p50_ms": 104.8739,
+        "p95_ms": 118.0527,
+        "p99_ms": 118.999,
+        "max_ms": 119.122
+      },
+      "failure_latency": {
+        "p50_ms": 101.092,
+        "p95_ms": 101.6261,
+        "p99_ms": 101.8188,
+        "max_ms": 101.8188
+      },
+      "statuses": {
+        "200": 181,
+        "503": 52
+      },
+      "error_codes": {
+        "service_unavailable": 52
+      },
+      "access": {
+        "id": 0,
+        "scan": 181,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 181,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.15140056600000001,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 181,
+          "failed": 52,
+          "success_latency": {
+            "p50_ms": 104.8739,
+            "p95_ms": 118.0527,
+            "p99_ms": 118.999,
+            "max_ms": 119.122
+          },
+          "failure_latency": {
+            "p50_ms": 101.092,
+            "p95_ms": 101.6261,
+            "p99_ms": 101.8188,
+            "max_ms": 101.8188
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "dense",
+      "indexed": true,
+      "clients": 8,
+      "trial": 78,
+      "pair": 39,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.109194409,
+      "attempts": 233,
+      "confirmed": 177,
+      "confirmed_ops_per_second": 56.927929462258334,
+      "success_latency": {
+        "p50_ms": 106.406,
+        "p95_ms": 117.1127,
+        "p99_ms": 118.6533,
+        "max_ms": 119.8026
+      },
+      "failure_latency": {
+        "p50_ms": 101.0373,
+        "p95_ms": 101.4548,
+        "p99_ms": 101.7012,
+        "max_ms": 101.7012
+      },
+      "statuses": {
+        "200": 177,
+        "503": 56
+      },
+      "error_codes": {
+        "service_unavailable": 56
+      },
+      "access": {
+        "id": 0,
+        "scan": 177,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 177,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 0.152584404,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "query": {
+          "confirmed": 177,
+          "failed": 56,
+          "success_latency": {
+            "p50_ms": 106.406,
+            "p95_ms": 117.1127,
+            "p99_ms": 118.6533,
+            "max_ms": 119.8026
+          },
+          "failure_latency": {
+            "p50_ms": 101.0373,
+            "p95_ms": 101.4548,
+            "p99_ms": 101.7012,
+            "max_ms": 101.7012
+          }
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": true,
+      "clients": 8,
+      "trial": 79,
+      "pair": 40,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001458626,
+      "attempts": 7240,
+      "confirmed": 7240,
+      "confirmed_ops_per_second": 2412.1605199831265,
+      "success_latency": {
+        "p50_ms": 3.4951,
+        "p95_ms": 4.3555,
+        "p99_ms": 5.3976,
+        "max_ms": 16.755
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 7240
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 1812,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 1812,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 7240,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.102674716,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 7240,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 3.4951,
+            "p95_ms": 4.3555,
+            "p99_ms": 5.3976,
+            "max_ms": 16.755
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_indexed",
+      "indexed": false,
+      "clients": 8,
+      "trial": 80,
+      "pair": 40,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.004051387,
+      "attempts": 8667,
+      "confirmed": 8667,
+      "confirmed_ops_per_second": 2885.1037760227237,
+      "success_latency": {
+        "p50_ms": 2.3892,
+        "p95_ms": 3.9885,
+        "p99_ms": 4.927,
+        "max_ms": 12.6539
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8667
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2172,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2172,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8667,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.438666503,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8667,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.3892,
+            "p95_ms": 3.9885,
+            "p99_ms": 4.927,
+            "max_ms": 12.6539
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": false,
+      "clients": 8,
+      "trial": 81,
+      "pair": 41,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.001859533,
+      "attempts": 8386,
+      "confirmed": 8386,
+      "confirmed_ops_per_second": 2793.601735128224,
+      "success_latency": {
+        "p50_ms": 2.3444,
+        "p95_ms": 4.3923,
+        "p99_ms": 6.0037,
+        "max_ms": 20.8119
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8386
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2102,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2102,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8386,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.392544704,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8386,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.3444,
+            "p95_ms": 4.3923,
+            "p99_ms": 6.0037,
+            "max_ms": 20.8119
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "put_other",
+      "indexed": true,
+      "clients": 8,
+      "trial": 82,
+      "pair": 41,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.003265502,
+      "attempts": 8493,
+      "confirmed": 8493,
+      "confirmed_ops_per_second": 2827.921805229726,
+      "success_latency": {
+        "p50_ms": 2.482,
+        "p95_ms": 4.0122,
+        "p99_ms": 5.3684,
+        "max_ms": 12.5388
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8493
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2131,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 2131,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 8493,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 3.405937114,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "put": {
+          "confirmed": 8493,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 2.482,
+            "p95_ms": 4.0122,
+            "p99_ms": 5.3684,
+            "max_ms": 12.5388
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": true,
+      "clients": 8,
+      "trial": 83,
+      "pair": 42,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.009271836,
+      "attempts": 2246,
+      "confirmed": 2246,
+      "confirmed_ops_per_second": 746.3599576253104,
+      "success_latency": {
+        "p50_ms": 10.4826,
+        "p95_ms": 12.166,
+        "p99_ms": 17.0366,
+        "max_ms": 26.0609
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 1126,
+        "201": 1120
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2246,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.029949239,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 1126,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 10.4417,
+            "p95_ms": 11.9751,
+            "p99_ms": 19.0966,
+            "max_ms": 26.0609
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 1120,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 10.5242,
+            "p95_ms": 12.2449,
+            "p99_ms": 16.8407,
+            "max_ms": 25.2965
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    },
+    {
+      "case": "churn",
+      "indexed": false,
+      "clients": 8,
+      "trial": 84,
+      "pair": 42,
+      "repetition": 3,
+      "documents": 4096,
+      "document_bytes": 1024,
+      "elapsed_seconds": 3.00678198,
+      "attempts": 2491,
+      "confirmed": 2491,
+      "confirmed_ops_per_second": 828.4604658964997,
+      "success_latency": {
+        "p50_ms": 9.4935,
+        "p95_ms": 11.282,
+        "p99_ms": 14.9576,
+        "max_ms": 34.7907
+      },
+      "failure_latency": null,
+      "statuses": {
+        "204": 1248,
+        "201": 1243
+      },
+      "error_codes": {},
+      "access": {
+        "id": 0,
+        "scan": 0,
+        "secondary": 0
+      },
+      "server_counter_delta": {
+        "kiarni_query_execution_total{access=\"id\"}": 0,
+        "kiarni_query_execution_total{access=\"scan\"}": 0,
+        "kiarni_query_execution_total{access=\"secondary\"}": 0,
+        "kiarni_storage_commits_total{outcome=\"confirmed\"}": 2491,
+        "kiarni_storage_commits_total{outcome=\"uncertain\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"confirmed\"}": 0,
+        "kiarni_storage_group_receipts_total{commit=\"not_required\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"changed\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"noop\"}": 0,
+        "kiarni_storage_group_items_total{outcome=\"rejected\"}": 0
+      },
+      "client_cpu_seconds": 1.117014242,
+      "uncertain_write_outcomes": 0,
+      "per_operation": {
+        "delete": {
+          "confirmed": 1248,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 9.4643,
+            "p95_ms": 11.2548,
+            "p99_ms": 14.9576,
+            "max_ms": 34.7907
+          },
+          "failure_latency": null
+        },
+        "insert": {
+          "confirmed": 1243,
+          "failed": 0,
+          "success_latency": {
+            "p50_ms": 9.5374,
+            "p95_ms": 11.3406,
+            "p99_ms": 14.8798,
+            "max_ms": 34.6913
+          },
+          "failure_latency": null
+        }
+      },
+      "valid": true,
+      "file_logical_bytes": {
+        "before": 8425472,
+        "after": 8425472
+      },
+      "post_restart_verified": true
+    }
+  ],
+  "seed": {
+    "dataset_sha256": "01a51c6b8747d0ac88ea2544bb68c40ce5e86915e2555d4104cfe779e2df6081",
+    "distribution": {
+      "needle": 1,
+      "sparse": 64,
+      "medium": 256,
+      "edge": 512,
+      "over": 513,
+      "dense": 2750
+    },
+    "layout": "spread",
+    "offline_create_including_open_audit_ms": 90.784381,
+    "offline_audit_ms": 39.765037,
+    "artifact_manifests": {
+      "plain": {
+        "magic": "kiarni-backup",
+        "version": 1,
+        "format_version": 2,
+        "engine": "redb-4.5.0",
+        "collections": "1",
+        "documents": "4096",
+        "document_bytes": "4194304",
+        "files": [
+          {
+            "path": "store/format.json",
+            "bytes": "52",
+            "sha256": "d370f3a6f144545f76ce32c61442dd01d5ff1eb2b8631c9a764e316e3236489c"
+          },
+          {
+            "path": "store/data.redb",
+            "bytes": "8425472",
+            "sha256": "10defcc4871e127dc19eebf2d2d61bc5b558e81662975e3bd608118817be936f"
+          }
+        ]
+      },
+      "indexed": {
+        "magic": "kiarni-backup",
+        "version": 1,
+        "format_version": 2,
+        "engine": "redb-4.5.0",
+        "collections": "1",
+        "documents": "4096",
+        "document_bytes": "4194304",
+        "files": [
+          {
+            "path": "store/format.json",
+            "bytes": "52",
+            "sha256": "d370f3a6f144545f76ce32c61442dd01d5ff1eb2b8631c9a764e316e3236489c"
+          },
+          {
+            "path": "store/data.redb",
+            "bytes": "8425472",
+            "sha256": "d0921c82bbc63d05f951362c8a2d59fa17e5d7fe290f5523c037a417569ae409"
+          }
+        ]
+      }
+    },
+    "artifact_logical_bytes": {
+      "plain": 8425472,
+      "indexed": 8425472
+    }
+  },
+  "valid": true,
+  "summary": [
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 1,
+      "case": "churn",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 0.9455623346455029,
+          "p50_index_over_plain": 1.050823738947904,
+          "p95_index_over_plain": 1.0085354896675651,
+          "plain_confirmed": 1633,
+          "indexed_confirmed": 1544
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.9026732682841297,
+          "p50_index_over_plain": 1.0997404016942205,
+          "p95_index_over_plain": 1.0221093516582014,
+          "plain_confirmed": 1730,
+          "indexed_confirmed": 1561
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.8763264796594812,
+          "p50_index_over_plain": 1.1420574288724974,
+          "p95_index_over_plain": 1.067575885192264,
+          "plain_confirmed": 1680,
+          "indexed_confirmed": 1473
+        }
+      ],
+      "median_throughput_index_over_plain": 0.9026732682841297,
+      "median_p50_index_over_plain": 1.0997404016942205,
+      "median_p95_index_over_plain": 1.0221093516582014
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 1,
+      "case": "dense",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 0.991066791832499,
+          "p50_index_over_plain": 0.9932017916879288,
+          "p95_index_over_plain": 0.9973139778780425,
+          "plain_confirmed": 170,
+          "indexed_confirmed": 169
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 1.0080125487118534,
+          "p50_index_over_plain": 0.9919613094123375,
+          "p95_index_over_plain": 1.0061578589727898,
+          "plain_confirmed": 140,
+          "indexed_confirmed": 141
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.9931063750125259,
+          "p50_index_over_plain": 1.002979574023287,
+          "p95_index_over_plain": 0.9972519246186984,
+          "plain_confirmed": 163,
+          "indexed_confirmed": 161
+        }
+      ],
+      "median_throughput_index_over_plain": 0.9931063750125259,
+      "median_p50_index_over_plain": 0.9932017916879288,
+      "median_p95_index_over_plain": 0.9973139778780425
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 1,
+      "case": "edge",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 4.415430784429799,
+          "p50_index_over_plain": 0.22065214279579745,
+          "p95_index_over_plain": 0.25146500667334,
+          "plain_confirmed": 173,
+          "indexed_confirmed": 761
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 4.810522647000295,
+          "p50_index_over_plain": 0.20503974801259936,
+          "p95_index_over_plain": 0.23668327115955948,
+          "plain_confirmed": 149,
+          "indexed_confirmed": 713
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 4.306527013251803,
+          "p50_index_over_plain": 0.2227623387169539,
+          "p95_index_over_plain": 0.2545321958010576,
+          "plain_confirmed": 171,
+          "indexed_confirmed": 733
+        }
+      ],
+      "median_throughput_index_over_plain": 4.415430784429799,
+      "median_p50_index_over_plain": 0.22065214279579745,
+      "median_p95_index_over_plain": 0.25146500667334
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 1,
+      "case": "needle",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 47.4477756451964,
+          "p50_index_over_plain": 0.020915731756768672,
+          "p95_index_over_plain": 0.02488154153943351,
+          "plain_confirmed": 177,
+          "indexed_confirmed": 8359
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 58.0482312694975,
+          "p50_index_over_plain": 0.016343972880817546,
+          "p95_index_over_plain": 0.02191947332931114,
+          "plain_confirmed": 149,
+          "indexed_confirmed": 8618
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 53.3197004898831,
+          "p50_index_over_plain": 0.01875255006067157,
+          "p95_index_over_plain": 0.021938525346036717,
+          "plain_confirmed": 157,
+          "indexed_confirmed": 8345
+        }
+      ],
+      "median_throughput_index_over_plain": 53.3197004898831,
+      "median_p50_index_over_plain": 0.01875255006067157,
+      "median_p95_index_over_plain": 0.021938525346036717
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 1,
+      "case": "over",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 1.0161061554217388,
+          "p50_index_over_plain": 0.9901668170565235,
+          "p95_index_over_plain": 0.9866590568595277,
+          "plain_confirmed": 172,
+          "indexed_confirmed": 175
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.9955949494744376,
+          "p50_index_over_plain": 1.0035480952859583,
+          "p95_index_over_plain": 1.0100533164648473,
+          "plain_confirmed": 150,
+          "indexed_confirmed": 149
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.9968629253471716,
+          "p50_index_over_plain": 0.9952579409776977,
+          "p95_index_over_plain": 1.012580563308805,
+          "plain_confirmed": 169,
+          "indexed_confirmed": 168
+        }
+      ],
+      "median_throughput_index_over_plain": 0.9968629253471716,
+      "median_p50_index_over_plain": 0.9952579409776977,
+      "median_p95_index_over_plain": 1.0100533164648473
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 1,
+      "case": "put_indexed",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 0.8562816493014966,
+          "p50_index_over_plain": 1.1865686602071501,
+          "p95_index_over_plain": 1.0801325355465483,
+          "plain_confirmed": 1654,
+          "indexed_confirmed": 1416
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.6672439542677657,
+          "p50_index_over_plain": 1.6532078923298055,
+          "p95_index_over_plain": 1.5595136586136114,
+          "plain_confirmed": 1614,
+          "indexed_confirmed": 1077
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.8723368955815569,
+          "p50_index_over_plain": 1.1479227308811855,
+          "p95_index_over_plain": 1.0629106800389851,
+          "plain_confirmed": 1616,
+          "indexed_confirmed": 1410
+        }
+      ],
+      "median_throughput_index_over_plain": 0.8562816493014966,
+      "median_p50_index_over_plain": 1.1865686602071501,
+      "median_p95_index_over_plain": 1.0801325355465483
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 1,
+      "case": "put_other",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 1.0210023450348176,
+          "p50_index_over_plain": 0.9864996945632254,
+          "p95_index_over_plain": 0.9818940667787652,
+          "plain_confirmed": 1527,
+          "indexed_confirmed": 1559
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.9988403838197919,
+          "p50_index_over_plain": 0.9962631273758134,
+          "p95_index_over_plain": 1.036286222674123,
+          "plain_confirmed": 1600,
+          "indexed_confirmed": 1598
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.9576641988178196,
+          "p50_index_over_plain": 1.0051895449655086,
+          "p95_index_over_plain": 1.1042208112642695,
+          "plain_confirmed": 1628,
+          "indexed_confirmed": 1558
+        }
+      ],
+      "median_throughput_index_over_plain": 0.9988403838197919,
+      "median_p50_index_over_plain": 0.9962631273758134,
+      "median_p95_index_over_plain": 1.036286222674123
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 8,
+      "case": "churn",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 0.8684796158811471,
+          "p50_index_over_plain": 1.1378170629613926,
+          "p95_index_over_plain": 1.170658655042439,
+          "plain_confirmed": 2587,
+          "indexed_confirmed": 2248
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.8344507193452979,
+          "p50_index_over_plain": 1.1933272247075946,
+          "p95_index_over_plain": 1.1546870534438411,
+          "plain_confirmed": 2568,
+          "indexed_confirmed": 2144
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.9008999081418494,
+          "p50_index_over_plain": 1.1041870753673566,
+          "p95_index_over_plain": 1.0783549016131893,
+          "plain_confirmed": 2491,
+          "indexed_confirmed": 2246
+        }
+      ],
+      "median_throughput_index_over_plain": 0.8684796158811471,
+      "median_p50_index_over_plain": 1.1378170629613926,
+      "median_p95_index_over_plain": 1.1546870534438411
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 8,
+      "case": "dense",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 1.0118265924353924,
+          "p50_index_over_plain": 0.982026409749374,
+          "p95_index_over_plain": 0.9902042206147381,
+          "plain_confirmed": 161,
+          "indexed_confirmed": 163
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.9882902739637217,
+          "p50_index_over_plain": 0.9643779013372871,
+          "p95_index_over_plain": 1.0045753545283689,
+          "plain_confirmed": 153,
+          "indexed_confirmed": 151
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.9729990382593126,
+          "p50_index_over_plain": 1.0146089732526395,
+          "p95_index_over_plain": 0.9920374544588985,
+          "plain_confirmed": 181,
+          "indexed_confirmed": 177
+        }
+      ],
+      "median_throughput_index_over_plain": 0.9882902739637217,
+      "median_p50_index_over_plain": 0.982026409749374,
+      "median_p95_index_over_plain": 0.9920374544588985
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 8,
+      "case": "edge",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 5.2262152376375735,
+          "p50_index_over_plain": 0.25757489889450563,
+          "p95_index_over_plain": 0.25396095646701744,
+          "plain_confirmed": 170,
+          "indexed_confirmed": 866
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 5.500420259346678,
+          "p50_index_over_plain": 0.2442649540953721,
+          "p95_index_over_plain": 0.2535899958781529,
+          "plain_confirmed": 159,
+          "indexed_confirmed": 853
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 4.754329483296984,
+          "p50_index_over_plain": 0.24408825425298875,
+          "p95_index_over_plain": 0.2542107429264168,
+          "plain_confirmed": 190,
+          "indexed_confirmed": 880
+        }
+      ],
+      "median_throughput_index_over_plain": 5.2262152376375735,
+      "median_p50_index_over_plain": 0.2442649540953721,
+      "median_p95_index_over_plain": 0.25396095646701744
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 8,
+      "case": "needle",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 341.6504223486071,
+          "p50_index_over_plain": 0.0035973062507961215,
+          "p95_index_over_plain": 0.004973968057571907,
+          "plain_confirmed": 174,
+          "indexed_confirmed": 57713
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 333.1296465144722,
+          "p50_index_over_plain": 0.003677125261796313,
+          "p95_index_over_plain": 0.005418833353001117,
+          "plain_confirmed": 170,
+          "indexed_confirmed": 54671
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 342.2109867428075,
+          "p50_index_over_plain": 0.0032620676024337305,
+          "p95_index_over_plain": 0.004432557278851887,
+          "plain_confirmed": 187,
+          "indexed_confirmed": 61827
+        }
+      ],
+      "median_throughput_index_over_plain": 341.6504223486071,
+      "median_p50_index_over_plain": 0.0035973062507961215,
+      "median_p95_index_over_plain": 0.004973968057571907
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 8,
+      "case": "over",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 1.0247727614290385,
+          "p50_index_over_plain": 0.9870726736137155,
+          "p95_index_over_plain": 0.9890555337255923,
+          "plain_confirmed": 172,
+          "indexed_confirmed": 176
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 1.027101503619487,
+          "p50_index_over_plain": 0.9890500127446407,
+          "p95_index_over_plain": 0.9801769797397376,
+          "plain_confirmed": 159,
+          "indexed_confirmed": 164
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.9923483922709245,
+          "p50_index_over_plain": 0.9911440789886318,
+          "p95_index_over_plain": 0.9966896631787769,
+          "plain_confirmed": 189,
+          "indexed_confirmed": 188
+        }
+      ],
+      "median_throughput_index_over_plain": 1.0247727614290385,
+      "median_p50_index_over_plain": 0.9890500127446407,
+      "median_p95_index_over_plain": 0.9890555337255923
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 8,
+      "case": "put_indexed",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 0.8266338265583889,
+          "p50_index_over_plain": 1.4599751140605557,
+          "p95_index_over_plain": 1.1367386029881241,
+          "plain_confirmed": 8595,
+          "indexed_confirmed": 7105
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.8516027442797928,
+          "p50_index_over_plain": 1.4268416561700052,
+          "p95_index_over_plain": 1.0966154614712127,
+          "plain_confirmed": 8478,
+          "indexed_confirmed": 7221
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 0.8360740920413006,
+          "p50_index_over_plain": 1.4628746023773647,
+          "p95_index_over_plain": 1.0920145418076972,
+          "plain_confirmed": 8667,
+          "indexed_confirmed": 7240
+        }
+      ],
+      "median_throughput_index_over_plain": 0.8360740920413006,
+      "median_p50_index_over_plain": 1.4599751140605557,
+      "median_p95_index_over_plain": 1.0966154614712127
+    },
+    {
+      "documents": 4096,
+      "document_bytes": 1024,
+      "clients": 8,
+      "case": "put_other",
+      "pairs": [
+        {
+          "repetition": 1,
+          "throughput_index_over_plain": 1.0138057946289927,
+          "p50_index_over_plain": 0.9859529080297847,
+          "p95_index_over_plain": 1.0552404264833948,
+          "plain_confirmed": 8058,
+          "indexed_confirmed": 8171
+        },
+        {
+          "repetition": 2,
+          "throughput_index_over_plain": 0.9558221280397584,
+          "p50_index_over_plain": 1.047631231077566,
+          "p95_index_over_plain": 1.0326642864035511,
+          "plain_confirmed": 8714,
+          "indexed_confirmed": 8330
+        },
+        {
+          "repetition": 3,
+          "throughput_index_over_plain": 1.0122852408308398,
+          "p50_index_over_plain": 1.0586930557925271,
+          "p95_index_over_plain": 0.9134621952052456,
+          "plain_confirmed": 8386,
+          "indexed_confirmed": 8493
+        }
+      ],
+      "median_throughput_index_over_plain": 1.0122852408308398,
+      "median_p50_index_over_plain": 1.047631231077566,
+      "median_p95_index_over_plain": 1.0326642864035511
+    }
+  ]
+}

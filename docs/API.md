@@ -138,7 +138,9 @@ secundário existente somente para igualdade direta de string de até 128 bytes
 UTF-8 no campo simples indexado, quando a contagem de candidatos é no máximo
 1/8 da coleção. Casos densos, tipos/operadores não elegíveis e consultas sem
 índice usam scan. Tudo é lido de um único snapshot e avaliado pelo mesmo engine.
-Esse limiar é hipótese de custo, não garantia de menor latência.
+Esse limiar conservador teve benefício nos
+[fixtures medidos](./benchmarks/secondary-index-http-2026-11-22.md),
+sem demonstrar ponto ótimo universal ou garantir menor latência em qualquer carga.
 
 O orçamento de **10.000 documentos/8 MiB de JSON da coleção inteira** continua
 valendo antes da avaliação: índice/filtro/limit seletivo não transforma coleção

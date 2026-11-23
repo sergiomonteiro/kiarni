@@ -3,7 +3,7 @@
 - Status: **aceita para o Store único de formato 2**, sem suporte legado.
 - Aceite restrito: 2026-11-21, após G1 e validação acumulada do candidato.
   G3.1 estende a composição interna para bootstrap/auth offline, conforme seção final.
-  Habilitação no servidor/CLI e homologação do custo permanecem pendentes.
+  Servidor/CLI integrados; custos locais medidos em 2026-11-22, conforme seção final.
 - Data: 2026-11-19.
 - Requisito: RF-04; integração posterior ao aceite técnico M3, issue #10.
 - Complementa a [avaliação 0033](./0033-avaliacao-indice-secundario.md).
@@ -33,9 +33,9 @@ com format_version 2. O código de exportação do layout 1 foi removido.
 Métricas de primitivas e commits continuam nos limites reais do Store; commits
 de manutenção de índice também são contados. O planner HTTP agora seleciona
 ID/secundário/scan com observabilidade fixa. Administração offline de índices
-pela CLI está integrada conforme a seção final; homologação de desempenho
-permanece pendente. Não há ganho HTTP
-medido/alegado nesta integração.
+pela CLI está integrada conforme a seção final. Medições HTTP locais registram
+ganhos seletivos e custo de escrita; 1/8 permanece política conservadora, sem
+promessa de desempenho universal.
 As seções seguintes registram o histórico anterior à consolidação.
 
 ## Contexto e fronteira desta entrega
@@ -766,3 +766,24 @@ CLI distingue index_already_exists, index_not_found, index_maintenance_limit,
 invalid_index_collection/field e falhas de sintaxe, sem ecoar valores privados.
 Erro commit_uncertain exige inspeção/auditoria antes de repetir; não presumir
 rollback nem apagar dados/locks. Não emitir changefeeds por manutenção offline.
+
+## Medição do produto e manutenção do limiar — 2026-11-22
+
+RF-04 / critério 6 da issue #10: [relatório HTTP](../benchmarks/secondary-index-http-2026-11-22.md),
+270 rodadas / 135 pares válidos, mesmo binário release e Store formato 2,
+sem/com índice opcional. Dois tamanhos de dataset/documento, tags contíguas
+e espalhadas, clientes 1/8, três repetições, controle ID/scan e escritas reais.
+Todas as rodadas auditadas e verificadas após reinício; recusas reportadas.
+
+Decisão: manter candidatos <= N/8 como política conservadora. Houve benefício
+em todas as rodadas do limiar: razões medianas de throughput de 2,481 a 5,226.
+Isso não prova que 1/8 é ótimo: não se forçou índice acima dele, e há limites
+de ambiente/cache/duração. Casos densos preservam scan. Igualdade com um
+candidato e tags espalhadas, 4.096 × 1 KiB / um cliente: razão 53,32; alterar
+o campo indexado: razão 0,856. O custo de escrita justifica índice opcional.
+
+Os dois modos já mantêm estatísticas transacionais: não se isolou o seu custo
+contra o formato removido. Não houve mudança de formato/API/runtime nem
+otimização de CPU/RSS; #9 permanece investigação separada. As pendências de
+medição nas seções históricas acima ficam superadas por este relatório local,
+sem transformar os resultados em garantia para qualquer workload.

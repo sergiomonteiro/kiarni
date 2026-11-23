@@ -7,6 +7,10 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
+- Medições pareadas do índice no HTTP real: 270 rodadas, 135 pares válidos,
+  datasets contíguos/espalhados, leitura seletiva/densa e custo de escrita.
+  [Relatório](./docs/benchmarks/secondary-index-http-2026-11-22.md) e resultados
+  brutos com ambiente, hashes, recusas e verificação após reinício.
 - Comandos offline `index create`, `index rebuild`, `index drop` e `index audit`,
   com lock da instalação, validação de argumentos, budgets e recuperação restrita.
   Não iniciam servidor/bootstrap/auth nem alteram credenciais; audit é global.
@@ -18,7 +22,7 @@ A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendênci
   backup/restore. Removidos backend antigo, fachada IndexedStore e entrypoint
   paralelo de bootstrap. Formato 1 de desenvolvimento é recusado, sem migração
   ou apagamento automático. Índices são mantidos nas mutações HTTP; o planner
-  HTTP usa ID/secundário seletivo/scan; medições de performance permanecem pendentes.
+  HTTP usa ID/secundário seletivo/scan; medições locais registradas acima.
 - Removido wrapper kiarni-format-spike; testes de contrato e crash transferidos
   para crates/storage/tests/format.rs. Relatórios históricos preservados.
 
@@ -42,7 +46,7 @@ A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendênci
   executados no CI. Quickstart distribuído com seus arquivos de exemplo.
 - Avaliação RF-04 de índice secundário string parcial: equivalência com scan,
   testes de atualização/remoção/crash e medições pareadas no ADR 0033. Núcleo
-  integrado ao Store; seleção secundária HTTP e medições no produto pendentes.
+  integrado ao Store, com seleção secundária HTTP e medições no produto registradas.
 - Evidências de instalação isolada e observação com Prometheus externo,
   diagnóstico de scan versus ID e consumidor lento, com escopo/duração explícitos.
 

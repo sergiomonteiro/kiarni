@@ -6,7 +6,7 @@
 - Resultado: evidência suficiente para iniciar promoção **incremental**;
   promoção para Store único concluída no incremento de consolidação abaixo;
   planner secundário HTTP e administração offline pela CLI integrados;
-  medições no produto ainda pendentes.
+  medições no produto concluídas conforme relatório de 2026-11-22 abaixo.
 
 ## Estado atual: Store único no caminho normal
 
@@ -31,8 +31,13 @@ Planner secundário integrado ao carregamento HTTP, preservando admissão, erros
 orçamento da coleção inteira e tempos de storage/engine. Métricas e dashboard
 distinguem id/scan/secondary, inclusive em falha posterior à escolha. A
 [administração offline pela CLI](./INDEXES.md) integra lock e recuperação restrita.
-O próximo recorte são workloads e medições no produto.
-Nenhuma medição de ganho de latência HTTP foi produzida nesta integração.
+As [medições no produto](./benchmarks/secondary-index-http-2026-11-22.md)
+concluem o recorte: 270 rodadas / 135 pares válidos, duas distribuições de tags,
+dois tamanhos de dataset/documento, leitura seletiva/densa e custo de escrita.
+Todos os membros foram auditados e verificados após reinício; recusas 503 são
+explicitadas. Ganhos seletivos e regressões de escrita são locais, não promessa
+de capacidade geral. O limiar 1/8 é mantido conservadoramente, sem prova de
+optimalidade. Critérios 1–6 da issue #10 atendidos; CPU/RSS e #9 seguem separados.
 
 As tabelas e etapas G1–G3.1 abaixo preservam o histórico e suas evidências. A
 exigência antiga de manter formato 1 está superada pelo ADR 0034 revisado.

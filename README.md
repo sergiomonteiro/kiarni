@@ -47,8 +47,9 @@ publica uma raiz nova e prepara novas credenciais para o primeiro startup.
 
 A [administração de índices](./docs/INDEXES.md) oferece create/rebuild/drop/audit
 pela CLI offline, sob o lock da instalação. O planner HTTP escolhe ID, índice
-secundário seletivo ou scan, com métricas e limites preservados. Workloads e
-medições de leitura/escrita com índices no produto permanecem pendentes.
+secundário seletivo ou scan, com métricas e limites preservados. As
+[medições no produto](./docs/benchmarks/secondary-index-http-2026-11-22.md)
+registram ganhos seletivos, custos de escrita e limites da comparação local.
 
 O [perfil remoto HTTPS](./docs/REMOTE_HTTPS.md) usa proxy local opcional e origem
 pública explícita; o backend continua restrito a loopback e exige Bearer.
