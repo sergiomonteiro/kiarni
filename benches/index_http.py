@@ -3,8 +3,10 @@ import argparse
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor
 import hashlib
+from functools import lru_cache
 import json
 import multiprocessing
+from math import gcd
 import os
 from pathlib import Path
 import statistics
@@ -32,9 +34,23 @@ def distribution(count):
     return sizes + [("dense", count - sum(size for _, size in sizes))]
 
 
-def tag_for(index, count):
+@lru_cache(maxsize=16)
+def spread_stride(count):
+    if count < 1:
+        raise ValueError("invalid_document_count")
+    stride = 97
+    while gcd(stride, count) != 1:
+        stride += 2
+    return stride
+
+
+def tag_for(index, count, layout="contiguous"):
     if index < 0:
         raise ValueError("invalid_document_index")
+    if index >= count:
+        raise ValueError("invalid_document_index")
+    if layout == "spread":
+        index = index * spread_stride(count) % count
     for tag, size in distribution(count):
         if index < size:
             return tag
@@ -42,9 +58,9 @@ def tag_for(index, count):
     raise ValueError("invalid_document_index")
 
 
-def document(index, revision, count, size, tag=None, churn=False):
+def document(index, revision, count, size, tag=None, churn=False, layout="contiguous"):
     value = {"_id": f'{"w" if churn else "d"}{index:06d}', "score": index,
-             "tag": tag if tag is not None else tag_for(index, count),
+             "tag": tag if tag is not None else tag_for(index, count, layout),
              "revision": revision, "padding": ""}
     padding = size - len(load.encoded(value))
     if padding < 0:
@@ -56,7 +72,7 @@ def document(index, revision, count, size, tag=None, churn=False):
     return result
 
 
-def query_case(case, count):
+def query_case(case, count, layout="contiguous"):
     ast = {"from": "bench", "limit": 10, "sort": [{"field": "score", "direction": "desc"}],
            "project": ["score"]}
     tag = "dense" if case == "compound" else case
@@ -68,7 +84,7 @@ def query_case(case, count):
         ast["filter"] = ({"op": "all", "args": [predicate,
                           {"op": "gte", "field": "score", "value": 0}]}
                          if case == "compound" else predicate)
-        selected = [i for i in reversed(range(count)) if tag_for(i, count) == tag][:10]
+        selected = [i for i in reversed(range(count)) if tag_for(i, count, layout) == tag][:10]
     expected = {"count": len(selected), "documents": [{"_id": f"d{i:06d}", "score": i} for i in selected]}
     return ast, expected
 
@@ -111,7 +127,7 @@ def attempt(client, step, state):
         churn = case == "churn"
         tag = "churn" if churn else (("changed1" if state["expected"]["tag"] == "changed0" else "changed0")
                                      if case == "put_indexed" else None)
-        body = document(client, revision, count, size, tag, churn)
+        body = document(client, revision, count, size, tag, churn, context["layout"])
         expected = json.loads(body)
         kind, method, path = (("insert", "POST", "/v1/collections/bench/documents") if churn else
                               ("put", "PUT", f"/v1/collections/bench/documents/d{client:06d}"))
@@ -131,7 +147,7 @@ def worker(client):
     context = CONTEXT
     state = {"present": context["case"] != "churn", "expected": None}
     if context["case"] in WRITES and context["case"] != "churn":
-        state["expected"] = json.loads(document(client, 0, context["documents"], context["document_bytes"]))
+        state["expected"] = json.loads(document(client, 0, context["documents"], context["document_bytes"], layout=context["layout"]))
     for step in range(context["warmup"]):
         outcome = attempt(client, step, state)
         if not (outcome[4] or outcome[5]):
@@ -237,7 +253,7 @@ def server_for(binary, directory, root):
         for part in ("--" + key.replace("_", "-"), str(value))])
 
 
-def seed(binary, directory, count, size):
+def seed(binary, directory, count, size, layout):
     root = directory / "seed"
     server = server_for(binary, directory, root)
     try:
@@ -245,7 +261,7 @@ def seed(binary, directory, count, size):
         load.control(("127.0.0.1", server.port), token, "POST", "/v1/collections", load.encoded({"name": "bench"}))
         digest = hashlib.sha256()
         for index in range(count):
-            body = document(index, 0, count, size)
+            body = document(index, 0, count, size, layout=layout)
             digest.update(body)
             load.control(("127.0.0.1", server.port), token, "POST", "/v1/collections/bench/documents", body)
     finally:
@@ -254,7 +270,7 @@ def seed(binary, directory, count, size):
     build_ms = cli(binary, "index", "create", "--data-dir", root, "--collection", "bench", "--field", "tag")
     audit_ms = cli(binary, "index", "audit", "--data-dir", root)
     cli(binary, "backup", "--data-dir", root, "--output", directory / "indexed")
-    return {"dataset_sha256": digest.hexdigest(), "distribution": dict(distribution(count)),
+    return {"dataset_sha256": digest.hexdigest(), "distribution": dict(distribution(count)), "layout": layout,
             "offline_create_including_open_audit_ms": build_ms, "offline_audit_ms": audit_ms,
             "artifact_manifests": {mode: json.loads((directory / mode / "backup.json").read_text()) for mode in ["plain", "indexed"]},
             "artifact_logical_bytes": {mode: (directory / mode / "store/data.redb").stat().st_size for mode in ["plain", "indexed"]}}
@@ -330,7 +346,7 @@ def benchmark(args):
     fingerprint = source_hash()
     report = {"schema": 1, "environment": load.environment(binary),
               "measurement_source_sha256": fingerprint,
-              "parameters": {"documents": args.documents, "document_bytes": args.document_bytes,
+              "parameters": {"documents": args.documents, "document_bytes": args.document_bytes, "layout": args.layout,
                   "clients": args.clients, "cases": args.cases, "repetitions": args.repeat,
                   "seconds_per_round": args.seconds, "warmup_per_client": args.warmup, "server_config": CONFIG,
                   "load_model": "closed_loop; one new TCP connection/request; process/client",
@@ -346,7 +362,7 @@ def benchmark(args):
         report["environment"].update(data_filesystem=load.filesystem(directory), data_block_bytes=os.statvfs(directory).f_frsize,
                                      cpu_load_before=list(os.getloadavg()) if hasattr(os, "getloadavg") else None,
                                      cgroup_v2_limits=cgroup_limits())
-        report["seed"] = seed(binary, directory, args.documents, args.document_bytes)
+        report["seed"] = seed(binary, directory, args.documents, args.document_bytes, args.layout)
         trial = 0
         for repetition in range(1, args.repeat + 1):
             for client_index, clients in enumerate(args.clients):
@@ -359,9 +375,9 @@ def benchmark(args):
                             cli(binary, "restore", "--from", directory / ("indexed" if indexed else "plain"), "--data-dir", root)
                             context = {"case": case, "indexed": indexed, "clients": clients,
                                        "repetition": repetition, "trial": trial, "pair": (trial + 1) // 2, "seconds": args.seconds,
-                                       "documents": args.documents, "document_bytes": args.document_bytes, "warmup": args.warmup}
+                                       "documents": args.documents, "document_bytes": args.document_bytes, "warmup": args.warmup, "layout": args.layout}
                             if case not in WRITES:
-                                ast, expected = query_case(case, args.documents)
+                                ast, expected = query_case(case, args.documents, args.layout)
                                 context.update(query=load.encoded(ast), expected=expected)
                             server = server_for(binary, Path(work), root)
                             try:
@@ -402,6 +418,7 @@ def arguments():
     parser.add_argument("--cases", nargs="+", choices=CASES, default=CASES)
     parser.add_argument("--documents", type=int, default=4096)
     parser.add_argument("--document-bytes", type=int, default=1024)
+    parser.add_argument("--layout", choices=["contiguous", "spread"], default="spread")
     parser.add_argument("--seconds", type=float, default=2)
     parser.add_argument("--repeat", type=int, default=3)
     parser.add_argument("--warmup", type=int, default=5)

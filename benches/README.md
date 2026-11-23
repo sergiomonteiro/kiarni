@@ -205,8 +205,8 @@ Os dois modos mantêm estatísticas, telemetria e o writer normal do produto.
 
 ```bash
 cargo build -p kiarni --release --locked --offline
-python3 benches/index_http.py --output /tmp/index-http-main-NOVO.json --documents 4096 --document-bytes 1024 --clients 1 8 --repeat 3 --seconds 2 --warmup 5
-python3 benches/index_http.py --output /tmp/index-http-small-NOVO.json --documents 1024 --document-bytes 256 --clients 1 --repeat 3 --seconds 1 --warmup 5 --cases needle edge over dense put_indexed put_other churn
+python3 benches/index_http.py --output /tmp/index-http-main-NOVO.json --layout spread --documents 4096 --document-bytes 1024 --clients 1 8 --repeat 3 --seconds 2 --warmup 5
+python3 benches/index_http.py --output /tmp/index-http-small-NOVO.json --layout spread --documents 1024 --document-bytes 256 --clients 1 --repeat 3 --seconds 1 --warmup 5 --cases needle edge over dense put_indexed put_other churn
 ```
 
 Saídas precisam ser novas. O primeiro comando mede 144 rodadas (72 pares); o
@@ -216,6 +216,10 @@ reinício ficam fora da janela de throughput/latência.
 
 O dataset tem documentos de tamanho exato, `_id`, score, tag, revision e padding.
 Buckets de tag contêm 1 documento, N/64, N/16, N/8, N/8+1 e o restante denso.
+`--layout spread` (padrão) distribui tags por permutação multiplicativa de stride
+coprimo com N; IDs continuam ordenados. `--layout contiguous` agrupa cada tag
+por faixa de ID, permitindo comparar o efeito da localidade. Ambos mantêm a
+mesma contagem de cada tag; cada par compartilha exatamente seu dataset.
 Consultas eq tag também medem valor ausente; há controle por ID e filtro composto
 que exige scan. Sort por score decrescente, limit 10 e project preservam retorno
 pequeno conhecido. O relatório verifica o caminho id/scan/secondary por diferença

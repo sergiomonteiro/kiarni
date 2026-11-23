@@ -49,17 +49,20 @@ class IndexedMeasurementTests(unittest.TestCase):
             self.assertEqual(sum(counts.values()), count)
             self.assertEqual(counts["edge"], count // 8)
             self.assertEqual(counts["over"], count // 8 + 1)
-            actual = {}
-            for i in range(count):
-                tag = index_http.tag_for(i, count)
-                actual[tag] = actual.get(tag, 0) + 1
-            self.assertEqual(actual, counts)
+            for layout in ["contiguous", "spread"]:
+                actual = {}
+                for i in range(count):
+                    tag = index_http.tag_for(i, count, layout)
+                    actual[tag] = actual.get(tag, 0) + 1
+                self.assertEqual(actual, counts)
             for tag in [None, "changed0", "changed1", "churn"]:
                 body = index_http.document(0, 123456789, count, size, tag, tag == "churn")
                 self.assertEqual(len(body), size)
                 self.assertEqual(json.loads(body)["revision"], 123456789)
         with self.assertRaises(ValueError):
             index_http.tag_for(-1, 128)
+        for count in [128, 194, 1024]:
+            self.assertEqual(len({i * index_http.spread_stride(count) % count for i in range(count)}), count)
 
     def test_read_fixture_and_expected_plan(self):
         ast, expected = index_http.query_case("edge", 128)
