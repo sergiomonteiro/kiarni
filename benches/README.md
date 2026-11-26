@@ -328,3 +328,9 @@ ao Kiarni nem isolam o custo do logger. Timeouts durante leitura de telemetria
 invalidam a rodada e ficam no resultado, sem retry. Um smoke/diagnóstico com
 uma repetição pode identificar limites do experimento, mas não substitui as
 quatro repetições da comparação de custo.
+
+O harness atual reutiliza uma porta loopback entre servidores temporários,
+mantendo instalações independentes e uma conexão nova por request. Evita
+adicionar um novo conjunto de tuplas TCP por porta a cada ciclo. Essa política
+é registrada no JSON; versões anteriores com porta aleatória a cada servidor
+não são misturadas na mesma comparação. Não altera sysctls ou protocolo HTTP.

@@ -8,6 +8,7 @@ import json
 import multiprocessing
 import os
 from pathlib import Path
+import socket
 import sys
 import tempfile
 import time
@@ -233,6 +234,7 @@ def run(args):
                   "log_window": "entire server lifecycle including seed, warmup, verification and shutdown",
                   "recent_counter_window": "entire server lifecycle through post-load snapshot, including warmup",
                   "reader_schedule": "one process; both endpoints/cycle; skip missed ticks; no catch-up bursts",
+                  "listener_policy": "one reserved loopback port reused across fresh server lifecycles; new TCP/request",
                   "server_config": dict(load.SERVER_CONFIG, heartbeat_ms=1000),
                   "build_command": "cargo build -p kiarni --release --locked --offline"},
               "results": []}
@@ -244,6 +246,9 @@ def run(args):
         directory = Path(work)
         report["environment"]["data_filesystem"] = load.filesystem(directory)
         report["environment"]["data_block_bytes"] = os.statvfs(directory).f_frsize
+        with socket.socket() as reservation:
+            reservation.bind(("127.0.0.1", 0))
+            port = reservation.getsockname()[1]
         for repetition in range(1, args.repeat + 1):
             for ci, clients in enumerate(args.clients):
                 for si, scenario in enumerate(args.scenarios):
@@ -258,7 +263,7 @@ def run(args):
                             # Server helper supplies heartbeat=1000; there are no stream subscribers.
                             options.extend(["--log-level", level])
                             try:
-                                server.start(options)
+                                server.start(options, port=port)
                                 token, = credentials(root)
                                 address = ("127.0.0.1", server.port)
                                 load.control(address, token, "POST", "/v1/collections", load.encoded({"name": "bench"}))

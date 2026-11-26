@@ -76,9 +76,10 @@ class Server:
     def __init__(self, binary, work, data):
         self.binary, self.work, self.data = binary, work, data
         self.process = None
-    def start(self, options=()):
+    def start(self, options=(), *, port=0):
         with socket.socket() as listener:
-            listener.bind(('127.0.0.1', 0))
+            listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            listener.bind(('127.0.0.1', port))
             self.port = listener.getsockname()[1]
         self.log = tempfile.TemporaryFile()
         self.process = subprocess.Popen([str(self.binary), 'serve', '--data-dir', str(self.data),
