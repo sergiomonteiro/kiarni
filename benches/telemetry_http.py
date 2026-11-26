@@ -74,16 +74,24 @@ def recent_valid(value):
 
 def reader(_):
     ctx = CONTEXT
+    errors = []
     def collect():
         samples = []
         for endpoint in ("/v1/metrics", "/v1/errors/recent"):
             start = time.perf_counter_ns()
-            status, body = server.request(endpoint, ctx["token"])
-            if endpoint.endswith("metrics"):
-                valid = (status == 200 and b"kiarni_http_requests_total{" in body
-                         and b"kiarni_storage_" in body)
-            else:
-                valid = status == 200 and recent_valid(json.loads(body))
+            try:
+                status, body = server.request(endpoint, ctx["token"])
+                if endpoint.endswith("metrics"):
+                    valid = (status == 200 and b"kiarni_http_requests_total{" in body
+                             and b"kiarni_storage_" in body)
+                else:
+                    valid = status == 200 and recent_valid(json.loads(body))
+                if not valid:
+                    errors.append({"endpoint": endpoint, "status": status, "error": "invalid_response"})
+            except (OSError, http.client.HTTPException, ValueError) as error:
+                body, valid = b"", False
+                errors.append({"endpoint": endpoint, "error": type(error).__name__,
+                               "errno": getattr(error, "errno", None)})
             samples.append((endpoint, time.perf_counter_ns() - start, valid, len(body)))
         return samples
     # Only the request helper is used; no child process is started here.
@@ -96,7 +104,10 @@ def reader(_):
     deadline, tick = start + ctx["seconds"], start
     samples, late_cycles = [], 0
     while time.perf_counter() < deadline:
-        samples.extend(collect())
+        collected = collect()
+        samples.extend(collected)
+        if not all(item[2] for item in collected):
+            break
         tick += 1 / ctx["reader_hz"]
         now = time.perf_counter()
         if now > tick:
@@ -104,6 +115,7 @@ def reader(_):
             tick = now + 1 / ctx["reader_hz"]
         time.sleep(max(0, min(tick, deadline) - now))
     return {"valid": bool(samples) and all(item[2] for item in samples),
+            "errors": errors,
             "late_cycles": late_cycles,
             "endpoints": {endpoint: {"requests": len(items := [s for s in samples if s[0] == endpoint]),
                           "bytes": sum(s[3] for s in items),
@@ -166,6 +178,37 @@ def source_hash():
     return digest.hexdigest()
 
 
+def tcp_snapshot():
+    """Global Linux counters are context, not attribution to this server."""
+    result = {}
+    path = Path("/proc/net/netstat")
+    if path.exists():
+        lines = path.read_text().splitlines()
+        for header, values in zip(lines[::2], lines[1::2]):
+            if header.startswith("TcpExt:") and values.startswith("TcpExt:"):
+                counters = dict(zip(header.split()[1:], values.split()[1:]))
+                result["counters"] = {k: int(counters[k]) for k in
+                    ("TCPTimeWaitOverflow", "TW", "TWRecycled", "ListenOverflows", "ListenDrops", "TCPTimeouts")
+                    if k in counters}
+    for name, relative in [("max_timewait", "ipv4/tcp_max_tw_buckets"),
+                           ("timewait_reuse", "ipv4/tcp_tw_reuse"),
+                           ("ephemeral_port_range", "ipv4/ip_local_port_range"),
+                           ("conntrack_count", "netfilter/nf_conntrack_count"),
+                           ("conntrack_max", "netfilter/nf_conntrack_max")]:
+        path = Path("/proc/sys/net") / relative
+        try:
+            result[name] = path.read_text().strip()
+        except OSError:
+            pass
+    path = Path("/proc/net/sockstat")
+    if path.exists():
+        for line in path.read_text().splitlines():
+            if line.startswith("TCP:"):
+                parts = line.split()[1:]
+                result["tcp_sockets"] = {k: int(v) for k, v in zip(parts[::2], parts[1::2])}
+    return result
+
+
 def verify_dataset(server, token, dataset):
     """Never retry or hide a failed post-load check; preserve a bounded diagnostic."""
     for index, payload in enumerate(dataset):
@@ -207,6 +250,7 @@ def run(args):
                     for mode in mode_order(repetition, ci * len(args.scenarios) + si):
                         level, readers = MODES[mode]
                         with tempfile.TemporaryDirectory(dir=directory) as rowdir:
+                            kernel_before = tcp_snapshot()
                             root = Path(rowdir) / "data"
                             server = Server(binary, Path(rowdir), root)
                             options = [part for k, v in load.SERVER_CONFIG.items() if k != "heartbeat_ms"
@@ -231,10 +275,17 @@ def run(args):
                                     barrier.wait(timeout=30)
                                     row = aggregate([f.result() for f in futures])
                                     row["observer"] = observer.result() if observer else None
-                                value = load.control(address, token, "GET", "/v1/errors/recent")
-                                row["recent_dropped_total"] = value["dropped_total"]
-                                row["recent_retained"] = len(value["errors"])
-                                row["valid"] &= recent_valid(value) and (not readers or row["observer"]["valid"])
+                                try:
+                                    status, body = server.request("/v1/errors/recent", token)
+                                    value = json.loads(body)
+                                    row["recent_snapshot_valid"] = status == 200 and recent_valid(value)
+                                    row["recent_dropped_total"] = value.get("dropped_total")
+                                    row["recent_retained"] = len(value.get("errors", []))
+                                except (OSError, http.client.HTTPException, ValueError) as error:
+                                    row["recent_snapshot_valid"] = False
+                                    row["recent_snapshot_error"] = {"error": type(error).__name__,
+                                                                    "errno": getattr(error, "errno", None)}
+                                row["valid"] &= row["recent_snapshot_valid"] and (not readers or row["observer"]["valid"])
                                 # Read-only workload: verify every initial document after the measured window.
                                 row["dataset_verified"], row["verification_error"] = verify_dataset(server, token, dataset)
                                 row["valid"] &= row["dataset_verified"]
@@ -259,6 +310,7 @@ def run(args):
                                         drops += record["dropped_before"]
                                 row.update(log_records=logs, reported_log_drops=drops, malformed_log_lines=malformed)
                             row.update(log_level=level, readers=readers, clients=clients, scenario=scenario, repetition=repetition)
+                            row.update(kernel_tcp_before=kernel_before, kernel_tcp_after=tcp_snapshot())
                             row["valid"] &= malformed == 0 and (logs == 0 if level == "off" else logs > 0)
                             if token in json.dumps(row):
                                 raise RuntimeError("secret_in_report")

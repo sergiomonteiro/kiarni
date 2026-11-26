@@ -320,3 +320,11 @@ tipo/errno ou status, sem mensagem livre, payload ou token. Não excluir rodadas
 inválidas para calcular ganhos; o relatório só compara quartetos completos de
 uma matriz válida. Tentativas abortadas devem ser declaradas junto da repetição
 completa, sem juntar células escolhidas de execuções diferentes.
+
+Em Linux, snapshots de TCP antes/depois de cada ciclo registram TIME_WAIT,
+overflow, timeout, backlog e limites disponíveis, sem alterar sysctls. São
+contadores globais do host, incluindo outras aplicações; não atribuem falhas
+ao Kiarni nem isolam o custo do logger. Timeouts durante leitura de telemetria
+invalidam a rodada e ficam no resultado, sem retry. Um smoke/diagnóstico com
+uma repetição pode identificar limites do experimento, mas não substitui as
+quatro repetições da comparação de custo.

@@ -1,6 +1,6 @@
 import json
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from http_load import document, percentiles, summarize
 import index_http
@@ -104,6 +104,22 @@ class IndexedMeasurementTests(unittest.TestCase):
 
 
 class TelemetryMeasurementTests(unittest.TestCase):
+    def test_reader_timeout_is_reported_without_retry_or_lost_result(self):
+        server = Mock()
+        recent = b'{"capacity":8,"errors":[],"dropped_total":"0"}'
+        server.request.side_effect = [
+            (200, b"kiarni_http_requests_total{ kiarni_storage_"), (200, recent),
+            TimeoutError("fixture"), (200, recent),
+        ]
+        ctx = {"address": ("127.0.0.1", 1), "token": "fixture", "seconds": .1, "reader_hz": 2}
+        with patch.object(telemetry_http, "Server", return_value=server), \
+             patch.object(telemetry_http, "CONTEXT", ctx), \
+             patch.object(telemetry_http, "BARRIER", Mock()):
+            result = telemetry_http.reader(0)
+        self.assertFalse(result["valid"])
+        self.assertEqual(result["errors"][0]["error"], "TimeoutError")
+        self.assertEqual(server.request.call_count, 4)
+
     def test_post_load_failure_is_not_retried_or_hidden(self):
         server = Mock()
         payload = document(0, 0, 128)
