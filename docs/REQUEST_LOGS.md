@@ -105,3 +105,11 @@ admissão e limites sem depender desses logs.
 
 As [métricas de storage](./STORAGE_METRICS.md) agora distinguem primitivas,
 retorno do commit e receipts sem depender do logger.
+
+## Medição local
+
+A [comparação HTTP de 2026-11-26](./benchmarks/telemetry-http-2026-11-26.md)
+registra logs off/info, destino em arquivo temporário, leitores de telemetria
+e perdas best-effort. Custos variam entre cenários; não é promessa de overhead
+fixo nem de desempenho com sink lento. O relatório preserva tentativas abortadas
+e limitações do gerador/host.

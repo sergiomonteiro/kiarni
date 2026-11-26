@@ -7,6 +7,10 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
+- Medidor HTTP para logs off/info e leitores de métricas/erros, com ordem
+  balanceada, journal e diagnóstico TCP. [64 rodadas válidas](./docs/benchmarks/telemetry-http-2026-11-26.md),
+  tentativas abortadas e limites publicados; sem otimização Rust nesta etapa.
+  Planejamento de escalabilidade vertical (cores/RAM) explicitado.
 - Medições pareadas do índice no HTTP real: 270 rodadas, 135 pares válidos,
   datasets contíguos/espalhados, leitura seletiva/densa e custo de escrita.
   [Relatório](./docs/benchmarks/secondary-index-http-2026-11-22.md) e resultados

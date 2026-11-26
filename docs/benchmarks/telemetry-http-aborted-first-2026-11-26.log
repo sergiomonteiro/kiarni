@@ -1,0 +1,38 @@
+{"trial": 1, "scenario": "read", "clients": 1, "log_level": "off", "readers": false, "rps": 3097.67, "valid": true}
+{"trial": 2, "scenario": "read", "clients": 1, "log_level": "info", "readers": false, "rps": 3367.82, "valid": true}
+{"trial": 3, "scenario": "read", "clients": 1, "log_level": "info", "readers": true, "rps": 3367.75, "valid": true}
+{"trial": 4, "scenario": "read", "clients": 1, "log_level": "off", "readers": true, "rps": 3229.3, "valid": true}
+{"trial": 5, "scenario": "missing", "clients": 1, "log_level": "info", "readers": false, "rps": 3599.29, "valid": true}
+{"trial": 6, "scenario": "missing", "clients": 1, "log_level": "off", "readers": true, "rps": 3533.15, "valid": true}
+{"trial": 7, "scenario": "missing", "clients": 1, "log_level": "off", "readers": false, "rps": 3450.83, "valid": true}
+{"trial": 8, "scenario": "missing", "clients": 1, "log_level": "info", "readers": true, "rps": 3562.37, "valid": true}
+{"trial": 9, "scenario": "read", "clients": 8, "log_level": "off", "readers": true, "rps": 25608.84, "valid": true}
+{"trial": 10, "scenario": "read", "clients": 8, "log_level": "info", "readers": true, "rps": 24294.1, "valid": true}
+{"trial": 11, "scenario": "read", "clients": 8, "log_level": "info", "readers": false, "rps": 24219.67, "valid": true}
+{"trial": 12, "scenario": "read", "clients": 8, "log_level": "off", "readers": false, "rps": 24126.71, "valid": true}
+{"trial": 13, "scenario": "missing", "clients": 8, "log_level": "info", "readers": true, "rps": 24253.97, "valid": true}
+{"trial": 14, "scenario": "missing", "clients": 8, "log_level": "off", "readers": false, "rps": 25666.73, "valid": true}
+{"trial": 15, "scenario": "missing", "clients": 8, "log_level": "off", "readers": true, "rps": 25510.8, "valid": true}
+{"trial": 16, "scenario": "missing", "clients": 8, "log_level": "info", "readers": false, "rps": 23495.59, "valid": true}
+{"trial": 17, "scenario": "read", "clients": 1, "log_level": "info", "readers": false, "rps": 3289.36, "valid": true}
+{"trial": 18, "scenario": "read", "clients": 1, "log_level": "off", "readers": true, "rps": 3199.37, "valid": true}
+{"trial": 19, "scenario": "read", "clients": 1, "log_level": "off", "readers": false, "rps": 3214.4, "valid": true}
+{"trial": 20, "scenario": "read", "clients": 1, "log_level": "info", "readers": true, "rps": 3443.9, "valid": true}
+{"trial": 21, "scenario": "missing", "clients": 1, "log_level": "off", "readers": true, "rps": 3347.27, "valid": true}
+{"trial": 22, "scenario": "missing", "clients": 1, "log_level": "info", "readers": true, "rps": 3574.25, "valid": true}
+{"trial": 23, "scenario": "missing", "clients": 1, "log_level": "info", "readers": false, "rps": 3573.97, "valid": true}
+{"trial": 24, "scenario": "missing", "clients": 1, "log_level": "off", "readers": false, "rps": 3315.13, "valid": true}
+{"trial": 25, "scenario": "read", "clients": 8, "log_level": "info", "readers": true, "rps": 24646.01, "valid": true}
+Traceback (most recent call last):
+  File "/home/sergio/Projetos/kiarni/benches/telemetry_http.py", line 289, in <module>
+    measured = run(options)
+               ^^^^^^^^^^^^
+  File "/home/sergio/Projetos/kiarni/benches/telemetry_http.py", line 225, in run
+    row["dataset_verified"] = all(load.control(address, token, "GET",
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sergio/Projetos/kiarni/benches/telemetry_http.py", line 225, in <genexpr>
+    row["dataset_verified"] = all(load.control(address, token, "GET",
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sergio/Projetos/kiarni/benches/http_load.py", line 166, in control
+    raise RuntimeError(f"control_request_failed_status_{status}")
+RuntimeError: control_request_failed_status_0

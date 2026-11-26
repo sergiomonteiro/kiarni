@@ -84,16 +84,18 @@ clientes. A investigação dessa regressão e de aproveitamento de CPU/memória
 fica registrada para a etapa posterior, sem afirmar melhora universal.
 
 Os [logs estruturados de requisições](./REQUEST_LOGS.md) têm nível configurável
-e fila limitada. Ainda não há medição comparativa de seu impacto; novas matrizes
-devem registrar log_level e destino de stderr. O relatório opcional KIARNI_PROFILE
+e fila limitada. A [comparação de 2026-11-26](./benchmarks/telemetry-http-2026-11-26.md)
+registra off/info e leitores de métricas/erros no produto atual, com custos
+observados e limites de interpretação; novas matrizes devem registrar log_level
+e destino de stderr. O relatório opcional KIARNI_PROFILE
 agora tem flush best-effort limitado no shutdown: confira a presença/completude
 antes de usar uma medição e drene stderr ou direcione para arquivo.
 
 As [métricas de storage](./STORAGE_METRICS.md) acrescentam instrumentação fixa
 de primitivas/commit também nos grupos PUT/PATCH. Elas permanecem ativas com
-log_level=off e não são a feature opcional de profiling. Seu impacto ainda não
-foi medido em uma nova matriz; os benchmarks anteriores mantêm a proveniência
-das versões que efetivamente mediram.
+log_level=off e não são a feature opcional de profiling. A matriz de 2026-11-26 mantém essa instrumentação ativa nos dois modos:
+não isola seu custo contra um servidor sem métricas. Os benchmarks anteriores
+mantêm a proveniência das versões que efetivamente mediram.
 
 ## Índice secundário no HTTP — 2026-11-22
 
@@ -104,3 +106,20 @@ um cliente: throughput pareado 53,32× para um candidato e 4,42× em N/8;
 alterar o campo indexado reduziu throughput em 14,4%. São medidas locais de
 closed-loop, sem perfil CPU/RSS ou capacidade universal. Mantido o limiar
 conservador; sua optimalidade fora dos casos medidos não foi demonstrada.
+
+## Leitura e telemetria — primeiro incremento da #9
+
+[Relatório, tentativas abortadas e dados brutos](./benchmarks/telemetry-http-2026-11-26.md):
+64 rodadas válidas, quatro repetições, 256 × 1 KiB e clientes 1/8. Em oito
+clientes sem leitores, info/off apresentou razões medianas de throughput de
+0,9847 para GET 200 e 0,9722 para GET 404 esperado. Com um cliente houve inversão
+do sinal; não se atribuiu ganho intrínseco aos logs. Leitor de métricas/erros
+a 2 Hz por endpoint não mostrou perda consistente em todos os pares.
+
+A coleta expôs limites do próprio experimento: portas diferentes por instalação
+acumulavam TIME_WAIT até o teto do host. Reutilizar uma porta entre instalações
+independentes permitiu completar a matriz sem novo overflow observado, mantendo
+nova conexão por request e sem alterar o kernel. Isso não prova a causa dos
+timeouts anteriores nem resolve a regressão histórica do writer. Esta continua
+pendente de comparação com proveniência suficiente; nenhuma otimização Rust
+foi escolhida neste incremento.

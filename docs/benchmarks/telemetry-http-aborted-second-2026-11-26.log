@@ -1,0 +1,75 @@
+{"trial": 1, "scenario": "read", "clients": 1, "log_level": "off", "readers": false, "rps": 3076.78, "valid": true}
+{"trial": 2, "scenario": "read", "clients": 1, "log_level": "info", "readers": false, "rps": 3437.05, "valid": true}
+{"trial": 3, "scenario": "read", "clients": 1, "log_level": "info", "readers": true, "rps": 3346.46, "valid": true}
+{"trial": 4, "scenario": "read", "clients": 1, "log_level": "off", "readers": true, "rps": 3147.88, "valid": true}
+{"trial": 5, "scenario": "missing", "clients": 1, "log_level": "info", "readers": false, "rps": 3699.56, "valid": true}
+{"trial": 6, "scenario": "missing", "clients": 1, "log_level": "off", "readers": true, "rps": 3366.3, "valid": true}
+{"trial": 7, "scenario": "missing", "clients": 1, "log_level": "off", "readers": false, "rps": 3446.4, "valid": true}
+{"trial": 8, "scenario": "missing", "clients": 1, "log_level": "info", "readers": true, "rps": 3626.27, "valid": true}
+{"trial": 9, "scenario": "read", "clients": 8, "log_level": "off", "readers": true, "rps": 25402.08, "valid": true}
+{"trial": 10, "scenario": "read", "clients": 8, "log_level": "info", "readers": true, "rps": 24703.17, "valid": true}
+{"trial": 11, "scenario": "read", "clients": 8, "log_level": "info", "readers": false, "rps": 24706.91, "valid": true}
+{"trial": 12, "scenario": "read", "clients": 8, "log_level": "off", "readers": false, "rps": 24672.83, "valid": true}
+{"trial": 13, "scenario": "missing", "clients": 8, "log_level": "info", "readers": true, "rps": 24318.96, "valid": true}
+{"trial": 14, "scenario": "missing", "clients": 8, "log_level": "off", "readers": false, "rps": 24995.78, "valid": true}
+{"trial": 15, "scenario": "missing", "clients": 8, "log_level": "off", "readers": true, "rps": 24644.32, "valid": true}
+{"trial": 16, "scenario": "missing", "clients": 8, "log_level": "info", "readers": false, "rps": 24367.06, "valid": true}
+{"trial": 17, "scenario": "read", "clients": 1, "log_level": "info", "readers": false, "rps": 3332.12, "valid": true}
+{"trial": 18, "scenario": "read", "clients": 1, "log_level": "off", "readers": true, "rps": 3216.29, "valid": true}
+{"trial": 19, "scenario": "read", "clients": 1, "log_level": "off", "readers": false, "rps": 3185.52, "valid": true}
+{"trial": 20, "scenario": "read", "clients": 1, "log_level": "info", "readers": true, "rps": 3416.03, "valid": true}
+{"trial": 21, "scenario": "missing", "clients": 1, "log_level": "off", "readers": true, "rps": 3398.25, "valid": true}
+{"trial": 22, "scenario": "missing", "clients": 1, "log_level": "info", "readers": true, "rps": 3633.46, "valid": true}
+{"trial": 23, "scenario": "missing", "clients": 1, "log_level": "info", "readers": false, "rps": 3527.8, "valid": true}
+{"trial": 24, "scenario": "missing", "clients": 1, "log_level": "off", "readers": false, "rps": 3279.89, "valid": true}
+{"trial": 25, "scenario": "read", "clients": 8, "log_level": "info", "readers": true, "rps": 24083.02, "valid": true}
+{"trial": 26, "scenario": "read", "clients": 8, "log_level": "off", "readers": false, "rps": 1103.02, "valid": true}
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/concurrent/futures/process.py", line 263, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sergio/Projetos/kiarni/benches/telemetry_http.py", line 99, in reader
+    samples.extend(collect())
+                   ^^^^^^^^^
+  File "/home/sergio/Projetos/kiarni/benches/telemetry_http.py", line 81, in collect
+    status, body = server.request(endpoint, ctx["token"])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sergio/Projetos/kiarni/scripts/release_smoke.py", line 104, in request
+    connection.request(method, path, body, headers)
+  File "/usr/lib/python3.12/http/client.py", line 1365, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.12/http/client.py", line 1411, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.12/http/client.py", line 1360, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.12/http/client.py", line 1120, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.12/http/client.py", line 1064, in send
+    self.connect()
+  File "/usr/lib/python3.12/http/client.py", line 1030, in connect
+    self.sock = self._create_connection(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 852, in create_connection
+    raise exceptions[0]
+  File "/usr/lib/python3.12/socket.py", line 837, in create_connection
+    sock.connect(sa)
+TimeoutError: timed out
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/sergio/Projetos/kiarni/benches/telemetry_http.py", line 307, in <module>
+    measured = run(options)
+               ^^^^^^^^^^^^
+  File "/home/sergio/Projetos/kiarni/benches/telemetry_http.py", line 233, in run
+    row["observer"] = observer.result() if observer else None
+                      ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+TimeoutError: timed out

@@ -68,3 +68,5 @@ de uso do produto atual. Use as referências API/CLI acima para o contrato atual
 e o guia de contribuição para executar as verificações. A política do [canal pré-1.0](./RELEASE_POLICY.md) separa esse aceite de release estável.
 
 - [Medições do índice no HTTP](./benchmarks/secondary-index-http-2026-11-22.md): ganhos seletivos, custos de escrita, controles e dados brutos.
+
+- [Leitura e custo de telemetria](./benchmarks/telemetry-http-2026-11-26.md): logs, leitores, limites TCP do experimento e estado da #9.

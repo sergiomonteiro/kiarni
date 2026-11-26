@@ -1,0 +1,900 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-26T03:52:07.023814+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "752355bdd9d5d6d4a52b1016872f8cf2c5d78bb9",
+    "workspace_dirty": false,
+    "source_sha256": "38a394419c77ebf658c739805f47b26691a8cdb9469fb5569d428a0d6ec482e4",
+    "binary_sha256": "18b8343941d02387446aa13e5d8f0560f797082ca0ae9f9cffb13a9e58c8243f",
+    "cpu_load_before": [
+      0.91845703125,
+      1.439453125,
+      1.50732421875
+    ],
+    "data_filesystem": "ext4",
+    "data_block_bytes": 4096,
+    "cpu_load_after": [
+      3.533203125,
+      2.025390625,
+      1.701171875
+    ]
+  },
+  "measurement_source_sha256": "b04a3adf2187ae7838906d46f6e7b128df17b2534bde091d252af37ba4868b25",
+  "parameters": {
+    "binary": "/home/sergio/Projetos/kiarni/target/release/kiarni",
+    "output": "/tmp/kiarni-telemetry-diagnostic-20261126.json",
+    "clients": [
+      8
+    ],
+    "scenarios": [
+      "read",
+      "missing"
+    ],
+    "repeat": 1,
+    "seconds": 3.0,
+    "warmup": 5,
+    "reader_hz": 2.0,
+    "documents": 256,
+    "document_bytes": 1024,
+    "modes": [
+      [
+        "off",
+        false
+      ],
+      [
+        "info",
+        false
+      ],
+      [
+        "off",
+        true
+      ],
+      [
+        "info",
+        true
+      ]
+    ],
+    "load_model": "closed_loop; process/client; new TCP/request",
+    "sink": "temporary regular file on data filesystem, never a pipe",
+    "log_window": "entire server lifecycle including seed, warmup, verification and shutdown",
+    "recent_counter_window": "entire server lifecycle through post-load snapshot, including warmup",
+    "reader_schedule": "one process; both endpoints/cycle; skip missed ticks; no catch-up bursts",
+    "server_config": {
+      "max_requests": 32,
+      "max_streams": 8,
+      "feed_queue": 4,
+      "max_document_bytes": 1048576,
+      "max_query_bytes": 16384,
+      "max_result_bytes": 4194304,
+      "read_timeout_ms": 5000,
+      "write_timeout_ms": 5000,
+      "heartbeat_ms": 1000
+    },
+    "build_command": "cargo build -p kiarni --release --locked --offline"
+  },
+  "results": [
+    {
+      "elapsed_seconds": 3.000766401,
+      "attempts": 74971,
+      "expected_responses": 74971,
+      "unexpected_responses": 0,
+      "expected_rps": 24983.95075838494,
+      "expected_latency": {
+        "p50_ms": 0.3013,
+        "p95_ms": 0.4256,
+        "p99_ms": 0.5463,
+        "max_ms": 2.9973
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "200": 74971
+      },
+      "error_codes": {},
+      "valid": true,
+      "observer": null,
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "0",
+      "recent_retained": 0,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 147,
+      "log_records": 0,
+      "reported_log_drops": 0,
+      "malformed_log_lines": 0,
+      "log_level": "off",
+      "readers": false,
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5397441,
+          "TWRecycled": 13931,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7826
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "131",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 12,
+          "alloc": 30,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5473011,
+          "TWRecycled": 14025,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14199",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 14110,
+          "alloc": 29,
+          "mem": 0
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.000777813,
+      "attempts": 74120,
+      "expected_responses": 74120,
+      "unexpected_responses": 0,
+      "expected_rps": 24700.262604880838,
+      "expected_latency": {
+        "p50_ms": 0.3046,
+        "p95_ms": 0.4296,
+        "p99_ms": 0.5441,
+        "max_ms": 3.0456
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "200": 74120
+      },
+      "error_codes": {},
+      "valid": true,
+      "observer": null,
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "0",
+      "recent_retained": 0,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 21284293,
+      "log_records": 74675,
+      "reported_log_drops": 0,
+      "malformed_log_lines": 0,
+      "log_level": "info",
+      "readers": false,
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5473011,
+          "TWRecycled": 14025,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14199",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 14110,
+          "alloc": 29,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5547729,
+          "TWRecycled": 14131,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "28225",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 28214,
+          "alloc": 28,
+          "mem": 0
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.000551746,
+      "attempts": 74469,
+      "expected_responses": 74469,
+      "unexpected_responses": 0,
+      "expected_rps": 24818.43550916052,
+      "expected_latency": {
+        "p50_ms": 0.3036,
+        "p95_ms": 0.4274,
+        "p99_ms": 0.5474,
+        "max_ms": 2.5474
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "200": 74469
+      },
+      "error_codes": {},
+      "valid": true,
+      "observer": {
+        "valid": true,
+        "errors": [],
+        "late_cycles": 0,
+        "endpoints": {
+          "/v1/metrics": {
+            "requests": 6,
+            "bytes": 124422,
+            "latency": {
+              "p50_ms": 0.5055,
+              "p95_ms": 0.7505,
+              "p99_ms": 0.7505,
+              "max_ms": 0.7505
+            }
+          },
+          "/v1/errors/recent": {
+            "requests": 6,
+            "bytes": 276,
+            "latency": {
+              "p50_ms": 0.3886,
+              "p95_ms": 0.5758,
+              "p99_ms": 0.5758,
+              "max_ms": 0.5758
+            }
+          }
+        }
+      },
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "0",
+      "recent_retained": 0,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 21387644,
+      "log_records": 75038,
+      "reported_log_drops": 0,
+      "malformed_log_lines": 0,
+      "log_level": "info",
+      "readers": true,
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5547729,
+          "TWRecycled": 14131,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "28225",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 28214,
+          "alloc": 28,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5622796,
+          "TWRecycled": 14215,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "42305",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 42309,
+          "alloc": 27,
+          "mem": 33
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.000661453,
+      "attempts": 75862,
+      "expected_responses": 75862,
+      "unexpected_responses": 0,
+      "expected_rps": 25281.759101532338,
+      "expected_latency": {
+        "p50_ms": 0.298,
+        "p95_ms": 0.4127,
+        "p99_ms": 0.5385,
+        "max_ms": 3.2023
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "200": 75862
+      },
+      "error_codes": {},
+      "valid": true,
+      "observer": {
+        "valid": true,
+        "errors": [],
+        "late_cycles": 0,
+        "endpoints": {
+          "/v1/metrics": {
+            "requests": 6,
+            "bytes": 124421,
+            "latency": {
+              "p50_ms": 0.5838,
+              "p95_ms": 0.7736,
+              "p99_ms": 0.7736,
+              "max_ms": 0.7736
+            }
+          },
+          "/v1/errors/recent": {
+            "requests": 6,
+            "bytes": 276,
+            "latency": {
+              "p50_ms": 0.3692,
+              "p95_ms": 0.746,
+              "p99_ms": 0.746,
+              "max_ms": 0.746
+            }
+          }
+        }
+      },
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "0",
+      "recent_retained": 0,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 147,
+      "log_records": 0,
+      "reported_log_drops": 0,
+      "malformed_log_lines": 0,
+      "log_level": "off",
+      "readers": true,
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5622796,
+          "TWRecycled": 14215,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "42305",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 42309,
+          "alloc": 27,
+          "mem": 33
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5699265,
+          "TWRecycled": 14280,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "56385",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 56408,
+          "alloc": 27,
+          "mem": 33
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.000623371,
+      "attempts": 75368,
+      "expected_responses": 75368,
+      "unexpected_responses": 0,
+      "expected_rps": 25117.447503877353,
+      "expected_latency": {
+        "p50_ms": 0.299,
+        "p95_ms": 0.4294,
+        "p99_ms": 0.5598,
+        "max_ms": 4.7027
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "404": 75368
+      },
+      "error_codes": {
+        "document_not_found": 75368
+      },
+      "valid": true,
+      "observer": null,
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "75",
+      "recent_retained": 8,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 22843060,
+      "log_records": 75912,
+      "reported_log_drops": 11,
+      "malformed_log_lines": 0,
+      "log_level": "info",
+      "readers": false,
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1380853,
+          "TW": 5699265,
+          "TWRecycled": 14280,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "56385",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 56408,
+          "alloc": 27,
+          "mem": 33
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1403043,
+          "TW": 5753040,
+          "TWRecycled": 14360,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "70474",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 65536,
+          "alloc": 27,
+          "mem": 33
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.000547998,
+      "attempts": 76317,
+      "expected_responses": 76317,
+      "unexpected_responses": 0,
+      "expected_rps": 25434.35400829072,
+      "expected_latency": {
+        "p50_ms": 0.2971,
+        "p95_ms": 0.4164,
+        "p99_ms": 0.5375,
+        "max_ms": 3.4753
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "404": 76317
+      },
+      "error_codes": {
+        "document_not_found": 76317
+      },
+      "valid": true,
+      "observer": {
+        "valid": true,
+        "errors": [],
+        "late_cycles": 0,
+        "endpoints": {
+          "/v1/metrics": {
+            "requests": 6,
+            "bytes": 124438,
+            "latency": {
+              "p50_ms": 0.5615,
+              "p95_ms": 0.917,
+              "p99_ms": 0.917,
+              "max_ms": 0.917
+            }
+          },
+          "/v1/errors/recent": {
+            "requests": 6,
+            "bytes": 11796,
+            "latency": {
+              "p50_ms": 0.4452,
+              "p95_ms": 0.7007,
+              "p99_ms": 0.7007,
+              "max_ms": 0.7007
+            }
+          }
+        }
+      },
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "63",
+      "recent_retained": 8,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 147,
+      "log_records": 0,
+      "reported_log_drops": 0,
+      "malformed_log_lines": 0,
+      "log_level": "off",
+      "readers": true,
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1403043,
+          "TW": 5753040,
+          "TWRecycled": 14360,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "70474",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 65536,
+          "alloc": 27,
+          "mem": 33
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1479963,
+          "TW": 5753040,
+          "TWRecycled": 14360,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "84558",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 65536,
+          "alloc": 27,
+          "mem": 33
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.000505428,
+      "attempts": 75258,
+      "expected_responses": 75258,
+      "unexpected_responses": 0,
+      "expected_rps": 25081.77432298916,
+      "expected_latency": {
+        "p50_ms": 0.3019,
+        "p95_ms": 0.4132,
+        "p99_ms": 0.5412,
+        "max_ms": 4.4731
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "404": 75258
+      },
+      "error_codes": {
+        "document_not_found": 75258
+      },
+      "valid": true,
+      "observer": null,
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "61",
+      "recent_retained": 8,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 147,
+      "log_records": 0,
+      "reported_log_drops": 0,
+      "malformed_log_lines": 0,
+      "log_level": "off",
+      "readers": false,
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1479963,
+          "TW": 5753040,
+          "TWRecycled": 14360,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "84558",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 15,
+          "orphan": 0,
+          "tw": 65536,
+          "alloc": 27,
+          "mem": 33
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1555788,
+          "TW": 5753046,
+          "TWRecycled": 14360,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "98646",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 65536,
+          "alloc": 23,
+          "mem": 545
+        }
+      }
+    },
+    {
+      "elapsed_seconds": 3.000622599,
+      "attempts": 72571,
+      "expected_responses": 72571,
+      "unexpected_responses": 0,
+      "expected_rps": 24185.31408254584,
+      "expected_latency": {
+        "p50_ms": 0.3118,
+        "p95_ms": 0.4401,
+        "p99_ms": 0.5731,
+        "max_ms": 3.1606
+      },
+      "unexpected_latency": null,
+      "statuses": {
+        "404": 72571
+      },
+      "error_codes": {
+        "document_not_found": 72571
+      },
+      "valid": true,
+      "observer": {
+        "valid": true,
+        "errors": [],
+        "late_cycles": 0,
+        "endpoints": {
+          "/v1/metrics": {
+            "requests": 6,
+            "bytes": 124431,
+            "latency": {
+              "p50_ms": 0.6556,
+              "p95_ms": 0.7674,
+              "p99_ms": 0.7674,
+              "max_ms": 0.7674
+            }
+          },
+          "/v1/errors/recent": {
+            "requests": 6,
+            "bytes": 11795,
+            "latency": {
+              "p50_ms": 0.4836,
+              "p95_ms": 1.0001,
+              "p99_ms": 1.0001,
+              "max_ms": 1.0001
+            }
+          }
+        }
+      },
+      "recent_snapshot_valid": true,
+      "recent_dropped_total": "89",
+      "recent_retained": 8,
+      "dataset_verified": true,
+      "verification_error": null,
+      "log_bytes": 21994290,
+      "log_records": 73093,
+      "reported_log_drops": 47,
+      "malformed_log_lines": 0,
+      "log_level": "info",
+      "readers": true,
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1555788,
+          "TW": 5753046,
+          "TWRecycled": 14360,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "98646",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 65536,
+          "alloc": 23,
+          "mem": 545
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628977,
+          "TW": 5753046,
+          "TWRecycled": 14360,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 7827
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "112717",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 65536,
+          "alloc": 23,
+          "mem": 0
+        }
+      }
+    }
+  ],
+  "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+  "valid": true,
+  "comparisons": [
+    {
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "comparison": "logs_without_readers",
+      "rps_right_over_left": 0.9886451844126817
+    },
+    {
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "comparison": "logs_with_readers",
+      "rps_right_over_left": 0.9816736014882866
+    },
+    {
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "comparison": "readers_logs_off",
+      "rps_right_over_left": 1.0119199859953074
+    },
+    {
+      "clients": 8,
+      "scenario": "read",
+      "repetition": 1,
+      "comparison": "readers_logs_info",
+      "rps_right_over_left": 1.0047842772431226
+    },
+    {
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "comparison": "logs_without_readers",
+      "rps_right_over_left": 1.0014222750124777
+    },
+    {
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "comparison": "logs_with_readers",
+      "rps_right_over_left": 0.9508916198407187
+    },
+    {
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "comparison": "readers_logs_off",
+      "rps_right_over_left": 1.014057206669721
+    },
+    {
+      "clients": 8,
+      "scenario": "missing",
+      "repetition": 1,
+      "comparison": "readers_logs_info",
+      "rps_right_over_left": 0.9628890068870406
+    }
+  ]
+}

@@ -43,3 +43,8 @@ com limite de oito linhas e leitura de resposta limitada a 64 KiB.
 
 Comandos/resultados consolidados na [revisão do dashboard](./DASHBOARD_REVIEW.md).
 [ADR 0027](./adr/0027-erros-recentes.md).
+
+[Medição HTTP local de 2026-11-26](./benchmarks/telemetry-http-2026-11-26.md)
+exercita erros 404 com captura e leitores reais. Perdas por contenção observadas
+continuam explícitas; não se mede o custo isolado do anel nem se transforma a
+retenção limitada em garantia de entrega.
