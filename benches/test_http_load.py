@@ -3,6 +3,7 @@ import unittest
 
 from http_load import document, percentiles, summarize
 import index_http
+import telemetry_http
 
 
 class MeasurementTests(unittest.TestCase):
@@ -99,6 +100,44 @@ class IndexedMeasurementTests(unittest.TestCase):
         for invalid in [rows[:-1], rows + [rows[0]], [dict(rows[0], valid=False), rows[1]]]:
             with self.assertRaises(ValueError):
                 index_http.paired_summary(invalid)
+
+
+class TelemetryMeasurementTests(unittest.TestCase):
+    def test_expected_errors_are_distinct_from_success_and_transport_failure(self):
+        response = {"error": {"code": "document_not_found"}, "request_id": "req_fixture"}
+        self.assertTrue(telemetry_http.acceptable("missing", 0, 404, "document_not_found", response))
+        for status, code, body in [(0, "TimeoutError", None), (503, "service_unavailable", {}),
+                                   (404, "collection_not_found", response), (200, None, {})]:
+            self.assertFalse(telemetry_http.acceptable("missing", 0, status, code, body))
+        outcome = {"started_ns": 1_000_000_000, "ended_ns": 2_000_000_000,
+                   "statuses": {"404": 1, "transport_error": 1},
+                   "codes": {"document_not_found": 1, "TimeoutError": 1},
+                   "good": [2_000_000], "bad": [5_000_000], "cap_hit": False}
+        row = telemetry_http.aggregate([outcome])
+        self.assertEqual(row["expected_rps"], 1)
+        self.assertEqual(row["expected_latency"]["p95_ms"], 2)
+        self.assertFalse(row["valid"])
+
+    def test_balanced_modes_and_complete_comparisons(self):
+        orders = [telemetry_http.mode_order(r, 0) for r in range(1, 5)]
+        for position in range(4):
+            self.assertEqual({order[position] for order in orders}, set(range(4)))
+        edges = [(a, b) for order in orders for a, b in zip(order, order[1:])]
+        self.assertEqual(len(set(edges)), 12)
+        rows = [dict(clients=1, scenario="read", repetition=1, log_level=level,
+                     readers=readers, expected_rps=100 * (i + 1), valid=True)
+                for i, (level, readers) in enumerate(telemetry_http.MODES)]
+        ratios = telemetry_http.comparisons(rows)
+        self.assertEqual(ratios[0]["rps_right_over_left"], 2)
+        for invalid in (rows[:-1], rows + [rows[0]], [dict(rows[0], valid=False), *rows[1:]]):
+            with self.assertRaises(ValueError):
+                telemetry_http.comparisons(invalid)
+
+    def test_recent_history_shape_and_limit(self):
+        self.assertTrue(telemetry_http.recent_valid({"capacity": 8, "errors": [], "dropped_total": "10"}))
+        for value in ({}, {"capacity": 8, "errors": [{}] * 9, "dropped_total": "0"},
+                      {"capacity": 8, "errors": [], "dropped_total": "-1"}):
+            self.assertFalse(telemetry_http.recent_valid(value))
 
 
 if __name__ == "__main__":

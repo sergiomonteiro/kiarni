@@ -262,3 +262,53 @@ partição/tamanho do dataset, pares/ordem, seleção esperada e separação de 
 falha e confirmação. Um smoke completo curto pode usar N=128, tamanho 128,
 clientes 1/2, repeat 1, seconds 0.15 e warmup 2; ele valida o medidor, não fornece
 uma baseline de desempenho.
+
+## Custo de logs e leitores de telemetria
+
+`telemetry_http.py` compara quatro modos no mesmo binário atual: logs off/info,
+cada um sem/com um processo leitor. Não desliga a instrumentação fixa do produto
+e não isola seu custo contra um servidor sem métricas. Não é reprodução do
+binário histórico do writer.
+
+```bash
+cargo build -p kiarni --release --locked --offline
+python3 benches/telemetry_http.py --output /tmp/telemetry-NOVO.json --clients 1 8 --repeat 4 --seconds 3 --documents 256 --document-bytes 1024 --warmup 5 --reader-hz 2
+```
+
+Esse comando mede 64 rodadas. Quatro repetições equilibram a posição de cada
+modo e seus predecessores imediatos por célula. A ordem também varia entre
+cenários/clientes. Cada rodada inicia instalação nova, com o mesmo dataset
+somente de leitura: GET de documento existente, ou GET de ID ausente (404
+document_not_found esperado, que exercita captura de erros). O 404 esperado é
+contado como resposta esperada, nunca como escrita/operação confirmada 2xx.
+Falhas de transporte, busy, resposta incorreta e limite de tentativas invalidam
+a rodada; não são descartadas silenciosamente. Percentis esperados/inesperados
+e status/códigos são separados. Compara razões por repetição, sem pressupor
+significância estatística de diferenças pequenas.
+
+Clientes são processos em closed-loop, nova conexão por requisição. Warmup e
+preparação ficam fora da janela, com barreira entre clientes, leitor e pai.
+O leitor faz uma chamada a metrics e uma a errors/recent por ciclo: 2 Hz são
+quatro requests/s no total. Não tenta recuperar ticks perdidos com rajadas;
+registra ciclos atrasados e contagem/latência/bytes por endpoint. Leitor também
+valida respostas. Todos os documentos do seed são conferidos após a carga,
+fora da janela; não há escrita concorrente, subscribers ou teste de crash.
+
+stdout/stderr do servidor vão para arquivo temporário comum no filesystem de
+dados, sem pipe bloqueado nem coletor externo. Logs são contados após shutdown;
+bytes, registros, dropped_before e linhas JSON malformadas cobrem **todo o
+ciclo**, inclusive seed/warmup/verificação. Não inferir taxa de perda só da
+janela medida: descartes finais podem não ter próximo registro para reportar.
+O contador de perdas do anel é coletado após a carga e inclui warmup; substituição
+normal de entrada antiga não é perda por contenção. Nenhum log bruto, request ID
+ou credencial é publicado. O arquivo tem orçamento pós-coleta de 128 MiB;
+tentativas são limitadas a 100000 por cliente/rodada. O sink é arquivo local,
+sem simular sink lento; esse caso mantém os testes existentes do logger.
+
+Dados temporários são removidos ao fim de cada rodada. Relatórios usam criação
+exclusiva, hashes de fonte/binário/dataset e ambiente. Não rodar builds/testes
+concorrentes. Caches/governor/afinidade não são fixados; host e CPU dos clientes
+são compartilhados. É diagnóstico local, sem promessa de capacidade, CPU/RSS
+ou causalidade de pequenas diferenças. Os testes de medição incluem respostas
+404 esperadas versus falhas, equilíbrio das ordens, quartetos completos e
+validação limitada do histórico.

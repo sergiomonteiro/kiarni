@@ -29,6 +29,24 @@ medição reproduzível e testes de correção, recuperação e limites de recur
 6. Comparar alternativas com configuração equivalente e testar regressões em
    ambiente controlado antes de estabelecer metas quantitativas de release.
 
+### Escalabilidade vertical — etapa posterior à investigação #9
+
+Objetivo registrado: aproveitar os cores disponíveis e a memória de uma única
+máquina de forma consistente, com concorrência limitada. Não confundir número
+de clientes com uso eficiente de cores nem prometer crescimento linear.
+
+Quando essa etapa for priorizada, medir o mesmo binário/dataset com conjuntos
+controlados de 1, 2, 4 e mais cores disponíveis no host; registrar throughput
+confirmado, p50/p95/p99, recusas, CPU por core e RSS. Separar leituras por ID,
+scans, escritas e cargas mistas; incluir documentos/datasets de tamanhos
+variados e estabilidade sustentada. Investigar serialização, contenção, filas,
+alocações e I/O antes de escolher mudanças. Preservar budgets, durabilidade e
+ordem pós-commit. Definir metas somente com baseline e ambiente reproduzível.
+
+A #9 investiga leitura e telemetria; não conclui essa avaliação de CPU/memória.
+Esta etapa permanece planejada, sem otimização ampla antecipada ou expansão
+para cluster/sharding. A escalabilidade horizontal é uma avaliação distinta.
+
 O benchmark inicial usa 256 documentos de 1 KiB em cache e clientes locais.
 Ele orienta o primeiro ciclo de otimização. A avaliação de capacidade precisa
 acompanhar a ampliação dessa matriz.

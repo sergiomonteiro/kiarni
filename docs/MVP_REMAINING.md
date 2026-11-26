@@ -66,10 +66,14 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   testes de contrato/crash foram transferidos para storage. Mutações HTTP mantêm
   os índices atomicamente; consultas HTTP selecionam ID/secundário/scan com
   métricas e budgets preservados. [Administração offline pela CLI](./INDEXES.md)
-  integra lock, auditoria e recuperação restrita. Faltam medições no produto. Não atribuir ao HTTP os ganhos do spike. Layouts
+  integra lock, auditoria e recuperação restrita. As [medições no produto](./benchmarks/secondary-index-http-2026-11-22.md)
+  registram ganhos seletivos e custo de escrita, sem extrapolar o spike. Layouts
   antigos são recusados sem migração ou apagamento automático.
 - Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
   para o momento combinado com o usuário; não antecipar otimizações amplas.
+  O objetivo de aproveitar os cores/RAM de uma máquina está detalhado na etapa
+  de [escalabilidade vertical](./PERFORMANCE.md#escalabilidade-vertical--etapa-posterior-à-investigação-9),
+  separada do escopo atual da #9 e da avaliação futura de escala horizontal.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.
   Cluster, replicação, sharding e replay permanecem fora do MVP.
 
