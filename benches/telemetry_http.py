@@ -3,6 +3,7 @@ import argparse
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
 import hashlib
+import http.client
 import json
 import multiprocessing
 import os
@@ -165,6 +166,19 @@ def source_hash():
     return digest.hexdigest()
 
 
+def verify_dataset(server, token, dataset):
+    """Never retry or hide a failed post-load check; preserve a bounded diagnostic."""
+    for index, payload in enumerate(dataset):
+        try:
+            status, body = server.request(f"/v1/collections/bench/documents/d{index:06d}", token)
+            if status != 200 or json.loads(body) != json.loads(payload):
+                return False, {"index": index, "status": status, "error": "response_mismatch"}
+        except (OSError, http.client.HTTPException, ValueError, UnicodeError) as error:
+            return False, {"index": index, "error": type(error).__name__,
+                           "errno": getattr(error, "errno", None)}
+    return True, None
+
+
 def run(args):
     binary = args.binary.resolve()
     fingerprint = source_hash()
@@ -222,9 +236,7 @@ def run(args):
                                 row["recent_retained"] = len(value["errors"])
                                 row["valid"] &= recent_valid(value) and (not readers or row["observer"]["valid"])
                                 # Read-only workload: verify every initial document after the measured window.
-                                row["dataset_verified"] = all(load.control(address, token, "GET",
-                                    f"/v1/collections/bench/documents/d{i:06d}") == json.loads(payload)
-                                    for i, payload in enumerate(dataset))
+                                row["dataset_verified"], row["verification_error"] = verify_dataset(server, token, dataset)
                                 row["valid"] &= row["dataset_verified"]
                                 log = os.fdopen(os.dup(server.log.fileno()), "rb")
                             finally:
@@ -251,6 +263,9 @@ def run(args):
                             if token in json.dumps(row):
                                 raise RuntimeError("secret_in_report")
                             report["results"].append(row)
+                            # Preserve completed rows if a later setup/control call aborts the run.
+                            with args.output.with_suffix(".progress.jsonl").open("a") as journal:
+                                journal.write(json.dumps(row) + "\n")
                             print(json.dumps({"trial": len(report["results"]), "scenario": scenario,
                                   "clients": clients, "log_level": level, "readers": readers,
                                   "rps": round(row["expected_rps"], 2), "valid": row["valid"]}), flush=True)
@@ -286,6 +301,9 @@ def arguments():
 
 if __name__ == "__main__":
     options = arguments()
+    journal = options.output.with_suffix(".progress.jsonl")
+    descriptor = os.open(journal, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    os.close(descriptor)
     measured = run(options)
     with os.fdopen(os.open(options.output, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), "w") as output:
         json.dump(measured, output, indent=2, default=str)

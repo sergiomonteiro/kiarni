@@ -312,3 +312,11 @@ são compartilhados. É diagnóstico local, sem promessa de capacidade, CPU/RSS
 ou causalidade de pequenas diferenças. Os testes de medição incluem respostas
 404 esperadas versus falhas, equilíbrio das ordens, quartetos completos e
 validação limitada do histórico.
+
+Um journal `.progress.jsonl`, criado com permissão privada e sem sobrescrita,
+preserva as rodadas concluídas se uma etapa posterior interromper a execução.
+Conferência pós-carga não repete requests: falha invalida a rodada e registra
+tipo/errno ou status, sem mensagem livre, payload ou token. Não excluir rodadas
+inválidas para calcular ganhos; o relatório só compara quartetos completos de
+uma matriz válida. Tentativas abortadas devem ser declaradas junto da repetição
+completa, sem juntar células escolhidas de execuções diferentes.

@@ -1,5 +1,6 @@
 import json
 import unittest
+from unittest.mock import Mock
 
 from http_load import document, percentiles, summarize
 import index_http
@@ -103,6 +104,18 @@ class IndexedMeasurementTests(unittest.TestCase):
 
 
 class TelemetryMeasurementTests(unittest.TestCase):
+    def test_post_load_failure_is_not_retried_or_hidden(self):
+        server = Mock()
+        payload = document(0, 0, 128)
+        server.request.return_value = (200, payload)
+        self.assertEqual(telemetry_http.verify_dataset(server, "fixture", [payload]), (True, None))
+        server.reset_mock()
+        server.request.side_effect = ConnectionResetError(104, "fixture")
+        valid, error = telemetry_http.verify_dataset(server, "fixture", [payload])
+        self.assertFalse(valid)
+        self.assertEqual(error, {"index": 0, "error": "ConnectionResetError", "errno": 104})
+        server.request.assert_called_once()
+
     def test_expected_errors_are_distinct_from_success_and_transport_failure(self):
         response = {"error": {"code": "document_not_found"}, "request_id": "req_fixture"}
         self.assertTrue(telemetry_http.acceptable("missing", 0, 404, "document_not_found", response))
