@@ -70,3 +70,5 @@ e o guia de contribuição para executar as verificações. A política do [cana
 - [Medições do índice no HTTP](./benchmarks/secondary-index-http-2026-11-22.md): ganhos seletivos, custos de escrita, controles e dados brutos.
 
 - [Leitura e custo de telemetria](./benchmarks/telemetry-http-2026-11-26.md): logs, leitores, limites TCP do experimento e estado da #9.
+
+- [Revisita histórica da leitura](./benchmarks/writer-read-revisit-2026-11-26.md): executáveis exatos recuperados, pares A/B, controles A/A e limites da conclusão.

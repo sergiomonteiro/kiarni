@@ -21,3 +21,6 @@ __pycache__/
 
 # Native development archives.
 /dist/
+
+# Exact local benchmark executables; hashes/manifests are versioned separately.
+/.bench-artifacts/

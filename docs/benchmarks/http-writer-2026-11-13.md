@@ -6,6 +6,14 @@ e catálogo são barreiras na mesma fila. Contratos HTTP e formato persistido
 foram preservados. A escrita concorrente melhorou neste perfil, com regressão
 de throughput de leitura que permanece registrada para investigação posterior.
 
+## Atualização — revisita de 2026-11-26
+
+Os dois executáveis exatos foram recuperados por hash. A
+[revisita intercalada com controles A/A](./writer-read-revisit-2026-11-26.md)
+registra diferenças medianas menores e dispersão importante; não confirmou
+uma queda consistente de 4%–6% e não demonstrou ausência de regressão. As
+matrizes e conclusões históricas abaixo são preservadas, sem atribuição causal.
+
 ## Comparação
 
 Fontes: [binário anterior](./http-before-writer-2026-11-13.json),

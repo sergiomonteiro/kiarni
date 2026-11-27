@@ -1,0 +1,4261 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-27T01:39:19.323562+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "e26ba1106c263d1181fbb952ea7449d5e4d66702",
+    "workspace_dirty": false,
+    "source_sha256": "7093e16f9464973a730b65e8bdf374ccd095c5ee6dfaaee106b8e2ddce11e09f",
+    "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+  },
+  "measurement_source_sha256": "75b4049f33ea2dee0b33d051dbc7432997f7cd745f72135387397094feabb74f",
+  "artifacts": {
+    "before": {
+      "sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "bytes": 2970336,
+      "historical_record": "docs/benchmarks/http-before-writer-2026-11-13.json",
+      "historical_source_sha256": "325f86e1f5e656bdeb66883bfc2e5e350bada6fbcb4cb19fd4e6bd652fd1520b"
+    },
+    "writer": {
+      "sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "bytes": 3065640,
+      "historical_record": "docs/benchmarks/http-writer-2026-11-13.json",
+      "historical_source_sha256": "1564fdffd11ec6da55a4aee7a3e07dadcd1f29ef5be0f6cde7decfc696751dcf"
+    }
+  },
+  "parameters": {
+    "clients": [
+      1,
+      8,
+      32
+    ],
+    "repeat": 4,
+    "seconds": 3.0,
+    "warmup": 5,
+    "documents": 256,
+    "document_bytes": 1024,
+    "server_config": {
+      "max_requests": 32,
+      "max_streams": 8,
+      "feed_queue": 4,
+      "max_document_bytes": 1048576,
+      "max_query_bytes": 16384,
+      "max_result_bytes": 4194304,
+      "read_timeout_ms": 5000,
+      "write_timeout_ms": 5000,
+      "heartbeat_ms": 15000
+    },
+    "validation": "full JSON on every read, warmup and after each row",
+    "load_model": "closed_loop; process/client; new TCP/request; read-only",
+    "listener": "same loopback port across fresh installations",
+    "order": "Williams 4 modes: before0,writer1,before2,writer3",
+    "logs": "original CLI options; no log-level override added to historical binaries"
+  },
+  "results": [
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 3.000069,
+      "attempts": 9996,
+      "confirmed": 9996,
+      "attempted_ops_per_second": 3331.923,
+      "confirmed_ops_per_second": 3331.923,
+      "success_latency": {
+        "p50_ms": 0.2836,
+        "p95_ms": 0.4201,
+        "p99_ms": 0.5386,
+        "max_ms": 4.3198
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9996
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9996
+        }
+      },
+      "client_cpu_seconds": 1.995552,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8423556,
+          "TWRecycled": 20012,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8060
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "100",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 13,
+          "orphan": 0,
+          "tw": 5,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8434088,
+          "TWRecycled": 20012,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8060
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "8095",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 13,
+          "orphan": 0,
+          "tw": 8012,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 3.000084,
+      "attempts": 9354,
+      "confirmed": 9354,
+      "attempted_ops_per_second": 3117.913,
+      "confirmed_ops_per_second": 3117.913,
+      "success_latency": {
+        "p50_ms": 0.3051,
+        "p95_ms": 0.4516,
+        "p99_ms": 0.557,
+        "max_ms": 1.3093
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9354
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9354
+        }
+      },
+      "client_cpu_seconds": 1.948638,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8434088,
+          "TWRecycled": 20012,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8060
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "8095",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 13,
+          "orphan": 0,
+          "tw": 8012,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8443975,
+          "TWRecycled": 20030,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8060
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "11431",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 13,
+          "orphan": 0,
+          "tw": 11353,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 3.000007,
+      "attempts": 9410,
+      "confirmed": 9410,
+      "attempted_ops_per_second": 3136.659,
+      "confirmed_ops_per_second": 3136.659,
+      "success_latency": {
+        "p50_ms": 0.3017,
+        "p95_ms": 0.4468,
+        "p99_ms": 0.5618,
+        "max_ms": 4.6384
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9410
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9410
+        }
+      },
+      "client_cpu_seconds": 1.907979,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8443975,
+          "TWRecycled": 20030,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8060
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "11431",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 13,
+          "orphan": 0,
+          "tw": 11353,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8453918,
+          "TWRecycled": 20052,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8061
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "12897",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 12824,
+          "alloc": 22,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 1,
+      "elapsed_seconds": 3.000117,
+      "attempts": 9325,
+      "confirmed": 9325,
+      "attempted_ops_per_second": 3108.212,
+      "confirmed_ops_per_second": 3108.212,
+      "success_latency": {
+        "p50_ms": 0.3041,
+        "p95_ms": 0.4414,
+        "p99_ms": 0.5533,
+        "max_ms": 5.678
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9325
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9325
+        }
+      },
+      "client_cpu_seconds": 1.892724,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8453918,
+          "TWRecycled": 20052,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8061
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "12897",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 12824,
+          "alloc": 22,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8463778,
+          "TWRecycled": 20072,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8062
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "13660",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 13582,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 3.000573,
+      "attempts": 53049,
+      "confirmed": 53049,
+      "attempted_ops_per_second": 17679.621,
+      "confirmed_ops_per_second": 17679.621,
+      "success_latency": {
+        "p50_ms": 0.331,
+        "p95_ms": 0.6227,
+        "p99_ms": 4.335,
+        "max_ms": 13.9736
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 53049
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 53049
+        }
+      },
+      "client_cpu_seconds": 15.746207,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8463778,
+          "TWRecycled": 20072,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8062
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "13660",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 13582,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8517407,
+          "TWRecycled": 20162,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8064
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14215",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14133,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 3.000413,
+      "attempts": 72277,
+      "confirmed": 72277,
+      "attempted_ops_per_second": 24089.015,
+      "confirmed_ops_per_second": 24089.015,
+      "success_latency": {
+        "p50_ms": 0.3087,
+        "p95_ms": 0.4628,
+        "p99_ms": 0.6129,
+        "max_ms": 3.5741
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 72277
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 72277
+        }
+      },
+      "client_cpu_seconds": 16.905837,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8517407,
+          "TWRecycled": 20162,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8064
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14215",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14133,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8590276,
+          "TWRecycled": 20301,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8066
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14223",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14141,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 3.000513,
+      "attempts": 68472,
+      "confirmed": 68472,
+      "attempted_ops_per_second": 22820.096,
+      "confirmed_ops_per_second": 22820.096,
+      "success_latency": {
+        "p50_ms": 0.3155,
+        "p95_ms": 0.5009,
+        "p99_ms": 0.7318,
+        "max_ms": 7.179
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 68472
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 68472
+        }
+      },
+      "client_cpu_seconds": 16.459889,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8590276,
+          "TWRecycled": 20301,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8066
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14223",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14141,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8659335,
+          "TWRecycled": 20409,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8067
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14225",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 23,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 1,
+      "elapsed_seconds": 3.000509,
+      "attempts": 70462,
+      "confirmed": 70462,
+      "attempted_ops_per_second": 23483.348,
+      "confirmed_ops_per_second": 23483.348,
+      "success_latency": {
+        "p50_ms": 0.3195,
+        "p95_ms": 0.4589,
+        "p99_ms": 0.59,
+        "max_ms": 2.9826
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 70462
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 70462
+        }
+      },
+      "client_cpu_seconds": 17.018213,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8659335,
+          "TWRecycled": 20409,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8067
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14225",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 23,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8730386,
+          "TWRecycled": 20533,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8069
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14233",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14150,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 3.002939,
+      "attempts": 51028,
+      "confirmed": 51028,
+      "attempted_ops_per_second": 16992.683,
+      "confirmed_ops_per_second": 16992.683,
+      "success_latency": {
+        "p50_ms": 1.8083,
+        "p95_ms": 2.564,
+        "p99_ms": 3.1099,
+        "max_ms": 7.1323
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 51028
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 51028
+        }
+      },
+      "client_cpu_seconds": 19.270291,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8730386,
+          "TWRecycled": 20533,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8069
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14233",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14150,
+          "alloc": 23,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8782096,
+          "TWRecycled": 20630,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8070
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14239",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 3.003252,
+      "attempts": 56791,
+      "confirmed": 56791,
+      "attempted_ops_per_second": 18909.832,
+      "confirmed_ops_per_second": 18909.832,
+      "success_latency": {
+        "p50_ms": 1.6204,
+        "p95_ms": 2.3023,
+        "p99_ms": 2.7406,
+        "max_ms": 5.9571
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 56791
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 56791
+        }
+      },
+      "client_cpu_seconds": 20.354081,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8782096,
+          "TWRecycled": 20630,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8070
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14239",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8839577,
+          "TWRecycled": 20697,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8072
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14185",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 24,
+          "mem": 293
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 3.003407,
+      "attempts": 56440,
+      "confirmed": 56440,
+      "attempted_ops_per_second": 18791.99,
+      "confirmed_ops_per_second": 18791.99,
+      "success_latency": {
+        "p50_ms": 1.6377,
+        "p95_ms": 2.2775,
+        "p99_ms": 2.7569,
+        "max_ms": 6.5743
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 56440
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 56440
+        }
+      },
+      "client_cpu_seconds": 20.246953,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8839577,
+          "TWRecycled": 20697,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8072
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14185",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 24,
+          "mem": 293
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8896704,
+          "TWRecycled": 20760,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8074
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14184",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14133,
+          "alloc": 24,
+          "mem": 293
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 1,
+      "elapsed_seconds": 3.00286,
+      "attempts": 55055,
+      "confirmed": 55055,
+      "attempted_ops_per_second": 18334.186,
+      "confirmed_ops_per_second": 18334.186,
+      "success_latency": {
+        "p50_ms": 1.6787,
+        "p95_ms": 2.3587,
+        "p99_ms": 2.7241,
+        "max_ms": 6.1911
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 55055
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 55055
+        }
+      },
+      "client_cpu_seconds": 20.126626,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8896704,
+          "TWRecycled": 20760,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8074
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14184",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14133,
+          "alloc": 24,
+          "mem": 293
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8952447,
+          "TWRecycled": 20837,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8075
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14190",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 26,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 3.000485,
+      "attempts": 9229,
+      "confirmed": 9229,
+      "attempted_ops_per_second": 3075.836,
+      "confirmed_ops_per_second": 3075.836,
+      "success_latency": {
+        "p50_ms": 0.3114,
+        "p95_ms": 0.4493,
+        "p99_ms": 0.5658,
+        "max_ms": 1.7668
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9229
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9229
+        }
+      },
+      "client_cpu_seconds": 1.894468,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8952447,
+          "TWRecycled": 20837,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8075
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14190",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 26,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8962212,
+          "TWRecycled": 20858,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8077
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14197",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 3.000175,
+      "attempts": 9125,
+      "confirmed": 9125,
+      "attempted_ops_per_second": 3041.489,
+      "confirmed_ops_per_second": 3041.489,
+      "success_latency": {
+        "p50_ms": 0.3118,
+        "p95_ms": 0.4576,
+        "p99_ms": 0.5791,
+        "max_ms": 4.567
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9125
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9125
+        }
+      },
+      "client_cpu_seconds": 1.899641,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8962212,
+          "TWRecycled": 20858,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8077
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14197",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8971871,
+          "TWRecycled": 20883,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8079
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14195",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14137,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 3.000084,
+      "attempts": 9063,
+      "confirmed": 9063,
+      "attempted_ops_per_second": 3020.915,
+      "confirmed_ops_per_second": 3020.915,
+      "success_latency": {
+        "p50_ms": 0.3124,
+        "p95_ms": 0.4657,
+        "p99_ms": 0.5888,
+        "max_ms": 4.9617
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9063
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9063
+        }
+      },
+      "client_cpu_seconds": 1.906391,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8971871,
+          "TWRecycled": 20883,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8079
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14195",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 12,
+          "orphan": 0,
+          "tw": 14137,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8981465,
+          "TWRecycled": 20905,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8082
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14198",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 14,
+          "orphan": 0,
+          "tw": 14138,
+          "alloc": 26,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 2,
+      "elapsed_seconds": 3.000361,
+      "attempts": 9545,
+      "confirmed": 9545,
+      "attempted_ops_per_second": 3181.284,
+      "confirmed_ops_per_second": 3181.284,
+      "success_latency": {
+        "p50_ms": 0.3023,
+        "p95_ms": 0.4424,
+        "p99_ms": 0.5539,
+        "max_ms": 1.0584
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9545
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9545
+        }
+      },
+      "client_cpu_seconds": 1.938299,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8981465,
+          "TWRecycled": 20905,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8082
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14198",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 14,
+          "orphan": 0,
+          "tw": 14138,
+          "alloc": 26,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8991543,
+          "TWRecycled": 20931,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8088
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14200",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 3.000424,
+      "attempts": 69423,
+      "confirmed": 69423,
+      "attempted_ops_per_second": 23137.73,
+      "confirmed_ops_per_second": 23137.73,
+      "success_latency": {
+        "p50_ms": 0.3203,
+        "p95_ms": 0.4774,
+        "p99_ms": 0.652,
+        "max_ms": 3.4658
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 69423
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 69423
+        }
+      },
+      "client_cpu_seconds": 16.792482,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 8991543,
+          "TWRecycled": 20931,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8088
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14200",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9061553,
+          "TWRecycled": 21045,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8090
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14202",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14138,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 3.00053,
+      "attempts": 69272,
+      "confirmed": 69272,
+      "attempted_ops_per_second": 23086.592,
+      "confirmed_ops_per_second": 23086.592,
+      "success_latency": {
+        "p50_ms": 0.3196,
+        "p95_ms": 0.4847,
+        "p99_ms": 0.6367,
+        "max_ms": 9.2783
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 69272
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 69272
+        }
+      },
+      "client_cpu_seconds": 16.788348,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9061553,
+          "TWRecycled": 21045,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8090
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14202",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14138,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9131403,
+          "TWRecycled": 21154,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8092
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14211",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 23,
+          "mem": 293
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 3.000482,
+      "attempts": 67426,
+      "confirmed": 67426,
+      "attempted_ops_per_second": 22471.725,
+      "confirmed_ops_per_second": 22471.725,
+      "success_latency": {
+        "p50_ms": 0.3303,
+        "p95_ms": 0.5018,
+        "p99_ms": 0.6603,
+        "max_ms": 3.5727
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 67426
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 67426
+        }
+      },
+      "client_cpu_seconds": 16.907339,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9131403,
+          "TWRecycled": 21154,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8092
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14211",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 23,
+          "mem": 293
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9199422,
+          "TWRecycled": 21275,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8093
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14215",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14147,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 2,
+      "elapsed_seconds": 3.001515,
+      "attempts": 64495,
+      "confirmed": 64495,
+      "attempted_ops_per_second": 21487.483,
+      "confirmed_ops_per_second": 21487.483,
+      "success_latency": {
+        "p50_ms": 0.3342,
+        "p95_ms": 0.5015,
+        "p99_ms": 0.682,
+        "max_ms": 8.7466
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 64495
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 64495
+        }
+      },
+      "client_cpu_seconds": 16.884387,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9199422,
+          "TWRecycled": 21275,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8093
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14215",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14147,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9264504,
+          "TWRecycled": 21417,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8095
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14213",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 3.003574,
+      "attempts": 56187,
+      "confirmed": 56187,
+      "attempted_ops_per_second": 18706.715,
+      "confirmed_ops_per_second": 18706.715,
+      "success_latency": {
+        "p50_ms": 1.6426,
+        "p95_ms": 2.2997,
+        "p99_ms": 2.7439,
+        "max_ms": 6.6863
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 56187
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 56187
+        }
+      },
+      "client_cpu_seconds": 20.262976,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9264504,
+          "TWRecycled": 21417,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8095
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14213",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9321376,
+          "TWRecycled": 21511,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8096
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14219",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14124,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 3.002634,
+      "attempts": 55755,
+      "confirmed": 55755,
+      "attempted_ops_per_second": 18568.697,
+      "confirmed_ops_per_second": 18568.697,
+      "success_latency": {
+        "p50_ms": 1.6569,
+        "p95_ms": 2.3028,
+        "p99_ms": 2.7091,
+        "max_ms": 7.3275
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 55755
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 55755
+        }
+      },
+      "client_cpu_seconds": 20.24682,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9321376,
+          "TWRecycled": 21511,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8096
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14219",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14124,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9377810,
+          "TWRecycled": 21575,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8098
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14221",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14122,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 3.003238,
+      "attempts": 54642,
+      "confirmed": 54642,
+      "attempted_ops_per_second": 18194.364,
+      "confirmed_ops_per_second": 18194.364,
+      "success_latency": {
+        "p50_ms": 1.6788,
+        "p95_ms": 2.3819,
+        "p99_ms": 2.9607,
+        "max_ms": 8.1627
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 54642
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 54642
+        }
+      },
+      "client_cpu_seconds": 19.992036,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9377810,
+          "TWRecycled": 21575,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8098
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14221",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14122,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9433138,
+          "TWRecycled": 21645,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8100
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14188",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14125,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 2,
+      "elapsed_seconds": 3.003156,
+      "attempts": 56006,
+      "confirmed": 56006,
+      "attempted_ops_per_second": 18649.05,
+      "confirmed_ops_per_second": 18649.05,
+      "success_latency": {
+        "p50_ms": 1.6496,
+        "p95_ms": 2.2966,
+        "p99_ms": 2.7666,
+        "max_ms": 7.5807
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 56006
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 56006
+        }
+      },
+      "client_cpu_seconds": 20.188058,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9433138,
+          "TWRecycled": 21645,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8100
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14188",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14125,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9489829,
+          "TWRecycled": 21731,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8102
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14199",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 1,
+          "tw": 14127,
+          "alloc": 27,
+          "mem": 293
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 3.000037,
+      "attempts": 9090,
+      "confirmed": 9090,
+      "attempted_ops_per_second": 3029.963,
+      "confirmed_ops_per_second": 3029.963,
+      "success_latency": {
+        "p50_ms": 0.3111,
+        "p95_ms": 0.4574,
+        "p99_ms": 0.5823,
+        "max_ms": 5.548
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9090
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9090
+        }
+      },
+      "client_cpu_seconds": 1.911371,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9489829,
+          "TWRecycled": 21731,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8102
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14199",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 1,
+          "tw": 14127,
+          "alloc": 27,
+          "mem": 293
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9499456,
+          "TWRecycled": 21761,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8105
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14202",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14138,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 3.000381,
+      "attempts": 9281,
+      "confirmed": 9281,
+      "attempted_ops_per_second": 3093.273,
+      "confirmed_ops_per_second": 3093.273,
+      "success_latency": {
+        "p50_ms": 0.3068,
+        "p95_ms": 0.4445,
+        "p99_ms": 0.5647,
+        "max_ms": 4.6905
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9281
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9281
+        }
+      },
+      "client_cpu_seconds": 1.911792,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9499456,
+          "TWRecycled": 21761,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8105
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14202",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14138,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9509283,
+          "TWRecycled": 21794,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8106
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14205",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14146,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 3.000027,
+      "attempts": 9280,
+      "confirmed": 9280,
+      "attempted_ops_per_second": 3093.305,
+      "confirmed_ops_per_second": 3093.305,
+      "success_latency": {
+        "p50_ms": 0.3098,
+        "p95_ms": 0.4486,
+        "p99_ms": 0.5603,
+        "max_ms": 1.5808
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9280
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9280
+        }
+      },
+      "client_cpu_seconds": 1.864232,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9509283,
+          "TWRecycled": 21794,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8106
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14205",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14146,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9519098,
+          "TWRecycled": 21833,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8108
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14203",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 3,
+      "elapsed_seconds": 3.000174,
+      "attempts": 8953,
+      "confirmed": 8953,
+      "attempted_ops_per_second": 2984.161,
+      "confirmed_ops_per_second": 2984.161,
+      "success_latency": {
+        "p50_ms": 0.317,
+        "p95_ms": 0.4593,
+        "p99_ms": 0.5852,
+        "max_ms": 5.0214
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 8953
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 8953
+        }
+      },
+      "client_cpu_seconds": 1.886892,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9519098,
+          "TWRecycled": 21833,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8108
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14203",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14139,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9528593,
+          "TWRecycled": 21862,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8109
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14203",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14145,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 3.000661,
+      "attempts": 68733,
+      "confirmed": 68733,
+      "attempted_ops_per_second": 22905.951,
+      "confirmed_ops_per_second": 22905.951,
+      "success_latency": {
+        "p50_ms": 0.3258,
+        "p95_ms": 0.4701,
+        "p99_ms": 0.637,
+        "max_ms": 4.1628
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 68733
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 68733
+        }
+      },
+      "client_cpu_seconds": 16.990055,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9528593,
+          "TWRecycled": 21862,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8109
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14203",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14145,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9597916,
+          "TWRecycled": 21963,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8111
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14203",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 25,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 3.000511,
+      "attempts": 67319,
+      "confirmed": 67319,
+      "attempted_ops_per_second": 22435.846,
+      "confirmed_ops_per_second": 22435.846,
+      "success_latency": {
+        "p50_ms": 0.3336,
+        "p95_ms": 0.4869,
+        "p99_ms": 0.6288,
+        "max_ms": 4.1465
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 67319
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 67319
+        }
+      },
+      "client_cpu_seconds": 16.972522,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9597916,
+          "TWRecycled": 21963,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8111
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14203",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 25,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9665827,
+          "TWRecycled": 22096,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8113
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14208",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14144,
+          "alloc": 25,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 3.000934,
+      "attempts": 66586,
+      "confirmed": 66586,
+      "attempted_ops_per_second": 22188.429,
+      "confirmed_ops_per_second": 22188.429,
+      "success_latency": {
+        "p50_ms": 0.3315,
+        "p95_ms": 0.5008,
+        "p99_ms": 0.6822,
+        "max_ms": 6.0008
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 66586
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 66586
+        }
+      },
+      "client_cpu_seconds": 16.807209,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9665827,
+          "TWRecycled": 22096,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8113
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14208",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14144,
+          "alloc": 25,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9733008,
+          "TWRecycled": 22240,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8115
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14210",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14141,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 3,
+      "elapsed_seconds": 3.000443,
+      "attempts": 66392,
+      "confirmed": 66392,
+      "attempted_ops_per_second": 22127.402,
+      "confirmed_ops_per_second": 22127.402,
+      "success_latency": {
+        "p50_ms": 0.3357,
+        "p95_ms": 0.5064,
+        "p99_ms": 0.6731,
+        "max_ms": 3.9653
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 66392
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 66392
+        }
+      },
+      "client_cpu_seconds": 16.850999,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9733008,
+          "TWRecycled": 22240,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8115
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14210",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14141,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9799994,
+          "TWRecycled": 22358,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8117
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14211",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14142,
+          "alloc": 25,
+          "mem": 293
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 3.003644,
+      "attempts": 55078,
+      "confirmed": 55078,
+      "attempted_ops_per_second": 18337.061,
+      "confirmed_ops_per_second": 18337.061,
+      "success_latency": {
+        "p50_ms": 1.6786,
+        "p95_ms": 2.3102,
+        "p99_ms": 2.7447,
+        "max_ms": 15.885
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 55078
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 55078
+        }
+      },
+      "client_cpu_seconds": 20.112018,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9799994,
+          "TWRecycled": 22358,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8117
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14211",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14142,
+          "alloc": 25,
+          "mem": 293
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9855758,
+          "TWRecycled": 22461,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8118
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14217",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14128,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 3.002932,
+      "attempts": 50898,
+      "confirmed": 50898,
+      "attempted_ops_per_second": 16949.432,
+      "confirmed_ops_per_second": 16949.432,
+      "success_latency": {
+        "p50_ms": 1.7827,
+        "p95_ms": 2.618,
+        "p99_ms": 3.5412,
+        "max_ms": 18.5006
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 50898
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 50898
+        }
+      },
+      "client_cpu_seconds": 19.34723,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9855758,
+          "TWRecycled": 22461,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8118
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14217",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14128,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9907345,
+          "TWRecycled": 22567,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8120
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14226",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 3.002941,
+      "attempts": 50131,
+      "confirmed": 50131,
+      "attempted_ops_per_second": 16693.97,
+      "confirmed_ops_per_second": 16693.97,
+      "success_latency": {
+        "p50_ms": 1.8265,
+        "p95_ms": 2.6562,
+        "p99_ms": 3.5813,
+        "max_ms": 16.6251
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 50131
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 50131
+        }
+      },
+      "client_cpu_seconds": 19.068219,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9907345,
+          "TWRecycled": 22567,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8120
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14226",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9958160,
+          "TWRecycled": 22644,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8122
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14228",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14128,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 3,
+      "elapsed_seconds": 3.002459,
+      "attempts": 53390,
+      "confirmed": 53390,
+      "attempted_ops_per_second": 17782.093,
+      "confirmed_ops_per_second": 17782.093,
+      "success_latency": {
+        "p50_ms": 1.7219,
+        "p95_ms": 2.4459,
+        "p99_ms": 3.0339,
+        "max_ms": 5.7674
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 53390
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 53390
+        }
+      },
+      "client_cpu_seconds": 20.164918,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 9958160,
+          "TWRecycled": 22644,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8122
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14228",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14128,
+          "alloc": 24,
+          "mem": 37
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10012236,
+          "TWRecycled": 22747,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8124
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14181",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 4,
+      "elapsed_seconds": 3.000103,
+      "attempts": 9272,
+      "confirmed": 9272,
+      "attempted_ops_per_second": 3090.56,
+      "confirmed_ops_per_second": 3090.56,
+      "success_latency": {
+        "p50_ms": 0.3075,
+        "p95_ms": 0.4426,
+        "p99_ms": 0.5558,
+        "max_ms": 5.3903
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9272
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9272
+        }
+      },
+      "client_cpu_seconds": 1.884249,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10012236,
+          "TWRecycled": 22747,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8124
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14181",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14129,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10022044,
+          "TWRecycled": 22778,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8126
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14182",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14140,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 4,
+      "elapsed_seconds": 3.000319,
+      "attempts": 9078,
+      "confirmed": 9078,
+      "attempted_ops_per_second": 3025.678,
+      "confirmed_ops_per_second": 3025.678,
+      "success_latency": {
+        "p50_ms": 0.3124,
+        "p95_ms": 0.4656,
+        "p99_ms": 0.5917,
+        "max_ms": 6.5715
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9078
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9078
+        }
+      },
+      "client_cpu_seconds": 1.916492,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10022044,
+          "TWRecycled": 22778,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8126
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14182",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14140,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10031653,
+          "TWRecycled": 22807,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8127
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14188",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 4,
+      "elapsed_seconds": 3.000146,
+      "attempts": 9139,
+      "confirmed": 9139,
+      "attempted_ops_per_second": 3046.185,
+      "confirmed_ops_per_second": 3046.185,
+      "success_latency": {
+        "p50_ms": 0.313,
+        "p95_ms": 0.4621,
+        "p99_ms": 0.5796,
+        "max_ms": 0.9816
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9139
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9139
+        }
+      },
+      "client_cpu_seconds": 1.894325,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10031653,
+          "TWRecycled": 22807,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8127
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14188",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10041335,
+          "TWRecycled": 22828,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8129
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14206",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14145,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 1,
+      "repetition": 4,
+      "elapsed_seconds": 3.000071,
+      "attempts": 9227,
+      "confirmed": 9227,
+      "attempted_ops_per_second": 3075.594,
+      "confirmed_ops_per_second": 3075.594,
+      "success_latency": {
+        "p50_ms": 0.3101,
+        "p95_ms": 0.4449,
+        "p99_ms": 0.5628,
+        "max_ms": 4.4523
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 9227
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 9227
+        }
+      },
+      "client_cpu_seconds": 1.891355,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10041335,
+          "TWRecycled": 22828,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8129
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14206",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14145,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10051095,
+          "TWRecycled": 22854,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8131
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14221",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14145,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 4,
+      "elapsed_seconds": 3.0006,
+      "attempts": 63900,
+      "confirmed": 63900,
+      "attempted_ops_per_second": 21295.741,
+      "confirmed_ops_per_second": 21295.741,
+      "success_latency": {
+        "p50_ms": 0.3473,
+        "p95_ms": 0.5286,
+        "p99_ms": 0.7057,
+        "max_ms": 6.9238
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 63900
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 63900
+        }
+      },
+      "client_cpu_seconds": 16.757056,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10051095,
+          "TWRecycled": 22854,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8131
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14221",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14145,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10115584,
+          "TWRecycled": 22971,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8132
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14224",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14137,
+          "alloc": 25,
+          "mem": 297
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 4,
+      "elapsed_seconds": 3.000465,
+      "attempts": 67500,
+      "confirmed": 67500,
+      "attempted_ops_per_second": 22496.511,
+      "confirmed_ops_per_second": 22496.511,
+      "success_latency": {
+        "p50_ms": 0.3346,
+        "p95_ms": 0.476,
+        "p99_ms": 0.615,
+        "max_ms": 2.6038
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 67500
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 67500
+        }
+      },
+      "client_cpu_seconds": 17.14609,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10115584,
+          "TWRecycled": 22971,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8132
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14224",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14137,
+          "alloc": 25,
+          "mem": 297
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10183665,
+          "TWRecycled": 23091,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8133
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14225",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 4,
+      "elapsed_seconds": 3.000561,
+      "attempts": 63489,
+      "confirmed": 63489,
+      "attempted_ops_per_second": 21159.042,
+      "confirmed_ops_per_second": 21159.042,
+      "success_latency": {
+        "p50_ms": 0.3496,
+        "p95_ms": 0.5345,
+        "p99_ms": 0.7127,
+        "max_ms": 5.1559
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 63489
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 63489
+        }
+      },
+      "client_cpu_seconds": 16.806117,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10183665,
+          "TWRecycled": 23091,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8133
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14225",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14136,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10247740,
+          "TWRecycled": 23208,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8135
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14226",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14142,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 8,
+      "repetition": 4,
+      "elapsed_seconds": 3.00075,
+      "attempts": 66620,
+      "confirmed": 66620,
+      "attempted_ops_per_second": 22201.114,
+      "confirmed_ops_per_second": 22201.114,
+      "success_latency": {
+        "p50_ms": 0.3368,
+        "p95_ms": 0.4924,
+        "p99_ms": 0.6505,
+        "max_ms": 3.3391
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 66620
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 66620
+        }
+      },
+      "client_cpu_seconds": 17.026725,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10247740,
+          "TWRecycled": 23208,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8135
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14226",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14142,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10314941,
+          "TWRecycled": 23313,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8136
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14233",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14137,
+          "alloc": 25,
+          "mem": 41
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 4,
+      "elapsed_seconds": 3.003132,
+      "attempts": 52658,
+      "confirmed": 52658,
+      "attempted_ops_per_second": 17534.359,
+      "confirmed_ops_per_second": 17534.359,
+      "success_latency": {
+        "p50_ms": 1.7384,
+        "p95_ms": 2.5082,
+        "p99_ms": 3.1457,
+        "max_ms": 8.3542
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 52658
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 52658
+        }
+      },
+      "client_cpu_seconds": 19.973524,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10314941,
+          "TWRecycled": 23313,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8136
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14233",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14137,
+          "alloc": 25,
+          "mem": 41
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10368285,
+          "TWRecycled": 23397,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8138
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14235",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14126,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 4,
+      "elapsed_seconds": 3.002634,
+      "attempts": 55385,
+      "confirmed": 55385,
+      "attempted_ops_per_second": 18445.474,
+      "confirmed_ops_per_second": 18445.474,
+      "success_latency": {
+        "p50_ms": 1.6755,
+        "p95_ms": 2.2947,
+        "p99_ms": 2.7092,
+        "max_ms": 6.4865
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 55385
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 55385
+        }
+      },
+      "client_cpu_seconds": 20.283438,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 2,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10368285,
+          "TWRecycled": 23397,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8138
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14235",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14126,
+          "alloc": 25,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10424362,
+          "TWRecycled": 23492,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8140
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14233",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14128,
+          "alloc": 25,
+          "mem": 41
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 4,
+      "elapsed_seconds": 3.002725,
+      "attempts": 53834,
+      "confirmed": 53834,
+      "attempted_ops_per_second": 17928.383,
+      "confirmed_ops_per_second": 17928.383,
+      "success_latency": {
+        "p50_ms": 1.7184,
+        "p95_ms": 2.3807,
+        "p99_ms": 2.8195,
+        "max_ms": 5.674
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 53834
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 53834
+        }
+      },
+      "client_cpu_seconds": 20.112339,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 0,
+      "role": "before",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10424362,
+          "TWRecycled": 23492,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8140
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14233",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 11,
+          "orphan": 0,
+          "tw": 14128,
+          "alloc": 25,
+          "mem": 41
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10478878,
+          "TWRecycled": 23571,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8142
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14235",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14126,
+          "alloc": 24,
+          "mem": 297
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "valid": true
+    },
+    {
+      "scenario": "read",
+      "clients": 32,
+      "repetition": 4,
+      "elapsed_seconds": 3.00743,
+      "attempts": 54596,
+      "confirmed": 54596,
+      "attempted_ops_per_second": 18153.708,
+      "confirmed_ops_per_second": 18153.708,
+      "success_latency": {
+        "p50_ms": 1.6929,
+        "p95_ms": 2.3676,
+        "p99_ms": 2.8271,
+        "max_ms": 6.0961
+      },
+      "failure_latency": null,
+      "statuses": {
+        "200": 54596
+      },
+      "error_codes": {},
+      "operations": {
+        "read": {
+          "200": 54596
+        }
+      },
+      "client_cpu_seconds": 20.241821,
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "operation_cap_hit": false,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10478878,
+          "TWRecycled": 23571,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8142
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14235",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14126,
+          "alloc": 24,
+          "mem": 297
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 10534161,
+          "TWRecycled": 23645,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8143
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14179",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 10,
+          "orphan": 0,
+          "tw": 14125,
+          "alloc": 24,
+          "mem": 0
+        }
+      },
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "valid": true
+    }
+  ],
+  "valid": true,
+  "comparisons": [
+    {
+      "clients": 1,
+      "repetition": 1,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 0.9357698242126244,
+      "p95_right_over_left": 1.0749821471078316
+    },
+    {
+      "clients": 1,
+      "repetition": 1,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 1.0091522071210073,
+      "p95_right_over_left": 1.0122338015405528
+    },
+    {
+      "clients": 1,
+      "repetition": 1,
+      "comparison": "before_AA",
+      "rps_right_over_left": 0.9328582923434906,
+      "p95_right_over_left": 1.050702213758629
+    },
+    {
+      "clients": 1,
+      "repetition": 1,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0060123550592976,
+      "p95_right_over_left": 0.9893711248892825
+    },
+    {
+      "clients": 8,
+      "repetition": 1,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 0.7747391159090653,
+      "p95_right_over_left": 1.2431623078458776
+    },
+    {
+      "clients": 8,
+      "repetition": 1,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 0.9748571288614334,
+      "p95_right_over_left": 0.9915730337078651
+    },
+    {
+      "clients": 8,
+      "repetition": 1,
+      "comparison": "before_AA",
+      "rps_right_over_left": 1.0556053313710863,
+      "p95_right_over_left": 0.9239369135555999
+    },
+    {
+      "clients": 8,
+      "repetition": 1,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.3282721388654204,
+      "p95_right_over_left": 0.7369519832985385
+    },
+    {
+      "clients": 32,
+      "repetition": 1,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 1.0249699659423113,
+      "p95_right_over_left": 0.9655742570059779
+    },
+    {
+      "clients": 32,
+      "repetition": 1,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 1.1128220305174878,
+      "p95_right_over_left": 0.8979329173166926
+    },
+    {
+      "clients": 32,
+      "repetition": 1,
+      "comparison": "before_AA",
+      "rps_right_over_left": 0.9268305121372719,
+      "p95_right_over_left": 1.0870394708949846
+    },
+    {
+      "clients": 32,
+      "repetition": 1,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0062708632773856,
+      "p95_right_over_left": 1.0108891328210756
+    },
+    {
+      "clients": 1,
+      "repetition": 2,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 1.0181802533338409,
+      "p95_right_over_left": 0.964784195834228
+    },
+    {
+      "clients": 1,
+      "repetition": 2,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 1.0459626847244885,
+      "p95_right_over_left": 0.9667832167832168
+    },
+    {
+      "clients": 1,
+      "repetition": 2,
+      "comparison": "before_AA",
+      "rps_right_over_left": 1.0068105193294086,
+      "p95_right_over_left": 0.98260682843032
+    },
+    {
+      "clients": 1,
+      "repetition": 2,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0342827120821787,
+      "p95_right_over_left": 0.9846427776541288
+    },
+    {
+      "clients": 8,
+      "repetition": 2,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 1.0458053649187296,
+      "p95_right_over_left": 1.0005982053838487
+    },
+    {
+      "clients": 8,
+      "repetition": 2,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 0.9977898436882098,
+      "p95_right_over_left": 1.0152911604524508
+    },
+    {
+      "clients": 8,
+      "repetition": 2,
+      "comparison": "before_AA",
+      "rps_right_over_left": 1.0768003865320102,
+      "p95_right_over_left": 0.9519441674975075
+    },
+    {
+      "clients": 8,
+      "repetition": 2,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0273618068928845,
+      "p95_right_over_left": 0.9659226783579115
+    },
+    {
+      "clients": 32,
+      "repetition": 2,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 1.0043273364846224,
+      "p95_right_over_left": 0.9973076254993921
+    },
+    {
+      "clients": 32,
+      "repetition": 2,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 1.028159874123657,
+      "p95_right_over_left": 0.9654897350854361
+    },
+    {
+      "clients": 32,
+      "repetition": 2,
+      "comparison": "before_AA",
+      "rps_right_over_left": 0.9798406425609725,
+      "p95_right_over_left": 1.034349487580337
+    },
+    {
+      "clients": 32,
+      "repetition": 2,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0030921146117362,
+      "p95_right_over_left": 1.0013498214752241
+    },
+    {
+      "clients": 1,
+      "repetition": 3,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 1.0365744341541894,
+      "p95_right_over_left": 0.9767036795123013
+    },
+    {
+      "clients": 1,
+      "repetition": 3,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 1.0208946445880691,
+      "p95_right_over_left": 0.9717971141233057
+    },
+    {
+      "clients": 1,
+      "repetition": 3,
+      "comparison": "before_AA",
+      "rps_right_over_left": 1.015348367598129,
+      "p95_right_over_left": 0.9958632701937731
+    },
+    {
+      "clients": 1,
+      "repetition": 3,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 0.9999896550776598,
+      "p95_right_over_left": 0.9908604547481052
+    },
+    {
+      "clients": 8,
+      "repetition": 3,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 0.986252178767852,
+      "p95_right_over_left": 1.040049291435613
+    },
+    {
+      "clients": 8,
+      "repetition": 3,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 1.0323376657265821,
+      "p95_right_over_left": 0.9386980830670927
+    },
+    {
+      "clients": 8,
+      "repetition": 3,
+      "comparison": "before_AA",
+      "rps_right_over_left": 0.9889722455752281,
+      "p95_right_over_left": 1.028547956459232
+    },
+    {
+      "clients": 8,
+      "repetition": 3,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0351848355265567,
+      "p95_right_over_left": 0.9283175355450238
+    },
+    {
+      "clients": 32,
+      "repetition": 3,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 0.924326531934425,
+      "p95_right_over_left": 1.1332352177300666
+    },
+    {
+      "clients": 32,
+      "repetition": 3,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 0.9388079344765546,
+      "p95_right_over_left": 1.0859806206304428
+    },
+    {
+      "clients": 32,
+      "repetition": 3,
+      "comparison": "before_AA",
+      "rps_right_over_left": 0.9697351718467861,
+      "p95_right_over_left": 1.0587395030733269
+    },
+    {
+      "clients": 32,
+      "repetition": 3,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 0.9849279905072925,
+      "p95_right_over_left": 1.0145912910618793
+    },
+    {
+      "clients": 1,
+      "repetition": 4,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 1.0164974594124028,
+      "p95_right_over_left": 0.9555412371134021
+    },
+    {
+      "clients": 1,
+      "repetition": 4,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 1.0145674015202621,
+      "p95_right_over_left": 0.9578013417009305
+    },
+    {
+      "clients": 1,
+      "repetition": 4,
+      "comparison": "before_AA",
+      "rps_right_over_left": 1.0067776544629006,
+      "p95_right_over_left": 0.9924828178694158
+    },
+    {
+      "clients": 1,
+      "repetition": 4,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0048660518911143,
+      "p95_right_over_left": 0.9948302989435828
+    },
+    {
+      "clients": 8,
+      "repetition": 4,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 1.0563854528471208,
+      "p95_right_over_left": 0.9004918653045781
+    },
+    {
+      "clients": 8,
+      "repetition": 4,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 0.9530621751683271,
+      "p95_right_over_left": 1.0854995938261576
+    },
+    {
+      "clients": 8,
+      "repetition": 4,
+      "comparison": "before_AA",
+      "rps_right_over_left": 1.0425142755070134,
+      "p95_right_over_left": 0.9315172152856603
+    },
+    {
+      "clients": 8,
+      "repetition": 4,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 0.9405477142655589,
+      "p95_right_over_left": 1.1228991596638656
+    },
+    {
+      "clients": 32,
+      "repetition": 4,
+      "comparison": "writer_over_before_1",
+      "rps_right_over_left": 0.9780223347526655,
+      "p95_right_over_left": 1.0535556769017516
+    },
+    {
+      "clients": 32,
+      "repetition": 4,
+      "comparison": "writer_over_before_2",
+      "rps_right_over_left": 0.9841822443814673,
+      "p95_right_over_left": 1.0317688586743363
+    },
+    {
+      "clients": 32,
+      "repetition": 4,
+      "comparison": "before_AA",
+      "rps_right_over_left": 1.0288420322122747,
+      "p95_right_over_left": 0.9638761708741127
+    },
+    {
+      "clients": 32,
+      "repetition": 4,
+      "comparison": "writer_AA",
+      "rps_right_over_left": 1.0353220211813845,
+      "p95_right_over_left": 0.9439438641256678
+    }
+  ]
+}

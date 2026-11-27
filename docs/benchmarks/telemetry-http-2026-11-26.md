@@ -148,6 +148,12 @@ bytes/registros/perdas são agregados. Dados/journals privados durante coleta.
 
 ## Estado da issue #9 e próximo incremento
 
+**Atualização posterior:** o executável integrado exato foi recuperado no cache
+`target/release/deps`. A [revisita dos dois artefatos](./writer-read-revisit-2026-11-26.md)
+supera a lacuna de localização descrita neste primeiro incremento. A queda de
+4%–6% não foi confirmada de forma consistente; não foi declarada corrigida.
+O estado abaixo preserva o contexto do primeiro incremento.
+
 - Comparação off/info e sem/com leitores no produto atual documentada.
 - Reprodução da queda histórica de 4%–6% **pendente**: binário anterior local
   tem SHA `0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125`,

@@ -1,0 +1,14 @@
+[
+  {
+    "role": "before",
+    "recovered_from": "/tmp/kiarni-before-writer",
+    "bytes": 2970336,
+    "sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125"
+  },
+  {
+    "role": "writer",
+    "recovered_from": "target/release/deps/kiarni-8cdd944d79c91365",
+    "bytes": 3065640,
+    "sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+  }
+]

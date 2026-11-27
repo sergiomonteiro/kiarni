@@ -121,5 +121,20 @@ acumulavam TIME_WAIT até o teto do host. Reutilizar uma porta entre instalaçõ
 independentes permitiu completar a matriz sem novo overflow observado, mantendo
 nova conexão por request e sem alterar o kernel. Isso não prova a causa dos
 timeouts anteriores nem resolve a regressão histórica do writer. Esta continua
-pendente de comparação com proveniência suficiente; nenhuma otimização Rust
-foi escolhida neste incremento.
+revisitada posteriormente com os dois executáveis exatos, conforme seção
+seguinte; nenhuma otimização Rust foi escolhida nesse primeiro incremento.
+
+## Revisita histórica da leitura — segundo incremento da #9
+
+O [executável integrado foi recuperado por hash](./benchmarks/writer-read-revisit-2026-11-26.md)
+no cache do Cargo. 48 rodadas intercaladas e válidas, com controles A/A,
+1/8/32 clientes e mesmo dataset inicial: integrado/anterior teve medianas
+pareadas de 0,9920 e 0,9943 em 8/32 clientes, com dispersão importante inclusive
+entre rodadas do mesmo binário. A queda antiga de 4%–6% não foi confirmada
+consistentemente; não se provou ausência de regressão ou causa no writer.
+
+Não alterar GET/coordenação para corrigir esse percentual sem isolá-lo. O
+próximo recorte é reduzir interferência do experimento e aumentar a janela de
+observação, mantendo rastreabilidade e o histórico. Binários exatos estão
+preservados localmente fora de target; não são release nem artefatos remotos.
+A #9 continua aberta. CPU/RAM ampla permanece na etapa de escalabilidade vertical.

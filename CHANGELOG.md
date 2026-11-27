@@ -7,6 +7,10 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
+- Recuperados por hash os dois binários históricos do writer; preservação local
+  privada e [48 rodadas intercaladas de leitura](./docs/benchmarks/writer-read-revisit-2026-11-26.md)
+  com controles A/A. Resultado inconclusivo sobre a queda antiga de 4%–6%, sem
+  otimização Rust. Medidor recusa artefatos diferentes e valida documentos completos.
 - Medidor HTTP para logs off/info e leitores de métricas/erros, com ordem
   balanceada, journal e diagnóstico TCP. [64 rodadas válidas](./docs/benchmarks/telemetry-http-2026-11-26.md),
   tentativas abortadas e limites publicados; sem otimização Rust nesta etapa.

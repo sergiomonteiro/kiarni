@@ -286,3 +286,12 @@ Não se declarou capacidade fora do cache, estabilidade prolongada, correção e
 macOS por estes testes, ou proteção contra falha física/energia. O profiling
 de fases individuais ainda não contabiliza commits de grupos. Changefeeds
 continuam exigindo ordenação e orçamento próprios antes de ativação.
+
+## Revisita dos executáveis exatos — 2026-11-26
+
+[48 rodadas intercaladas e controles A/A](../benchmarks/writer-read-revisit-2026-11-26.md)
+nos dois executáveis com os hashes originais. Diferenças medianas de leitura
+menores que a queda inicial e dispersão importante: não se confirmou uma queda
+consistente de 4%–6%, nem se demonstrou ausência de regressão. A recuperação do
+artefato integrado supera a lacuna anterior de localização. Preservado o
+registro histórico, sem atribuição causal ou mudança de runtime/contrato.
