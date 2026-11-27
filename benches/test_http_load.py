@@ -3,11 +3,34 @@ import unittest
 from unittest.mock import Mock, patch
 
 from http_load import document, percentiles, summarize
+import http_load
 import index_http
 import telemetry_http
+import writer_history
 
 
 class MeasurementTests(unittest.TestCase):
+    def test_full_read_validation_rejects_wrong_payload_with_matching_id(self):
+        expected = json.loads(document(0, 0, 128))
+        context = {"scenario": "read", "documents": 1, "round": 1,
+                   "expected_documents": [expected], "address": None, "token": "fixture"}
+        with patch.object(http_load, "CONTEXT", context), \
+             patch.object(http_load, "exchange", return_value=(200, None, dict(expected, revision=1))):
+            result = http_load.operation(0, 0)
+        self.assertEqual(result[2], "invalid_success_response")
+
+    def test_historical_pairs_preserve_direction_and_reject_incomplete_data(self):
+        rows = [dict(clients=8, repetition=1, mode_id=i, valid=True,
+                     confirmed_ops_per_second=rps, success_latency={"p95_ms": p95})
+                for i, rps, p95 in [(0, 100, 1), (1, 95, 2), (2, 102, 1), (3, 96, 2)]]
+        comparisons = writer_history.comparisons(rows)
+        self.assertEqual(comparisons[0]["rps_right_over_left"], .95)
+        self.assertEqual(comparisons[2]["rps_right_over_left"], 1.02)
+        self.assertEqual(comparisons[0]["p95_right_over_left"], 2)
+        for invalid in (rows[:-1], rows + [rows[0]], [dict(rows[0], valid=False), *rows[1:]]):
+            with self.assertRaises(ValueError):
+                writer_history.comparisons(invalid)
+
     def test_exact_document_size_and_revision(self):
         for size in [128, 1024]:
             payload = document(9999, 360000000005, size)

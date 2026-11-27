@@ -97,6 +97,8 @@ def operation(client, step):
             valid = value == setting["expected_query"]
         else:
             valid = isinstance(value, dict) and value.get("_id") == f"d{index:06d}"
+            if kind == "read" and setting.get("expected_documents") is not None:
+                valid = value == setting["expected_documents"][index]
             if kind == "write":
                 valid = valid and value.get("revision") == revision
         if not valid:
@@ -106,7 +108,9 @@ def operation(client, step):
 
 def worker(client):
     for step in range(CONTEXT["warmup"]):
-        operation(client, step)
+        _, status, code, _, _ = operation(client, step)
+        if CONTEXT.get("expected_documents") is not None and (status != 200 or code is not None):
+            raise RuntimeError("invalid_warmup_response")
     BARRIER.wait(timeout=30)
     started = time.perf_counter_ns()
     cpu_started = time.process_time()
@@ -287,6 +291,8 @@ def benchmark(args):
             "mixed_write_fraction": 0.2, "server_config": SERVER_CONFIG,
             "profile": "release", "connection_per_request": True,
             "load_model": "closed_loop", "retries": 0,
+            "listener_port_policy": "fixed" if args.port else "ephemeral",
+            "verify_full_read": args.verify_full_read,
         },
         "results": [],
     }
@@ -296,7 +302,8 @@ def benchmark(args):
         report["environment"]["data_block_bytes"] = os.statvfs(directory).f_frsize
         root = directory / "data"
         with socket.socket() as reservation:
-            reservation.bind(("127.0.0.1", 0))
+            reservation.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            reservation.bind(("127.0.0.1", args.port))
             address = reservation.getsockname()
         env = {key: value for key, value in os.environ.items() if not key.startswith("KIARNI_")}
         with (directory / "server.log").open("xb") as log:
@@ -352,6 +359,8 @@ def benchmark(args):
                                 "warmup": args.warmup, "seconds": args.seconds,
                                 "documents": args.documents, "document_bytes": args.document_bytes,
                                 "query": encoded(ast), "expected_query": expected,
+                                "expected_documents": [json.loads(document(i, 0, args.document_bytes))
+                                                       for i in range(args.documents)] if args.verify_full_read else None,
                             })
                             report["results"].append(row)
                             print(json.dumps({
@@ -360,6 +369,11 @@ def benchmark(args):
                                 "statuses": row["statuses"],
                             }), flush=True)
                 control(address, token, "GET", "/v1/health/ready")
+                if args.verify_full_read:
+                    if not all(control(address, token, "GET", f"/v1/collections/bench/documents/d{i:06d}")
+                               == json.loads(document(i, 0, args.document_bytes)) for i in range(args.documents)):
+                        raise RuntimeError("post_load_dataset_mismatch")
+                    report["post_load_dataset_verified"] = True
                 if token in json.dumps(report):
                     raise RuntimeError("secret_in_report")
             finally:
@@ -392,6 +406,8 @@ def benchmark(args):
 def arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", type=Path, default=ROOT / "target/release/kiarni")
+    parser.add_argument("--port", type=int, default=0, help="reuse this loopback port between fresh servers")
+    parser.add_argument("--verify-full-read", action="store_true", help="validate full documents in a read-only matrix")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--clients", nargs="+", type=int, default=[1, 8, 32])
     parser.add_argument("--scenarios", nargs="+", choices=["read", "write", "query", "mixed"],
@@ -402,6 +418,8 @@ def arguments():
     parser.add_argument("--documents", type=int, default=256)
     parser.add_argument("--document-bytes", type=int, default=1024)
     args = parser.parse_args()
+    if not 0 <= args.port <= 65535 or (args.verify_full_read and args.scenarios != ["read"]):
+        parser.error("invalid port or full-read validation outside read-only scenario")
     if len(set(args.scenarios)) != len(args.scenarios):
         parser.error("scenarios must be distinct")
     if not args.clients or len(set(args.clients)) != len(args.clients) or any(not 1 <= n <= 32 for n in args.clients):

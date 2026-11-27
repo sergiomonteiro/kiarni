@@ -334,3 +334,38 @@ mantendo instalações independentes e uma conexão nova por request. Evita
 adicionar um novo conjunto de tuplas TCP por porta a cada ciclo. Essa política
 é registrada no JSON; versões anteriores com porta aleatória a cada servidor
 não são misturadas na mesma comparação. Não altera sysctls ou protocolo HTTP.
+
+## Revisita dos artefatos históricos do writer
+
+`writer_history.py` exige os dois binários com hashes exatos dos relatórios de
+2026-11-13. Não recompila fonte atual para representar a versão histórica nem
+abre um banco existente. Cada membro inicia instalação temporária nova, usando
+as opções HTTP originais. Não adiciona flags recentes ao executável antigo.
+
+```bash
+python3 benches/writer_history.py --before /caminho/binario-anterior --writer /caminho/binario-integrado --output /tmp/writer-history-NOVO.json --clients 1 8 32 --repeat 4 --seconds 3 --warmup 5
+```
+
+São 48 rodadas, 24 pares integrado/anterior, além de controles A/A: modos 0/2
+usam anterior e 1/3 integrado; ordem Williams, equilibrada em quatro repetições.
+Comparações sempre integrado/anterior; A/A compara 2/0 e 3/1. Esses controles
+compartilham rodadas com os pares A/B: não são amostras independentes extras.
+
+Reutiliza `http_load.py` com porta fixa (`--port`) e `--verify-full-read`, válido
+somente no cenário read. Confere JSON completo a cada leitura e warmup, além
+dos 256 documentos após a carga. Dataset inicial de 256 × 1 KiB, idêntico entre
+membros; não mistura escritas/query entre rodadas. Read-only, nova conexão TCP
+por request e um processo por cliente. Mantém budgets, durabilidade e limites
+de configuração originais. Sem alteração no protocolo/binário do servidor.
+
+Criação exclusiva e journal preservam resultados concluídos; qualquer falha
+invalida a matriz, sem exclusão de pares para obter ganho. Hashes dos binários
+e do medidor são conferidos antes/depois; diagnósticos globais de TCP incluem
+seed/warmup/carga/conferência. Sem builds/testes durante a medição.
+
+É uma revisita controlada da leitura nos executáveis exatos, não repetição
+bit a bit das matrizes originais: agora há intercalação, validação mais forte,
+instalação nova por membro e controle de porta. Não representa desempenho do
+produto atual nem prova que uma queda histórica foi causada por uma função.
+Janelas curtas e host compartilhado limitam diferenças pequenas; amplitude
+de A/A não é intervalo de confiança nem limite universal de ruído.
