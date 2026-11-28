@@ -133,6 +133,14 @@ Saída e journal devem ser novos; ambiente sem outras cargas de build/teste.
 O medidor recusa hashes diferentes dos registros originais. [Metodologia](../../benches/README.md)
 e [relatório original](./http-writer-2026-11-13.md) preservam o contexto.
 
+## Atualização — coleta longa com afinidade
+
+A [campanha seguinte](./writer-read-pinned-2026-11-27.md) usou dez segundos por
+rodada e conjuntos de cores separados. Houve menor amplitude em alguns
+controles, mas o gerador aproximou-se do orçamento de CPU em 32 clientes.
+A próxima hipótese a remover é esse limite do cliente, antes de interpretar
+a medição como capacidade do servidor. Preservadas as conclusões anteriores.
+
 ## Decisão e próximo incremento
 
 Não alterar transporte, buffers, coordenador ou configuração pública para

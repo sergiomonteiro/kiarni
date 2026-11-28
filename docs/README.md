@@ -72,3 +72,5 @@ e o guia de contribuição para executar as verificações. A política do [cana
 - [Leitura e custo de telemetria](./benchmarks/telemetry-http-2026-11-26.md): logs, leitores, limites TCP do experimento e estado da #9.
 
 - [Revisita histórica da leitura](./benchmarks/writer-read-revisit-2026-11-26.md): executáveis exatos recuperados, pares A/B, controles A/A e limites da conclusão.
+
+- [Leitura com gerador/servidor separados](./benchmarks/writer-read-pinned-2026-11-27.md): afinidade temporária, janelas maiores e limite de CPU do medidor.

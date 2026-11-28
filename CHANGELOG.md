@@ -7,6 +7,10 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
+- Controles opcionais de afinidade Linux no medidor, com aplicação antes do exec
+  do servidor e verificação dos clientes. [32 rodadas longas](./docs/benchmarks/writer-read-pinned-2026-11-27.md)
+  registram repetibilidade e sinal de saturação do gerador; sem mudança Rust/API
+  ou configuração padrão do Kiarni.
 - Recuperados por hash os dois binários históricos do writer; preservação local
   privada e [48 rodadas intercaladas de leitura](./docs/benchmarks/writer-read-revisit-2026-11-26.md)
   com controles A/A. Resultado inconclusivo sobre a queda antiga de 4%–6%, sem

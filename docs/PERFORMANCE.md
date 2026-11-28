@@ -138,3 +138,22 @@ próximo recorte é reduzir interferência do experimento e aumentar a janela de
 observação, mantendo rastreabilidade e o histórico. Binários exatos estão
 preservados localmente fora de target; não são release nem artefatos remotos.
 A #9 continua aberta. CPU/RAM ampla permanece na etapa de escalabilidade vertical.
+
+## Coleta longa e separação do gerador — terceiro incremento da #9
+
+[32 rodadas de dez segundos](./benchmarks/writer-read-pinned-2026-11-27.md),
+8,03 milhões de leituras corretas, conjuntos de quatro cores físicos separados
+para clientes e servidor. As máscaras são temporárias nos processos do teste;
+não há alteração da afinidade padrão ou implementação de escala por cores.
+
+Medianas integrado/anterior próximas de 1 (0,99995 / 1,00485 para 8/32 clientes).
+Não se confirmou queda consistente de 4%–6%. Alguns controles ficaram menos
+dispersos; outros ainda oscilaram. Mudaram afinidade, duração e warmup juntos,
+portanto não se isolou a contribuição de cada um.
+
+O gerador com 32 clientes usou cerca de 7,94 CPUs lógicas-equivalentes das oito
+atribuídas a ele. Esse sinal pode limitar a carga oferecida e mascarar diferenças
+no servidor. Próximo recorte: gerador de benchmark mais leve e limitado, com
+validação equivalente e controle A/A, antes de comparar servidores. Não repetir
+o mesmo teste Python indefinidamente nem inferir capacidade do Kiarni a partir
+desse teto. A #9 e o planejamento amplo de CPU/RAM continuam separados.
