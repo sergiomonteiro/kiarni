@@ -12,6 +12,7 @@ import multiprocessing
 import os
 from pathlib import Path
 import platform
+import resource
 import signal
 import socket
 import subprocess
@@ -188,6 +189,36 @@ def run_round(context):
     return summarize(context, outcomes)
 
 
+def rust_round(context, driver):
+    if context["scenario"] != "read" or context.get("expected_documents") is None:
+        raise ValueError("rust_driver_requires_full_read_only_validation")
+    config = {"address": f'{context["address"][0]}:{context["address"][1]}',
+              "token": context["token"], "clients": context["clients"],
+              "warmup": context["warmup"], "duration_ms": round(context["seconds"] * 1000),
+              "documents": context["expected_documents"]}
+    command = [str(driver.resolve())]
+    if context.get("client_cpus") is not None:
+        command = [sys.executable, str(ROOT / "benches/bench_affinity.py"),
+                   ",".join(map(str, context["client_cpus"])), *command]
+    before = resource.getrusage(resource.RUSAGE_CHILDREN)
+    completed = subprocess.run(command, input=encoded(config), capture_output=True,
+                               timeout=context["seconds"] + 35)
+    after = resource.getrusage(resource.RUSAGE_CHILDREN)
+    if completed.returncode != 0:
+        raise RuntimeError("rust_driver_failed")
+    row = json.loads(completed.stdout)
+    if row["clients"] != context["clients"] or row["attempts"] != sum(row["statuses"].values()):
+        raise RuntimeError("invalid_rust_driver_result")
+    row.update(scenario="read", repetition=context["repetition"],
+               client_cpu_seconds=after.ru_utime + after.ru_stime - before.ru_utime - before.ru_stime,
+               cpu_measurement_scope="entire generator process, including exec launcher, warmup and summary",
+               client_affinities=[row["client_affinity"]] if row["client_affinity"] is not None else [],
+               uncertain_write_outcomes=0, acknowledged_writes_verified=True)
+    if context["token"] in json.dumps(row):
+        raise RuntimeError("secret_in_report")
+    return row
+
+
 def summarize(context, outcomes):
     count = context["clients"]
     elapsed = (max(value["ended_ns"] for value in outcomes) -
@@ -289,6 +320,7 @@ def benchmark(args):
     binary = args.binary.resolve()
     server_cpus, client_cpus = getattr(args, "server_cpus", None), getattr(args, "client_cpus", None)
     affinity.validate(server_cpus, client_cpus)
+    driver = getattr(args, "rust_driver", None)
     report = {
         "schema": 1,
         "environment": environment(binary),
@@ -303,6 +335,7 @@ def benchmark(args):
             "listener_port_policy": "fixed" if args.port else "ephemeral",
             "verify_full_read": args.verify_full_read,
             "server_cpus": server_cpus, "client_cpus": client_cpus,
+            "generator": "Rust read-load" if driver else "Python process/client",
         },
         "results": [],
     }
@@ -370,7 +403,7 @@ def benchmark(args):
                     for clients in args.clients:
                         for scenario in report["parameters"]["scenarios"]:
                             round_id += 1
-                            row = run_round({
+                            context = {
                                 "address": address, "token": token, "clients": clients,
                                 "scenario": scenario, "round": round_id, "repetition": repetition,
                                 "warmup": args.warmup, "seconds": args.seconds,
@@ -379,7 +412,8 @@ def benchmark(args):
                                 "expected_documents": [json.loads(document(i, 0, args.document_bytes))
                                                        for i in range(args.documents)] if args.verify_full_read else None,
                                 "client_cpus": client_cpus,
-                            })
+                            }
+                            row = rust_round(context, driver) if driver else run_round(context)
                             report["results"].append(row)
                             print(json.dumps({
                                 "scenario": scenario, "clients": clients, "repetition": repetition,
@@ -411,7 +445,7 @@ def benchmark(args):
             if token in json.dumps(report):
                 raise RuntimeError("secret_in_report")
     report["valid"] = all(
-        row["confirmed"] > 0 and not row["operation_cap_hit"]
+        row.get("valid", True) and row["confirmed"] > 0 and not row["operation_cap_hit"]
         and not (set(row["statuses"]) - {"200", "503", "transport_error"})
         and "invalid_success_response" not in row["error_codes"]
         and "invalid_json_response" not in row["error_codes"]
@@ -427,6 +461,7 @@ def arguments():
     parser.add_argument("--port", type=int, default=0, help="reuse this loopback port between fresh servers")
     parser.add_argument("--server-cpus", type=int, nargs="+")
     parser.add_argument("--client-cpus", type=int, nargs="+")
+    parser.add_argument("--rust-driver", type=Path)
     parser.add_argument("--verify-full-read", action="store_true", help="validate full documents in a read-only matrix")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--clients", nargs="+", type=int, default=[1, 8, 32])
@@ -438,6 +473,8 @@ def arguments():
     parser.add_argument("--documents", type=int, default=256)
     parser.add_argument("--document-bytes", type=int, default=1024)
     args = parser.parse_args()
+    if args.rust_driver is not None and (not args.verify_full_read or args.scenarios != ["read"]):
+        parser.error("rust driver requires --verify-full-read and only read scenario")
     try:
         affinity.validate(args.server_cpus, args.client_cpus)
     except ValueError as error:

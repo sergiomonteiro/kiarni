@@ -14,9 +14,11 @@ RECORDS = {"before": load.ROOT / "docs/benchmarks/http-before-writer-2026-11-13.
            "writer": load.ROOT / "docs/benchmarks/http-writer-2026-11-13.json"}
 
 
-def comparisons(rows):
+def comparisons(rows, aa_only=False):
     groups = {}
     for row in rows:
+        if aa_only and row.get("role") != "writer":
+            raise ValueError("aa_requires_same_writer_role")
         group = groups.setdefault((row["clients"], row["repetition"]), {})
         if not row["valid"] or row["mode_id"] in group:
             raise ValueError("invalid_or_duplicate_member")
@@ -25,8 +27,12 @@ def comparisons(rows):
     for (clients, repetition), group in groups.items():
         if set(group) != set(range(4)):
             raise ValueError("incomplete_quartet")
-        for name, left, right in [("writer_over_before_1", 0, 1), ("writer_over_before_2", 2, 3),
-                                  ("before_AA", 0, 2), ("writer_AA", 1, 3)]:
+        if aa_only and len({r["binary_sha256"] for r in group.values()}) != 1:
+            raise ValueError("aa_requires_identical_binary")
+        pairs = [("same_binary_AA_01", 0, 1), ("same_binary_AA_23", 2, 3)] if aa_only else [
+            ("writer_over_before_1", 0, 1), ("writer_over_before_2", 2, 3),
+            ("before_AA", 0, 2), ("writer_AA", 1, 3)]
+        for name, left, right in pairs:
             result.append({"clients": clients, "repetition": repetition, "comparison": name,
                 "rps_right_over_left": group[right]["confirmed_ops_per_second"] / group[left]["confirmed_ops_per_second"],
                 "p95_right_over_left": group[right]["success_latency"]["p95_ms"] / group[left]["success_latency"]["p95_ms"]})
@@ -57,13 +63,17 @@ def run(args):
               "parameters": {"clients": args.clients, "repeat": args.repeat, "seconds": args.seconds,
                   "warmup": args.warmup, "documents": 256, "document_bytes": 1024,
                   "server_cpus": args.server_cpus, "client_cpus": args.client_cpus,
+                  "generator": "Rust read-load" if args.rust_driver else "Python process/client",
+                  "aa_only": args.aa_only,
                   "server_config": load.SERVER_CONFIG,
                   "validation": "full JSON on every read, warmup and after each row",
                   "load_model": "closed_loop; process/client; new TCP/request; read-only",
                   "listener": "same loopback port across fresh installations",
-                  "order": "Williams 4 modes: before0,writer1,before2,writer3",
+                  "order": "Williams; all modes writer" if args.aa_only else "Williams: before0,writer1,before2,writer3",
                   "logs": "original CLI options; no log-level override added to historical binaries"},
               "results": []}
+    driver_hash = hashlib.sha256(args.rust_driver.read_bytes()).hexdigest() if args.rust_driver else None
+    report["generator_sha256"] = driver_hash
     journal = args.output.with_suffix(".progress.jsonl")
     with os.fdopen(os.open(journal, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), "w") as progress:
         with socket.socket() as reservation:
@@ -72,13 +82,14 @@ def run(args):
         for repetition in range(1, args.repeat + 1):
             for ci, clients in enumerate(args.clients):
                 for mode in mode_order(repetition, ci):
-                    role = "before" if mode % 2 == 0 else "writer"
+                    role = "writer" if args.aa_only else ("before" if mode % 2 == 0 else "writer")
                     before = tcp_snapshot()
                     machine_before = affinity.snapshot()
                     measured = load.benchmark(argparse.Namespace(
                         binary=binaries[role], output=args.output, clients=[clients], scenarios=["read"],
                         repeat=1, seconds=args.seconds, warmup=args.warmup, documents=256,
                         document_bytes=1024, port=port, verify_full_read=True,
+                        rust_driver=args.rust_driver,
                         server_cpus=args.server_cpus, client_cpus=args.client_cpus))
                     row, = measured["results"]
                     row.update(mode_id=mode, role=role, repetition=repetition,
@@ -104,11 +115,13 @@ def run(args):
                         "confirmed_rps": row["confirmed_ops_per_second"], "valid": row["valid"]}), flush=True)
     if source_hash() != fingerprint:
         raise RuntimeError("measurement_source_changed")
+    if args.rust_driver and hashlib.sha256(args.rust_driver.read_bytes()).hexdigest() != driver_hash:
+        raise RuntimeError("generator_changed")
     if any(hashlib.sha256(binary.read_bytes()).hexdigest() != artifacts[role]["sha256"]
            for role, binary in binaries.items()):
         raise RuntimeError("binary_changed")
     report["valid"] = bool(report["results"]) and all(row["valid"] for row in report["results"])
-    report["comparisons"] = comparisons(report["results"]) if report["valid"] else None
+    report["comparisons"] = comparisons(report["results"], args.aa_only) if report["valid"] else None
     return report
 
 
@@ -120,6 +133,8 @@ def arguments():
     parser.add_argument("--clients", type=int, nargs="+", default=[1, 8, 32])
     parser.add_argument("--server-cpus", type=int, nargs="+")
     parser.add_argument("--client-cpus", type=int, nargs="+")
+    parser.add_argument("--rust-driver", type=Path)
+    parser.add_argument("--aa-only", action="store_true", help="use the exact writer binary in every virtual mode")
     parser.add_argument("--repeat", type=int, default=4)
     parser.add_argument("--seconds", type=float, default=3)
     parser.add_argument("--warmup", type=int, default=5)

@@ -6,6 +6,11 @@ license.workspace = true
 publish = false
 description = "One binary. Live queries. Built-in observability."
 
+[[example]]
+name = "read-load"
+path = "examples/read_load.rs"
+test = true
+
 [target.'cfg(unix)'.dependencies]
 kiarni-config = { path = "../../crates/config" }
 kiarni-server = { path = "../../crates/server" }

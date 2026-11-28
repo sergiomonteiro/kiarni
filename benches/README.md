@@ -397,3 +397,45 @@ dos ciclos. Frequências pontuais não são médias nem controle de temperatura.
 CPU agregada dos processos clientes já é registrada; não equivale a perfil
 CPU/RSS do servidor. O novo particionamento muda as condições: manter os dados
 anteriores, sem atribuir melhoria da dispersão só a afinidade ou só à duração.
+
+## Gerador Rust de leitura
+
+`read-load` é um exemplo de desenvolvimento de kiarni, sem dependência nova e
+sem ligação no binário do servidor. Compila com dependências de teste existentes:
+
+```bash
+cargo build -p kiarni --example read-load --release --locked --offline
+```
+
+`--rust-driver target/release/examples/read-load` seleciona o gerador no
+http_load.py (somente read com --verify-full-read) ou writer_history.py.
+Mantém conexão nova por request, validação JSON completa e limite de 32 clientes;
+usa um processo com threads fixos, 256 KiB de stack por thread e no máximo
+100000 tentativas por cliente. Entrada por stdin limitada a 8 MiB, até 1024
+documentos de 4096 bytes; respostas até 64 KiB, headers 8192 bytes e prazo total
+de cinco segundos por request. Esse limite de resposta é deliberadamente
+restrito ao fixture de leitura, não contrato da API. Não é gerador de escrita.
+
+As requisições são preparadas antes da janela. Aquecimento usa barreira antes
+do relógio compartilhado; falha de warmup invalida a rodada e libera todos os
+workers. Token entra somente por stdin, não por argv/resultado. Respostas
+inválidas e erros nunca entram nos percentis de sucesso. Não há retry oculto
+ou conexão persistente. Testes do exemplo rodam em cargo test --workspace.
+
+CPU do gerador Rust é medida pelo pai via RUSAGE_CHILDREN antes/depois de
+aguardar seu processo. Inclui launcher, warmup, carga e resumo, portanto é
+escopo mais amplo que a CPU medida só durante a janela nos workers Python.
+O servidor ainda não foi reaped nesse ponto e não entra nessa diferença.
+Dividir esse total pelo tempo medido é conservador para verificar margem;
+não usar como perfil de CPU do servidor ou comparação exata de overhead.
+
+Calibração A/A (todos os modos usam o mesmo writer e seu hash é conferido):
+
+```bash
+python3 benches/writer_history.py --before .bench-artifacts/writer-2026-11-26/before --writer .bench-artifacts/writer-2026-11-26/writer --rust-driver target/release/examples/read-load --aa-only --output /tmp/writer-rust-AA-NOVO.json --clients 32 --repeat 4 --seconds 5 --warmup 100 --server-cpus 0 1 2 3 4 5 6 7 --client-cpus 8 9 10 11 12 13 14 15
+```
+
+Depois, a comparação A/B usa o mesmo comando sem --aa-only e com --clients
+8 32 --seconds 10. Escolher máscaras compatíveis com o host. O JSON registra
+o hash do gerador, além de fontes, executáveis de servidor e CPU observada.
+Não misturar geradores/escopos como se a melhoria fosse do produto.

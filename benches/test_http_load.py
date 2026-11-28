@@ -5,6 +5,7 @@ import subprocess
 import sys
 import unittest
 from unittest.mock import Mock, patch
+from types import SimpleNamespace
 
 from http_load import document, percentiles, summarize
 import http_load
@@ -15,6 +16,30 @@ import bench_affinity
 
 
 class MeasurementTests(unittest.TestCase):
+    def test_rust_driver_receives_secret_only_via_stdin_and_records_whole_process_cpu(self):
+        context = {"scenario":"read", "expected_documents":[{"_id":"d000000"}],
+                   "address":("127.0.0.1",1234), "token":"fixture-private-token",
+                   "clients":1, "warmup":5, "seconds":1, "repetition":1}
+        output = {"clients":1,"attempts":1,"confirmed":1,"statuses":{"200":1},
+                  "client_affinity":None,"valid":True}
+        with patch.object(http_load.subprocess,"run",return_value=SimpleNamespace(returncode=0,stdout=json.dumps(output).encode())) as run, \
+             patch.object(http_load.resource,"getrusage",side_effect=[SimpleNamespace(ru_utime=1,ru_stime=1),SimpleNamespace(ru_utime=2,ru_stime=1.5)]):
+            row = http_load.rust_round(context, Path("fixture-driver"))
+        self.assertEqual(row["client_cpu_seconds"],1.5)
+        self.assertNotIn(context["token"], str(run.call_args.args))
+        self.assertEqual(json.loads(run.call_args.kwargs["input"])["token"],context["token"])
+        self.assertNotIn(context["token"],json.dumps(row))
+
+    def test_aa_campaign_labels_do_not_claim_two_different_binaries(self):
+        rows=[dict(clients=8,repetition=1,mode_id=i,valid=True,
+                   role="writer",binary_sha256="fixture",confirmed_ops_per_second=100+i,
+                   success_latency={"p95_ms":1}) for i in range(4)]
+        pairs=writer_history.comparisons(rows,aa_only=True)
+        self.assertEqual([r["comparison"] for r in pairs],["same_binary_AA_01","same_binary_AA_23"])
+        for key,value in [("role","before"),("binary_sha256","different")]:
+            with self.assertRaises(ValueError):
+                writer_history.comparisons([dict(rows[0],**{key:value}),*rows[1:]],aa_only=True)
+
     def test_affinity_requires_two_available_disjoint_masks(self):
         bench_affinity.validate(None, None, allowed={0, 1, 2, 3})
         bench_affinity.validate([0, 1], [2, 3], allowed={0, 1, 2, 3})
