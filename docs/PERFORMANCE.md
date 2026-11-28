@@ -43,7 +43,14 @@ Objetivo registrado: aproveitar os cores disponíveis e a memória de uma única
 máquina de forma consistente, com concorrência limitada. Não confundir número
 de clientes com uso eficiente de cores nem prometer crescimento linear.
 
-Quando essa etapa for priorizada, medir o mesmo binário/dataset com conjuntos
+Essa é a próxima prioridade técnica no [roadmap revisado](./MVP_REMAINING.md#primeiro-incremento-medir-cores-sem-mudar-a-arquitetura).
+Primeiro incremento: leitura por ID no produto atual, com 1/2/4 cores físicos,
+gerador em conjunto separado, controles A/A e medição de CPU total/RSS do
+servidor; distribuição por core exige atribuição correta, sem confundir CPU
+global do host com a do processo. Primeira execução Linux, sem retirar macOS do CI.
+Ainda não executado; não reutilizar a comparação histórica como evidência de escala.
+
+Na sequência, medir o mesmo binário/dataset com conjuntos
 controlados de 1, 2, 4 e mais cores disponíveis no host; registrar throughput
 confirmado, p50/p95/p99, recusas, CPU por core e RSS. Separar leituras por ID,
 scans, escritas e cargas mistas; incluir documentos/datasets de tamanhos
@@ -51,8 +58,8 @@ variados e estabilidade sustentada. Investigar serialização, contenção, fila
 alocações e I/O antes de escolher mudanças. Preservar budgets, durabilidade e
 ordem pós-commit. Definir metas somente com baseline e ambiente reproduzível.
 
-A #9 investiga leitura e telemetria; não conclui essa avaliação de CPU/memória.
-Esta etapa permanece planejada, sem otimização ampla antecipada ou expansão
+A #9 concluiu a investigação de leitura/telemetria; não concluiu essa avaliação de CPU/memória.
+A etapa vertical permanece planejada, sem otimização ampla antecipada ou expansão
 para cluster/sharding. A escalabilidade horizontal é uma avaliação distinta.
 
 O benchmark inicial usa 256 documentos de 1 KiB em cache e clientes locais.
@@ -63,7 +70,7 @@ acompanhar a ampliação dessa matriz.
 
 O primeiro perfil de PUT identificou o commit Immediate como custo dominante.
 Foi criado um experimento isolado de grupos pré-formados, documentado no
-[ADR 0016](./adr/0016-group-commit-spike.md), ainda sem adoção no servidor.
+[ADR 0016](./adr/0016-group-commit-spike.md), antes da adoção no servidor pelo ADR 0017.
 A coleta limitada foi medida em uma
 [matriz de 75 rodadas](./benchmarks/collector-2026-11-12.md), incluindo clientes
 concorrentes, baixa carga, espera e rejeições. Agrupar operações já enfileiradas
@@ -88,8 +95,8 @@ HTTP: fila única para mutações, grupos PUT/PATCH sem espera e barreiras de CR
 O plano de buffers e a reserva de transporte acompanham comandos e respostas.
 Na [comparação local](./benchmarks/http-writer-2026-11-13.md), PUT com 32 clientes
 passou de 805 para 6873 confirmações/s, mas leitura caiu entre 4% e 6% com 8/32
-clientes. A investigação dessa regressão e de aproveitamento de CPU/memória
-fica registrada para a etapa posterior, sem afirmar melhora universal.
+clientes. A investigação da queda foi concluída na #9, conforme seção final, sem afirmar
+causa ou melhora universal. Aproveitamento de CPU/memória permanece na etapa vertical.
 
 Os [logs estruturados de requisições](./REQUEST_LOGS.md) têm nível configurável
 e fila limitada. A [comparação de 2026-11-26](./benchmarks/telemetry-http-2026-11-26.md)
@@ -128,7 +135,7 @@ A coleta expôs limites do próprio experimento: portas diferentes por instalaç
 acumulavam TIME_WAIT até o teto do host. Reutilizar uma porta entre instalações
 independentes permitiu completar a matriz sem novo overflow observado, mantendo
 nova conexão por request e sem alterar o kernel. Isso não prova a causa dos
-timeouts anteriores nem resolve a regressão histórica do writer. Esta continua
+timeouts anteriores nem resolve a regressão histórica do writer. Ela foi
 revisitada posteriormente com os dois executáveis exatos, conforme seção
 seguinte; nenhuma otimização Rust foi escolhida nesse primeiro incremento.
 

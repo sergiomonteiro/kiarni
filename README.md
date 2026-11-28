@@ -8,14 +8,14 @@ Licença [MIT](./LICENSE).
 
 ## Estado atual
 
-**MVP experimental com gate técnico M3 revisado.** `kiarni serve` abre o store
+**MVP experimental com gate técnico M3 aceito.** `kiarni serve` abre o store
 versionado, ativa autenticação e atende health, operações de coleção e
 CRUD de documentos e consultas composicionais em loopback. O M2 já oferece
 changefeeds de coleção por SSE autenticado, com publicação pós-commit, filas
-limitadas e testes de clientes reais. O **gate M2 foi aprovado localmente em
-Linux**, incluindo métricas autenticadas dos feeds. Há uma
-[alpha reativa local para experimentar](./docs/ALPHA_LOCAL.md); observabilidade
-operacional ampliada continua no roadmap. A
+limitadas e testes de clientes reais. O contrato de feeds inclui métricas autenticadas e validações concorrentes
+no CI. Há uma
+[alpha reativa local para experimentar](./docs/ALPHA_LOCAL.md); a avaliação de
+capacidade, cores e memória do servidor continua no [roadmap](./docs/MVP_REMAINING.md). A
 [imagem experimental Docker](./docs/CONTAINERS.md) acompanha exemplos Compose
 e Kubernetes single-node. Há uma
 [pipeline de binários experimentais Linux/macOS](./docs/DISTRIBUTION.md), com

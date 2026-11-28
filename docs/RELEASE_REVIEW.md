@@ -5,6 +5,16 @@ Data inicial: 2026-11-15. Revisão após a avaliação RF-04 da issue #8.
 CI completa do commit de encerramento.** O aceite remoto fica registrado nas
 issues #7/#8 depois de todos os jobs passarem. Sem CI verde, não há aceite.
 
+## Estado após as entregas #9/#10 — 2026-11-28
+
+Issues #1–#10 encerradas e [CI de af4eea1 com dez jobs aprovados](https://github.com/sergiomonteiro/kiarni/actions/runs/46105142261).
+O índice secundário já integra Store/HTTP/backup/CLI, com medições no produto;
+a investigação de leitura/telemetria concluiu sem queda histórica consistente
+confirmada. O [roadmap revisado](./MVP_REMAINING.md) prioriza medição vertical do
+servidor atual. Não há GitHub Release publicada nesta revisão; mantêm-se canal
+experimental e ação explícita para publicação. A base histórica abaixo explica
+o aceite inicial, não pendências atuais de integração do índice.
+
 ## Base da decisão
 
 A revisão anterior (409e29f) manteve o gate aberto pela avaliação RF-04 e pelo
@@ -37,7 +47,7 @@ a CI atual e os relatórios por commit complementam essas evidências.
 | RF-01 Inicialização/configuração | Atendido funcionalmente | [CLI](./CLI.md), precedência estrita, diretórios privados/lock, shutdown/restart; testes reais e exemplos de configuração no CI. |
 | RF-02 Documentos/coleções | Atendido funcionalmente | [API](./API.md), CRUD/IDs, duplicatas/tetos, PUT/PATCH/no-op, reinício e recuperação por testes de processo. Não certifica falha física. |
 | RF-03 Consultas | Atendido funcionalmente | AST validada com fixtures, JSON exato, filtro/sort/limit/project/ID, snapshots e scans limitados; sem código arbitrário. Métricas explicam caminho/etapas, não plano completo. |
-| RF-04 Índices | Avaliação condicionada atendida | Primário implementado; [spike pareado](./spikes/secondary-index.md) prova equivalência/atomicidade no recorte e mede leitura/escrita. ADR 0033 adia integração; não anuncia índice secundário na API. |
+| RF-04 Índices | Avaliação e integração concluídas | Primário e secundário seletivo no Store único, planner HTTP, lifecycle offline e backup/restore; [medições no produto](./benchmarks/secondary-index-http-2026-11-22.md) registram custo de leitura/escrita. ADR 0034 e #10 sucedem a decisão inicial de adiar integração. |
 | RF-05 Changefeeds | Atendido no escopo de coleção | [Gate M2](./M2_REVIEW.md), publicação pós-commit, duas conexões, ordem, overflow/cancelamento e no-op. Coleção inteira, best-effort futuro; sem snapshot/replay/exactly-once. |
 | RF-06 Rede | Atendido funcionalmente | `/v1`, erros/request IDs, health, concorrência limitada, HTTP/JSON e SSE com testes independentes. Saturação pode aguardar backlog/fechar conexão; não promete sempre envelope. |
 | RF-07 Segurança | Atendido no perfil documentado | Loopback, auth para toda API, arquivos privados, logs sem segredos e [HTTPS opcional por proxy local](./REMOTE_HTTPS.md) testado. Não homologa toda operação pública/certificado. |
@@ -47,7 +57,8 @@ a CI atual e os relatórios por commit complementam essas evidências.
 
 Baseline reproduzível de performance já está em [PERFORMANCE.md](./PERFORMANCE.md),
 com dados/hardware/comandos. A regressão de leitura/custo de logs na
-[issue #9](https://github.com/sergiomonteiro/kiarni/issues/9) continua registrada.
+[issue #9](https://github.com/sergiomonteiro/kiarni/issues/9) foram investigados e
+[concluídos](./benchmarks/writer-read-rust-2026-11-28.md), sem confirmação consistente da queda.
 Conforme combinado, esta entrega não antecipa otimizações amplas de CPU/memória.
 
 ## Checklist técnico e operacional

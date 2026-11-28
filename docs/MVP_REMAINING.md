@@ -1,12 +1,69 @@
-# Plano de fechamento do MVP
+# Roadmap após o aceite técnico da alpha
 
-Atualizado após a avaliação RF-04: o [gate técnico M3](./RELEASE_REVIEW.md)
-é aceito para a alpha experimental quando a CI do commit final passar.
-[Canal e compatibilidade](./RELEASE_POLICY.md) permanecem explícitos; não há
-publicação estável automática. Este documento preserva a sequência e os trabalhos
-posteriores ao aceite, sem ampliar o PRD.
+Revisado em 2026-11-28: issues #1–#10 encerradas, incluindo integração de índices
+(#10) e investigação de leitura/telemetria (#9). A
+[CI de af4eea1](https://github.com/sergiomonteiro/kiarni/actions/runs/46105142261)
+aprovou os dez jobs. O [gate técnico M3](./RELEASE_REVIEW.md) e o canal de
+artifacts experimentais não equivalem a release estável: não há GitHub Release
+publicada na data da revisão. [Canal e compatibilidade](./RELEASE_POLICY.md)
+continuam explícitos. O plano abaixo não amplia o PRD.
 
-## Ordem dos incrementos
+## Próxima ordem priorizada
+
+| Ordem | Incremento | Resultado verificável |
+| --- | --- | --- |
+| 1 | Spike de escalabilidade vertical: leitura por ID no servidor atual | Mesmo binário/dataset com 1, 2 e 4 cores físicos; throughput, latências, recusas, CPU e RSS, com margem no gerador. Resultado positivo, negativo ou inconclusivo documentado. |
+| 2 | Memória e cache | Medir RSS e crescimento por tamanho de documento/dataset, conexões e filas; separar memória do servidor/gerador e cenários de cache. Não inferir teto de RSS pelo plano de buffers. |
+| 3 | Cargas mistas, escrita e feeds sustentados | Validar concorrência, commits e notificações sob carga, limites/overflow e recuperação, com ferramenta apropriada e sem escritas no-op disfarçadas de throughput. |
+| 4 | Uma otimização por gargalo demonstrado | Spike e comparação antes/depois, preservando correção, limites e ordem pós-commit; promover somente com evidência. Não exige concluir toda a matriz antes de agir sobre um gargalo já isolado. |
+
+### Primeiro incremento: medir cores, sem mudar a arquitetura
+
+Requisito não funcional de performance, posterior a M3. Usar o **produto atual**,
+sem voltar aos binários históricos da #9. Congelar revisão, build release,
+configuração, dataset pequeno conhecido e hashes de servidor/gerador. A primeira
+execução usa Linux, onde o medidor já controla afinidade; isso não retira macOS
+das plataformas de build/teste nem homologa sua escala por cores.
+
+Começar com GET por ID, 256 documentos de 1 KiB, 8/32 clientes e conjuntos de
+1/2/4 cores físicos no servidor. Registrar quais threads SMT pertencem a cada
+core; manter fixo e separado o conjunto do gerador. Intercalar configurações,
+usar controle A/A, warmup e repetições/janelas declaradas. Medir CPU total do
+processo servidor e RSS separadamente do gerador; registrar pico e escopo das
+amostras. Distribuição por core só deve ser atribuída ao servidor quando a
+instrumentação permitir: CPU global do host não é proxy exclusivo do processo.
+Só interpretar a escala quando o gerador tiver margem verificada.
+
+O aceite é um relatório reproduzível com dados brutos e classificação dos
+limites/gargalos, não crescimento linear ou um TPS predeterminado. Em um host
+compartilhado, as máscaras não reservam cores nem controlam temperatura. Não
+extrapolar o ensaio para todos os cores da máquina se eles forem compartilhados
+com o gerador; usar outro arranjo de teste para essa extensão.
+
+O gerador Rust atual atende apenas leitura e fixtures limitados. Escrita,
+cargas mistas, feeds e datasets maiores precisam de incrementos próprios do
+ferramental e de validação correspondente. Não declarar esses workloads
+medidos por reutilizar o número de conexões de um teste de GET.
+
+Não escolher pool, async runtime, política nova de escrita ou dependência central
+antes do baseline e do perfil. Cada coleta deve produzir uma hipótese acionável
+ou uma conclusão explícita; a #9 não será reaberta para perseguir o percentual
+histórico sem nova evidência reprodutível.
+
+### Trilhas separadas de adoção e pós-MVP
+
+- **Adoção da alpha:** instalação limpa, feedback de uso e experiência da API
+  continuam úteis sem esperar toda otimização. GitHub Release/tag/registry exigem
+  ação explícita e artefatos validados; esta revisão não publica esses canais.
+- **SDK inicial:** questão ainda aberta do PRD. Avaliar um primeiro SDK e testes
+  de conformidade em incremento próprio; TypeScript é candidato, não decisão.
+  SDKs adicionais não entram automaticamente no MVP.
+- **Replay e escala horizontal:** avaliações futuras separadas. A inspiração na
+  distribuição do Erlang precisa ser examinada à luz de dados persistidos,
+  consistência e falhas. Cluster, replicação e sharding permanecem fora do MVP;
+  nenhum preparo de infraestrutura distribuída é introduzido agora.
+
+## Histórico dos incrementos concluídos
 
 1. Dashboard local concluído: [revisão RF-08/09](./DASHBOARD_REVIEW.md),
    [erros recentes](./RECENT_ERRORS.md) e métricas de HTTP, queries, storage e
@@ -55,10 +112,11 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
 | Contribuição | [CONTRIBUTING.md](../CONTRIBUTING.md) disponível com setup, workspace, testes/fixtures, benchmarks e fluxo de PR/ADR. |
 | Release e licenças | Changelog, checklist, canal pré-1.0, baselines, MIT e avisos disponíveis/versionados. Publicação estável ou registry permanece ação explícita separada. |
 
-## Validação e decisões ainda abertas
+## Estado das validações e decisões restantes
 
-- Observar resultados de CI Linux/macOS e validar operação prolongada e coleta
-  externa; não transformar passagem local em evidência de outra plataforma.
+- CI Linux/macOS, instalação, métricas externas e operação controlada passaram
+  no commit de referência. Novos commits precisam de sua própria CI; esses
+  ensaios não certificam toda plataforma/hardware ou operação por tempo indefinido.
 - Integração de índice secundário (#10): avaliação RF-04 concluída no ADR 0033.
   O [ADR 0034](./adr/0034-lifecycle-indice-secundario.md) revisado dispensa legado:
   Store único de formato 2 é usado por servidor, writer, bootstrap e backup/restore.
@@ -75,7 +133,7 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   combinado com o usuário; não antecipar otimizações amplas.
   O objetivo de aproveitar os cores/RAM de uma máquina está detalhado na etapa
   de [escalabilidade vertical](./PERFORMANCE.md#escalabilidade-vertical--etapa-posterior-à-investigação-9),
-  separada do escopo atual da #9 e da avaliação futura de escala horizontal.
+  posterior à #9 já encerrada e separada da avaliação futura de escala horizontal.
 - Confirmar limites single-node e best-effort em exemplos e materiais de release.
   Cluster, replicação, sharding e replay permanecem fora do MVP.
 
@@ -89,8 +147,9 @@ aceite do RF-10 ou conclusão do M3.
 
 ## Issues de acompanhamento
 
-A ordem de implementação continua sendo a dos incrementos acima. A investigação
-de performance aguarda o momento combinado; registrar uma issue não a antecipa.
+As issues abaixo são o histórico concluído (#1–#10). A próxima execução deve
+seguir os incrementos priorizados no início deste documento; esta revisão
+planeja o spike de cores e não afirma que ele já foi implementado ou medido.
 
 | Issue | Entrega |
 | --- | --- |

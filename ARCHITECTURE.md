@@ -243,7 +243,10 @@ O planner HTTP usa ID, secundário seletivo ou scan, no mesmo snapshot e com
 os budgets originais. Métricas distinguem os três caminhos; query_read não
 inclui avaliação/serialização. [Administração de índices](./docs/INDEXES.md) usa
 CLI offline com lock e abertura restrita para recuperação; não altera auth.
-Medições no produto permanecem pendentes; não atribuir ganhos do spike ao HTTP.
+As [medições no produto](./docs/benchmarks/secondary-index-http-2026-11-22.md)
+registram leitura seletiva/densa e custo de escrita, sem extrapolar o spike.
+O [roadmap atual](./docs/MVP_REMAINING.md) prioriza baseline de cores/RAM,
+com protocolo, storage e coordenação preservados antes de qualquer otimização.
 
 ### Startup
 
