@@ -15,8 +15,11 @@ import platform
 import signal
 import socket
 import subprocess
+import sys
 import tempfile
 import time
+
+import bench_affinity as affinity
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTEXT = None
@@ -72,6 +75,7 @@ def exchange(address, token, method, path, body=None):
 
 def worker_init(context, barrier):
     global CONTEXT, BARRIER
+    affinity.apply(context.get("client_cpus"))
     CONTEXT, BARRIER = context, barrier
 
 
@@ -151,6 +155,7 @@ def worker(client):
         "uncertain_writes": uncertain_writes,
         "client": client,
         "operation_cap_hit": step >= 100000,
+        "client_affinity": affinity.observed(),
     }
 
 
@@ -220,6 +225,8 @@ def summarize(context, outcomes):
         "uncertain_write_outcomes": sum(value["uncertain_writes"] for value in outcomes),
         "acknowledged_writes_verified": True,
         "operation_cap_hit": any(value["operation_cap_hit"] for value in outcomes),
+        "client_affinities": [list(values) for values in sorted({tuple(value["client_affinity"])
+                              for value in outcomes if value.get("client_affinity") is not None})],
     }
 
 
@@ -229,7 +236,7 @@ def command_output(*args):
 
 def fingerprint():
     digest = hashlib.sha256()
-    files = [ROOT / "Cargo.toml", ROOT / "Cargo.lock", Path(__file__).resolve()]
+    files = [ROOT / "Cargo.toml", ROOT / "Cargo.lock", Path(__file__).resolve(), ROOT / "benches/bench_affinity.py"]
     for folder in ["apps", "crates"]:
         files.extend((ROOT / folder).rglob("*.rs"))
         files.extend((ROOT / folder).rglob("Cargo.toml"))
@@ -280,6 +287,8 @@ def filesystem(path):
 
 def benchmark(args):
     binary = args.binary.resolve()
+    server_cpus, client_cpus = getattr(args, "server_cpus", None), getattr(args, "client_cpus", None)
+    affinity.validate(server_cpus, client_cpus)
     report = {
         "schema": 1,
         "environment": environment(binary),
@@ -293,6 +302,7 @@ def benchmark(args):
             "load_model": "closed_loop", "retries": 0,
             "listener_port_policy": "fixed" if args.port else "ephemeral",
             "verify_full_read": args.verify_full_read,
+            "server_cpus": server_cpus, "client_cpus": client_cpus,
         },
         "results": [],
     }
@@ -307,12 +317,15 @@ def benchmark(args):
             address = reservation.getsockname()
         env = {key: value for key, value in os.environ.items() if not key.startswith("KIARNI_")}
         with (directory / "server.log").open("xb") as log:
+            command = [str(binary), "serve", "--data-dir", str(root), "--bind",
+                       f"{address[0]}:{address[1]}", *[
+                           part for key, value in SERVER_CONFIG.items()
+                           for part in ("--" + key.replace("_", "-"), str(value))]]
+            if server_cpus is not None:
+                command = [sys.executable, str(ROOT / "benches/bench_affinity.py"),
+                           ",".join(map(str, server_cpus)), *command]
             child = subprocess.Popen(
-                [str(binary), "serve", "--data-dir", str(root), "--bind",
-                 f"{address[0]}:{address[1]}", *[
-                     part for key, value in SERVER_CONFIG.items()
-                     for part in ("--" + key.replace("_", "-"), str(value))
-                 ]],
+                command,
                 cwd=directory, env=env, stdout=log, stderr=log,
             )
             try:
@@ -329,6 +342,10 @@ def benchmark(args):
                     time.sleep(0.01)
                 else:
                     raise RuntimeError("server_startup_timeout")
+                observed = affinity.observed(child.pid)
+                report["environment"]["server_affinity_observed"] = observed
+                if server_cpus is not None and set(observed) != set(server_cpus):
+                    raise RuntimeError("server_affinity_mismatch")
                 control(address, token, "POST", "/v1/collections", encoded({"name": "bench"}))
                 dataset_hash = hashlib.sha256()
                 for index in range(args.documents):
@@ -361,6 +378,7 @@ def benchmark(args):
                                 "query": encoded(ast), "expected_query": expected,
                                 "expected_documents": [json.loads(document(i, 0, args.document_bytes))
                                                        for i in range(args.documents)] if args.verify_full_read else None,
+                                "client_cpus": client_cpus,
                             })
                             report["results"].append(row)
                             print(json.dumps({
@@ -407,6 +425,8 @@ def arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--binary", type=Path, default=ROOT / "target/release/kiarni")
     parser.add_argument("--port", type=int, default=0, help="reuse this loopback port between fresh servers")
+    parser.add_argument("--server-cpus", type=int, nargs="+")
+    parser.add_argument("--client-cpus", type=int, nargs="+")
     parser.add_argument("--verify-full-read", action="store_true", help="validate full documents in a read-only matrix")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--clients", nargs="+", type=int, default=[1, 8, 32])
@@ -418,6 +438,10 @@ def arguments():
     parser.add_argument("--documents", type=int, default=256)
     parser.add_argument("--document-bytes", type=int, default=1024)
     args = parser.parse_args()
+    try:
+        affinity.validate(args.server_cpus, args.client_cpus)
+    except ValueError as error:
+        parser.error(str(error))
     if not 0 <= args.port <= 65535 or (args.verify_full_read and args.scenarios != ["read"]):
         parser.error("invalid port or full-read validation outside read-only scenario")
     if len(set(args.scenarios)) != len(args.scenarios):

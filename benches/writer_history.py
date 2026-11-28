@@ -7,6 +7,7 @@ from pathlib import Path
 import socket
 
 import http_load as load
+import bench_affinity as affinity
 from telemetry_http import mode_order, tcp_snapshot
 
 RECORDS = {"before": load.ROOT / "docs/benchmarks/http-before-writer-2026-11-13.json",
@@ -55,6 +56,7 @@ def run(args):
               "measurement_source_sha256": fingerprint, "artifacts": artifacts,
               "parameters": {"clients": args.clients, "repeat": args.repeat, "seconds": args.seconds,
                   "warmup": args.warmup, "documents": 256, "document_bytes": 1024,
+                  "server_cpus": args.server_cpus, "client_cpus": args.client_cpus,
                   "server_config": load.SERVER_CONFIG,
                   "validation": "full JSON on every read, warmup and after each row",
                   "load_model": "closed_loop; process/client; new TCP/request; read-only",
@@ -72,13 +74,19 @@ def run(args):
                 for mode in mode_order(repetition, ci):
                     role = "before" if mode % 2 == 0 else "writer"
                     before = tcp_snapshot()
+                    machine_before = affinity.snapshot()
                     measured = load.benchmark(argparse.Namespace(
                         binary=binaries[role], output=args.output, clients=[clients], scenarios=["read"],
                         repeat=1, seconds=args.seconds, warmup=args.warmup, documents=256,
-                        document_bytes=1024, port=port, verify_full_read=True))
+                        document_bytes=1024, port=port, verify_full_read=True,
+                        server_cpus=args.server_cpus, client_cpus=args.client_cpus))
                     row, = measured["results"]
                     row.update(mode_id=mode, role=role, repetition=repetition,
                         kernel_tcp_before=before, kernel_tcp_after=tcp_snapshot(),
+                        machine_before=machine_before, machine_after=affinity.snapshot(),
+                        server_affinity_observed=measured["environment"]["server_affinity_observed"],
+                        data_filesystem=measured["environment"]["data_filesystem"],
+                        data_block_bytes=measured["environment"]["data_block_bytes"],
                         dataset_sha256=measured["parameters"]["initial_dataset_sha256"],
                         post_load_dataset_verified=measured["post_load_dataset_verified"],
                         binary_sha256=measured["environment"]["binary_sha256"])
@@ -86,6 +94,8 @@ def run(args):
                                     and set(row["statuses"]) == {"200"}
                                     and row["post_load_dataset_verified"]
                                     and row["binary_sha256"] == artifacts[role]["sha256"])
+                    if args.client_cpus is not None:
+                        row["valid"] &= row["client_affinities"] == [sorted(args.client_cpus)]
                     report["results"].append(row)
                     progress.write(json.dumps(row) + "\n")
                     progress.flush()
@@ -108,10 +118,16 @@ def arguments():
     parser.add_argument("--writer", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--clients", type=int, nargs="+", default=[1, 8, 32])
+    parser.add_argument("--server-cpus", type=int, nargs="+")
+    parser.add_argument("--client-cpus", type=int, nargs="+")
     parser.add_argument("--repeat", type=int, default=4)
     parser.add_argument("--seconds", type=float, default=3)
     parser.add_argument("--warmup", type=int, default=5)
     args = parser.parse_args()
+    try:
+        affinity.validate(args.server_cpus, args.client_cpus)
+    except ValueError as error:
+        parser.error(str(error))
     if (len(set(args.clients)) != len(args.clients) or any(not 1 <= c <= 32 for c in args.clients)
         or not 1 <= args.repeat <= 8 or not .1 <= args.seconds <= 10 or not 0 <= args.warmup <= 100
         or args.output.exists() or not args.output.parent.is_dir()):

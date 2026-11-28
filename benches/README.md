@@ -369,3 +369,31 @@ instalação nova por membro e controle de porta. Não representa desempenho do
 produto atual nem prova que uma queda histórica foi causada por uma função.
 Janelas curtas e host compartilhado limitam diferenças pequenas; amplitude
 de A/A não é intervalo de confiança nem limite universal de ruído.
+
+### Separação opcional entre gerador e servidor (Linux)
+
+`http_load.py` e `writer_history.py` aceitam `--server-cpus` e `--client-cpus`
+em conjunto. As listas devem ser não vazias, distintas entre si e contidas na
+afinidade disponível. O launcher Python aplica a máscara **antes do exec** do
+servidor, para que seus threads a herdem; os clientes aplicam sua máscara no
+initializer, antes do warmup. Máscaras observadas são verificadas e registradas.
+Sem as opções, a execução mantém a afinidade normal e funciona em macOS.
+
+Escolher conjuntos que não compartilhem cores físicos/SMT, conferindo a topologia
+registrada. Disjunção lógica sozinha não garante disjunção física. O medidor não
+reserva cores contra outras aplicações e não muda governor, sysctls ou a
+afinidade do Kiarni fora dessas execuções temporárias. Não é benchmark de
+escalabilidade por quantidade de cores nem otimização multi-core do produto.
+
+Exemplo somente para host com CPUs 0–7 e 8–15 em cores físicos distintos:
+
+```bash
+python3 benches/writer_history.py --before .bench-artifacts/writer-2026-11-26/before --writer .bench-artifacts/writer-2026-11-26/writer --output /tmp/writer-pinned-NOVO.json --clients 8 32 --repeat 4 --seconds 10 --warmup 100 --server-cpus 0 1 2 3 4 5 6 7 --client-cpus 8 9 10 11 12 13 14 15
+```
+
+São 32 rodadas / 16 pares A/B, mais os controles A/A compartilhando as mesmas
+rodadas. Topologia, governor/frequência pontual e loadavg são lidos antes/depois
+dos ciclos. Frequências pontuais não são médias nem controle de temperatura.
+CPU agregada dos processos clientes já é registrada; não equivale a perfil
+CPU/RSS do servidor. O novo particionamento muda as condições: manter os dados
+anteriores, sem atribuir melhoria da dispersão só a afinidade ou só à duração.

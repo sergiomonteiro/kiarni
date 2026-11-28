@@ -1,4 +1,8 @@
 import json
+import os
+from pathlib import Path
+import subprocess
+import sys
 import unittest
 from unittest.mock import Mock, patch
 
@@ -7,9 +11,29 @@ import http_load
 import index_http
 import telemetry_http
 import writer_history
+import bench_affinity
 
 
 class MeasurementTests(unittest.TestCase):
+    def test_affinity_requires_two_available_disjoint_masks(self):
+        bench_affinity.validate(None, None, allowed={0, 1, 2, 3})
+        bench_affinity.validate([0, 1], [2, 3], allowed={0, 1, 2, 3})
+        for server, clients in [([0], None), ([], [1]), ([0], [0]), ([4], [1]), ([0, 0], [1])]:
+            with self.assertRaises(ValueError):
+                bench_affinity.validate(server, clients, allowed={0, 1, 2, 3})
+
+    @unittest.skipUnless(hasattr(os, "sched_setaffinity"), "Linux affinity only")
+    def test_affinity_is_inherited_through_exec_and_threads_without_pinning_parent(self):
+        initial = os.sched_getaffinity(0)
+        cpu = min(initial)
+        script = ("import json,os,threading; a=[sorted(os.sched_getaffinity(0))]; "
+                  "t=threading.Thread(target=lambda:a.append(sorted(os.sched_getaffinity(0)))); "
+                  "t.start(); t.join(); print(json.dumps(a))")
+        result = subprocess.check_output([sys.executable, str(Path(bench_affinity.__file__)),
+                                          str(cpu), sys.executable, "-c", script], text=True)
+        self.assertEqual(json.loads(result), [[cpu], [cpu]])
+        self.assertEqual(os.sched_getaffinity(0), initial)
+
     def test_full_read_validation_rejects_wrong_payload_with_matching_id(self):
         expected = json.loads(document(0, 0, 128))
         context = {"scenario": "read", "documents": 1, "round": 1,
