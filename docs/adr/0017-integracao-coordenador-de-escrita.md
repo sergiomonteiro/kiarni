@@ -295,3 +295,12 @@ menores que a queda inicial e dispersão importante: não se confirmou uma queda
 consistente de 4%–6%, nem se demonstrou ausência de regressão. A recuperação do
 artefato integrado supera a lacuna anterior de localização. Preservado o
 registro histórico, sem atribuição causal ou mudança de runtime/contrato.
+
+## Conclusão da investigação #9 — 2026-11-28
+
+[Gerador com margem e comparação final](../benchmarks/writer-read-rust-2026-11-28.md):
+48 rodadas válidas, incluindo 16 de calibração A/A, nos executáveis exatos.
+A queda de 4%–6% não foi confirmada consistentemente; não se demonstrou sua
+inexistência universal nem causa naquela integração. Decisão: manter o runtime
+e corrigir o ferramental de medição, sem alterar limites/ordem/backpressure.
+Não é homologação de capacidade geral ou reversão do ganho histórico de escrita.

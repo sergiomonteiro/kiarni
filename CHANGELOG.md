@@ -7,6 +7,10 @@ técnico do MVP experimental fica na revisão, condicionado à CI final.
 Artifacts experimentais são associados a commits e expiram conforme o CI.
 A [revisão de release](./docs/RELEASE_REVIEW.md) registra o gate e as pendências.
 
+- Investigação #9 concluída com [gerador Rust calibrado](./docs/benchmarks/writer-read-rust-2026-11-28.md):
+  16 rodadas A/A e 32 A/B válidas, sem confirmação consistente da queda de 4%–6%.
+  Ferramental corrigido com limites/validação e sem dependência nova; mantido o
+  código do servidor, sem alegar bug corrigido ou ganho de capacidade.
 - Controles opcionais de afinidade Linux no medidor, com aplicação antes do exec
   do servidor e verificação dos clientes. [32 rodadas longas](./docs/benchmarks/writer-read-pinned-2026-11-27.md)
   registram repetibilidade e sinal de saturação do gerador; sem mudança Rust/API

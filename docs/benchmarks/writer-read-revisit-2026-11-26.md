@@ -141,6 +141,14 @@ controles, mas o gerador aproximou-se do orçamento de CPU em 32 clientes.
 A próxima hipótese a remover é esse limite do cliente, antes de interpretar
 a medição como capacidade do servidor. Preservadas as conclusões anteriores.
 
+## Atualização — conclusão da #9
+
+A [calibração e comparação finais com gerador Rust](./writer-read-rust-2026-11-28.md)
+concluem a investigação, com margem de CPU no cliente. A queda histórica não
+foi confirmada consistentemente; a intervenção justificada foi no ferramental,
+sem patch especulativo no runtime. O estado abaixo preserva o histórico deste
+incremento, não uma pendência atual de localização ou medição.
+
 ## Decisão e próximo incremento
 
 Não alterar transporte, buffers, coordenador ou configuração pública para

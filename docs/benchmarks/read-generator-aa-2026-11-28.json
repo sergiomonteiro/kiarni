@@ -1,0 +1,5794 @@
+{
+  "schema": 1,
+  "environment": {
+    "utc": "2026-11-28T03:20:40.092205+00:00",
+    "os": "Linux",
+    "kernel": "7.2.6-76070206-generic",
+    "machine": "x86_64",
+    "cpu_model": "AMD Ryzen 7 6800H with Radeon Graphics",
+    "logical_cpus": 16,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "memory_total_bytes": 15898722304,
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+    "python": "3.12.3",
+    "git_head": "dbd188ffce774f1e4d8942ce5a9804908dc52196",
+    "workspace_dirty": false,
+    "source_sha256": "226ababcc5d123de8de2815e8cc577f32754a4802cc88781ee79ff5983c1c74e",
+    "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+  },
+  "measurement_source_sha256": "5453e82b891941fb27e4880a66269552ab7a4862b390901f587a48748e800789",
+  "artifacts": {
+    "before": {
+      "sha256": "0a7cfc9978237587c00b71dd2060b13ff33b4f95cc720ed3df3b1074228ce125",
+      "bytes": 2970336,
+      "historical_record": "docs/benchmarks/http-before-writer-2026-11-13.json",
+      "historical_source_sha256": "325f86e1f5e656bdeb66883bfc2e5e350bada6fbcb4cb19fd4e6bd652fd1520b"
+    },
+    "writer": {
+      "sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e",
+      "bytes": 3065640,
+      "historical_record": "docs/benchmarks/http-writer-2026-11-13.json",
+      "historical_source_sha256": "1564fdffd11ec6da55a4aee7a3e07dadcd1f29ef5be0f6cde7decfc696751dcf"
+    }
+  },
+  "parameters": {
+    "clients": [
+      32
+    ],
+    "repeat": 4,
+    "seconds": 5.0,
+    "warmup": 100,
+    "documents": 256,
+    "document_bytes": 1024,
+    "server_cpus": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "client_cpus": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "generator": "Rust read-load",
+    "aa_only": true,
+    "server_config": {
+      "max_requests": 32,
+      "max_streams": 8,
+      "feed_queue": 4,
+      "max_document_bytes": 1048576,
+      "max_query_bytes": 16384,
+      "max_result_bytes": 4194304,
+      "read_timeout_ms": 5000,
+      "write_timeout_ms": 5000,
+      "heartbeat_ms": 15000
+    },
+    "validation": "full JSON on every read, warmup and after each row",
+    "load_model": "closed_loop; process/client; new TCP/request; read-only",
+    "listener": "same loopback port across fresh installations",
+    "order": "Williams; all modes writer",
+    "logs": "original CLI options; no log-level override added to historical binaries"
+  },
+  "results": [
+    {
+      "attempts": 151480,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 151480,
+      "confirmed_ops_per_second": 30290.145938597,
+      "elapsed_seconds": 5.000966331,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 151480
+      },
+      "success_latency": {
+        "max_ms": 4.451232,
+        "p50_ms": 1.028715,
+        "p95_ms": 1.28543,
+        "p99_ms": 1.539229
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 1,
+      "client_cpu_seconds": 10.350147,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 0,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 18686147,
+          "TWRecycled": 36698,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8408
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "11103",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 1,
+          "tw": 13,
+          "alloc": 32,
+          "mem": 245
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 18882714,
+          "TWRecycled": 68698,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8408
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "25211",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 24041,
+          "alloc": 31,
+          "mem": 0
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          1.091796875,
+          1.0458984375,
+          1.4794921875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2508085"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1095838"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3016264"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3037068"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3010247"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1095838"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1339052"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1350641"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1458861"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1095838"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2985660"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3023792"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1345058"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1387284"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1959133"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1095838"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          1.85302734375,
+          1.2099609375,
+          1.5283203125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1387412"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1381698"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3356410"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1474523"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1818311"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1414376"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4496525"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2189090"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2887596"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4389536"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4567959"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4595864"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2007213"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2007324"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2413297"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2011760"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 153516,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 153516,
+      "confirmed_ops_per_second": 30697.469955002754,
+      "elapsed_seconds": 5.000933309,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 153516
+      },
+      "success_latency": {
+        "max_ms": 4.569345,
+        "p50_ms": 1.01586,
+        "p95_ms": 1.238892,
+        "p99_ms": 1.495416
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 1,
+      "client_cpu_seconds": 10.712673999999996,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 18882714,
+          "TWRecycled": 68698,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8408
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "25211",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 24041,
+          "alloc": 31,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19082151,
+          "TWRecycled": 112146,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8409
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "25213",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23524,
+          "alloc": 31,
+          "mem": 245
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          1.85302734375,
+          1.2099609375,
+          1.5283203125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2029917"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2026213"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4566969"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4577265"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2036143"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2031287"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4496525"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3384659"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2663489"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4389536"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4587456"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4641404"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2061355"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2007324"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2413297"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2011760"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          2.265625,
+          1.30615234375,
+          1.55810546875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2054348"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2054120"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3230842"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2197666"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4453050"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2655916"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2030280"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3728665"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2029131"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1986622"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4500530"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4312404"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1987344"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1988157"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1982293"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1969003"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 154417,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 154417,
+      "confirmed_ops_per_second": 30877.43905481108,
+      "elapsed_seconds": 5.000965259,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 154417
+      },
+      "success_latency": {
+        "max_ms": 4.053842,
+        "p50_ms": 1.008636,
+        "p95_ms": 1.23784,
+        "p99_ms": 1.436806
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 1,
+      "client_cpu_seconds": 10.654538000000002,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19082151,
+          "TWRecycled": 112146,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8409
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "25213",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23524,
+          "alloc": 31,
+          "mem": 245
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19283244,
+          "TWRecycled": 156273,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8411
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "22723",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23056,
+          "alloc": 31,
+          "mem": 0
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          2.265625,
+          1.30615234375,
+          1.55810546875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2026174"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2021655"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4544094"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4551878"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2027536"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2655916"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2026492"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3728665"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2051309"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1986622"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4500530"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2052420"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1987344"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1988157"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1982293"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1095838"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          2.64501953125,
+          1.40087890625,
+          1.58740234375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2003675"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1997019"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2393893"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4311085"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2403544"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2384664"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2537381"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2936476"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2004628"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1977158"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2506126"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4499146"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1938491"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1933098"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2985884"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1619127"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 154999,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 154999,
+      "confirmed_ops_per_second": 30993.67352394566,
+      "elapsed_seconds": 5.000988343,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 154999
+      },
+      "success_latency": {
+        "max_ms": 4.043983,
+        "p50_ms": 1.008125,
+        "p95_ms": 1.221388,
+        "p99_ms": 1.427959
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 1,
+      "client_cpu_seconds": 10.723656999999989,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 2,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19283244,
+          "TWRecycled": 156273,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8411
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "22723",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23056,
+          "alloc": 31,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19483759,
+          "TWRecycled": 197931,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8413
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21835",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23920,
+          "alloc": 32,
+          "mem": 501
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          2.64501953125,
+          1.40087890625,
+          1.58740234375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1849221"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1839756"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3921477"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4084009"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1797557"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1787180"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1794986"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1816217"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2004628"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1977158"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2506126"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4499146"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1938491"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1933098"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2005933"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1619127"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          2.994140625,
+          1.494140625,
+          1.61669921875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1518135"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1468450"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1427089"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3511225"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1574583"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1559080"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2027711"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2564490"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1775141"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2892718"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2028371"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3851091"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1892071"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2215523"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1975720"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1974753"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 153362,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 153362,
+      "confirmed_ops_per_second": 30666.011018731548,
+      "elapsed_seconds": 5.001041704,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 153362
+      },
+      "success_latency": {
+        "max_ms": 5.636052,
+        "p50_ms": 1.015439,
+        "p95_ms": 1.244402,
+        "p99_ms": 1.457555
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 2,
+      "client_cpu_seconds": 10.633821999999995,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19483759,
+          "TWRecycled": 197931,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8413
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21835",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23920,
+          "alloc": 32,
+          "mem": 501
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19686750,
+          "TWRecycled": 243913,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8415
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21837",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 24579,
+          "alloc": 32,
+          "mem": 245
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          2.994140625,
+          1.494140625,
+          1.61669921875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2022199"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2015703"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4562500"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4541568"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2016954"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2018050"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2017878"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2564490"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1775141"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2892718"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2016323"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3851091"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1892071"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2215523"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1975720"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1974753"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          3.23486328125,
+          1.5693359375,
+          1.640625
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4516297"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4518543"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2004738"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2268330"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4005798"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3277411"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2006709"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1907451"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1339492"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2008753"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2123714"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1693185"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1687095"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1341322"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1346019"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1925880"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 156709,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 156709,
+      "confirmed_ops_per_second": 31334.332232736902,
+      "elapsed_seconds": 5.001191627,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 156709
+      },
+      "success_latency": {
+        "max_ms": 17.343378,
+        "p50_ms": 0.993527,
+        "p95_ms": 1.207091,
+        "p99_ms": 1.398813
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 2,
+      "client_cpu_seconds": 10.888665000000003,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 2,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19686750,
+          "TWRecycled": 243913,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8415
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21837",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 24579,
+          "alloc": 32,
+          "mem": 245
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19882807,
+          "TWRecycled": 282305,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8417
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21839",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 22556,
+          "alloc": 32,
+          "mem": 0
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          3.23486328125,
+          1.5693359375,
+          1.640625
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1760664"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1800999"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1830293"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2268330"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3957101"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3277411"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2054590"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2654917"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1781475"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2008753"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2123714"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4479186"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4487182"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1341322"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1346019"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1925880"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          3.765625,
+          1.7333984375,
+          1.69287109375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1973534"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1973184"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1973621"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2812121"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4442147"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4440997"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972780"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972723"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1973252"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972853"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3991418"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4480481"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1885699"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1966061"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1855074"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1962510"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 153345,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 153345,
+      "confirmed_ops_per_second": 30661.14801726541,
+      "elapsed_seconds": 5.001280445,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 153345
+      },
+      "success_latency": {
+        "max_ms": 4.263097,
+        "p50_ms": 1.01606,
+        "p95_ms": 1.246395,
+        "p99_ms": 1.477543
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 2,
+      "client_cpu_seconds": 10.755168999999995,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 0,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 19882807,
+          "TWRecycled": 282305,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8417
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21839",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 22556,
+          "alloc": 32,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20081342,
+          "TWRecycled": 323424,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8419
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21841",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23653,
+          "alloc": 32,
+          "mem": 245
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          3.765625,
+          1.7333984375,
+          1.69287109375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3118094"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3823613"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1997850"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2812121"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2136816"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4440997"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2005913"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2005103"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1973252"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972853"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3991418"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4516506"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1885699"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1966061"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1855074"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1962510"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          4.02490234375,
+          1.8212890625,
+          1.7216796875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1399710"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1487186"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3135817"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1567285"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1567490"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2017529"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2018731"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2018987"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1587711"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1984886"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1984022"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1981984"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2484868"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1973015"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1983709"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1960597"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 153278,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 153278,
+      "confirmed_ops_per_second": 30648.989055969214,
+      "elapsed_seconds": 5.001078493,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 153278
+      },
+      "success_latency": {
+        "max_ms": 3.925749,
+        "p50_ms": 1.017573,
+        "p95_ms": 1.240544,
+        "p99_ms": 1.463847
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 2,
+      "client_cpu_seconds": 10.78332100000003,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20081342,
+          "TWRecycled": 323424,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8419
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21841",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23653,
+          "alloc": 32,
+          "mem": 245
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20281727,
+          "TWRecycled": 367416,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8420
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21847",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 1,
+          "tw": 23800,
+          "alloc": 34,
+          "mem": 245
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          4.02490234375,
+          1.8212890625,
+          1.7216796875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2023255"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2009097"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4538350"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4531039"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2014706"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2010707"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2011927"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2011382"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1587711"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1984886"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1984022"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1981984"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2484868"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1973015"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1983709"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1960597"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          4.26318359375,
+          1.90771484375,
+          1.75048828125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4308901"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4308867"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4447623"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4353113"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3253996"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2140172"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3206512"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4276977"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3235550"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2135793"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3576679"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2103579"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1983141"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1982329"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1958233"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1965679"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 150560,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 150560,
+      "confirmed_ops_per_second": 30106.06032116833,
+      "elapsed_seconds": 5.000986459,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 150560
+      },
+      "success_latency": {
+        "max_ms": 6.312962,
+        "p50_ms": 1.033152,
+        "p95_ms": 1.25941,
+        "p99_ms": 1.482642
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 3,
+      "client_cpu_seconds": 10.583694000000008,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 2,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20281727,
+          "TWRecycled": 367416,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8420
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21847",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 1,
+          "tw": 23800,
+          "alloc": 34,
+          "mem": 245
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20481137,
+          "TWRecycled": 413211,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8422
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21848",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23892,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          4.26318359375,
+          1.90771484375,
+          1.75048828125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1934782"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4308867"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4386661"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4361084"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1944349"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2140172"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2227325"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2167643"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1995262"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2135793"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3576679"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1995629"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1983141"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1982329"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1937431"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1965679"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          4.642578125,
+          2.02587890625,
+          1.78955078125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2987163"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1638864"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1543997"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1523602"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1352354"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1993362"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1994919"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2163967"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1891706"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1957348"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1992003"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1989375"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972663"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1346483"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1992883"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1349425"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 152945,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 152945,
+      "confirmed_ops_per_second": 30581.834315354266,
+      "elapsed_seconds": 5.001171559,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 152945
+      },
+      "success_latency": {
+        "max_ms": 5.646812,
+        "p50_ms": 1.020399,
+        "p95_ms": 1.228712,
+        "p99_ms": 1.441394
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 3,
+      "client_cpu_seconds": 10.67795700000002,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20481137,
+          "TWRecycled": 413211,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8422
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21848",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 20,
+          "orphan": 0,
+          "tw": 23892,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20681135,
+          "TWRecycled": 456949,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8424
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21844",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 19,
+          "orphan": 0,
+          "tw": 24166,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          4.642578125,
+          2.02587890625,
+          1.78955078125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4491671"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4487464"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1995038"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1993043"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1352354"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1993747"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1995899"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2163967"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1891706"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1957348"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1995147"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1997745"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972663"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1346483"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1992883"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1349425"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          4.91162109375,
+          2.12548828125,
+          1.8232421875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4348380"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1967831"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1995438"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3824697"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1969338"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1961528"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1904892"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1899389"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1974918"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1963218"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4366772"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4366855"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1964245"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2752499"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1940752"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2136825"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 152654,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 152654,
+      "confirmed_ops_per_second": 30524.15285901401,
+      "elapsed_seconds": 5.001088833,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 152654
+      },
+      "success_latency": {
+        "max_ms": 4.122531,
+        "p50_ms": 1.023003,
+        "p95_ms": 1.235685,
+        "p99_ms": 1.430634
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 3,
+      "client_cpu_seconds": 10.69671200000002,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20681135,
+          "TWRecycled": 456949,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8424
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21844",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 19,
+          "orphan": 0,
+          "tw": 24166,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20881759,
+          "TWRecycled": 501818,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8426
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21844",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 19,
+          "orphan": 0,
+          "tw": 24257,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          4.91162109375,
+          2.12548828125,
+          1.8232421875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2200956"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1967831"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1985157"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3824697"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1984877"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1984381"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1985051"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1984528"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1974918"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1963218"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4461108"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4466630"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1964245"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2752499"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4457934"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2136825"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          4.9189453125,
+          2.22021484375,
+          1.857421875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2867539"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "590653"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2116739"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1444265"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4441838"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4431893"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4436299"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4437059"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "388925"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "383968"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "384978"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4461917"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "384996"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1985133"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3092706"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "384842"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 149970,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 149970,
+      "confirmed_ops_per_second": 29988.33514351472,
+      "elapsed_seconds": 5.00094451,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 149970
+      },
+      "success_latency": {
+        "max_ms": 5.492982,
+        "p50_ms": 1.035798,
+        "p95_ms": 1.271723,
+        "p99_ms": 1.535663
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 3,
+      "client_cpu_seconds": 10.705099999999987,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 0,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 20881759,
+          "TWRecycled": 501818,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8426
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21844",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 19,
+          "orphan": 0,
+          "tw": 24257,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21075334,
+          "TWRecycled": 543429,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8428
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21852",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 23213,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          4.9189453125,
+          2.22021484375,
+          1.857421875
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4454870"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4466499"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1977532"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1444265"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1978908"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3947042"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1971555"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4437059"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "388925"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "383968"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "384978"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4461917"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "384996"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4441581"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972268"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "384842"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          5.166015625,
+          2.31640625,
+          1.890625
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2386677"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2266710"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1568668"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3833107"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1463976"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3863432"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1512351"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1500927"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2235804"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1971729"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1974849"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3029836"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1970935"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2002612"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1568255"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2292944"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 152334,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 152334,
+      "confirmed_ops_per_second": 30460.10394316613,
+      "elapsed_seconds": 5.001099152,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 152334
+      },
+      "success_latency": {
+        "max_ms": 4.303654,
+        "p50_ms": 1.025779,
+        "p95_ms": 1.236257,
+        "p99_ms": 1.445371
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 4,
+      "client_cpu_seconds": 10.65755999999999,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 3,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21075334,
+          "TWRecycled": 543429,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8428
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "21852",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 23213,
+          "alloc": 32,
+          "mem": 235
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21278220,
+          "TWRecycled": 589713,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8431
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14192",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 24490,
+          "alloc": 33,
+          "mem": 235
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          5.166015625,
+          2.31640625,
+          1.890625
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2664206"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2266710"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4484796"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4486601"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2026916"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3863432"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2020172"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2319706"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2331171"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1971729"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1981971"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3029836"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1970935"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2002612"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1568255"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2292944"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          5.31298828125,
+          2.39453125,
+          1.91845703125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1944677"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2016226"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2274923"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2621268"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4269973"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4118332"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1811004"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1684237"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1978896"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1962294"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3792406"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3792272"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1999328"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1963894"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3970920"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972727"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 151792,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 151792,
+      "confirmed_ops_per_second": 30353.02023069431,
+      "elapsed_seconds": 5.0008862,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 151792
+      },
+      "success_latency": {
+        "max_ms": 7.246775,
+        "p50_ms": 1.028804,
+        "p95_ms": 1.242057,
+        "p99_ms": 1.421867
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 4,
+      "client_cpu_seconds": 10.609909000000016,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 0,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21278220,
+          "TWRecycled": 589713,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8431
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14192",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 24490,
+          "alloc": 33,
+          "mem": 235
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21480556,
+          "TWRecycled": 637292,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8433
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14194",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 24474,
+          "alloc": 33,
+          "mem": 235
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          5.31298828125,
+          2.39453125,
+          1.91845703125
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3788756"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2016226"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4357081"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2621268"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1945254"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3269902"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1946410"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1875473"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1978896"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1962294"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1769735"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1846198"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1844161"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1963894"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2744424"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1972727"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          5.28759765625,
+          2.43798828125,
+          1.93505859375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2226621"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2202362"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1432205"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1489010"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1571485"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1554874"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1462430"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2017970"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3960884"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1970596"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4541575"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4372381"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1960172"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2775126"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1961597"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1968497"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 152893,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 152893,
+      "confirmed_ops_per_second": 30572.19859128245,
+      "elapsed_seconds": 5.001046933,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 152893
+      },
+      "success_latency": {
+        "max_ms": 5.33378,
+        "p50_ms": 1.022012,
+        "p95_ms": 1.23282,
+        "p99_ms": 1.417439
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 4,
+      "client_cpu_seconds": 10.707974999999976,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 2,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21480556,
+          "TWRecycled": 637292,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8433
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14194",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 24474,
+          "alloc": 33,
+          "mem": 235
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21682744,
+          "TWRecycled": 683014,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8435
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14194",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 25043,
+          "alloc": 32,
+          "mem": 0
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          5.28759765625,
+          2.43798828125,
+          1.93505859375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2016184"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2017894"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2018303"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2020425"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2019051"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2017725"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2018259"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2019103"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3960884"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1970596"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4541381"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4372381"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1960172"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2775126"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1961597"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1968497"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          5.5048828125,
+          2.53076171875,
+          1.9677734375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1599367"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1771462"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1788717"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1942073"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1841631"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1789477"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1767435"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3851279"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3859159"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3845707"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3928715"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3937445"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1592482"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1592597"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1613599"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1520835"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    },
+    {
+      "attempts": 151644,
+      "client_affinity": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "clients": 32,
+      "confirmed": 151644,
+      "confirmed_ops_per_second": 30322.69952769552,
+      "elapsed_seconds": 5.001005925,
+      "error_codes": {},
+      "failure_latency": null,
+      "operation_cap_hit": false,
+      "statuses": {
+        "200": 151644
+      },
+      "success_latency": {
+        "max_ms": 4.721583,
+        "p50_ms": 1.030167,
+        "p95_ms": 1.239382,
+        "p99_ms": 1.464077
+      },
+      "valid": true,
+      "warmup_errors": 0,
+      "scenario": "read",
+      "repetition": 4,
+      "client_cpu_seconds": 10.582701999999983,
+      "cpu_measurement_scope": "entire generator process, including exec launcher, warmup and summary",
+      "client_affinities": [
+        [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15
+        ]
+      ],
+      "uncertain_write_outcomes": 0,
+      "acknowledged_writes_verified": true,
+      "mode_id": 1,
+      "role": "writer",
+      "kernel_tcp_before": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21682744,
+          "TWRecycled": 683014,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8435
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14194",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 25043,
+          "alloc": 32,
+          "mem": 0
+        }
+      },
+      "kernel_tcp_after": {
+        "counters": {
+          "TCPTimeWaitOverflow": 1628980,
+          "TW": 21881131,
+          "TWRecycled": 728062,
+          "ListenOverflows": 0,
+          "ListenDrops": 0,
+          "TCPTimeouts": 8437
+        },
+        "max_timewait": "65536",
+        "timewait_reuse": "2",
+        "ephemeral_port_range": "32768\t60999",
+        "conntrack_count": "14202",
+        "conntrack_max": "262144",
+        "tcp_sockets": {
+          "inuse": 18,
+          "orphan": 0,
+          "tw": 23793,
+          "alloc": 32,
+          "mem": 0
+        }
+      },
+      "machine_before": {
+        "loadavg": [
+          5.5048828125,
+          2.53076171875,
+          1.9677734375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4435754"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1771462"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1971964"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1942073"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3027408"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3201073"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3081608"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3308349"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3255461"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3193800"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "3928715"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4586077"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1592482"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1592597"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1613599"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1520835"
+          }
+        }
+      },
+      "machine_after": {
+        "loadavg": [
+          5.544921875,
+          2.58837890625,
+          1.98974609375
+        ],
+        "cpus": {
+          "0": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1693755"
+          },
+          "1": {
+            "topology/core_id": "0",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "0-1",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1790102"
+          },
+          "2": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1547601"
+          },
+          "3": {
+            "topology/core_id": "1",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "2-3",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1515253"
+          },
+          "4": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1551541"
+          },
+          "5": {
+            "topology/core_id": "2",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "4-5",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2641930"
+          },
+          "6": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2008431"
+          },
+          "7": {
+            "topology/core_id": "3",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "6-7",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2005747"
+          },
+          "8": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1368445"
+          },
+          "9": {
+            "topology/core_id": "4",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "8-9",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2231885"
+          },
+          "10": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2006634"
+          },
+          "11": {
+            "topology/core_id": "5",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "10-11",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "4105810"
+          },
+          "12": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1367318"
+          },
+          "13": {
+            "topology/core_id": "6",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "12-13",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2146851"
+          },
+          "14": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "1997505"
+          },
+          "15": {
+            "topology/core_id": "7",
+            "topology/physical_package_id": "0",
+            "topology/thread_siblings_list": "14-15",
+            "cpufreq/scaling_governor": "powersave",
+            "cpufreq/scaling_cur_freq": "2049418"
+          }
+        }
+      },
+      "server_affinity_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "data_filesystem": "ext4",
+      "data_block_bytes": 4096,
+      "dataset_sha256": "85fb688b70f90d073c5fe1bda93328937f85c4489435f2f9d90fda9aefa01ac4",
+      "post_load_dataset_verified": true,
+      "binary_sha256": "aec28f53b10ebc336e47227fa6fc1b78f344ac4b6841249608e7d14d55aa117e"
+    }
+  ],
+  "generator_sha256": "25a5e27784463fe5de6804424957fa8dd28ecb636ce9117a8f55337d0a4b2fc2",
+  "valid": true,
+  "comparisons": [
+    {
+      "clients": 32,
+      "repetition": 1,
+      "comparison": "same_binary_AA_01",
+      "rps_right_over_left": 1.0134474101653872,
+      "p95_right_over_left": 0.963795772620835
+    },
+    {
+      "clients": 32,
+      "repetition": 1,
+      "comparison": "same_binary_AA_23",
+      "rps_right_over_left": 0.9962497356421858,
+      "p95_right_over_left": 1.0134699211061515
+    },
+    {
+      "clients": 32,
+      "repetition": 2,
+      "comparison": "same_binary_AA_01",
+      "rps_right_over_left": 1.000158604676622,
+      "p95_right_over_left": 0.9984009884506919
+    },
+    {
+      "clients": 32,
+      "repetition": 2,
+      "comparison": "same_binary_AA_23",
+      "rps_right_over_left": 0.9781280426952368,
+      "p95_right_over_left": 1.0277137349213938
+    },
+    {
+      "clients": 32,
+      "repetition": 3,
+      "comparison": "same_binary_AA_01",
+      "rps_right_over_left": 1.017867537925498,
+      "p95_right_over_left": 0.9716620679188785
+    },
+    {
+      "clients": 32,
+      "repetition": 3,
+      "comparison": "same_binary_AA_23",
+      "rps_right_over_left": 1.0158032631672969,
+      "p95_right_over_left": 0.9756250942901836
+    },
+    {
+      "clients": 32,
+      "repetition": 4,
+      "comparison": "same_binary_AA_01",
+      "rps_right_over_left": 0.9990010647122316,
+      "p95_right_over_left": 0.9978463146216318
+    },
+    {
+      "clients": 32,
+      "repetition": 4,
+      "comparison": "same_binary_AA_23",
+      "rps_right_over_left": 0.9963334449833031,
+      "p95_right_over_left": 1.002787917133077
+    }
+  ]
+}

@@ -37,6 +37,10 @@ jobs:
           python3 scripts/docs_smoke.py --binary target/debug/kiarni
       - name: Benchmark measurement tests
         run: python3 -m unittest discover -s benches -p test_http_load.py
+      - name: Rust read generator against the current server
+        run: |
+          cargo build -p kiarni --example read-load --locked
+          python3 benches/http_load.py --binary target/debug/kiarni --rust-driver target/debug/examples/read-load --verify-full-read --scenarios read --output /tmp/read-load-ci.json --clients 1 2 --repeat 1 --seconds 0.3 --warmup 1 --documents 32 --document-bytes 128
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

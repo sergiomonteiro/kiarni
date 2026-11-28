@@ -69,8 +69,10 @@ uma entrega própria do RF-10, não uma atividade opcional depois da release.
   integra lock, auditoria e recuperação restrita. As [medições no produto](./benchmarks/secondary-index-http-2026-11-22.md)
   registram ganhos seletivos e custo de escrita, sem extrapolar o spike. Layouts
   antigos são recusados sem migração ou apagamento automático.
-- Investigar regressão de leitura e medir custo dos logs. CPU/memória seguem
-  para o momento combinado com o usuário; não antecipar otimizações amplas.
+- [Investigação de leitura/telemetria (#9) concluída](./benchmarks/writer-read-rust-2026-11-28.md):
+  queda histórica não confirmada consistentemente, gerador validado e decisão
+  de manter o runtime sem patch especulativo. CPU/memória seguem para o momento
+  combinado com o usuário; não antecipar otimizações amplas.
   O objetivo de aproveitar os cores/RAM de uma máquina está detalhado na etapa
   de [escalabilidade vertical](./PERFORMANCE.md#escalabilidade-vertical--etapa-posterior-à-investigação-9),
   separada do escopo atual da #9 e da avaliação futura de escala horizontal.
@@ -100,5 +102,5 @@ de performance aguarda o momento combinado; registrar uma issue não a antecipa.
 | [#6](https://github.com/sergiomonteiro/kiarni/issues/6) | M3: consolidar referência da API e configuração |
 | [#7](https://github.com/sergiomonteiro/kiarni/issues/7) | M3: validar instalação limpa e gate do MVP |
 | [#8](https://github.com/sergiomonteiro/kiarni/issues/8) | RF-04: concluir avaliação de índice secundário simples |
-| [#9](https://github.com/sergiomonteiro/kiarni/issues/9) | Performance: investigar regressão de leitura e custo da telemetria |
+| [#9](https://github.com/sergiomonteiro/kiarni/issues/9) | Performance: [investigação concluída](./benchmarks/writer-read-rust-2026-11-28.md), sem queda consistente confirmada |
 | [#10](https://github.com/sergiomonteiro/kiarni/issues/10) | Índice secundário integrado ao Store/HTTP/backup/CLI offline; [medições concluídas](./benchmarks/secondary-index-http-2026-11-22.md) |

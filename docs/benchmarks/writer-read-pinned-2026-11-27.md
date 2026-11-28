@@ -110,6 +110,14 @@ sem dependência runtime do banco. Executáveis históricos preservados somente
 localmente; checkout novo precisa recebê-los com os hashes exatos do manifesto.
 [Metodologia e limites](../../benches/README.md).
 
+## Atualização — conclusão da #9
+
+A [calibração e comparação finais com gerador Rust](./writer-read-rust-2026-11-28.md)
+concluem a investigação, com margem de CPU no cliente. A queda histórica não
+foi confirmada consistentemente; a intervenção justificada foi no ferramental,
+sem patch especulativo no runtime. O estado abaixo preserva o histórico deste
+incremento, não uma pendência atual de localização ou medição.
+
 ## Decisão e próximo passo
 
 Não aplicar uma correção no GET com base no percentual antigo: a queda continua

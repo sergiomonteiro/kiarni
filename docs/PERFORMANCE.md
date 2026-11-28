@@ -4,6 +4,14 @@ O objetivo é tornar o Kiarni competitivo em throughput útil, latência e custo
 de operação no recorte single-node. Cada otimização deve vir acompanhada de
 medição reproduzível e testes de correção, recuperação e limites de recursos.
 
+## Estado atual da investigação #9
+
+[Investigação concluída em 2026-11-28](./benchmarks/writer-read-rust-2026-11-28.md):
+queda histórica não confirmada consistentemente, gerador de leitura substituído
+por ferramenta Rust validada e com margem de CPU. Decisão de manter o runtime,
+sem patch especulativo no GET. Validação final e encerramento registrados na
+issue; as seções abaixo preservam a evolução e os limites dos ensaios anteriores.
+
 ## Critérios de comparação
 
 - Contar operações confirmadas, incluindo a durabilidade contratada, e registrar
@@ -157,3 +165,18 @@ no servidor. Próximo recorte: gerador de benchmark mais leve e limitado, com
 validação equivalente e controle A/A, antes de comparar servidores. Não repetir
 o mesmo teste Python indefinidamente nem inferir capacidade do Kiarni a partir
 desse teto. A #9 e o planejamento amplo de CPU/RAM continuam separados.
+
+## Conclusão — gerador calibrado e decisão sobre o runtime
+
+[Calibração e comparação finais](./benchmarks/writer-read-rust-2026-11-28.md):
+16 rodadas A/A e 32 A/B válidas, com artefatos históricos exatos. O novo gerador
+usou cerca de 2,1 das oito CPUs lógicas atribuídas, incluindo aquecimento/resumo.
+Integrado/anterior teve medianas 0,99692 e 1,00013 em 8/32 clientes; a queda de
+4%–6% não foi confirmada consistentemente. Não se provou ausência de regressão
+ou causalidade da medição original.
+
+Menor intervenção justificada: corrigir o ferramental e manter o servidor, seus
+limites, coordenador, ordem pós-commit e backpressure. A #9 é concluída como
+investigação, sem anúncio de bug corrigido ou aumento de capacidade. Escala
+vertical de cores/RAM e avaliações futuras exigem evidência própria; não foram
+implementadas por esse trabalho. Nova evidência pode motivar nova investigação.

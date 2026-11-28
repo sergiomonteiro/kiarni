@@ -74,3 +74,5 @@ e o guia de contribuição para executar as verificações. A política do [cana
 - [Revisita histórica da leitura](./benchmarks/writer-read-revisit-2026-11-26.md): executáveis exatos recuperados, pares A/B, controles A/A e limites da conclusão.
 
 - [Leitura com gerador/servidor separados](./benchmarks/writer-read-pinned-2026-11-27.md): afinidade temporária, janelas maiores e limite de CPU do medidor.
+
+- [Conclusão da investigação #9](./benchmarks/writer-read-rust-2026-11-28.md): gerador Rust calibrado, dados finais e decisão de manter o runtime.
